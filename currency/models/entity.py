@@ -6,8 +6,8 @@ import uuid
 from django.contrib.auth.models import User
 from django.db import models
 
-from imagekit.models import ProcessedImageField
-from pilkit.processors import ResizeToFit
+from imagekit.models import ProcessedImageField, ImageSpecField
+from pilkit.processors import ResizeToFit, ResizeToFill
 
 from currency.helpers import RandomFileName
 
@@ -23,9 +23,14 @@ class Entity(models.Model):
     short_description = models.TextField(null=True, blank=True, verbose_name='Descripción corta')
     phone_number = models.CharField(null=True, blank=True, verbose_name='Teléfono', max_length=25)
     address = models.TextField(null=True, blank=True, verbose_name='Dirección')
+
     logo = ProcessedImageField(null=True, blank=True, upload_to=RandomFileName('entities/'),
                                 verbose_name='Imagen de perfil',
-                                processors=[ResizeToFit(250, 250, upscale=False)], format='JPEG')
+                                processors=[ResizeToFit(512, 512, upscale=False)], format='JPEG')
+    profile_thumbnail = ImageSpecField(source='profile_image',
+                                       processors=[ResizeToFill(150, 150, upscale=False)],
+                                       format='JPEG',
+                                       options={'quality': 70})
 
     registered = models.DateTimeField(auto_now_add=True)
     latitude = models.FloatField(null=False, verbose_name='Latitud')
