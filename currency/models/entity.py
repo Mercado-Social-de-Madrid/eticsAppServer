@@ -1,0 +1,51 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+import uuid
+
+from django.contrib.auth.models import User
+from django.db import models
+
+from imagekit.models import ProcessedImageField
+from pilkit.processors import ResizeToFit
+
+from currency.helpers import RandomFileName
+
+
+class Entity(models.Model):
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.OneToOneField(User, null=False, blank=False)
+    cif = models.CharField(null=True, blank=True, verbose_name='NIF/CIF', max_length=50)
+    email = models.CharField(null=False, blank=False, verbose_name='Email')
+    name = models.CharField(null=True, blank=True, verbose_name='Nombre', max_length=250)
+    description = models.TextField(null=True, blank=True, verbose_name='Descripción')
+    short_description = models.TextField(null=True, blank=True, verbose_name='Descripción corta')
+    phone_number = models.CharField(null=True, blank=True, verbose_name='Teléfono', max_length=25)
+    address = models.TextField(null=True, blank=True, verbose_name='Dirección')
+    logo = ProcessedImageField(null=True, blank=True, upload_to=RandomFileName('entities/'),
+                                verbose_name='Imagen de perfil',
+                                processors=[ResizeToFit(250, 250, upscale=False)], format='JPEG')
+
+    registered = models.DateTimeField(auto_now_add=True)
+    latitude = models.FloatField(null=False, verbose_name='Latitud')
+    longitude = models.FloatField(null=False, verbose_name='Longitud')
+
+    # Business fields
+    bonification_percent = models.FloatField(default=0, verbose_name='Porcentaje de bonificación')
+    max_percent_payment = models.FloatField(default=0, verbose_name='Máximo porcentaje de pago aceptado')
+    num_workers = models.IntegerField(default=0, verbose_name='Número de trabajadores')
+    legal_form = models.TextField(null=True, blank=True, verbose_name='Formulario legal')
+
+    # Social links
+    facebook_link = models.CharField(null=True, blank=True, verbose_name='Página de Facebook', max_length=250)
+    webpage_link = models.CharField(null=True, blank=True, verbose_name='Página web', max_length=250)
+    twitter_link = models.CharField(null=True, blank=True, verbose_name='Perfil de Twitter', max_length=250)
+    telegram_link = models.CharField(null=True, blank=True, verbose_name='Canal de Telegram', max_length=250)
+    instagram_link = models.CharField(null=True, blank=True, verbose_name='Perfil de Instagram', max_length=250)
+
+
+    class Meta:
+        verbose_name = 'Entidad'
+        verbose_name_plural = 'Entidades'
+        ordering = ['registered']
