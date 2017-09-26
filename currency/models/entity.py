@@ -27,7 +27,7 @@ class Entity(models.Model):
     logo = ProcessedImageField(null=True, blank=True, upload_to=RandomFileName('entities/'),
                                 verbose_name='Imagen de perfil',
                                 processors=[ResizeToFit(512, 512, upscale=False)], format='JPEG')
-    profile_thumbnail = ImageSpecField(source='profile_image',
+    logo_thumbnail = ImageSpecField(source='logo',
                                        processors=[ResizeToFill(150, 150, upscale=False)],
                                        format='JPEG',
                                        options={'quality': 70})
