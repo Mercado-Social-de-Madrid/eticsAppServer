@@ -33,8 +33,8 @@ class Entity(models.Model):
                                        options={'quality': 70})
 
     registered = models.DateTimeField(auto_now_add=True)
-    latitude = models.FloatField(null=False, verbose_name='Latitud')
-    longitude = models.FloatField(null=False, verbose_name='Longitud')
+    latitude = models.FloatField(null=False, verbose_name='Latitud', default=0)
+    longitude = models.FloatField(null=False, verbose_name='Longitud', default=0)
 
     # Business fields
     bonification_percent = models.FloatField(default=0, verbose_name='Porcentaje de bonificación')
@@ -54,3 +54,7 @@ class Entity(models.Model):
         verbose_name = 'Entidad'
         verbose_name_plural = 'Entidades'
         ordering = ['registered']
+
+
+    def __unicode__(self):
+        return self.name
