@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'currency.apps.CurrencyConfig',
     'tastypie',
     'imagekit',
     'django.contrib.admin',

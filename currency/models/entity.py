@@ -17,7 +17,7 @@ class Entity(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, null=False, blank=False)
     cif = models.CharField(null=True, blank=True, verbose_name='NIF/CIF', max_length=50)
-    email = models.CharField(null=False, blank=False, verbose_name='Email')
+    email = models.CharField(null=False, blank=False, verbose_name='Email', max_length=250)
     name = models.CharField(null=True, blank=True, verbose_name='Nombre', max_length=250)
     description = models.TextField(null=True, blank=True, verbose_name='Descripción')
     short_description = models.TextField(null=True, blank=True, verbose_name='Descripción corta')

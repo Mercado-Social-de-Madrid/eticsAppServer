@@ -1,3 +1,4 @@
+from tastypie import fields
 from tastypie.resources import ModelResource
 
 from currency.models import Entity
@@ -11,7 +12,7 @@ class EntityResource(ModelResource):
         list_allowed_methods = ['get']
         resource_name = 'entities'
         collection_name = 'entities'
-        excludes = ['description']
+        excludes = ['description', 'user']
 
     # Add thumbnail field
     def dehydrate(self, bundle):
