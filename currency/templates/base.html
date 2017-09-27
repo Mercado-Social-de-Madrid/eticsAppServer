@@ -47,30 +47,9 @@
 
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                   <ul class="nav navbar-nav">
-                    <li {% if request.resolver_match.url_name == "index" %}class="active"{% endif %}><a href="{% url 'index' %}">Inicio</a></li>
-                    <li {% if request.resolver_match.url_name == "venues_list" %}class="active"{% endif %}><a href="{% url 'venues_list' %}">Espacios</a></li>
-                    <li {% if request.resolver_match.url_name == "bands_list" %}class="active"{% endif %}><a href="{% url 'bands_list' %}">Bandas</a></li>
-                    <li {% if request.resolver_match.url_name == "events_schedule" %}class="active"{% endif %}><a href="{% url 'events_schedule' %}">Agenda</a></li>
-                    <li {% if request.resolver_match.url_name == "pros_list" %}class="active"{% endif %}><a href="{% url 'pros_list' %}">Profesionales</a></li>
-                    <!--<li {% if request.resolver_match.url_name == "app_info" %}class="active"{% endif %}><a href="{% url 'app_info' %}">La App</a></li> -->
-                      <!-- <li {% if request.resolver_match.url_name == "survey" %}class="active"{% endif %}><a href="{% url 'survey' %}">Encuesta</a></li> -->
-                  </ul>
-                  <ul class="nav navbar-nav navbar-right">
-                      {%if user.is_authenticated %}
-                        <li class="dropdown">
-                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user.username}} <span class="caret"></span></a>
-                              <ul class="dropdown-menu">
-                                <!--<li><a href="#"><i class="fa fa-user-circle right-margin" aria-hidden="true" ></i> Mi perfil</a></li>-->
-                                <li><a href="{% url 'dashboard' %}"><i class="fa fa-home right-margin" aria-hidden="true" ></i> Dashboard</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="{% url 'logout' %}?next=/"><i class="fa fa-power-off right-margin" aria-hidden="true" ></i> Salir</a></li>
-                              </ul>
-                        </li>
-                      {% else %}
-                        <li  {% if request.resolver_match.url_name == "login" %}class="active"{% endif %}><a href="{% url 'login' %}"><i class="fa fa-plug" aria-hidden="true" ></i> Entrar</a></li>
-                      {% endif %}
 
                   </ul>
+
           </div>
         </nav>
 
