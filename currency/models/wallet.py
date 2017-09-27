@@ -5,6 +5,8 @@ import uuid
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Wallet(models.Model):
@@ -20,4 +22,12 @@ class Wallet(models.Model):
         ordering = ['user']
 
     def __unicode__(self):
-        return self.name
+        return self.user.username + ': ' + str(self.balance)
+
+
+# Method to create the wallet for every new user
+@receiver(post_save, sender=User)
+def create_user_wallet(sender, instance, created, **kwargs):
+    if created:
+        print 'Creating user wallet!'
+        Wallet.objects.create(user=instance)
