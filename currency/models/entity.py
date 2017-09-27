@@ -10,6 +10,7 @@ from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, ResizeToFill
 
 from currency.helpers import RandomFileName
+from currency.models import Category
 
 
 class Entity(models.Model):
@@ -35,6 +36,8 @@ class Entity(models.Model):
     registered = models.DateTimeField(auto_now_add=True)
     latitude = models.FloatField(null=False, verbose_name='Latitud', default=0)
     longitude = models.FloatField(null=False, verbose_name='Longitud', default=0)
+
+    categories = models.ManyToManyField(Category, blank=True, verbose_name='Categorías')
 
     # Business fields
     bonification_percent = models.FloatField(default=0, verbose_name='Porcentaje de bonificación')
