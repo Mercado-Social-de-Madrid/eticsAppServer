@@ -4,9 +4,7 @@ from tastypie.resources import ModelResource
 
 from currency.models import Entity
 
-from accounts import *
-
-class EntityResource(ModelResource):
+class EntitiesResource(ModelResource):
 
     class Meta:
         queryset = Entity.objects.all()
@@ -14,7 +12,7 @@ class EntityResource(ModelResource):
         list_allowed_methods = ['get', 'post']
         resource_name = 'entities'
         collection_name = 'entities'
-        excludes = ['description', 'user']
+        excludes = ['user']
 
         authentication = Authentication()
         authorization = Authorization()

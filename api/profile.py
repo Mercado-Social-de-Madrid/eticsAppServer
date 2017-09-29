@@ -1,16 +1,9 @@
-from django.conf.urls import url
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.forms import model_to_dict
-from tastypie import fields
-from tastypie.authentication import Authentication, ApiKeyAuthentication
+from django.urls import NoReverseMatch
+from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
-from tastypie.http import HttpForbidden, HttpUnauthorized
-from tastypie.models import ApiKey
+from tastypie.exceptions import NotFound
 from tastypie.resources import ModelResource
-from tastypie.validation import FormValidation
 
-from currency.forms.user import UserForm
 from currency.models import Wallet, Entity
 
 
@@ -24,7 +17,7 @@ class WalletResource(ModelResource):
         fields = ['balance', 'last_transaction']
         excludes = ['id']
 
-        authentication = ApiKeyAuthentication()  # No need for auth, public resource
+        authentication = ApiKeyAuthentication()  # Endpoint based on ApiKey auth
         authorization = Authorization()
 
     def dispatch(self, request_type, request, **kwargs):
@@ -33,11 +26,32 @@ class WalletResource(ModelResource):
 
     def get_detail(self, request, **kwargs):
         # Place the authenticated user's id in the get detail request
-
         wallet = Wallet.objects.get(user=request.user)
         kwargs['id'] = wallet.pk
-
 
         return super(WalletResource, self).get_detail(request, **kwargs)
 
 
+class EntityResource(ModelResource):
+
+    class Meta:
+        queryset = Entity.objects.all()
+        include_resource_uri = False
+        always_return_data = True
+        list_allowed_methods = ['get', 'put']
+        resource_name = 'entity'
+        excludes = ['id']
+
+        authentication = ApiKeyAuthentication()  # Endpoint based on ApiKey auth
+        authorization = Authorization()
+
+    def dispatch_list(self, request, **kwargs):
+        return self.dispatch_detail(request, **kwargs)
+
+    def obj_get(self, bundle, **kwargs):
+        try:
+            entity = Entity.objects.get(user=bundle.request.user)
+        except Entity.DoesNotExist:
+            raise NotFound("User has no associated entity")
+
+        return entity
