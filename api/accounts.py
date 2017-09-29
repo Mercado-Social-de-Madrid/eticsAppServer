@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.forms import model_to_dict
 from tastypie import fields
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
@@ -83,11 +84,23 @@ class AuthResource(ModelResource):
             if user.is_active:
                 login(request, user)
                 key = ApiKey.objects.get_or_create(user=user)[0].key
-                return self.create_response(request, {
+                response = {
                     'success': True, 'data': {
                         'api_key': key
                     }
-                })
+                }
+
+                user_type, instance = user.get_related_entity()
+                response['data']['type'] = user_type
+                response['data']['entity'] = model_to_dict(instance) if user_type is 'entity' else None
+                response['data']['person'] = model_to_dict(instance) if user_type is 'person' else None
+
+                if (response['data']['entity'] is not None) and 'user' in response['data']['entity']:
+                    del response['data']['entity']['user']
+                if (response['data']['person'] is not None) and 'user' in response['data']['person']:
+                    del response['data']['person']['user']
+
+                return self.create_response(request, response)
             else:
                 return self.create_response(request, {
                     'success': False,
