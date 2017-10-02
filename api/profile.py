@@ -1,4 +1,3 @@
-from django.urls import NoReverseMatch
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
 from tastypie.exceptions import NotFound
