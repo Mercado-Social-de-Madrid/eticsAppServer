@@ -48,6 +48,9 @@ class EntityResource(ModelResource):
     def dispatch_list(self, request, **kwargs):
         return self.dispatch_detail(request, **kwargs)
 
+    def put_detail(self, request, **kwargs):
+        return self.patch_detail(request, **kwargs)
+
     def obj_get(self, bundle, **kwargs):
         try:
             entity = Entity.objects.get(user=bundle.request.user)
@@ -55,3 +58,8 @@ class EntityResource(ModelResource):
             raise NotFound("User has no associated entity")
 
         return entity
+
+    def hydrate(self, bundle):
+        if bundle.request.user:
+            bundle.obj.user = bundle.request.user
+        return bundle
