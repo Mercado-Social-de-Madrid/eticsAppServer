@@ -16,7 +16,7 @@ from currency.models import Entity
 
 
 class RegisterResource(ModelResource):
-    entity = fields.ToOneField('api.resources.EntityResource', 'entity', null=True, full=True)
+    entity = fields.ToOneField('api.resources.EntitiesResource', 'entity', null=True, full=True)
 
     class Meta:
         queryset = User.objects.all()
