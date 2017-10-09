@@ -11,24 +11,25 @@ class WalletResource(ModelResource):
     class Meta:
         queryset = Wallet.objects.all()
         include_resource_uri = False
+        always_return_data = True
         list_allowed_methods = ['get']
         resource_name = 'wallet'
-        fields = ['balance', 'last_transaction']
-        excludes = ['id']
+        fields = ['id', 'balance', 'last_transaction']
 
         authentication = ApiKeyAuthentication()  # Endpoint based on ApiKey auth
         authorization = Authorization()
 
-    def dispatch(self, request_type, request, **kwargs):
-        # Force this to be a single User object
-        return super(WalletResource, self).dispatch('detail', request, **kwargs)
+    def dispatch_list(self, request, **kwargs):
+        return self.dispatch_detail(request, **kwargs)
 
-    def get_detail(self, request, **kwargs):
-        # Place the authenticated user's id in the get detail request
-        wallet = Wallet.objects.get(user=request.user)
-        kwargs['id'] = wallet.pk
+    def obj_get(self, bundle, **kwargs):
+        try:
+            wallet = Wallet.objects.get(user=bundle.request.user)
+        except Wallet.DoesNotExist:
+            raise NotFound("User has no associated entity")
 
-        return super(WalletResource, self).get_detail(request, **kwargs)
+        print wallet.pk
+        return wallet
 
 
 class EntityResource(ModelResource):
