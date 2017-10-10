@@ -1,8 +1,12 @@
+from django.conf.urls import url
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
 from tastypie.exceptions import NotFound
+from tastypie.http import HttpAccepted
 from tastypie.resources import ModelResource
 from tastypie import fields
+from tastypie.utils import trailing_slash
+
 from currency.models import Wallet, Entity, Person
 
 
@@ -40,7 +44,7 @@ class EntityResource(ModelResource):
         always_return_data = True
         list_allowed_methods = ['get', 'put']
         resource_name = 'entity'
-        excludes = ['id']
+        excludes = ['user']
 
         authentication = ApiKeyAuthentication()  # Endpoint based on ApiKey auth
         authorization = Authorization()
@@ -93,6 +97,7 @@ class PersonResource(ModelResource):
 
         return person
 
+
     def dehydrate(self, bundle):
         # Add thumbnail field
         if bundle.obj.profile_thumbnail:
@@ -109,3 +114,5 @@ class PersonResource(ModelResource):
         if bundle.request.user:
             bundle.obj.user = bundle.request.user
         return bundle
+
+
