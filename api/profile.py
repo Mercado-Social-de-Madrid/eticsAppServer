@@ -72,7 +72,7 @@ class PersonResource(ModelResource):
         include_resource_uri = False
         always_return_data = True
         list_allowed_methods = ['get', 'put']
-        resource_name = 'person'
+        resource_name = 'profile'
         excludes = ['id']
 
         authentication = ApiKeyAuthentication()  # Endpoint based on ApiKey auth
