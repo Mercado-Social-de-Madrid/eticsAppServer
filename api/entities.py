@@ -12,7 +12,7 @@ from currency.models import Entity, Offer
 
 class EntitiesResource(ModelResource):
     offers = fields.ToManyField(OffersResource,
-                                attribute=lambda bundle: Offer.objects.current(),
+                                attribute=lambda bundle: Offer.objects.current().filter(entity=bundle.obj),
                                 full=True, null=True)
 
     class Meta:
