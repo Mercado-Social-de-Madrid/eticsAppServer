@@ -10,6 +10,7 @@ from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, ResizeToFill
 
 from currency.helpers import RandomFileName
+from currency.models import Entity
 
 
 class Person(models.Model):
@@ -30,6 +31,7 @@ class Person(models.Model):
                                        options={'quality': 70})
 
     registered = models.DateTimeField(auto_now_add=True)
+    fav_entities = models.ManyToManyField(Entity, null=True, blank=True, verbose_name="Favoritos")
 
     class Meta:
         verbose_name = 'Persona'
