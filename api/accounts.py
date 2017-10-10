@@ -83,8 +83,10 @@ class UserResource(ModelResource):
         data['person'] = model_to_dict(instance) if user_type is 'person' else None
 
         if (data['entity'] is not None) and 'user' in data['entity']:
+            data['entity']['id'] = instance.pk
             del data['entity']['user']
         if (data['person'] is not None) and 'user' in data['person']:
+            data['person']['id'] = instance.pk
             del data['person']['user']
 
         return data
