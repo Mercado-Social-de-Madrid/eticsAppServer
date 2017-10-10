@@ -1,7 +1,6 @@
 from django.conf.urls import url
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
 from django.forms import model_to_dict
 from tastypie import fields
 from tastypie.authentication import Authentication
@@ -12,7 +11,7 @@ from tastypie.resources import ModelResource
 from tastypie.validation import FormValidation
 
 from currency.forms.user import UserForm
-from currency.models import Entity
+from currency.models.extend_user import get_user_by_related
 
 
 class RegisterResource(ModelResource):
@@ -130,16 +129,7 @@ class UserResource(ModelResource):
 
     def obj_get(self, bundle, **kwargs):
         uuid = kwargs['pk']
-        instance = None
-        try:
-            instance = Entity.objects.get(id=uuid)
-        except Entity.DoesNotExist:
-            pass
-
-        if not instance:
-            raise ObjectDoesNotExist('Sorry, no results on that page.')
-        else:
-            return instance.user
+        return get_user_by_related(uuid)
 
     def dehydrate(self, bundle):
         user = bundle.obj

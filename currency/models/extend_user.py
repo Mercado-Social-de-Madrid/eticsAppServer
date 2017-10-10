@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 
 from currency.models import Entity, Person
 
@@ -16,8 +17,21 @@ def get_related_entity(self):
             person = Person.objects.get(user=self)
         except Person.DoesNotExist:
             person = None
-
         return ('person', person) if person else ('none', None)
+
+def get_user_by_related(uuid):
+    instance = None
+    try:
+        instance = Entity.objects.get(id=uuid)
+    except Entity.DoesNotExist:
+        try:
+            instance = Person.objects.get(id=uuid)
+        except Person.DoesNotExist:
+            instance = None
+    if not instance:
+        raise ObjectDoesNotExist('Sorry, no results on that page.')
+    else:
+        return instance.user
 
 UserModel = get_user_model()
 UserModel.add_to_class("get_related_entity", get_related_entity)
