@@ -22,11 +22,11 @@ class OffersManager(models.Manager):
 class Offer(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    entity = models.ForeignKey(Entity, null=False, blank=False)
+    entity = models.ForeignKey(Entity, null=False, blank=False, related_name='offers')
 
     title = models.CharField(null=True, blank=True, verbose_name='Nombre', max_length=250)
     description = models.TextField(null=True, blank=True, verbose_name='Descripción')
-    banner_image = ProcessedImageField(null=True, blank=True, upload_to=RandomFileName('entities/'),
+    banner_image = ProcessedImageField(null=True, blank=True, upload_to=RandomFileName('offers/'),
                                 verbose_name='Imagen principal',
                                 processors=[ResizeToFit(512, 512, upscale=False)], format='JPEG')
     banner_thumbnail = ImageSpecField(source='banner_image',
