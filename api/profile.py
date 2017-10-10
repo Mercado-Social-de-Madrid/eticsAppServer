@@ -3,7 +3,7 @@ from tastypie.authorization import Authorization
 from tastypie.exceptions import NotFound
 from tastypie.resources import ModelResource
 
-from currency.models import Wallet, Entity
+from currency.models import Wallet, Entity, Person
 
 
 class WalletResource(ModelResource):
@@ -58,6 +58,39 @@ class EntityResource(ModelResource):
             raise NotFound("User has no associated entity")
 
         return entity
+
+    def hydrate(self, bundle):
+        if bundle.request.user:
+            bundle.obj.user = bundle.request.user
+        return bundle
+
+
+class PersonResource(ModelResource):
+
+    class Meta:
+        queryset = Person.objects.all()
+        include_resource_uri = False
+        always_return_data = True
+        list_allowed_methods = ['get', 'put']
+        resource_name = 'person'
+        excludes = ['id']
+
+        authentication = ApiKeyAuthentication()  # Endpoint based on ApiKey auth
+        authorization = Authorization()
+
+    def dispatch_list(self, request, **kwargs):
+        return self.dispatch_detail(request, **kwargs)
+
+    def put_detail(self, request, **kwargs):
+        return self.patch_detail(request, **kwargs)
+
+    def obj_get(self, bundle, **kwargs):
+        try:
+            person = Person.objects.get(user=bundle.request.user)
+        except Person.DoesNotExist:
+            raise NotFound("User has no associated person")
+
+        return person
 
     def hydrate(self, bundle):
         if bundle.request.user:
