@@ -1,37 +1,15 @@
 from tastypie import fields
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
+from tastypie.constants import ALL
 from tastypie.resources import ModelResource
 
-from currency.models import Entity, Offer
-
-
-class EntitiesResource(ModelResource):
-    offers = fields.ToManyField('api.resources.OffersResource',
-                                attribute=lambda bundle: Offer.objects.current(),
-                                full=True, null=True)
-
-    class Meta:
-        queryset = Entity.objects.all()
-        include_resource_uri = False
-        list_allowed_methods = ['get', 'post']
-        resource_name = 'entities'
-        collection_name = 'entities'
-        excludes = ['user']
-
-        authentication = Authentication()
-        authorization = Authorization()
-
-    # Add thumbnail field
-    def dehydrate(self, bundle):
-        if bundle.obj.logo_thumbnail:
-            bundle.data['logo_thumbnail'] = bundle.obj.logo_thumbnail.url
-        return bundle
+from currency.models import Offer
 
 
 class OffersResource(ModelResource):
 
-    entity = fields.ForeignKey(EntitiesResource, 'entity', full=False, null=True)
+    entity = fields.ForeignKey('api.entities.EntitiesResource', 'entity', full=False, null=True)
 
     class Meta:
         queryset = Offer.objects.current()
@@ -40,10 +18,21 @@ class OffersResource(ModelResource):
         resource_name = 'offers'
         collection_name = 'offers'
         excludes = ['user']
+        filtering = {
+            'entity': ('exact',),
+        }
 
         authentication = Authentication()
         authorization = Authorization()
 
+
+    def build_filters(self, filters=None, **kwargs):
+        filters = {} if filters is None else filters
+        orm_filters = super(OffersResource, self).build_filters(filters)
+
+        if 'q' in filters:
+            orm_filters['title__contains'] = filters['q']
+        return orm_filters
 
     def dehydrate(self, bundle):
         # Add thumbnail field
