@@ -2,7 +2,7 @@ from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
 from tastypie.exceptions import NotFound
 from tastypie.resources import ModelResource
-
+from tastypie import fields
 from currency.models import Wallet, Entity, Person
 
 
@@ -66,6 +66,7 @@ class EntityResource(ModelResource):
 
 
 class PersonResource(ModelResource):
+    fav_entities = fields.ManyToManyField(EntityResource, 'fav_entities', full=False)
 
     class Meta:
         queryset = Person.objects.all()
@@ -91,6 +92,18 @@ class PersonResource(ModelResource):
             raise NotFound("User has no associated person")
 
         return person
+
+    def dehydrate(self, bundle):
+        # Add thumbnail field
+        if bundle.obj.profile_thumbnail:
+            bundle.data['profile_thumbnail'] = bundle.obj.profile_thumbnail.url
+
+        if bundle.data['fav_entities']:
+            for i, fav in enumerate(bundle.data['fav_entities']):
+                bundle.data['fav_entities'][i] = fav.split('/')[-2:][0]
+                # = fav.subst
+
+        return bundle
 
     def hydrate(self, bundle):
         if bundle.request.user:
