@@ -15,7 +15,8 @@ from currency.models.extend_user import get_user_by_related
 
 
 class RegisterResource(ModelResource):
-    entity = fields.ToOneField('api.resources.EntitiesResource', 'entity', null=True, full=True)
+    entity = fields.ToOneField('api.entities.EntitiesResource', 'entity', null=True, blank=True, full=True)
+    person = fields.ToOneField('api.persons.PersonsResource', 'person', null=True, blank=True, full=True)
 
     class Meta:
         queryset = User.objects.all()
@@ -31,9 +32,11 @@ class RegisterResource(ModelResource):
 
     def hydrate(self, bundle):
 
-        if ('email' in bundle.data and bundle.data.get('email') != '')\
-                and 'entity' in bundle.data and not ('email' in bundle.data['entity']):
-            bundle.data['entity']['email'] = bundle.data['email']
+        if 'email' in bundle.data and bundle.data.get('email') != '':
+            if 'entity' in bundle.data and not ('email' in bundle.data['entity']):
+                bundle.data['entity']['email'] = bundle.data['email']
+            elif 'person' in bundle.data and not ('email' in bundle.data['person']):
+                bundle.data['person']['email'] = bundle.data['email']
         return bundle
 
     def obj_create(self, bundle, request=None, **kwargs):
@@ -51,12 +54,39 @@ class RegisterResource(ModelResource):
 
     def dehydrate(self, bundle):
 
-        key = ApiKey.objects.get_or_create(user=bundle.obj)[0].key
-        bundle.data = { 'api_key': key }
-        if bundle.obj.entity:
-            bundle.data['entity'] = bundle.obj.entity.pk
+        user = bundle.obj
+        bundle.data = gen_userwallet_data(user, include_type=False)
+
+        print bundle.data
+
+        print user
+
         return bundle
 
+
+def gen_userwallet_data(user, include_type=True):
+
+    data = {}
+
+    user_type, instance = user.get_related_entity()
+    if include_type:
+        data['type'] = user_type
+    data['entity'] = model_to_dict(instance) if user_type is 'entity' else None
+    data['person'] = model_to_dict(instance) if user_type is 'person' else None
+    data['api_key'] = ApiKey.objects.get_or_create(user=user)[0].key
+
+    if (data['entity'] is not None) and 'user' in data['entity']:
+        data['entity']['id'] = instance.pk
+        del data['entity']['user']
+    if (data['person'] is not None) and 'user' in data['person']:
+        data['person']['id'] = instance.pk
+        del data['person']['user']
+
+        if data['person']['fav_entities']:
+            for i, fav in enumerate(data['person']['fav_entities']):
+                data['person']['fav_entities'][i] = fav.pk
+
+    return data
 
 
 class UserResource(ModelResource):
@@ -73,23 +103,6 @@ class UserResource(ModelResource):
             url(r"^logout/$", self.wrap_view('logout'), name='api_logout'),
         ]
 
-    def gen_userwallet_data(self, user):
-
-        data = {}
-
-        user_type, instance = user.get_related_entity()
-        data['type'] = user_type
-        data['entity'] = model_to_dict(instance) if user_type is 'entity' else None
-        data['person'] = model_to_dict(instance) if user_type is 'person' else None
-
-        if (data['entity'] is not None) and 'user' in data['entity']:
-            data['entity']['id'] = instance.pk
-            del data['entity']['user']
-        if (data['person'] is not None) and 'user' in data['person']:
-            data['person']['id'] = instance.pk
-            del data['person']['user']
-
-        return data
 
     def login(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
@@ -104,10 +117,8 @@ class UserResource(ModelResource):
         if user:
             if user.is_active:
                 login(request, user)
-                key = ApiKey.objects.get_or_create(user=user)[0].key
                 response = { 'success': True }
-                response['data'] = self.gen_userwallet_data(user)
-                response['data']['api_key'] = key
+                response['data'] = gen_userwallet_data(user)
                 return self.create_response(request, response)
             else:
                 return self.create_response(request, {

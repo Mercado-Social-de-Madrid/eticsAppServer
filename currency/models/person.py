@@ -31,7 +31,7 @@ class Person(models.Model):
                                        options={'quality': 70})
 
     registered = models.DateTimeField(auto_now_add=True)
-    fav_entities = models.ManyToManyField(Entity, null=True, blank=True, verbose_name="Favoritos")
+    fav_entities = models.ManyToManyField(Entity, blank=True, verbose_name="Favoritos")
 
     class Meta:
         verbose_name = 'Persona'
@@ -40,4 +40,4 @@ class Person(models.Model):
 
 
     def __unicode__(self):
-        return self.name + ' ' + self.surname
+        return self.user.username + ':' + self.name + ' ' + self.surname

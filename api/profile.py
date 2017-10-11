@@ -1,11 +1,8 @@
-from django.conf.urls import url
+from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
 from tastypie.exceptions import NotFound
-from tastypie.http import HttpAccepted
 from tastypie.resources import ModelResource
-from tastypie import fields
-from tastypie.utils import trailing_slash
 
 from currency.models import Wallet, Entity, Person
 
@@ -106,7 +103,6 @@ class PersonResource(ModelResource):
         if bundle.data['fav_entities']:
             for i, fav in enumerate(bundle.data['fav_entities']):
                 bundle.data['fav_entities'][i] = fav.split('/')[-2:][0]
-                # = fav.subst
 
         return bundle
 

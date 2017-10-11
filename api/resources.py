@@ -1,7 +1,6 @@
 from tastypie import fields
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
-from tastypie.constants import ALL
 from tastypie.resources import ModelResource
 
 from currency.models import Offer
