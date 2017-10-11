@@ -30,7 +30,7 @@ class OffersResource(ModelResource):
         orm_filters = super(OffersResource, self).build_filters(filters)
 
         if 'q' in filters:
-            orm_filters['title__contains'] = filters['q']
+            orm_filters['title__icontains'] = filters['q']
         return orm_filters
 
     def dehydrate(self, bundle):

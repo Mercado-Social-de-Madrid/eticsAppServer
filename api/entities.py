@@ -1,19 +1,25 @@
 from django.conf.urls import url
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.db.models import Q
 from tastypie import fields
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
+from tastypie.constants import ALL
 from tastypie.http import HttpGone, HttpMultipleChoices
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 
+from api.categories import CategoriesResource
 from api.resources import OffersResource
 from currency.models import Entity, Offer
+
 
 class EntitiesResource(ModelResource):
     offers = fields.ToManyField(OffersResource,
                                 attribute=lambda bundle: Offer.objects.current().filter(entity=bundle.obj),
                                 full=True, null=True)
+
+    categories = fields.ToManyField(CategoriesResource, 'categories', full=False, null=True)
 
     class Meta:
         queryset = Entity.objects.all()
@@ -23,6 +29,10 @@ class EntitiesResource(ModelResource):
         collection_name = 'entities'
         excludes = ['user']
 
+        filtering = {
+            'categories': ALL,
+        }
+
         authentication = Authentication()
         authorization = Authorization()
 
@@ -30,8 +40,30 @@ class EntitiesResource(ModelResource):
     def dehydrate(self, bundle):
         if bundle.obj.logo_thumbnail:
             bundle.data['logo_thumbnail'] = bundle.obj.logo_thumbnail.url
+
+        if bundle.data['categories']:
+            for i, cat in enumerate(bundle.data['categories']):
+                bundle.data['categories'][i] = cat.split('/')[-2:][0]
+
         return bundle
 
+
+    def apply_filters(self, request, applicable_filters):
+        base_object_list = super(EntitiesResource, self).apply_filters(request, applicable_filters)
+        query = request.GET.get('q', None)
+        filters = {}
+        if query:
+            qset = (
+                Q(name__icontains=query, **filters) |
+                Q(short_description__icontains=query, **filters) |
+                Q(description__icontains=query, **filters) |
+                Q(address__icontains=query, **filters)
+            )
+            base_object_list = base_object_list.filter(qset).distinct()
+        return base_object_list.filter(**filters).distinct()
+
+
+    # Part related with the child /offers resource
     def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/offers%s$" % (self._meta.resource_name, trailing_slash()),
@@ -39,6 +71,11 @@ class EntitiesResource(ModelResource):
         ]
 
     def get_offers(self, request, **kwargs):
+
+        self.method_check(request, allowed=['get'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
         try:
             bundle = self.build_bundle(data={'pk': kwargs['pk']}, request=request)
             obj = self.cached_obj_get(bundle=bundle, **self.remove_api_resource_names(kwargs))
