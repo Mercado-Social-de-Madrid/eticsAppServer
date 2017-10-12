@@ -146,6 +146,6 @@ class UserResource(ModelResource):
 
     def dehydrate(self, bundle):
         user = bundle.obj
-        bundle.data = self.gen_userwallet_data(user)
+        bundle.data = gen_userwallet_data(user)
 
         return bundle
