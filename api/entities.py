@@ -11,8 +11,8 @@ from tastypie.utils import trailing_slash
 
 from api.categories import CategoriesResource
 from api.resources import OffersResource
-from currency.models import Entity, Offer
-
+from currency.models import Entity
+from offers.models import Offer
 
 class EntitiesResource(ModelResource):
     offers = fields.ToManyField(OffersResource,

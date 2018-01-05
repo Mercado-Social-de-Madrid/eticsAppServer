@@ -1,6 +1,6 @@
+
 from category import Category
 from entity import Entity
-from wallet import Wallet
-from offer import Offer
 from person import Person
+from wallet import Wallet
 import extend_user
