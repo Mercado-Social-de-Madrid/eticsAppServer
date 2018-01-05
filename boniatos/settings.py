@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'currency.apps.CurrencyConfig',
+    'currency',
     'tastypie',
     'imagekit',
     'django.contrib.admin',
@@ -58,7 +58,7 @@ ROOT_URLCONF = 'boniatos.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ os.path.join(BASE_DIR, 'templates') ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
