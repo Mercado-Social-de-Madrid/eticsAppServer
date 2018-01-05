@@ -5,6 +5,8 @@ import uuid
 
 from django.db import models
 
+from wallets.models import Wallet
+
 STATUS_PROCESSED = 'processed'
 STATUS_CANCELLED = 'cancelled'
 STATUS_PENDING = 'pending'
@@ -17,8 +19,8 @@ TRANSACTION_STATUS = (
 
 class Transaction(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    wallet_from = models.ForeignKey('currency.Wallet', blank=True, null=True, related_name='transactions_from')
-    wallet_to = models.ForeignKey('currency.Wallet', related_name='transactions_to')
+    wallet_from = models.ForeignKey(Wallet, blank=True, null=True, related_name='transactions_from')
+    wallet_to = models.ForeignKey(Wallet, related_name='transactions_to')
     amount = models.FloatField(default=0, verbose_name='Cantidad')
     concept = models.TextField(blank=True, null=True, verbose_name='Concepto')
     timestamp = models.DateTimeField(auto_now_add=True, verbose_name='Timestamp')

@@ -4,7 +4,8 @@ from tastypie.authorization import Authorization
 from tastypie.exceptions import NotFound
 from tastypie.resources import ModelResource
 
-from currency.models import Wallet, Entity, Person
+from currency.models import Entity, Person
+from wallets.models import Wallet
 
 
 class WalletResource(ModelResource):

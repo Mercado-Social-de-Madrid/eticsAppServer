@@ -8,8 +8,6 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from currency.models.transaction import STATUS_PENDING, Transaction
-
 
 class Wallet(models.Model):
 
@@ -41,6 +39,7 @@ class Wallet(models.Model):
             elif wallet_from:
                 concept = "Trans"
 
+        from wallets.models.transaction import STATUS_PENDING, Transaction
 
         return Transaction.objects.create(wallet_from=wallet_from, wallet_to=wallet_to,
                                           status=STATUS_PENDING, **kwargs)
