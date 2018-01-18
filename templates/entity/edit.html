@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}{% if is_new %}Nuevo espacio{% else %}Conciertos en {{venue.name}}{% endif %}{% endblock%}
+
+{% block bodyattrs %}class="venue"{% endblock%}
+
+{% block content %}
+<form method="POST" class="post-form" enctype="multipart/form-data">
+    {% csrf_token %}
+
+
+<div class="container">
+    <h1 id="venue-name">{{entity.name}}{% if is_new %} Nuevo espacio {%endif%}</h1>
+        <p class="description">{{entity.address}}</p>
+
+    <hr>
+    {{form.form_errors}}
+    <div class="panel">
+        <i class="fa fa-info panel-icon" aria-hidden="true"></i>
+        <div class="size-check visible-md-block visible-lg-block"></div>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="description">
+                    <div class="form-group" data-links="#venue-name">
+                        <label>Nombre</label>
+                        {{ form.name }}
+                    </div>
+
+                    <div class="form-group" data-links="#venue-address">
+                        <label>Dirección</label>
+                        {{ form.address }}
+                        <small style="color: grey">Introduce únicamente la dirección y número de la calle (ej.: "C/ Libreros, 1"), sin incluir el código postal o que es en Alcalá (sólo aparecerán espacios de Alcalá, no es necesario)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        {{ form.description }}
+                    </div>
+
+                    <div class="social-links">
+                        <div class="form-group">
+                        <div class="input-group">
+                          <span class="input-group-addon" data-toggle="tooltip" data-placement="bottom" title="Página de Facebook"><i class="fa fa-facebook " aria-hidden="true"></i></span>
+                          {{form.facebook_link}}
+                        </div>
+                        </div>
+
+                        <div class="form-group">
+                        <div class="input-group">
+                          <span class="input-group-addon" data-toggle="tooltip" data-placement="bottom" title="Perfil de Twitter"><i class="fa fa-twitter " aria-hidden="true"></i></span>
+                          {{form.twitter_link}}
+                        </div></div>
+
+                        <div class="form-group">
+                        <div class="input-group">
+                          <span data-toggle="tooltip" data-placement="bottom" title="Página web" class="input-group-addon" ><i class="fa fa-globe " aria-hidden="true"></i></span>
+                          {{form.webpage_link}}
+                        </div></div>
+
+                        <div class="form-group">
+                        <div class="input-group">
+                          <span data-toggle="tooltip" data-placement="bottom" title="Página web" class="input-group-addon" ><i class="fa fa-globe " aria-hidden="true"></i></span>
+                          {{form.telegram_link}}
+                        </div></div>
+
+                        <div class="form-group">
+                        <div class="input-group">
+                          <span data-toggle="tooltip" data-placement="bottom" title="Página web" class="input-group-addon" ><i class="fa fa-globe " aria-hidden="true"></i></span>
+                          {{form.instagram_link}}
+                        </div></div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div id="map" class="map no-resize loading-container">
+                    <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
+                    <span class="sr-only">Loading...</span>
+                </div>
+
+                <div class="description">
+                        <h4 class="text-center"><i class="fa fa-map-marker fa-2x" aria-hidden="true"></i> Geolocalización</h4>
+                        <p class="text-center">Mueve el pin por el mapa hasta posicionarlo en la localización correcta. Puedes hacer zoom con los controles</p>
+                        <div class="form-group">
+                            <label>Latitud</label>
+                            {{ form.latitude }}
+                            {% if form.latitude.errors %} <div class="alert alert-danger"> {{form.latitude.errors}}</div> {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label>Longitud</label>
+                            {{ form.longitude }}
+                            {% if form.longitude.errors %} <div class="alert alert-danger"> {{form.longitude.errors}}</div> {% endif %}
+                        </div>
+                </div>
+                <div class="description text-center">
+                    <button type="submit" class="right-margin left-margin btn btn-primary btn-lg">{% if is_new %} Crear espacio {% else %} Guardar {% endif %}</button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+{% include 'common/include_gmaps.html' %}
+<script>
+  function initMap() {
+{% if entity %}
+    var entityPosition = new google.maps.LatLng({{ entity.latitude|unlocalize }}, {{ entity.longitude|unlocalize }});
+{% else %}
+    var entityPosition = new google.maps.LatLng({% settings_value "INITIAL_LATITUDE"|unlocalize %}, {% settings_value "INITIAL_LONGITUDE"|unlocalize %});
+{% endif %}
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 16,
+        center: entityPosition,
+        zoomControl: true,
+        scaleControl: true,
+        streetViewControl: false,
+        mapTypeControl:false
+    });
+
+    $('#map').removeClass('loading-container');
+
+    var marker = new RichMarker({
+      position: entityPosition,
+      map: map,
+      draggable:true,
+      content: '<div class="marker-wrapper"><div class="marker"><img src="' + '{%if venue.profile_image %}{{venue.profile_thumbnail.url}}{%else%}{% static "img/venue-icon.png" %}{%endif%}' + '"></div></div>'
+    });
+
+    var latInput = $('[name="latitude"]');
+    var lngInput = $('[name="longitude"]');
+
+    google.maps.event.addListener(
+        marker,
+        'drag',
+        function() {
+            latInput.val( marker.position.lat() );
+            lngInput.val( marker.position.lng() );
+        }
+    );
+  }
+
+</script>
+
+{% endblock %}

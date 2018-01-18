@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<div class="jumbo-header jumbo-band minimal" >
+    <div class="jumbotron">
+        <div class="container text-center">
+            <h1>Entrar</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container card main" style="max-width:500px;">
+  <form method="post" class="edit-form" >
+    {% csrf_token %}
+        <div class="form-group">
+            <label>Nombre de usuario</label>
+            {{form.username}}
+        </div>
+
+      <div class="form-group">
+          <label>Contraseña</label>
+            {{form.password}}
+        </div>
+        <p class="text-right form-group">
+          ¿Olvidaste tu contraseña?
+      </p>
+      <p class="text-center">
+          <button type="submit" class="btn btn-primary btn-lg">Entrar</button>
+      </p>
+
+      <hr>
+
+  </form>
+</div>
+{% endblock %}
