@@ -17,7 +17,7 @@ class PhotoGalleryForm(forms.ModelForm):
     def getGalleryFormset(gallery=None):
 
         extra_forms = 1 if (gallery is None or gallery.photos.count() == 0) else 0
-        return formset_factory(PhotoGalleryForm, extra=1, can_delete=True )
+        return formset_factory(PhotoGalleryForm, extra=extra_forms, can_delete=True )
 
     @staticmethod
     def get_initial(gallery=None):

@@ -30,13 +30,13 @@ h1, h2, h3{
     margin-top:-18px;
 }
 
-.file-field .btn{
-    float: left;
-    height: 60px;
-    width: 60px;
-    line-height: 50px;
-    position:relative;
-    cursor:pointer;
+.file-field .form-photo .thumb{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background-size:cover;
+    background-position:center;
+
 }
 
 .file-field input[type=file] {

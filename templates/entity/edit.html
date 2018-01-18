@@ -121,7 +121,7 @@
                                 {{ gallery_form.DELETE }}
                             {% endif %}
                                 <div class="form-photo">
-                                    <img src="{{gallery_form.image.value.url}}">
+                                    <div class="thumb" style="background-image:url('{{gallery_form.image.value.url}}');"></div>
                                     {{ gallery_form.image }}
                                 </div>
                             {{ gallery_form.order.as_hidden }}
@@ -196,7 +196,8 @@
     $('.gallery-form-photo').formset({
         prefix: '{{ gallery_formset.prefix }}',
         addText: '<i class="material-icons">add</i></div>',
-        deleteText: '<i class="material-icons close">cancel</i>'
+        deleteText: '<i class="material-icons close">cancel</i>',
+        added: function(row){ console.log(row); row.find('.thumb').css('background-image',''); }
     });
 
   function initMap() {
