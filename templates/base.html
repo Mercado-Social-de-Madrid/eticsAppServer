@@ -1,71 +1,56 @@
 <!DOCTYPE html>
 {% load staticfiles %}
 {% load settings_value %}
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>{% block title %}Música{% endblock title%} | {% settings_value "MAIN_PAGE_TITLE" %}</title>
-        <meta name="description" content="Alcalá de Henares se convierte durante 3 días en un enorme festival de música: conciertos al aire libre, de cualquier género musical y en diversos escenarios distribuidos por todo el Casco Histórico"/>
-        <meta name="google-site-verification" content="N7Xgc8GUS6zcXmex86G3kav1P0osE_GGLKnpcxYv2qI" />
+<html lang="es">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="initial-scale=1, shrink-to-fit=no, width=device-width" name="viewport">
+    <title>{% block title %}Boniatos{% endblock title%}</title>
 
-        <meta name="twitter:site" content="@aemusica">
-        {% block social_meta %}
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="Alcalá Suena - Fiesta de la Música 2017">
-        <meta name="twitter:description" content="Alcalá se convierte durante 3 días en un enorme festival de música: conciertos al aire libre, de cualquier género musical y en diversos escenarios distribuidos por todo el Casco Histórico de Alcalá, Patrimonio de la Humanidad">
-        <meta name="twitter:image" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% static "img/logo_banner.jpg" %}">
+    <!-- CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+    <!-- Add Material CSS, replace Bootstrap CSS -->
+    <link href="{% static "css/material.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/styles.css" %}" rel="stylesheet" >
+    {% block extra_styles %}{% endblock extra_styles %}
+  </head>
+  <body>
 
-        <meta property="og:url" content="{{request.build_absolute_uri}}" />
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content="Alcalá Suena - Fiesta de la Música 2017" />
-        <meta property="og:description" content="Alcalá se convierte durante 3 días en un enorme festival de música: conciertos al aire libre, de cualquier género musical y en diversos escenarios distribuidos por todo el Casco Histórico de Alcalá, Patrimonio de la Humanidad" />
-        <meta property="og:image" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% static "img/logo_banner.jpg" %}" />
-        {% endblock %}
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css?family=Oswald:400,600" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-        <link href="{% static "css/styles.css" %}?v=13" rel="stylesheet"/>
-        {% block extra_styles %}{% endblock extra_styles %}
-    </head>
+   <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+     <div class="container">
+      <a class="navbar-brand" href="#">Boniatos</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Disabled</a>
+          </li>
+        </ul>
+      </div>
+     </div>
+</nav>
 
-    <body {% block bodyattrs %}{% endblock%}>
-        <nav class="navbar navbar-default navbar-fixed-top">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="{% url 'index' %}"><img class="img-responsive" src="{% static "img/alcalaesmusica-mini.png" %}"></a>
-                <span class="navbar-brand-text hidden-sm hidden-md hidden-lg">Alcalá<span class="secondary-color">Es</span>Música</span>
-            </div>
-
-              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                  <ul class="nav navbar-nav">
-
-                  </ul>
-              </div>
-          </div>
-        </nav>
-
-
-
-        {% block content %}{% endblock content %}
-
-        <footer>
-    <div class="container">
-
-
-    </div>
-</footer>
-
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-    </body>
+    {% block content %}{% endblock content %}
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <!-- Then Material JavaScript on top of Bootstrap JavaScript -->
+    <script src="{% static "js/material.min.js" %}"></script>
+   <script src="{% static "js/common.js" %}"></script>
+    {% block scripts %}{% endblock scripts %}
+  </body>
 </html>
+
