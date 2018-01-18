@@ -8,7 +8,7 @@
 {% block bodyattrs %}class="venue"{% endblock%}
 
 {% block content %}
-<form method="POST" class="post-form" enctype="multipart/form-data">
+<form method="POST" class="post-form gallery-form" enctype="multipart/form-data">
     {% csrf_token %}
 
 
@@ -32,12 +32,36 @@
                     <div class="form-group" data-links="#venue-address">
                         <label>Dirección</label>
                         {{ form.address }}
-                        <small style="color: grey">Introduce únicamente la dirección y número de la calle (ej.: "C/ Libreros, 1"), sin incluir el código postal o que es en Alcalá (sólo aparecerán espacios de Alcalá, no es necesario)</small>
+                        <small style="color: grey">Introduce únicamente la dirección y número de la calle (ej.: "C/ Libreros, 1")</small>
                     </div>
 
                     <div class="form-group">
                         <label>Descripción</label>
                         {{ form.description }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Máximo pago en boniatos</label>
+                                {{ form.max_percent_payment }}
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Porcentaje de bonificación</label>
+                                {{ form.bonification_percent }}
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                        <label>Número de trabajadores</label>
+                        {{ form.num_workers }}
                     </div>
 
                     <div class="social-links">
@@ -95,6 +119,21 @@
                             {% if form.longitude.errors %} <div class="alert alert-danger"> {{form.longitude.errors}}</div> {% endif %}
                         </div>
                 </div>
+
+                <h3>Galería</h3>
+                {{ gallery_formset.management_form }}
+                {% for gallery_form in gallery_formset %}
+                    <div class="gallery-form-photo">
+                     {% if gallery_formset.can_delete %}
+                        {{ gallery_form.DELETE }}
+                    {% endif %}
+                    {{ gallery_form.order.as_hidden }}
+                    {{ gallery_form.image }}
+                    {{ gallery_form.title.as_hidden }}
+                        <hr>
+                        </div>
+
+                {% endfor %}
                 <div class="description text-center">
                     <button type="submit" class="right-margin left-margin btn btn-primary btn-lg">{% if is_new %} Crear espacio {% else %} Guardar {% endif %}</button>
                 </div>
@@ -111,8 +150,16 @@
 {% endblock %}
 
 {% block scripts %}
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
 {% include 'common/include_gmaps.html' %}
-<script>
+<script type="text/javascript">
+
+    $('.gallery-form-photo').formset({
+        prefix: '{{ gallery_formset.prefix }}',
+        addText: '<i class="material-icons">add</i></div>',
+        deleteText: '<i class="material-icons close">cancel</i>'
+    });
+
   function initMap() {
 {% if entity %}
     var entityPosition = new google.maps.LatLng({{ entity.latitude|unlocalize }}, {{ entity.longitude|unlocalize }});

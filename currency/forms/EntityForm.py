@@ -13,12 +13,15 @@ class EntityForm(forms.ModelForm):
 
     class Meta:
         model = Entity
-        exclude = ['owner']
+        exclude = ['owner','email','user']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'latitude': forms.NumberInput(attrs={'class': 'form-control', 'readonly':True}),
             'longitude': forms.NumberInput(attrs={'class': 'form-control', 'readonly':True}),
+            'max_percent_payment': forms.NumberInput(attrs={'class': 'form-control'}),
+            'bonification_percent': forms.NumberInput(attrs={'class': 'form-control'}),
+            'num_workers': forms.NumberInput(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
             'facebook_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Página de Facebook'}),
             'twitter_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Perfil de Twitter'}),
