@@ -52,7 +52,7 @@ class Entity(models.Model):
     telegram_link = models.CharField(null=True, blank=True, verbose_name='Canal de Telegram', max_length=250)
     instagram_link = models.CharField(null=True, blank=True, verbose_name='Perfil de Instagram', max_length=250)
 
-    gallery = models.OneToOneField(Gallery, null=True)
+    gallery = models.OneToOneField(Gallery, blank=True, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Entidad'

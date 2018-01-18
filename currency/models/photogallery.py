@@ -21,13 +21,13 @@ class Gallery(models.Model):
 
 class GalleryPhoto(models.Model):
 
-    gallery = models.ForeignKey(Gallery, null=True)
+    gallery = models.ForeignKey(Gallery, null=True, related_name='photos')
     order = models.IntegerField(verbose_name='Orden', default=0)
     title = models.CharField(null=True, blank=True, verbose_name='Título', max_length=250)
     image = ProcessedImageField(null=True, blank=True, upload_to=RandomFileName('photos/'),
                                 processors=[ResizeToFit(512, 512, upscale=False)], format='JPEG')
 
-    image_thumbnail = ImageSpecField(source='profile_image',
+    image_thumbnail = ImageSpecField(source='image',
                                        processors=[ResizeToFill(150, 150, upscale=False)],
                                        format='JPEG',
                                        options={'quality': 70})
