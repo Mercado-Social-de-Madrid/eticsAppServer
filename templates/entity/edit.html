@@ -18,53 +18,128 @@
 
     <hr>
     {{form.form_errors}}
-    <div class="panel">
-        <i class="fa fa-info panel-icon" aria-hidden="true"></i>
+    <div class="card-deck">
         <div class="size-check visible-md-block visible-lg-block"></div>
         <div class="row">
             <div class="col-md-7">
-                <div class="description">
-                    <div class="form-group" data-links="#venue-name">
-                        <label>Nombre</label>
-                        {{ form.name }}
-                    </div>
-
-                    <div class="form-group" data-links="#venue-address">
-                        <label>Dirección</label>
-                        {{ form.address }}
-                        <small style="color: grey">Introduce únicamente la dirección y número de la calle (ej.: "C/ Libreros, 1")</small>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Descripción</label>
-                        {{ form.description }}
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Máximo pago en boniatos</label>
-                                {{ form.max_percent_payment }}
-                            </div>
+                <div class="card mb-4 px-1">
+                    <div class="card-body">
+                    <h4 class="card-title"><i class="material-icons">info</i> Información general</h4>
+                    <div class="description">
+                        <div class="form-group" data-links="#venue-name">
+                            <label>Nombre</label>
+                            {{ form.name }}
                         </div>
 
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Porcentaje de bonificación</label>
-                                {{ form.bonification_percent }}
+                        <div class="form-group" data-links="#venue-address">
+                            <label>Dirección</label>
+                            {{ form.address }}
+                            <small style="color: grey">Introduce únicamente la dirección y número de la calle (ej.: "C/ Libreros, 1")</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descripción</label>
+                            {{ form.description }}
+                        </div>
+
+                        <div class="form-group">
+                            <label>Número de trabajadores</label>
+                            {{ form.num_workers }}
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="card mb-4 ">
+                <div id="map" class="map no-resize loading-container">
+                    <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
+                    <span class="sr-only">Loading...</span>
+                </div>
+
+                <div class="card-body px-3">
+                        <h4 class="card-title"><i class="material-icons">edit_location</i> Geolocalización</h4>
+                        <p class="card-text">Mueve el pin por el mapa hasta posicionarlo en la localización correcta.</p>
+                        <div class="form-group">
+                            <label>Latitud</label>
+                            {{ form.latitude }}
+                            {% if form.latitude.errors %} <div class="alert alert-danger"> {{form.latitude.errors}}</div> {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label>Longitud</label>
+                            {{ form.longitude }}
+                            {% if form.longitude.errors %} <div class="alert alert-danger"> {{form.longitude.errors}}</div> {% endif %}
+                        </div>
+                </div>
+
+                <div class="card-footer">
+                  <small class="text-muted">Puedes hacer zoom en los controles del mapa para ajustar al máximo la posición, o entrar en la vista de pantalla completa.</small>
+                </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-5">
+                <div class="card mb-4 ">
+                    <div class="card-body">
+                        <div class="card-title"><i class="material-icons">monetization_on</i> Moneda social</div>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-11">
+                                <div class="form-group">
+                                    <label>Máximo pago en boniatos</label>
+                                    <div class="input-group">
+                                            {{ form.max_percent_payment }}
+                                            <span class="input-group-addon"><i class="fa fa-percent" aria-hidden="true"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-md-11">
+                                <div class="form-group">
+                                    <label>Porcentaje de bonificación</label>
+                                    <div class="input-group">
+                                        {{ form.bonification_percent }}
+                                        <span class="input-group-addon"><i class="fa fa-percent" aria-hidden="true"></i></span>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
+            <div class="col-md-7">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="card-title"><i class="material-icons">photo_library</i> Galería </div>
+                        {{ gallery_formset.management_form }}
+                        {% for gallery_form in gallery_formset %}
+                            <div class="gallery-form-photo file-field">
+                             {% if gallery_formset.can_delete %}
+                                {{ gallery_form.DELETE }}
+                            {% endif %}
+                                <div class="form-photo">
+                                    <img src="{{gallery_form.image.value.url}}">
+                                    {{ gallery_form.image }}
+                                </div>
+                            {{ gallery_form.order.as_hidden }}
 
+                            {{ gallery_form.title.as_hidden }}
+                                </div>
 
-
-                    <div class="form-group">
-                        <label>Número de trabajadores</label>
-                        {{ form.num_workers }}
+                        {% endfor %}
                     </div>
+                </div>
 
-                    <div class="social-links">
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="social-links card-body pr-5">
+                        <div class="card-title"><i class="material-icons">photo_library</i> Redes sociales</div>
                         <div class="form-group">
                         <div class="input-group">
                           <span class="input-group-addon" data-toggle="tooltip" data-placement="bottom" title="Página de Facebook"><i class="fa fa-facebook " aria-hidden="true"></i></span>
@@ -99,51 +174,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-5">
-                <div id="map" class="map no-resize loading-container">
-                    <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
-                    <span class="sr-only">Loading...</span>
-                </div>
 
-                <div class="description">
-                        <h4 class="text-center"><i class="fa fa-map-marker fa-2x" aria-hidden="true"></i> Geolocalización</h4>
-                        <p class="text-center">Mueve el pin por el mapa hasta posicionarlo en la localización correcta. Puedes hacer zoom con los controles</p>
-                        <div class="form-group">
-                            <label>Latitud</label>
-                            {{ form.latitude }}
-                            {% if form.latitude.errors %} <div class="alert alert-danger"> {{form.latitude.errors}}</div> {% endif %}
-                        </div>
-                        <div class="form-group">
-                            <label>Longitud</label>
-                            {{ form.longitude }}
-                            {% if form.longitude.errors %} <div class="alert alert-danger"> {{form.longitude.errors}}</div> {% endif %}
-                        </div>
-                </div>
-
-                <h3>Galería</h3>
-                {{ gallery_formset.management_form }}
-                {% for gallery_form in gallery_formset %}
-                    <div class="gallery-form-photo">
-                     {% if gallery_formset.can_delete %}
-                        {{ gallery_form.DELETE }}
-                    {% endif %}
-                    {{ gallery_form.order.as_hidden }}
-                    {{ gallery_form.image }}
-                    {{ gallery_form.title.as_hidden }}
-                        <hr>
-                        </div>
-
-                {% endfor %}
-                <div class="description text-center">
-                    <button type="submit" class="right-margin left-margin btn btn-primary btn-lg">{% if is_new %} Crear espacio {% else %} Guardar {% endif %}</button>
-                </div>
-
-            </div>
-        </div>
+       </div>
+    </div>
 
     </div>
 
-
+    <div class="description text-center">
+                    <button type="submit" class="right-margin left-margin btn btn-primary btn-lg">{% if is_new %} Crear espacio {% else %} Guardar {% endif %}</button>
+                </div>
 
 </div>
 </form>

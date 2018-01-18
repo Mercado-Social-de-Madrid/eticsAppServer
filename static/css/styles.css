@@ -4,6 +4,52 @@
     min-height:280px;
 }
 
-h1, h2, h3, h4{
+h1, h2, h3{
     font-family: 'Comfortaa', cursive;
 }
+.gallery-form-photo, .add-row{
+    float: left;
+    margin-right:14px;
+    margin-bottom:14px;
+    text-align:center;
+    vertical-align:top;
+    width: 120px;
+    height:120px;
+    overflow:hidden;
+    background-color:#ddd;
+    position:relative;
+}
+
+.gallery-form-photo i, .add-row i{
+    font-size:45px;
+    position:absolute;
+    width:100%;
+    text-align:center;
+    left:0;
+    top:50%;
+    margin-top:-18px;
+}
+
+.file-field .btn{
+    float: left;
+    height: 60px;
+    width: 60px;
+    line-height: 50px;
+    position:relative;
+    cursor:pointer;
+}
+
+.file-field input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+}
+.file-field input[type=file]:hover{ cursor:pointer;}

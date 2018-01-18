@@ -9,6 +9,9 @@ class PhotoGalleryForm(forms.ModelForm):
     class Meta:
         model = GalleryPhoto
         fields = ['order', 'image', 'title']
+        widgets = {
+            'image': forms.FileInput(attrs={}),
+        }
 
     @staticmethod
     def getGalleryFormset(gallery=None):
