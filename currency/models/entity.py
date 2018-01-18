@@ -10,7 +10,7 @@ from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, ResizeToFill
 
 from currency.helpers import RandomFileName
-from currency.models import Category
+from currency.models import Category, Gallery
 
 
 class Entity(models.Model):
@@ -52,6 +52,7 @@ class Entity(models.Model):
     telegram_link = models.CharField(null=True, blank=True, verbose_name='Canal de Telegram', max_length=250)
     instagram_link = models.CharField(null=True, blank=True, verbose_name='Perfil de Instagram', max_length=250)
 
+    gallery = models.OneToOneField(Gallery, null=True)
 
     class Meta:
         verbose_name = 'Entidad'
