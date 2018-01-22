@@ -93,3 +93,35 @@ h1, h2, h3, .primary-title{
     background-size:cover;
     background-repeat:no-repeat;
 }
+
+.card .card-top-img{
+    height:140px;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-position:center;
+}
+.card > .btn-float{
+    position:absolute;
+    bottom:-1.5rem;
+    right:1rem;
+
+}
+
+.figure .number{
+    display: inline-block;
+    font-size:3rem;
+    font-family: 'Comfortaa', cursive;
+    margin-top:-1rem;
+    color:#555;
+    vertical-align:bottom;
+    padding-right:12px;
+}
+.figure .label{
+    position:relative;
+    top:-1rem;
+    display:inline-block;
+    vertical-align:bottom;
+    line-height:1.3rem;
+    color:#555;
+    font-size:1.2rem;
+}
