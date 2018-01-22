@@ -125,3 +125,41 @@ h1, h2, h3, .primary-title{
     color:#555;
     font-size:1.2rem;
 }
+
+.marker-wrapper{
+    position:absolute;
+}
+.marker-wrapper:before{
+    width: 0;
+    height: 0;
+    content:'';
+    border-color: inherit;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 14px solid;
+    position:absolute;
+    top:-10px;
+    left:-9px;
+    z-index:5;
+
+}
+.marker{
+    height:50px;
+    width:50px;
+    border:2px solid #912991;
+    border-color:inherit;
+    border-radius:100%;
+    position:absolute;
+    overflow:hidden;
+    text-align:center;
+    background-color:#ddd;
+    margin-left:-25px;
+    margin-top:-62px;
+    box-shadow: 0 3px 4px rgba(0,0,0,0.4);
+}
+.marker img{
+    display: inline;
+    margin: 0 auto;
+    height: 100%;
+    width: auto;
+}
