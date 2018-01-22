@@ -3,5 +3,52 @@
 {% block title %}Boniatos-server{% endblock%}
 
 {% block content %}
-Hola, {{user}}!
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="card-title primary-title"><h3>Saldo</h3></div>
+                    <div class="figure">
+                        <span class="number">25,21</span>
+                        <span class="label">boniatos</span>
+                    </div>
+                </div>
+
+                 <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action" href="#"><i class="material-icons">chevron_right</i> Consultar movimientos</a>
+                    <a class="list-group-item list-group-item-action" href="#"><i class="material-icons">chevron_right</i> Nueva transferencia</a>
+                     <a class="list-group-item list-group-item-action" href="#"><i class="material-icons">chevron_right</i> Obtener boniatos</a>
+                  </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="card-title primary-title"><h3>Ofertas</h3></div>
+                    <div class="figure">
+                        <span class="number">0</span>
+                        <span class="label">ofertas activas</span>
+                    </div>
+                </div>
+
+                 <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action" href="#"><i class="material-icons">chevron_right</i> Publicar nueva oferta</a>
+                    <a class="list-group-item list-group-item-action" href="#"><i class="material-icons">chevron_right</i> Ver ofertas publicadas</a>
+                  </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="card-title primary-title"><h3>Mi entidad</h3></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
