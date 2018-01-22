@@ -7,6 +7,9 @@
 h1, h2, h3{
     font-family: 'Comfortaa', cursive;
 }
+#main-content{
+    padding: 2em 0;
+}
 .gallery-form-photo, .add-row{
     float: left;
     margin-right:14px;
@@ -53,3 +56,23 @@ h1, h2, h3{
     opacity: 0;
 }
 .file-field input[type=file]:hover{ cursor:pointer;}
+#top-bar{
+    background-color:#A7CE05;
+}
+#menu-nav{
+    background-color:#C6E504 ;
+}
+#menu-nav .nav-tabs{
+    width:100%;
+}
+
+
+.ic
+{ display: inline-block; background: url('icons.png') no-repeat; overflow: hidden; text-indent: -9999px; text-align: left; width: 24px; height: 24px;     vertical-align: middle;
+    top: -2px;
+    left: -2px;
+    position: relative;}
+.ic.ic-entity { background-position: -3px -0px;  }
+.ic.ic-home { background-position: -30px -0px; }
+.ic.ic-news { background-position: -3px -27px;  }
+.ic.ic-wallet { background-position: -30px -27px; }

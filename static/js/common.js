@@ -1,4 +1,7 @@
 $(function(){
+
+    var menu = $('#navbar-menu');
+
     $('[data-toggle="tooltip"]').tooltip();
 
     $('.gallery-form').on('submit', function(event ){
