@@ -7,6 +7,8 @@ body{ background-color:#fafafa; }
 h1, h2, h3, .primary-title{
     font-family: 'Comfortaa', cursive;
 }
+.dropdown-menu-right { right: 0; left: auto; }
+
 .primary-title{ color:#912991; }
 #main-content{
     padding: 2em 0;
