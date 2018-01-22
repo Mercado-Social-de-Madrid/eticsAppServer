@@ -54,6 +54,17 @@ class Entity(models.Model):
 
     gallery = models.OneToOneField(Gallery, blank=True, null=True, on_delete=models.SET_NULL)
 
+    @property
+    def first_photo_url(self):
+        print self.gallery
+        print self.gallery.photos.all()
+        if self.gallery and self.gallery.photos.count() > 0:
+            image = self.gallery.photos.all().first()
+            if image:
+                return image.image.url
+        return None
+
+
     class Meta:
         verbose_name = 'Entidad'
         verbose_name_plural = 'Entidades'

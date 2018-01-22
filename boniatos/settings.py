@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'currency',
     'tastypie',
     'imagekit',
-    'django_cleanup',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
