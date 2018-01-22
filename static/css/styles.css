@@ -1,3 +1,4 @@
+html,body{ min-height:100%; }
 .map{
     width:100%;
     background:#ddd;
@@ -75,15 +76,20 @@ h1, h2, h3, .primary-title{
 }
 .nav-tabs .nav-link::before{ background-color:#912991; }
 
-
-
+.jumbo-header{ margin-top:-2em; }
+.jumbo-header .jumbotron{ background-color:#C6E504 ; }
 .ic{ display: inline-block; background: url('icons.png') no-repeat; overflow: hidden; text-indent: -9999px; text-align: left; width: 24px; height: 24px;     vertical-align: middle;
     top: -2px;
     left: -2px;
+    margin-right: 3px;
     position: relative;}
 .ic.ic-entity { background-position: -3px -0px;  }
 .ic.ic-home { background-position: -30px -0px; }
 .ic.ic-news { background-position: -3px -27px;  }
 .ic.ic-wallet { background-position: -30px -27px; }
 
-
+#login-page{
+    background-image: url('mes.jpg');
+    background-size:cover;
+    background-repeat:no-repeat;
+}

@@ -2,6 +2,8 @@
 
 {% block title %}Login{% endblock %}
 
+{% block bodyattrs %} id="login-page"{% endblock%}
+
 {% block content %}
 
 <div class="jumbo-header jumbo-band minimal" >
@@ -12,27 +14,33 @@
     </div>
 </div>
 
-<div class="container card main" style="max-width:500px;">
+<div class="container justify-content-center">
+    <div class="card px-5" style="max-width:500px;margin:auto;margin-top:-20px;">
+        <div class="card-body">
   <form method="post" class="edit-form" >
     {% csrf_token %}
+
         <div class="form-group">
             <label>Nombre de usuario</label>
-            {{form.username}}
+            <input class="form-control" id="{{ form.username.id_for_label }}" maxlength="30" name="{{ form.username.html_name }}" type="text" placeholder="Usuario"/>
         </div>
 
       <div class="form-group">
           <label>Contraseña</label>
-            {{form.password}}
+            <input class="form-control" id="{{ form.password.id_for_label }}" maxlength="30" name="{{ form.password.html_name }}" type="password" />
         </div>
-        <p class="text-right form-group">
-          ¿Olvidaste tu contraseña?
-      </p>
+        <br>
       <p class="text-center">
-          <button type="submit" class="btn btn-primary btn-lg">Entrar</button>
-      </p>
 
-      <hr>
+          <button type="submit" class="btn btn-primary btn-lg">Entrar</button>
+
+      </p>
+      <!--<a href="#"  class="btn btn-lg">Olvidé mi contraseña</a>-->
+
 
   </form>
+            </div>
 </div>
+</div>
+
 {% endblock %}
