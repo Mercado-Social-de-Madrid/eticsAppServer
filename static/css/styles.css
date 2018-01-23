@@ -214,7 +214,6 @@ h1, h2, h3, .primary-title{
     top: 50%;
     left: 50%;
     position: relative;
-    transform: translateY(-50%);
     -webkit-transform: translate(-50%, -50%);
       -ms-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
@@ -226,4 +225,23 @@ h1, h2, h3, .primary-title{
     font-family: 'Comfortaa', cursive;
     text-transform:uppercase;
     font-size:0.9em;
+}
+
+.gallery > a{
+    float:left;
+    width:110px;
+    height:110px;
+    margin:5px;
+    overflow:hidden;
+    background-color:#A7CE05;
+}
+.gallery > a > img{
+    width:100%;
+    height:auto;
+    transition: all 0.4s;
+}
+.gallery > a:hover > img{
+    opacity:0.8;
+    transform: scale(1.15);
+    -webkit-transform: scale(1.15);
 }
