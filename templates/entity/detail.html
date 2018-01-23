@@ -3,7 +3,7 @@
 {% load settings_value %}
 {% load l10n %}
 
-{% block title %}{% if is_new %}Nuevo espacio{% else %}Conciertos en {{venue.name}}{% endif %}{% endblock%}
+{% block title %}{% if is_new %}Nueva entidad{% else %}{{entity.name}}{% endif %}{% endblock%}
 
 {% block bodyattrs %}class="entity"{% endblock%}
 

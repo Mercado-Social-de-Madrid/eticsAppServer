@@ -20,7 +20,8 @@ $(function(){
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                 $(target).css('background-image', 'url(' + e.target.result + ')');
+                 target.css('background-image', 'url(' + e.target.result + ')');
+                 target.parent().addClass('uploaded');
             }
             reader.readAsDataURL(input.files[0]);
         }

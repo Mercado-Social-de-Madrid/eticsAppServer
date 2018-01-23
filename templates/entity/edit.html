@@ -3,7 +3,7 @@
 {% load settings_value %}
 {% load l10n %}
 
-{% block title %}{% if is_new %}Nuevo espacio{% else %}Conciertos en {{venue.name}}{% endif %}{% endblock%}
+{% block title %}{% if is_new %}Nueva entidad{% else %}{{entity.name}}{% endif %}}{% endblock%}
 
 {% block bodyattrs %}class="entity"{% endblock%}
 
@@ -120,8 +120,9 @@
                              {% if gallery_formset.can_delete %}
                                 {{ gallery_form.DELETE }}
                             {% endif %}
-                                <div class="form-photo">
+                                <div class="form-photo uploaded">
                                     <div class="thumb" style="background-image:url('{{gallery_form.image.value.url}}');"></div>
+                                    <i class="upload material-icons" data-placement="bottom" title="Subir foto">file_upload</i>
                                     {{ gallery_form.image }}
                                 </div>
                             {{ gallery_form.order.as_hidden }}
@@ -136,10 +137,10 @@
             </div>
 
 
-            <div class="col-md-6">
-                <div class="card mb-4">
+            <div class="col-md-12">
+                <div class="card mb-4 pb-4">
                     <div class="social-links card-body pr-5">
-                        <div class="card-title"><i class="material-icons">photo_library</i> Redes sociales</div>
+                        <div class="card-title"><i class="material-icons">share</i> Redes sociales</div>
                         <div class="form-group">
                         <div class="input-group">
                           <span class="input-group-addon" data-toggle="tooltip" data-placement="bottom" title="Página de Facebook"><i class="fa fa-facebook " aria-hidden="true"></i></span>
@@ -161,13 +162,13 @@
 
                         <div class="form-group">
                         <div class="input-group">
-                          <span data-toggle="tooltip" data-placement="bottom" title="Página web" class="input-group-addon" ><i class="fa fa-globe " aria-hidden="true"></i></span>
+                          <span data-toggle="tooltip" data-placement="bottom" title="Canal de telegram" class="input-group-addon" ><i class="fa fa-telegram " aria-hidden="true"></i></span>
                           {{form.telegram_link}}
                         </div></div>
 
                         <div class="form-group">
                         <div class="input-group">
-                          <span data-toggle="tooltip" data-placement="bottom" title="Página web" class="input-group-addon" ><i class="fa fa-globe " aria-hidden="true"></i></span>
+                          <span data-toggle="tooltip" data-placement="bottom" title="Perfil de Instagram" class="input-group-addon" ><i class="fa fa-instagram " aria-hidden="true"></i></span>
                           {{form.instagram_link}}
                         </div></div>
 
@@ -195,9 +196,9 @@
 
     $('.gallery-form-photo').formset({
         prefix: '{{ gallery_formset.prefix }}',
-        addText: '<i class="material-icons">add</i></div>',
-        deleteText: '<i class="material-icons close">cancel</i>',
-        added: function(row){ row.find('.thumb').css('background-image',''); }
+        addText: '<i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Añadir foto">add</i></div>',
+        deleteText: '<div class="btn btn-primary btn-float btn-small" href="#!" data-toggle="tooltip" data-placement="bottom" title="Eliminar foto"><i class="material-icons">delete</i></div>',
+        added: function(row){ row.find('.form-photo').removeClass('uploaded').find('.thumb').css('background-image',''); }
     });
 
   function initMap() {
