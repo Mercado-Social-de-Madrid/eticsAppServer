@@ -34,12 +34,12 @@
         </div>
 
         <div class="col-md-5 p-4">
-            <div class="gallery">
-            {% for photo in gallery %}
-                <a href="{{photo.image.url}}" title="{{photo.title}}"> <img src="{{photo.image_thumbnail.url}}"></a>
-            {% endfor %}
-            </div>
+            {% include 'common/gallery.html' with gallery=gallery%}
         </div>
     </div>
 </div>
 {% endblock%}
+
+{% block scripts %}
+
+{% endblock scripts %}
