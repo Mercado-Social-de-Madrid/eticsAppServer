@@ -14,9 +14,11 @@
             <h3>{{entity.name}}</h3>
             {{ entity.address }}
         </div>
+        {% if can_edit_entity %}
         <div class="container action-btns">
             <a class="btn btn-primary btn-float btn-lg" href="{% url 'entity_edit' entity.pk %}" data-toggle="tooltip" data-placement="bottom" title="Editar entidad"><i class="material-icons">mode_edit</i></a>
         </div>
+        {% endif %}
     </div>
 </div>
 

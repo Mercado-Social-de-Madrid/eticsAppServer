@@ -101,6 +101,9 @@ h1, h2, h3, h4, .primary-title{
     color:#fff;
     z-index:3;
 }
+.jumbo-header.jumbo-entity.minimal .jumbotron{
+    min-height:auto;
+}
 .jumbo-header.jumbo-entity .jumbotron:before{
     content:'';
     z-index:-1;

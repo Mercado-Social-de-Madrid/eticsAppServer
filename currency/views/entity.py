@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -17,16 +18,18 @@ from currency.models import Entity, Gallery, GalleryPhoto
 
 
 @login_required
-def entity_detail(request, pk):
+def user_entity(request):
+    type, entity = get_user_model().get_related_entity(request.user)
+    if type == 'entity':
+        return redirect('entity_detail', pk= entity.pk)
 
+
+def entity_detail(request, pk):
     entity = get_object_or_404(Entity, pk=pk)
     gallery = entity.gallery.photos.all()
+    can_edit = request.user.is_authenticated and (request.user.is_superuser or request.user == entity.owner)
 
-    can_edit = False
-    if request.user.is_authenticated and (request.user.is_superuser or request.user == entity.owner):
-        can_edit = True
-
-    return render(request, 'entity/detail.html', { 'entity': entity, 'gallery': gallery, 'can_edit': can_edit })
+    return render(request, 'entity/detail.html', { 'entity': entity, 'gallery': gallery, 'can_edit_entity': can_edit })
 
 
 @login_required
@@ -34,9 +37,7 @@ def entity_edit(request, pk):
 
     entity = get_object_or_404(Entity, pk=pk)
     gallery = entity.gallery
-    can_edit = False
-    if request.user.is_superuser or request.user == entity.owner:
-        can_edit = True
+    can_edit = request.user.is_superuser or request.user == entity.owner
 
     if not can_edit:
         return redirect(reverse('entity_detail', kwargs={'pk':entity.pk} ) + '?permissions=false')
@@ -45,7 +46,6 @@ def entity_edit(request, pk):
     initial_photos = PhotoGalleryForm.get_initial(gallery)
 
     if request.method == "POST":
-
         form = EntityForm(request.POST, request.FILES, instance=entity)
         gallery_formset = gallery_factory(request.POST, request.FILES, initial=initial_photos)
 
@@ -67,4 +67,9 @@ def entity_edit(request, pk):
         form = EntityForm(instance=entity)
         gallery_formset = gallery_factory(initial=initial_photos)
 
-    return render(request, 'entity/edit.html', { 'form': form, 'gallery_formset':gallery_formset, 'entity': entity })
+    return render(request, 'entity/edit.html', {
+        'form': form,
+        'gallery_formset':gallery_formset,
+        'entity': entity,
+        'can_edit_entity':can_edit
+    })

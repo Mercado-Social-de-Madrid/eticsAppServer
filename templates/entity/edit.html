@@ -11,12 +11,22 @@
 <form method="POST" class="post-form gallery-form" enctype="multipart/form-data">
     {% csrf_token %}
 
+<div class="jumbo-header jumbo-entity minimal mb-4" >
+    <div class="jumbotron" {% if entity.first_photo_url %}style="background-image:url('{{entity.first_photo_url}}');"{%endif%}>
+        <div class="container text-center">
+            <h3>{{entity.name}}</h3>
+            {{ entity.address }}
+        </div>
+
+        <div class="container action-btns">
+            <button type="submit" class="btn btn-primary btn-float btn-lg" href="{% url 'entity_edit' entity.pk %}" data-toggle="tooltip" data-placement="bottom" title="Guardar cambios"><i class="material-icons">save</i></button>
+        </div>
+    </div>
+</div>
+
 
 <div class="container">
-    <h1 id="venue-name">{{entity.name}}{% if is_new %} Nuevo espacio {%endif%}</h1>
-        <p class="description">{{entity.address}}</p>
 
-    <hr>
     {{form.form_errors}}
     <div class="card-deck">
         <div class="size-check visible-md-block visible-lg-block"></div>
