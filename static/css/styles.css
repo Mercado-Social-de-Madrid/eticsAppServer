@@ -196,10 +196,16 @@ h1, h2, h3, .primary-title{
     box-shadow: 0 3px 4px rgba(0,0,0,0.4);
 }
 .marker img{
-    display: inline;
-    margin: 0 auto;
-    height: 100%;
-    width: auto;
+    height:100%;
+    width:auto;
+    min-width: 100%;
+    top: 50%;
+    left: 50%;
+    position: relative;
+    transform: translateY(-50%);
+    -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
 }
 .feature{ text-align:center; }
 .feature span{
