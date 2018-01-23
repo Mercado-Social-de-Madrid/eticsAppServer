@@ -9,7 +9,8 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, {'redirect_authenticated_user': True }, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
 
-    url(r'^entity/(?P<pk>[0-9a-f-]+)/$', views.entity_edit, name='entity_detail'),
+    url(r'^entity/$', views.entity_edit, name='user_entity'),
+    url(r'^entity/(?P<pk>[0-9a-f-]+)/$', views.entity_detail, name='entity_detail'),
     url(r'^entity/(?P<pk>[0-9a-f-]+)/edit/$', views.entity_edit, name='entity_edit'),
 
     url(r'^dashboard/$', views.profile, name='dashboard'),
