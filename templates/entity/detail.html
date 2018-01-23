@@ -12,11 +12,34 @@
     <div class="jumbotron" {% if entity.first_photo_url %}style="background-image:url('{{entity.first_photo_url}}');"{%endif%}>
         <div class="container text-center">
             <h3>{{entity.name}}</h3>
+            {{ entity.address }}
+        </div>
+        <div class="container action-btns">
+            <a class="btn btn-primary btn-float btn-lg" href="{% url 'entity_edit' entity.pk %}" data-toggle="tooltip" data-placement="bottom" title="Editar entidad"><i class="material-icons">mode_edit</i></a>
         </div>
     </div>
 </div>
 
 <div class="container">
+    <div class="row">
+        <div class="col-md-7 p-4">
+            <div class="row">
+                <div class="col-4 feature"><span></span> <div class="display-4">{{ entity.num_workers }}</div><span>Trabajadores</span></div>
+                <div class="col-4 feature"><span class="primary-title"><strong>Acepta</strong></span> <div class="display-4"> {{ entity.max_percent_payment }}%</div><span>Boniatos</span></div>
+                <div class="col-4 feature"><span class="primary-title"><strong>Bonifica</strong></span> <div class="display-4">{{ entity.bonification_percent }}%</div><span>Boniatos</span></div>
+            </div>
 
+            <hr>
+            {{entity.description}}
+        </div>
+
+        <div class="col-md-5 p-4">
+            <div class="gallery">
+            {% for photo in gallery %}
+                <a href="{{photo.image.url}}" title="{{photo.title}}"> <img src="{{photo.image_thumbnail.url}}"></a>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock%}

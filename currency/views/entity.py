@@ -20,7 +20,7 @@ from currency.models import Entity, Gallery, GalleryPhoto
 def entity_detail(request, pk):
 
     entity = get_object_or_404(Entity, pk=pk)
-    gallery = entity.gallery
+    gallery = entity.gallery.photos.all()
 
     can_edit = False
     if request.user.is_authenticated and (request.user.is_superuser or request.user == entity.owner):
