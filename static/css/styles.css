@@ -5,7 +5,7 @@ html,body{ min-height:100%; }
     min-height:280px;
 }
 body{ background-color:#fafafa; }
-h1, h2, h3, .primary-title{
+h1, h2, h3, h4, .primary-title{
     font-family: 'Comfortaa', cursive;
 }
 .dropdown-menu-right { right: 0; left: auto; }
@@ -226,6 +226,7 @@ h1, h2, h3, .primary-title{
     text-transform:uppercase;
     font-size:0.9em;
 }
+.gallery{ overflow:auto; clear:both;}
 
 .gallery > a{
     float:left;
@@ -245,3 +246,6 @@ h1, h2, h3, .primary-title{
     transform: scale(1.15);
     -webkit-transform: scale(1.15);
 }
+.social-links a{ margin-right:7px;}
+.social-links a{ line-height: 3.9rem; }
+.social-links .fa{ font-size:1.6rem; }

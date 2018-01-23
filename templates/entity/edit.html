@@ -80,12 +80,12 @@
 
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-12">
                 <div class="card mb-4 ">
                     <div class="card-body">
                         <div class="card-title"><i class="material-icons">monetization_on</i> Moneda social</div>
                         <div class="row">
-                            <div class="col-sm-6 col-md-11">
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Máximo pago en boniatos</label>
                                     <div class="input-group">
@@ -95,7 +95,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-6 col-md-11">
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Porcentaje de bonificación</label>
                                     <div class="input-group">
@@ -110,34 +110,7 @@
                 </div>
             </div>
 
-            <div class="col-md-7">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <div class="card-title"><i class="material-icons">photo_library</i> Galería </div>
-                        {{ gallery_formset.management_form }}
-                        {% for gallery_form in gallery_formset %}
-                            <div class="gallery-form-photo file-field">
-                             {% if gallery_formset.can_delete %}
-                                {{ gallery_form.DELETE }}
-                            {% endif %}
-                                <div class="form-photo uploaded">
-                                    <div class="thumb" style="background-image:url('{{gallery_form.image.value.url}}');"></div>
-                                    <i class="upload material-icons" data-placement="bottom" title="Subir foto">file_upload</i>
-                                    {{ gallery_form.image }}
-                                </div>
-                            {{ gallery_form.order.as_hidden }}
-
-                            {{ gallery_form.title.as_hidden }}
-                                </div>
-
-                        {% endfor %}
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="col-md-12">
+            <div class="col-md-5">
                 <div class="card mb-4 pb-4">
                     <div class="social-links card-body pr-5">
                         <div class="card-title"><i class="material-icons">share</i> Redes sociales</div>
@@ -175,6 +148,35 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-7">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="card-title"><i class="material-icons">photo_library</i> Galería </div>
+                        {{ gallery_formset.management_form }}
+                        {% for gallery_form in gallery_formset %}
+                            <div class="gallery-form-photo file-field">
+                             {% if gallery_formset.can_delete %}
+                                {{ gallery_form.DELETE }}
+                            {% endif %}
+                                <div class="form-photo uploaded">
+                                    <div class="thumb" style="background-image:url('{{gallery_form.image.value.url}}');"></div>
+                                    <i class="upload material-icons" data-placement="bottom" title="Subir foto">file_upload</i>
+                                    {{ gallery_form.image }}
+                                </div>
+                            {{ gallery_form.order.as_hidden }}
+
+                            {{ gallery_form.title.as_hidden }}
+                                </div>
+
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+
+
+
 
        </div>
     </div>
