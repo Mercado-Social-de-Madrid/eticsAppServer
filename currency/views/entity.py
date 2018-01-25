@@ -27,9 +27,10 @@ def user_entity(request):
 def entity_detail(request, pk):
     entity = get_object_or_404(Entity, pk=pk)
     gallery = entity.gallery.photos.all()
-    can_edit = request.user.is_authenticated and (request.user.is_superuser or request.user == entity.owner)
+    is_owner = request.user.is_authenticated and (request.user == entity.owner)
+    can_edit = is_owner or request.user.is_superuser
 
-    return render(request, 'entity/detail.html', { 'entity': entity, 'gallery': gallery, 'can_edit_entity': can_edit })
+    return render(request, 'entity/detail.html', { 'entity': entity, 'gallery': gallery, 'can_edit_entity': can_edit, 'is_entity_owner':is_owner })
 
 
 @login_required
