@@ -19,10 +19,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 
 import currency.urls as currency_urls
+import offers.urls as offers_urls
 from api.urls import get_api
 
 urlpatterns = [
     url(r'^', include(currency_urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(get_api('v1').urls)),
+    url(r'^', include(offers_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
