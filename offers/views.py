@@ -14,7 +14,7 @@ def entity_offers(request, pk):
     entity = get_object_or_404(Entity, pk=pk)
 
     user_offers = Offer.objects.filter(entity=entity)
-    return render(request, 'entity/detail.html', {
+    return render(request, 'offers/entity_list.html', {
         'entity': entity,
         'offers': user_offers
     })
