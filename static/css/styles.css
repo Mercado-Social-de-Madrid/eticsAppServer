@@ -104,6 +104,15 @@ h1, h2, h3, h4, .primary-title{
 .jumbo-header.jumbo-entity.minimal .jumbotron{
     min-height:auto;
 }
+.jumbo-header.jumbo-entity.form .jumbotron{
+    min-height:auto;
+    padding-top:2rem;
+    padding-bottom:6rem;
+}
+.jumbo-header.jumbo-entity.form + .container .card{
+    margin-top:-5rem;
+    z-index:5;
+}
 .jumbo-header.jumbo-entity .jumbotron:before{
     content:'';
     z-index:-1;
