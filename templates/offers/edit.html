@@ -5,6 +5,9 @@
 
 {% block title %}{% if is_new %}Nueva entidad{% else %}{{entity.name}}{% endif %}{% endblock%}
 
+
+
+
 {% block bodyattrs %}class="entity"{% endblock%}
 
 {% block content %}
@@ -24,6 +27,7 @@
     <div class="card mb-4 p-3">
         <div class="card-body">
             <div class="card-title primary-title"><h3><i class="ic ic-news"></i> {%if is_new %}Nueva oferta{%else%}Editar oferta{%endif%}</h3></div>
+            {{form.media}}
             {{form.as_p}}
         </div>
     </div>

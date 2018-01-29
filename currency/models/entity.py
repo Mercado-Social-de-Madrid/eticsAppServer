@@ -56,8 +56,6 @@ class Entity(models.Model):
 
     @property
     def first_photo_url(self):
-        print self.gallery
-        print self.gallery.photos.all()
         if self.gallery and self.gallery.photos.count() > 0:
             image = self.gallery.photos.all().first()
             if image:

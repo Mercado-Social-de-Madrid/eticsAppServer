@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'currency',
     'tastypie',
     'imagekit',
+    'ckeditor',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -119,6 +120,17 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 
 
 TASTYPIE_DEFAULT_FORMATS = ['json']
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'width':'100%',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'Format', 'FontSize','TextColor', 'BGColor'],
+            ['NumberedList', 'BulletedList', '-',  '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', 'Link', 'Unlink'],
+        ]
+    },
+}
 
 # Import secret settings (see settings_secret.py.template for reference)
 from settings_secret import *
