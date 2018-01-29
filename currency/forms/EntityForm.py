@@ -1,4 +1,5 @@
 # coding=utf-8
+from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.db.models import BLANK_CHOICE_DASH
 
@@ -16,7 +17,7 @@ class EntityForm(forms.ModelForm):
         exclude = ['owner','email','user']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'description': CKEditorWidget(attrs={'class': 'form-control'}),
             'latitude': forms.NumberInput(attrs={'class': 'form-control', 'readonly':True}),
             'longitude': forms.NumberInput(attrs={'class': 'form-control', 'readonly':True}),
             'max_percent_payment': forms.NumberInput(attrs={'class': 'form-control'}),

@@ -32,7 +32,9 @@
             </div>
 
             <hr>
+            {% autoescape off %}
             {{entity.description}}
+            {% endautoescape %}
         </div>
 
         <div class="col-md-5 p-4">
