@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
+from offers.models import Offer
+
 
 def index(request):
     return render(request, 'index.html', {})
@@ -16,5 +18,7 @@ def profile(request):
     if type != 'none':
         params['type'] = type
         params['entity'] = entity
+
+        params['num_offers'] = Offer.objects.current().filter(entity=entity).count()
 
     return render(request, 'profile/index.html', params)
