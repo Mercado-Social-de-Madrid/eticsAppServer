@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'currency',
     'tastypie',
     'imagekit',
+    'fcm_django',
     'ckeditor',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -118,8 +119,18 @@ STATIC_URL = '/static/'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
 
-
 TASTYPIE_DEFAULT_FORMATS = ['json']
+
+
+FCM_DJANGO_SETTINGS = {
+         # true if you want to have only one active device per registered user at a time
+         # default: False
+        "ONE_DEVICE_PER_USER": False,
+         # devices to which notifications cannot be sent,
+         # are deleted upon receiving error response from FCM
+         # default: False
+        "DELETE_INACTIVE_DEVICES": False,
+}
 
 CKEDITOR_CONFIGS = {
     'default': {
@@ -132,5 +143,9 @@ CKEDITOR_CONFIGS = {
     },
 }
 
+
 # Import secret settings (see settings_secret.py.template for reference)
 from settings_secret import *
+
+if FCM_SERVER_KEY:
+    FCM_DJANGO_SETTINGS['FCM_SERVER_KEY'] = FCM_SERVER_KEY
