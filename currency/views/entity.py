@@ -38,7 +38,7 @@ def entity_edit(request, pk):
 
     entity = get_object_or_404(Entity, pk=pk)
     gallery = entity.gallery
-    can_edit = request.user.is_superuser or request.user == entity.owner
+    can_edit = request.user.is_superuser or request.user == entity.user
 
     if not can_edit:
         return redirect(reverse('entity_detail', kwargs={'pk':entity.pk} ) + '?permissions=false')

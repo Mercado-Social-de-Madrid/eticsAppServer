@@ -37,12 +37,12 @@
                     <div class="card-body">
                     <h4 class="card-title"><i class="material-icons">info</i> Información general</h4>
                     <div class="description">
-                        <div class="form-group" data-links="#venue-name">
+                        <div class="form-group" data-links="#entity-name">
                             <label>Nombre</label>
                             {{ form.name }}
                         </div>
 
-                        <div class="form-group" data-links="#venue-address">
+                        <div class="form-group" data-links="#entity-address">
                             <label>Dirección</label>
                             {{ form.address }}
                             <small style="color: grey">Introduce únicamente la dirección y número de la calle (ej.: "C/ Libreros, 1")</small>
@@ -176,10 +176,8 @@
                                     {{ gallery_form.image }}
                                 </div>
                             {{ gallery_form.order.as_hidden }}
-
                             {{ gallery_form.title.as_hidden }}
                                 </div>
-
                         {% endfor %}
                     </div>
                 </div>
@@ -195,8 +193,8 @@
     </div>
 
     <div class="description text-center">
-                    <button type="submit" class="right-margin left-margin btn btn-primary btn-lg">{% if is_new %} Crear espacio {% else %} Guardar {% endif %}</button>
-                </div>
+        <button type="submit" class="right-margin left-margin btn btn-primary btn-lg">{% if is_new %} Crear entidad {% else %} Guardar {% endif %}</button>
+    </div>
 
 </div>
 </form>
