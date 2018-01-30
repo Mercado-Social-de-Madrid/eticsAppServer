@@ -32,6 +32,11 @@
             {% for offer in current_offers %}
                 <a href="{% url 'offer_detail' entity.pk offer.pk %}"> {{offer}} </a>
             {% endfor %}
+
+            <h3><i class="ic ic-news"></i> Ofertas pendientes</h3>
+            {% for offer in future_offers %}
+                <a href="{% url 'offer_detail' entity.pk offer.pk %}"> {{offer}} </a>
+            {% endfor %}
         </div>
     </div>
 </div>

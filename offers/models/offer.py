@@ -5,6 +5,7 @@ import uuid
 
 import datetime
 from django.db import models
+from django.db.models import Q
 from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, ResizeToFill
 
@@ -18,6 +19,9 @@ class OffersManager(models.Manager):
         today = datetime.date.today()
         return query.filter(active=True, begin_date__lte=today, end_date__gte=today)
 
+    def future(query):
+        today = datetime.date.today()
+        return query.filter(Q(begin_date__gte=today) | Q(begin_date__lte=today, end_date__gte=today, active=False))
 
 class Offer(models.Model):
 
@@ -37,7 +41,7 @@ class Offer(models.Model):
     published_date = models.DateTimeField(auto_now_add=True)
     discount_percent = models.FloatField(null=True, blank=True, verbose_name='Porcentaje de descuento', default=0)
     discounted_price = models.FloatField(null=True, blank=True, verbose_name='Precio con descuento', default=0)
-    active = models.BooleanField(null=False, verbose_name='Activa')
+    active = models.BooleanField(default=True, null=False, verbose_name='Activa')
     begin_date = models.DateField(null=True, blank=True, verbose_name='Fecha de inicio')
     end_date = models.DateField(null=True, blank=True, verbose_name='Fecha de fin')
 
