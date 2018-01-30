@@ -26,6 +26,8 @@
 <div class="container px-md-5">
     <div class="card mx-md-5 mb-4 p-3">
         <div class="card-body">
+            <form method="POST" class="post-form gallery-form" enctype="multipart/form-data">
+    {% csrf_token %}
             <div class="card-title primary-title"><h3><i class="ic ic-news"></i> {%if is_new %}Nueva oferta{%else%}Editar oferta{%endif%}</h3></div>
             {{form.media}}
 
@@ -105,7 +107,7 @@
             <div class="description text-center">
                 <button type="submit" class="right-margin left-margin btn btn-primary btn-lg">{% if is_new %} Crear oferta {% else %} Guardar {% endif %}</button>
             </div>
-
+            </form>
         </div>
     </div>
 </div>
