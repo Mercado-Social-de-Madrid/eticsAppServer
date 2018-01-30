@@ -15,13 +15,26 @@ from currency.models import Entity
 
 class OffersManager(models.Manager):
 
-    def current(query):
+    def current(query, entity=None):
         today = datetime.date.today()
-        return query.filter(active=True, begin_date__lte=today, end_date__gte=today)
+        if entity is None:
+            return query.filter(active=True, begin_date__lte=today, end_date__gte=today)
+        else:
+            return query.filter(active=True, begin_date__lte=today, end_date__gte=today, entity=entity)
 
-    def future(query):
+    def future(query, entity=None):
         today = datetime.date.today()
-        return query.filter(Q(begin_date__gte=today) | Q(begin_date__lte=today, end_date__gte=today, active=False))
+        if entity is None:
+            return query.filter(Q(begin_date__gt=today) | Q(begin_date__lte=today, end_date__gte=today, active=False))
+        else:
+            return query.filter(Q(entity=entity) & (Q(begin_date__gt=today) | Q(begin_date__lte=today, end_date__gte=today, active=False)))
+
+    def past(query, entity=None):
+        today = datetime.date.today()
+        if entity is None:
+            return query.filter(end_date__lt=today)
+        else:
+            return query.filter(end_date__lt=today, entity=entity)
 
 class Offer(models.Model):
 

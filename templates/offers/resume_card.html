@@ -1,0 +1,16 @@
+{% load staticfiles %}
+
+{%if entity %}
+<a href="{% url 'offer_detail' entity.pk offer.pk %}">
+{% else %}
+<a href="{% url 'offer_detail' offer.entity.pk offer.pk %}">
+{% endif %}
+<div class="card mb-3" >
+      <img class="card-img-top img-fluid" src="{% if offer.banner_image %}{{ offer.banner_image.url }}{% else %}{%static 'imgs/default-offer.png' %}{% endif %}" alt="{{offer.title}}">
+        <div class="card-body px-2 py-3">
+            {%if not entity %}<h6 class="card-title mb-0">{{offer.entity}}</h6>{% endif %}
+            <strong class="text-dark primary-title">{{offer.title}}</strong><br>
+            <span class="text-grey"> {{offer.begin_date}} - {{offer.end_date}} </span>
+        </div>
+</div>
+</a>

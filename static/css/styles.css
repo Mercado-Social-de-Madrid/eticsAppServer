@@ -8,6 +8,7 @@ body{ background-color:#fafafa; }
 h1, h2, h3, h4, .primary-title{
     font-family: 'Comfortaa', cursive;
 }
+.text-grey{ color:#9d9d9d !important; }
 .dropdown-menu-right { right: 0; left: auto; }
 
 .primary-title{ color:#912991; }
@@ -109,7 +110,7 @@ h1, h2, h3, h4, .primary-title{
     padding-top:2rem;
     padding-bottom:7rem;
 }
-.jumbo-header.jumbo-entity.form + .container .card{
+.jumbo-header.jumbo-entity.form + .container > .card{
     margin-top:-5rem;
     z-index:5;
 }

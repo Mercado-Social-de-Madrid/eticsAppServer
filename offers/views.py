@@ -26,13 +26,15 @@ def entity_offers(request, entity_pk):
     entity = get_object_or_404(Entity, pk=entity_pk)
     is_owner = request.user.is_authenticated and (request.user == entity.user)
 
-    current_offers = Offer.objects.current().filter(entity=entity)
-    future_offers = Offer.objects.future().filter(entity=entity)
+    current_offers = Offer.objects.current(entity=entity)
+    future_offers = Offer.objects.future(entity=entity)
+    past_offers = Offer.objects.past(entity=entity)
     print current_offers
     return render(request, 'offers/entity_list.html', {
         'entity': entity,
         'current_offers': current_offers,
         'future_offers':future_offers,
+        'past_offers':past_offers,
         'is_offers_owner': is_owner
     })
 

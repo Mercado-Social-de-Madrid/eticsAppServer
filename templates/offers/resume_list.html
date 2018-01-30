@@ -1,0 +1,14 @@
+
+{% if display_stacked %}
+    {% for offer in offer_list %}
+        {% include 'offers/resume_card.html' with entity=entity offer=offer %}
+    {% endfor %}
+{% else %}
+<div class="row">
+    {% for offer in offer_list %}
+        <div class="col-md-4 col-sm-6">
+        {% include 'offers/resume_card.html' with entity=entity offer=offer %}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}

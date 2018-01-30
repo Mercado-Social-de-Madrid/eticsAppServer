@@ -28,15 +28,28 @@
         <div class="col-md-12 p-4">
             <h2 class="primary-title">Ofertas</h2>
 
+            <hr class="mt-3">
             <h3><i class="ic ic-news"></i> Ofertas en curso</h3>
-            {% for offer in current_offers %}
-                <a href="{% url 'offer_detail' entity.pk offer.pk %}"> {{offer}} </a>
-            {% endfor %}
+                {% if not current_offers %}
+                <div class="text-grey px-3">No hay ninguna oferta activa actualmente.</div>
+            {% endif %}
+            {% include 'offers/resume_list.html' with offer_list=current_offers %}
 
+            <hr class="mt-3">
             <h3><i class="ic ic-news"></i> Ofertas pendientes</h3>
-            {% for offer in future_offers %}
-                <a href="{% url 'offer_detail' entity.pk offer.pk %}"> {{offer}} </a>
-            {% endfor %}
+
+            {% if not future_offers %}
+                <div class="text-grey px-3">No hay ofertas pendientes (futuras o no activas).</div>
+            {% endif %}
+            {% include 'offers/resume_list.html' with offer_list=future_offers %}
+
+            <hr class="mt-3">
+            <h3><i class="ic ic-news"></i> Ofertas pasadas</h3>
+            {% if not past_offers %}
+                <div class="text-grey px-3">No hay ofertas anteriores a las actuales.</div>
+            {% endif %}
+            {% include 'offers/resume_list.html' with offer_list=past_offers %}
+
         </div>
     </div>
 </div>
