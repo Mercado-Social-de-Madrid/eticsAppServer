@@ -26,7 +26,12 @@
     <div class="row">
 
         <div class="col-md-12 p-4">
-            <h2>Ofertas</h2>
+            <h2 class="primary-title">Ofertas</h2>
+
+            <h3><i class="ic ic-news"></i> Ofertas en curso</h3>
+            {% for offer in current_offers %}
+                <a href="{% url 'offer_detail' entity.pk offer.pk %}"> {{offer}} </a>
+            {% endfor %}
         </div>
     </div>
 </div>

@@ -68,3 +68,17 @@ def add_offer(request, entity_pk):
         'form': form,
         'is_new': True
     })
+
+
+@login_required
+def offer_detail(request, entity_pk, offer_pk):
+    entity = get_object_or_404(Entity, pk=entity_pk)
+    offer = get_object_or_404(Offer, pk=offer_pk)
+
+    can_edit = request.user.is_superuser or request.user == entity.owner
+
+    return render(request, 'offers/detail.html', {
+        'entity': entity,
+        'offer': offer,
+        'can_edit':can_edit
+    })
