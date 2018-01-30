@@ -14,9 +14,11 @@
             <h3>{{entity.name}}</h3>
             {{ entity.address }}
         </div>
+        {%if is_offers_owner %}
         <div class="container action-btns">
             <a class="btn btn-primary btn-float btn-lg" href="{% url 'add_entity_offer' entity.pk %}" data-toggle="tooltip" data-placement="bottom" title="Añadir oferta"><i class="material-icons">add</i></a>
         </div>
+        {% endif %}
     </div>
 </div>
 

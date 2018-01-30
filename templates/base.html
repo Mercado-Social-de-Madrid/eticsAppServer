@@ -74,7 +74,7 @@
             <a class="nav-link {% if is_entity_owner %}active{% endif %}" href="{% url 'user_entity' %}"><i class="ic ic-entity"></i> Mi entidad</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="ic ic-news"></i> Ofertas</a>
+            <a class="nav-link {% if is_offers_owner %}active{% endif %}" href="{% url 'user_offers' %}"><i class="ic ic-news"></i> Ofertas</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#"><i class="ic ic-wallet"></i> Monedero</a>
