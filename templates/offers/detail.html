@@ -23,7 +23,7 @@
           <img class="card-img-top img-fluid" src="{% if offer.banner_image %}{{ offer.banner_image.url }}{% else %}{%static 'imgs/default-offer.png' %}{% endif %}" alt="{{offer.title}}">
             {% if can_edit %}
             <div class="container action-btns">
-                <a class="btn btn-primary btn-float btn-lg" href="{% url 'add_entity_offer' entity.pk %}" data-toggle="tooltip" data-placement="bottom" title="Editar oferta"><i class="material-icons">edit</i></a>
+                <a class="btn btn-primary btn-float btn-lg" href="{% url 'offer_edit' entity.pk offer.pk %}" data-toggle="tooltip" data-placement="bottom" title="Editar oferta"><i class="material-icons">edit</i></a>
              </div>
             {% endif %}
           <div class="card-body px-5 py-4">

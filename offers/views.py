@@ -37,10 +37,10 @@ def entity_offers(request, entity_pk):
 @login_required
 def add_offer(request, entity_pk):
     entity = get_object_or_404(Entity, pk=entity_pk)
-    can_edit = request.user.is_superuser or request.user == entity.owner
+    can_edit = request.user.is_superuser or request.user == entity.user
 
     if not can_edit:
-        return redirect(reverse('entity_detail', kwargs={'pk': entity.pk}) + '?permissions=false')
+        return redirect(reverse('entity_detail', kwargs={'entity_pk': entity.pk}) + '?permissions=false')
 
     '''device = FCMDevice.objects.all().first()
     result = device.send_message(data={"test": "test"})
@@ -57,7 +57,7 @@ def add_offer(request, entity_pk):
             offer.entity = entity
             offer.save()
 
-            return redirect('entity_offers', pk=entity.pk)
+            return redirect('entity_offers', entity_pk=entity.pk)
         else:
             print form.errors.as_data()
     else:
@@ -75,10 +75,38 @@ def offer_detail(request, entity_pk, offer_pk):
     entity = get_object_or_404(Entity, pk=entity_pk)
     offer = get_object_or_404(Offer, pk=offer_pk)
 
-    can_edit = request.user.is_superuser or request.user == entity.owner
+    can_edit = request.user.is_superuser or request.user == entity.user
 
     return render(request, 'offers/detail.html', {
         'entity': entity,
         'offer': offer,
         'can_edit':can_edit
+    })
+
+
+@login_required
+def offer_edit(request, entity_pk, offer_pk):
+    entity = get_object_or_404(Entity, pk=entity_pk)
+    offer = get_object_or_404(Offer, pk=offer_pk)
+    can_edit = request.user.is_superuser or request.user == entity.user
+
+    if not can_edit:
+        return redirect(reverse('offer_detail', kwargs={'entity_pk': entity.pk, 'offer_pk':offer.pk}) + '?permissions=false')
+
+    if request.method == "POST":
+        form = OfferForm(request.POST, request.FILES, instance=offer)
+        if form.is_valid():
+            offer = form.save(commit=False)
+            offer.entity = entity
+            offer.save()
+
+            return redirect('offer_detail', entity_pk=entity.pk, offer_pk=offer.pk)
+        else:
+            print form.errors.as_data()
+    else:
+        form = OfferForm(instance=offer)
+
+    return render(request, 'offers/edit.html', {
+        'entity': entity,
+        'form': form
     })

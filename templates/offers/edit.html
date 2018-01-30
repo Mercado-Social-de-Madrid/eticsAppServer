@@ -40,14 +40,22 @@
                 <div class="col-sm-6">
                     <div class="form-group" data-links="#begin-date">
                         <label>Fecha de inicio</label>
-                        <div class="input-group">
+                        <div class="input-group flex-wrap">
                           {{form.begin_date}}
-                          <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button"><i class="material-icons">event</i></button>
-                          </span>
-                        </div>
 
+                          <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button"><i class="material-icons">event</i></button>
+                          </span>
+
+
+                        </div>
+                        {%if form.begin_date.errors %}
+                        <div class="d-block invalid-feedback">
+                            {%for error in form.begin_date.errors %} {{error}} {%endfor%}
+                        </div>
+                        {% endif %}
                     </div>
+
                 </div>
 
                 <div class="col-sm-6">
@@ -59,8 +67,13 @@
                                 <button class="btn btn-primary" type="button"><i class="material-icons">event</i></button>
                           </span>
                         </div>
-
+                        {%if form.end_date.errors %}
+                        <div class="d-block invalid-feedback">
+                            {%for error in form.end_date.errors %} {{error}} {%endfor%}
+                        </div>
+                        {% endif %}
                     </div>
+
                 </div>
             </div>
 
