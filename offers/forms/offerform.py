@@ -19,7 +19,7 @@ class OfferForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': CKEditorWidget(attrs={'cols': 80, 'rows': 30}),
-            'active': forms.CheckboxInput(attrs={'class': 'form-control' }),
+            'active': forms.CheckboxInput(attrs={'class': 'custom-control-input', 'checked' : 'checked' }),
             'discount_percent': forms.NumberInput(attrs={'class': 'form-control'}),
             'discounted_price': forms.NumberInput(attrs={'class': 'form-control'}),
             'begin_date': forms.DateInput(attrs={'class': 'form-control'}),

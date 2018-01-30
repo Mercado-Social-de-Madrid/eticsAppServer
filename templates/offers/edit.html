@@ -23,12 +23,89 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="card mb-4 p-3">
+<div class="container px-md-5">
+    <div class="card mx-md-5 mb-4 p-3">
         <div class="card-body">
             <div class="card-title primary-title"><h3><i class="ic ic-news"></i> {%if is_new %}Nueva oferta{%else%}Editar oferta{%endif%}</h3></div>
             {{form.media}}
-            {{form.as_p}}
+
+            <div class="form-group" data-links="#offer-title">
+                <label>Título</label>
+                {{ form.title }}
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group" data-links="#begin-date">
+                        <label>Fecha de inicio</label>
+                        <div class="input-group">
+                          {{form.begin_date}}
+                          <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button"><i class="material-icons">event</i></button>
+                          </span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group" data-links="#end-date">
+                        <label>Fecha de fin</label>
+                        <div class="input-group">
+                          {{form.end_date}}
+                          <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button"><i class="material-icons">event</i></button>
+                          </span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" data-links="#offer-description">
+                <label>Descripción</label>
+                {{ form.description }}
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6 col-lg-4">
+                    <div class="form-group" data-links="#offer-discount">
+                        <label>Porcentaje de descuento</label>
+                        <div class="input-group">
+                                {{ form.discount_percent }}
+                                <span class="input-group-addon"><i class="fa fa-percent" aria-hidden="true"></i></span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="form-group" data-links="#offer-price">
+                        <label>Precio con descuento</label>
+                        {{ form.discounted_price }}
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="form-group">
+                        <label class="custom-control custom-checkbox">
+                            {{form.active}}
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Activa</span>
+                        </label><br>
+                        <small style="color: grey">Las ofertas no activas no se mostrarán a los usuarios. Puedes crear una encuesta desactivada y publicarla finalmente cuando creas oportuno.</small>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div class="description text-center">
+                <button type="submit" class="right-margin left-margin btn btn-primary btn-lg">{% if is_new %} Crear oferta {% else %} Guardar {% endif %}</button>
+            </div>
+
         </div>
     </div>
 </div>
