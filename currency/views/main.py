@@ -19,6 +19,6 @@ def profile(request):
         params['type'] = type
         params['entity'] = entity
 
-        params['num_offers'] = Offer.objects.current().filter(entity=entity).count()
+        params['num_offers'] = Offer.objects.current(entity=entity).count()
 
     return render(request, 'profile/index.html', params)

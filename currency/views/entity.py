@@ -15,6 +15,7 @@ from django.urls import reverse
 from currency.forms.EntityForm import EntityForm
 from currency.forms.galleryform import PhotoGalleryForm
 from currency.models import Entity, Gallery, GalleryPhoto
+from offers.models import Offer
 
 
 @login_required
@@ -27,10 +28,17 @@ def user_entity(request):
 def entity_detail(request, pk):
     entity = get_object_or_404(Entity, pk=pk)
     gallery = entity.gallery.photos.all()
+    current_offers = Offer.objects.current(entity=entity)
     is_owner = request.user.is_authenticated and (request.user == entity.user)
     can_edit = is_owner or request.user.is_superuser
 
-    return render(request, 'entity/detail.html', { 'entity': entity, 'gallery': gallery, 'can_edit_entity': can_edit, 'is_entity_owner':is_owner })
+    return render(request, 'entity/detail.html', {
+        'entity': entity,
+        'gallery': gallery,
+        'offers': current_offers,
+        'can_edit_entity': can_edit,
+        'is_entity_owner':is_owner
+    })
 
 
 @login_required

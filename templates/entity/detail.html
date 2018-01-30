@@ -39,9 +39,15 @@
 
         <div class="col-md-5 p-4">
             {% include 'common/gallery.html' with gallery=gallery%}
+
             <hr>
             <h4 class="mb-3">Enlaces</h4>
             {% include 'common/social_links.html' with obj=entity %}
+        </div>
+
+        <div class="col-md-12">
+            <h4 class="mb-3"><i class="ic ic-news"></i> Ofertas en curso</h4>
+            {% include 'offers/resume_list.html' with offer_list=offers  %}
         </div>
     </div>
 </div>
