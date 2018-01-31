@@ -37,7 +37,7 @@ class Wallet(models.Model):
             if bonification:
                 concept = "Bonificación en boniatos por compra"
             elif wallet_from:
-                concept = "Trans"
+                concept = "Transferencia"
 
         from wallets.models.transaction import STATUS_PENDING, Transaction
 

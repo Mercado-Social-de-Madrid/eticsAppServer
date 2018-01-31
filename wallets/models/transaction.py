@@ -7,14 +7,6 @@ from django.db import models
 
 from wallets.models import Wallet
 
-STATUS_PROCESSED = 'processed'
-STATUS_CANCELLED = 'cancelled'
-STATUS_PENDING = 'pending'
-TRANSACTION_STATUS = (
-    (STATUS_PROCESSED, 'Procesada'),
-    (STATUS_CANCELLED, 'Cancelada'),
-    (STATUS_PENDING, 'Pendiente'),
-)
 
 
 class Transaction(models.Model):
@@ -24,7 +16,6 @@ class Transaction(models.Model):
     amount = models.FloatField(default=0, verbose_name='Cantidad')
     concept = models.TextField(blank=True, null=True, verbose_name='Concepto')
     timestamp = models.DateTimeField(auto_now_add=True, verbose_name='Timestamp')
-    status = models.CharField(default=STATUS_PENDING, max_length=20, choices=TRANSACTION_STATUS, verbose_name='Estado')
 
     tax_processed = models.BooleanField(default=False, verbose_name='Impuestos procesados')
     made_byadmin = models.BooleanField(default=False, verbose_name='Realizada por admin')
