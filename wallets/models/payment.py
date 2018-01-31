@@ -4,9 +4,10 @@ from __future__ import unicode_literals
 import uuid
 
 from django.contrib.auth.models import User
-from django.db import models
+from django.db import models, transaction
 
 from currency.models import Entity
+from wallets.models import Wallet
 
 STATUS_ACCEPTED = 'accepted'
 STATUS_CANCELLED = 'cancelled'
@@ -20,8 +21,17 @@ PAYMENT_STATUS = (
 
 class PaymentManager(models.Manager):
 
-    def new_payment(self):
-        return self.create(status=STATUS_PENDING)
+    def new_payment(self, user, entity, total_amount, currency_amount=0):
+
+        #TODO: Check that the user has enough currency in her wallet and no more than the max currency percent
+
+        return self.create(
+            user=user,
+            entity=entity,
+            total_amount=total_amount,
+            currency_amount=currency_amount,
+            status=STATUS_PENDING)
+
 
 
 class Payment(models.Model):
@@ -43,4 +53,38 @@ class Payment(models.Model):
         verbose_name_plural = 'Pagos'
         ordering = ['user']
 
+    @transaction.atomic
+    def accept_payment(self):
 
+        if self.status != STATUS_PENDING:
+            return
+            #TODO: create exception
+
+        wallet_entity = Wallet.objects.filter(user=self.entity.user).first()
+        wallet_user = Wallet.objects.filter(user=self.user).first()
+
+        if not wallet_entity or not wallet_user:
+            return
+            # TODO: create exception
+
+        #We calculate the bonification to give the user
+        bonification = self.total_amount * self.entity.bonification_percent
+        if bonification > 0:
+            t = wallet_entity.new_transaction(bonification, wallet=wallet_user, bonification=True)
+
+        #If the user paid some part in currency, we make the transaction
+        if self.currency_amount > 0:
+            t = wallet_user.new_transaction(self.currency_amount, wallet=wallet_entity)
+
+        self.status = STATUS_ACCEPTED
+        self.save()
+
+    @transaction.atomic
+    def cancel_payment(self):
+
+        if self.status != STATUS_PENDING:
+            return
+            # TODO: create exception
+
+        self.status = STATUS_CANCELLED
+        self.save()

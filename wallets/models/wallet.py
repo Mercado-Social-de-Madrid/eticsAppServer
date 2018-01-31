@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import uuid
 
 from django.contrib.auth.models import User
-from django.db import models
+from django.db import models, transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -24,7 +24,8 @@ class Wallet(models.Model):
     def __unicode__(self):
         return self.user.username + ': ' + str(self.balance)
 
-    def new_transaction(self, amount, wallet=None, concept=None, bonification=False, **kwargs):
+    @transaction.atomic
+    def new_transaction(self, amount, wallet=None, concept=None, bonification=False, is_euro_purchase=False, **kwargs):
 
         if wallet:
             wallet_from = self
@@ -39,10 +40,28 @@ class Wallet(models.Model):
             elif wallet_from:
                 concept = "Transferencia"
 
-        from wallets.models.transaction import STATUS_PENDING, Transaction
+        from wallets.models.transaction import Transaction
 
-        return Transaction.objects.create(wallet_from=wallet_from, wallet_to=wallet_to,
-                                          status=STATUS_PENDING, **kwargs)
+        transaction = Transaction.objects.create(
+            wallet_from=wallet_from,
+            wallet_to=wallet_to,
+            amount=amount,
+            is_bonification=bonification,
+            concept=concept,
+            is_euro_purchase=is_euro_purchase,
+            **kwargs)
+
+        if wallet_from:
+            wallet_from.update_balance(transaction)
+        wallet_to.update_balance(transaction)
+
+        return transaction
+
+
+    def update_balance(self, new_transaction):
+        self.last_transaction = transaction
+        #TODO: calculate balance
+        self.save()
 
 
 # Method to create the wallet for every new user
