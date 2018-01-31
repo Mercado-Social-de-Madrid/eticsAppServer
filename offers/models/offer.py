@@ -45,9 +45,9 @@ class Offer(models.Model):
     description = models.TextField(null=True, blank=True, verbose_name='Descripción')
     banner_image = ProcessedImageField(null=True, blank=True, upload_to=RandomFileName('offers/'),
                                 verbose_name='Imagen principal',
-                                processors=[ResizeToFit(512, 512, upscale=False)], format='JPEG')
+                                processors=[ResizeToFit(756, 512, upscale=False)], format='JPEG')
     banner_thumbnail = ImageSpecField(source='banner_image',
-                                       processors=[ResizeToFill(150, 150, upscale=False)],
+                                       processors=[ResizeToFill(400, 200, upscale=False)],
                                        format='JPEG',
                                        options={'quality': 70})
 
