@@ -7,7 +7,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
 from django.urls import reverse
-from fcm_django.models import FCMDevice
 
 from currency.models import Entity
 from offers.forms.offerform import OfferForm
@@ -45,14 +44,6 @@ def add_offer(request, entity_pk):
 
     if not can_edit:
         return redirect(reverse('entity_detail', kwargs={'entity_pk': entity.pk}) + '?permissions=false')
-
-    '''device = FCMDevice.objects.all().first()
-    result = device.send_message(data={"test": "test"})
-    print result
-
-    result = device.send_message(title="Titulo", body="Probando, probando...")
-    print result
-    '''
 
     if request.method == "POST":
         form = OfferForm(request.POST, request.FILES)

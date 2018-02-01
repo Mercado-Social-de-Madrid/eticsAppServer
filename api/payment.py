@@ -24,7 +24,7 @@ class PaymentsResource(ModelResource):
         queryset = Payment.objects.all()
         include_resource_uri = False
         list_allowed_methods = ['get', 'post']
-        resource_name = 'payments'
+        resource_name = 'payment'
         collection_name = 'payments'
         excludes = []
 

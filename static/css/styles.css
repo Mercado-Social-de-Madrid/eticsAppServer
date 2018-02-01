@@ -10,7 +10,7 @@ h1, h2, h3, h4, .primary-title{
 }
 .text-grey{ color:#9d9d9d !important; }
 .dropdown-menu-right { right: 0; left: auto; }
-
+.link-row{ cursor:pointer; }
 .primary-title{ color:#912991; }
 #main-content{
     padding: 2em 0;
@@ -270,3 +270,14 @@ h1, h2, h3, h4, .primary-title{
 .social-links a{ margin-right:7px;}
 .social-links a{ line-height: 3.9rem; }
 .social-links .fa{ font-size:1.6rem; }
+
+.table-action{
+    width:35px;
+    height:35px;
+    text-align:center;
+    line-height:35px;
+    display:inline-block;
+    vertical-align:middle;
+    margin-top:-9px;
+}
+.table-action:hover{ background-color:#d7d7d7; }

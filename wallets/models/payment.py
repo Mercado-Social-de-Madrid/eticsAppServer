@@ -22,9 +22,16 @@ PAYMENT_STATUS = (
 
 class PaymentManager(models.Manager):
 
+    def pending(query, user=None):
+        q = query.filter(status=STATUS_PENDING)
+        if user is not None:
+            q = q.filter(receiver=user)
+        return q
+
     def new_payment(self, sender, receiver_uuid, total_amount, currency_amount=0):
 
         #TODO: Check that the user has enough currency in her wallet and no more than the max currency percent
+
         receiver = get_user_by_related(receiver_uuid)
         if receiver is not None:
             user_type, instance = receiver.get_related_entity()
@@ -80,7 +87,7 @@ class Payment(models.Model):
 
         user_type, entity = self.receiver.get_related_entity()
         if user_type == 'entity':
-            #We calculate the bonification to give the sender
+            # If the receiver is an entity, we calculate the bonification to give the sender
             bonification = self.total_amount * (entity.bonification_percent / 100.0)
             if bonification > 0:
                 t = wallet_receiver.new_transaction(bonification, wallet=wallet_sender, bonification=True)

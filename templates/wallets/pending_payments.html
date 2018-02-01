@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}{% if is_new %}Nueva entidad{% else %}{{entity.name}}{% endif %}{% endblock%}
+
+{% block bodyattrs %}class="entity"{% endblock%}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12 p-4">
+            <h2 class="primary-title mb-4">Pagos pendientes</h2>
+
+            {% if pending_payments %}
+            <table class="table table-bordered table-hover table-responsive-lg">
+              <thead>
+                <tr>
+                    <th scope="col">Fecha</th>
+                  <th scope="col">Pagador</th>
+                  <th scope="col">Cantidad total</th>
+                  <th scope="col">En boniatos</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for payment in pending_payments %}
+                <tr class="link-row" data-href="{%url 'payment_detail' payment.pk%}">
+                  <th scope="row">{{payment.timestamp}}</th>
+                  <td>{{payment.sender}}</td>
+                  <td>{{payment.total_amount}} €</td>
+                  <td>{{payment.currency_amount}} Boniatos</td>
+                    <td>
+                        <a href="#" class="table-action rounded-circle"><i class="material-icons">done</i></a>
+                        <a href="#" class="table-action rounded-circle"><i class="material-icons">clear</i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% else %}
+                <div class="text-grey px-3">No tienes ningún pago pendiente de confirmación actualmente.</div>
+            {% endif %}
+            <hr class="mt-3">
+
+        </div>
+    </div>
+</div>
+{% endblock%}
+
+{% block scripts %}
+<script type="text/javascript">
+    $('.table-action').on('click', function(e){
+        e.preventDefault();
+
+        return false;
+    });
+</script>
+{% endblock scripts %}
