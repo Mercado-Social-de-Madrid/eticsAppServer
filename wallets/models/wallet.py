@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.db import models, transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 
 
 class Wallet(models.Model):
@@ -59,7 +60,7 @@ class Wallet(models.Model):
 
 
     def update_balance(self, new_transaction):
-        self.last_transaction = transaction
+        self.last_transaction = timezone.now()
         #TODO: calculate balance
         self.save()
 
