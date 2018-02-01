@@ -62,6 +62,8 @@ class Entity(models.Model):
                 return image.image.url
         return None
 
+    def bonus(self, total_amount):
+        return total_amount * (self.bonification_percent / 100.0)
 
     def max_accepted_currency(self, total_amount):
         return total_amount * (self.max_percent_payment / 100.0)

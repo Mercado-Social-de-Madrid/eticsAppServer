@@ -24,9 +24,11 @@ def payment_detail(request, pk):
     if not can_edit:
         pass
 
-    pending_payments = Payment.objects.pending(user=request.user)
+    user_type, entity = payment.receiver.get_related_entity()
+    bonus = entity.bonus(payment.total_amount)
     return render(request, 'wallets/payment_detail.html', {
-        'payment': payment
+        'payment': payment,
+        'bonus': bonus
     })
 
 
