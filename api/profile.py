@@ -9,31 +9,6 @@ from currency.models import Entity, Person
 from wallets.models import Wallet
 
 
-class WalletResource(ModelResource):
-
-    class Meta:
-        queryset = Wallet.objects.all()
-        include_resource_uri = False
-        always_return_data = True
-        list_allowed_methods = ['get']
-        resource_name = 'wallet'
-        fields = ['id', 'balance', 'last_transaction']
-
-        authentication = ApiKeyAuthentication()  # Endpoint based on ApiKey auth
-        authorization = Authorization()
-
-    def dispatch_list(self, request, **kwargs):
-        return self.dispatch_detail(request, **kwargs)
-
-    def obj_get(self, bundle, **kwargs):
-        try:
-            wallet = Wallet.objects.get(user=bundle.request.user)
-        except Wallet.DoesNotExist:
-            raise NotFound("User has no associated wallet")
-
-        return wallet
-
-
 class EntityResource(ModelResource):
 
     class Meta:
