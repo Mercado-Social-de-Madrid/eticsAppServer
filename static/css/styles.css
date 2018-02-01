@@ -281,3 +281,9 @@ h1, h2, h3, h4, .primary-title{
     margin-top:-9px;
 }
 .table-action:hover{ background-color:#d7d7d7; }
+
+
+.qr-container img{
+    width:45vw;
+
+}

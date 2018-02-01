@@ -39,10 +39,12 @@ INSTALLED_APPS = [
     'imagekit',
     'fcm_django',
     'ckeditor',
+    'qrcode',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
