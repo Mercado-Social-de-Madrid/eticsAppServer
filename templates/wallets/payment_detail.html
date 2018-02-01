@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}{% if is_new %}Nueva entidad{% else %}{{entity.name}}{% endif %}{% endblock%}
+
+{% block bodyattrs %}class="entity"{% endblock%}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3 col-md-4 mb-0">
+            <div class="text-center"><img class="img-fluid" src="{%static '/imgs/icon-payment.png' %}" alt="Pagos pendientes"> </div>
+        </div>
+        <div class="col-sm-9 col-md-8 px-4">
+                <div class="card">
+                    <div class="card-body px-5 pt-5">
+                        <h4 class="card-title">Detalles de pago</h4>
+                        <strong>Fecha: </strong> {{payment.timestamp}}<br>
+                        <p class="lead">{{payment.sender}}</p>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-6 feature"><span class="primary-title"><strong>Importe total:</strong></span> <div class="display-4"> {{payment.total_amount}}</div><span>Euros</span></div>
+                            <div class="col-sm-6 feature"><span class="primary-title"><strong>Bonificación:</strong></span>  <div class="display-4">{{ payment.currency_amount }}</div><span>Boniatos</span></div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer p-4 border-primary text-center">
+                        <a href="#" class="btn btn-lg btn-primary mr-3">Aceptar</a>
+                        <a href="#" class="btn btn-lg">Cancelar</a></div>
+
+
+                </div>
+
+
+        </div>
+    </div>
+</div>
+{% endblock%}
+
+{% block scripts %}
+<script type="text/javascript">
+    $('.table-action').on('click', function(e){
+        e.preventDefault();
+
+        return false;
+    });
+</script>
+{% endblock scripts %}

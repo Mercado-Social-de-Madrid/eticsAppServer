@@ -12,8 +12,9 @@
 <div class="container">
     <div class="row">
 
-        <div class="col-md-12 p-4">
-            <h2 class="primary-title mb-4">Pagos pendientes</h2>
+        <div class="col-md-12 px-4 pb-4">
+            <div class="text-center"><img class="img-fluid" src="{%static '/imgs/icon-payment.png' %}" alt="Pagos pendientes"> </div>
+            <h2 class="primary-title mb-4 mt-0">Pagos pendientes</h2>
 
             {% if pending_payments %}
             <table class="table table-bordered table-hover table-responsive-lg">
@@ -27,14 +28,14 @@
               </thead>
               <tbody>
                 {% for payment in pending_payments %}
-                <tr class="link-row" data-href="{%url 'payment_detail' payment.pk%}">
+                <tr class="link-row" data-href="{%url 'payment_detail' payment.pk%}" data-toggle="tooltip" data-placement="bottom" title="Ver detalles de pago">
                   <th scope="row">{{payment.timestamp}}</th>
                   <td>{{payment.sender}}</td>
                   <td>{{payment.total_amount}} €</td>
                   <td>{{payment.currency_amount}} Boniatos</td>
                     <td>
-                        <a href="#" class="table-action rounded-circle"><i class="material-icons">done</i></a>
-                        <a href="#" class="table-action rounded-circle"><i class="material-icons">clear</i></a>
+                        <a href="#" class="table-action rounded-circle" data-toggle="tooltip" data-placement="bottom" title="Aceptar pago"><i class="material-icons">done</i></a>
+                        <a href="#" class="table-action rounded-circle" data-toggle="tooltip" data-placement="bottom" title="Cancelar pago"><i class="material-icons">clear</i></a>
                     </td>
                 </tr>
                 {% endfor %}

@@ -77,7 +77,7 @@
             <a class="nav-link {% if is_offers_owner %}active{% endif %}" href="{% url 'user_offers' %}"><i class="ic ic-news"></i> Ofertas</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="ic ic-wallet"></i> Monedero</a>
+            <a class="nav-link {% if request.resolver_match.url_name == "user_wallet" %}active{% endif %}" href="{% url 'user_wallet' %}"><i class="ic ic-wallet"></i> Monedero</a>
           </li>
         </ul>
        </div>
