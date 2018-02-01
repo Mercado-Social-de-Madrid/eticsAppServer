@@ -5,7 +5,7 @@ from api.entities import EntitiesResource
 from api.payment import PaymentsResource
 from api.resources import  OffersResource
 from api.accounts import RegisterResource, UserResource
-from api.profile import WalletResource, EntityResource, PersonResource
+from api.profile import WalletResource, EntityResource, PersonResource, DeviceResource
 
 
 def get_api(version_name):
@@ -21,6 +21,7 @@ def get_api(version_name):
     api.register(OffersResource())
     api.register(PersonResource())
     api.register(PaymentsResource())
+    api.register(DeviceResource())
 
 
     return api

@@ -1,3 +1,4 @@
+from fcm_django.models import FCMDevice
 from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
@@ -28,9 +29,8 @@ class WalletResource(ModelResource):
         try:
             wallet = Wallet.objects.get(user=bundle.request.user)
         except Wallet.DoesNotExist:
-            raise NotFound("User has no associated entity")
+            raise NotFound("User has no associated wallet")
 
-        print wallet.pk
         return wallet
 
 
@@ -113,3 +113,35 @@ class PersonResource(ModelResource):
         return bundle
 
 
+class DeviceResource(ModelResource):
+
+    class Meta:
+        queryset = FCMDevice.objects.all()
+        include_resource_uri = False
+        always_return_data = True
+        list_allowed_methods = ['get', 'put']
+        resource_name = 'device'
+        excludes = []
+
+        authentication = ApiKeyAuthentication()  # Endpoint based on ApiKey auth
+        authorization = Authorization()
+
+    def dispatch_list(self, request, **kwargs):
+        return self.dispatch_detail(request, **kwargs)
+
+    def put_detail(self, request, **kwargs):
+        return self.patch_detail(request, **kwargs)
+
+    def obj_get(self, bundle, **kwargs):
+        try:
+            device = FCMDevice.objects.get(user=bundle.request.user)
+        except FCMDevice.DoesNotExist:
+            raise NotFound("User has no associated person")
+
+        return device
+
+
+    def hydrate(self, bundle):
+        if bundle.request.user:
+            bundle.obj.user = bundle.request.user
+        return bundle
