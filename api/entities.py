@@ -11,8 +11,38 @@ from tastypie.utils import trailing_slash
 
 from api.categories import CategoriesResource
 from api.resources import OffersResource
-from currency.models import Entity
+from currency.models import Entity, Gallery, GalleryPhoto
 from offers.models import Offer
+
+
+class PhotoGalleryResource(ModelResource):
+
+    class Meta:
+        queryset = GalleryPhoto.objects.all()
+        include_resource_uri = False
+        list_allowed_methods = ['get']
+        resource_name = 'photo'
+        collection_name = 'photos'
+        excludes = ['title', 'id', 'uploaded']
+
+        authentication = Authentication()
+        authorization = Authorization()
+
+
+class GalleryResource(ModelResource):
+    photos = fields.ToManyField(PhotoGalleryResource, 'photos', full=True)
+
+    class Meta:
+        queryset = Gallery.objects.all()
+        include_resource_uri = False
+        list_allowed_methods = ['get']
+        resource_name = 'gallery'
+        collection_name = 'galleries'
+        excludes = ['title', 'id']
+
+
+        authentication = Authentication()
+        authorization = Authorization()
 
 class EntitiesResource(ModelResource):
     offers = fields.ToManyField(OffersResource,
@@ -20,6 +50,7 @@ class EntitiesResource(ModelResource):
                                 full=True, null=True)
 
     categories = fields.ToManyField(CategoriesResource, 'categories', full=False, null=True)
+    gallery = fields.ToOneField(GalleryResource, 'gallery', full=True, null=True)
 
     class Meta:
         queryset = Entity.objects.all()
