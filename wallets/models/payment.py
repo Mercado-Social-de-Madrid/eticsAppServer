@@ -96,6 +96,7 @@ class Payment(models.Model):
             bonification = self.total_amount * (entity.bonification_percent / 100.0)
             if bonification > 0:
                 t = wallet_receiver.new_transaction(bonification, wallet=wallet_sender, bonification=True)
+                wallet_sender.notify_transaction(t)
 
         #If the user paid some part in currency, we make the transaction
         if self.currency_amount > 0:

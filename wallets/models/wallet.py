@@ -8,6 +8,7 @@ from django.db import models, transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
+from fcm_django.models import FCMDevice
 
 
 class Wallet(models.Model):
@@ -24,6 +25,7 @@ class Wallet(models.Model):
 
     def __unicode__(self):
         return self.user.username + ': ' + str(self.balance)
+
 
     @transaction.atomic
     def new_transaction(self, amount, wallet=None, concept=None, bonification=False, is_euro_purchase=False, **kwargs):
@@ -63,6 +65,25 @@ class Wallet(models.Model):
         self.last_transaction = timezone.now()
         #TODO: calculate balance
         self.save()
+
+
+    def notify_transaction(self, transaction, silent=False):
+
+        device = FCMDevice.objects.filter(user=self.user).first()
+        data = {
+            'amount': transaction.amount,
+            'is_bonification': transaction.is_bonification,
+            'is_euro_purchase': transaction.is_euro_purchase,
+            'concept': transaction.concept
+        }
+
+        if silent:
+            result = device.send_message(data=data)
+        else:
+            result = device.send_message(title="Has recibido una transferencia", body=data['concept'], data=data)
+
+        print result
+
 
 
 # Method to create the wallet for every new user
