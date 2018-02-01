@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import uuid
 
+import math
 from django.contrib.auth.models import User
 from django.db import models, transaction
 from django.utils import timezone
@@ -28,7 +29,7 @@ class PaymentManager(models.Manager):
             q = q.filter(receiver=user)
         return q
 
-    def new_payment(self, sender, receiver_uuid, total_amount, currency_amount=0):
+    def new_payment(self, sender, receiver_uuid, total_amount=0, currency_amount=0):
 
         #TODO: Check that the user has enough currency in her wallet and no more than the max currency percent
 
@@ -36,6 +37,10 @@ class PaymentManager(models.Manager):
         if receiver is not None:
             user_type, instance = receiver.get_related_entity()
             status = STATUS_PENDING if user_type == 'entity' else STATUS_ACCEPTED
+
+            if user_type == 'entity':
+            # Check that the currency amount is not bigger than the max amount percent
+                currency_amount = min(currency_amount, instance.max_accepted_currency(total_amount))
 
             return self.create(
                 sender=sender,

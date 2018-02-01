@@ -63,6 +63,9 @@ class Entity(models.Model):
         return None
 
 
+    def max_accepted_currency(self, total_amount):
+        return total_amount * (self.max_percent_payment / 100.0)
+
     class Meta:
         verbose_name = 'Entidad'
         verbose_name_plural = 'Entidades'
