@@ -27,7 +27,7 @@ class PaymentsResource(ModelResource):
         resource_name = 'payment'
         collection_name = 'payments'
         excludes = []
-
+        always_return_data = True
 
         authentication = ApiKeyAuthentication()
         authorization = Authorization()

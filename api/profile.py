@@ -136,7 +136,7 @@ class DeviceResource(ModelResource):
         try:
             device = FCMDevice.objects.get(user=bundle.request.user)
         except FCMDevice.DoesNotExist:
-            raise NotFound("User has no associated person")
+            device = FCMDevice.objects.create(user=bundle.request.user)
 
         return device
 
