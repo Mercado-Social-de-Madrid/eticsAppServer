@@ -293,3 +293,11 @@ h1, h2, h3, h4, .primary-title{
     bottom:3rem;
     right:3rem;
 }
+
+.table tbody td.amount{
+    font-size:1.2em;
+    font-family:'courier';
+    text-align:left;
+}
+.table tbody td.amount.positive{ color: #36932f; }
+.table tbody td.amount.negative{ color: #cb1d1d; }

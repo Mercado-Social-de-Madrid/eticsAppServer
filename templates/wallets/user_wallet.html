@@ -2,16 +2,100 @@
 {% load staticfiles %}
 {% load settings_value %}
 {% load l10n %}
-
-{% block title %}{% if is_new %}Nueva entidad{% else %}{{entity.name}}{% endif %}{% endblock%}
+{% load i18n %}
+{% block title %}Monedero{% endblock%}
 
 {% block bodyattrs %}class="entity"{% endblock%}
 
 {% block content %}
 
-<div class="container">
-    {{wallet.balance}}
+<div class="container px-md-5">
+        <div class="row">
+            <div class="col-md-7">
+                 <div class="card mb-4">
+                     <div class="card-body py-4">
+                         <div class="row">
+                             <div class="col-sm-4" style="border-right:1px solid #ccc;">
+                                 <div class="feature">
+                                <h4 class="card-title"><i class="ic ic-wallet"></i>Saldo</h4>
+                                <div class="display-2"> {{wallet.balance}}</div><span>Boniatos</span></div>
+                             </div>
+                             <div class="col-sm-8 pl-4">
+                                 <button type="button" class="btn text-primary btn-lg mb-3">Nueva transferencia</button><br>
+                    <button type="button" class="btn text-primary btn-lg">Obtener boniatos</button>
+                             </div>
+                         </div>
+
+                     </div>
+                 </div>
+            </div>
+
+            <div class="col-md-5">
+                {% if pending_payments %}
+                    <div class="card mb-4 bg-primary text-light">
+                        <div class="card-body py-4 pb-3">
+                            <i class="material-icons">error_outline</i> <strong>Atención! </strong>tienes<br><br>
+                            <div class="figure">
+                                <span class="number text-light">{{pending_payments|length}}</span>
+                                <span class="label text-light">
+                                    {% blocktrans count payments=pending_payments|length %}
+                                    pago pendiente <br>de revisión
+                                    {% plural %}
+                                    pagos pendientes <br>de revisión
+                                    {% endblocktrans %}
+                                </span>
+                            </div>
+                            <a href="{% url 'pending_payments' %}" class="btn btn-outline-light mt-5">Revisar</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="card mb-4 bg-light">
+                        <div class="card-body px-5 py-4 pt-5">
+                            <i class="material-icons">done_all</i><br><br>
+                            <p class="lead primary-title text-dark" >No tienes pagos pendientes de revision</p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+
+            <div class="card-body py-4">
+                <h5 class="card-title px-2"><i class="ic ic-wallet"></i>Últimos movimientos</h5>
+
+                <table class="table table-hover">
+              <thead>
+                <tr>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Hora</th>
+                    <!--TODO:añadir referencia de alguna forma-->
+                  <th scope="col">Cuenta</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Bonificación</th>
+                    <th scope="col">Saldo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for tr in transactions %}
+                <tr>
+                  <th scope="row">{{tr.timestamp|date:'d/m/Y'}}</th>
+                    <td scope="row">{{tr.timestamp|date:'H:i:s'}}</td>
+
+                  <td>{{tr.related}}</td>
+                  <td class="amount {% if tr.amount > 0 %}positive{%else%}negative{%endif%}">{{tr.amount}}</td>
+                  <td class="text-center">{%if tr.is_bonification %} <i class="material-icons">done</i> {% endif %}</td>
+                    <td class="amount {% if tr.current_balance < 0 %}negative{%endif%}">{{tr.current_balance}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+        </div>
+        </div>
 </div>
+
+
 {% endblock%}
 
 {% block scripts %}

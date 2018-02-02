@@ -44,7 +44,7 @@ class TransactionLogResource(ModelResource):
         list_allowed_methods = ['get', 'post']
         resource_name = 'transaction'
         collection_name = 'transactions'
-        excludes = []
+        excludes = ['id']
         always_return_data = True
 
         authentication = ApiKeyAuthentication()

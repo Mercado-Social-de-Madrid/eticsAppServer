@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
-from wallets.models import Payment, Wallet
+from wallets.models import Payment, Wallet, TransactionLog
 
 
 @login_required
@@ -51,7 +51,9 @@ def user_wallet(request):
     pending_payments = Payment.objects.pending(user=request.user)
     wallet = Wallet.objects.filter(user=request.user).first()
 
+    transactions = TransactionLog.objects.filter(wallet=wallet)
+
     return render(request, 'wallets/user_wallet.html', {
         'pending_payments': pending_payments,
-        'wallet': wallet
+        'wallet': wallet, 'transactions':transactions
     })

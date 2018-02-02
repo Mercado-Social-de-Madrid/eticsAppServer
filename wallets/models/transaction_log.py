@@ -51,5 +51,5 @@ class TransactionLog(models.Model):
     class Meta:
         verbose_name = 'Movimiento'
         verbose_name_plural = 'Movimientos'
-        ordering = ['timestamp']
+        ordering = ['-timestamp']
 
