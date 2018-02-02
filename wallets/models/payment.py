@@ -90,6 +90,12 @@ class Payment(models.Model):
             return
             # TODO: create exception
 
+
+        #If the user paid some part in currency, we make the transaction
+        if self.currency_amount > 0:
+            t = wallet_sender.new_transaction(self.currency_amount, wallet=wallet_receiver)
+            wallet_receiver.notify_transaction(t, silent=True)
+
         user_type, entity = self.receiver.get_related_entity()
         if user_type == 'entity':
             # If the receiver is an entity, we calculate the bonification to give the sender
@@ -98,9 +104,6 @@ class Payment(models.Model):
                 t = wallet_receiver.new_transaction(bonification, wallet=wallet_sender, bonification=True)
                 wallet_sender.notify_transaction(t)
 
-        #If the user paid some part in currency, we make the transaction
-        if self.currency_amount > 0:
-            t = wallet_sender.new_transaction(self.currency_amount, wallet=wallet_receiver)
 
         self.status = STATUS_ACCEPTED
         self.processed = timezone.now()
