@@ -12,12 +12,16 @@ admin.site.register(Transaction)
 def accept(modeladmin, request, queryset):
     for payment in queryset:
         payment.accept_payment()
-
 accept.short_description = "Aceptar pago"
 
+def cancel(modeladmin, request, queryset):
+    for payment in queryset:
+        payment.cancel_payment()
+cancel.short_description = "Cancelar pago"
+
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ['sender', 'receiver', 'total_amount', 'status']
+    list_display = ['sender', 'receiver', 'total_amount', 'currency_amount', 'status']
     ordering = ['status']
-    actions = [accept]
+    actions = [accept, cancel]
 
 admin.site.register(Payment, PaymentAdmin)

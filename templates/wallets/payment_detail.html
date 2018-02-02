@@ -29,8 +29,9 @@
                     </div>
 
                     <div class="card-footer p-4 border-primary text-center">
-                        <a href="#" class="btn btn-lg btn-primary mr-3">Aceptar</a>
-                        <a href="#" class="btn btn-lg">Cancelar</a></div>
+                        <form method="POST" class="d-inline-block"> {% csrf_token %} <input type="hidden" name="action" value="accept"> <button type="submit" href="#" class="btn btn-lg btn-primary mr-3">Aceptar</button></form>
+                        <form method="POST" class="d-inline-block"> {% csrf_token %} <input type="hidden" name="action" value="cancel"> <button type="submit" href="#" class="btn btn-lg">Cancelar</button></form>
+                    </div>
 
 
                 </div>

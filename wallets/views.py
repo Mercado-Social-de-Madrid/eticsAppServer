@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
 from wallets.models import Payment, Wallet
 
@@ -22,14 +22,27 @@ def payment_detail(request, pk):
     can_edit = request.user == payment.receiver or request.user.is_superuser
 
     if not can_edit:
+        #TODO: Message with forbidden permssion
         pass
 
-    user_type, entity = payment.receiver.get_related_entity()
-    bonus = entity.bonus(payment.total_amount)
-    return render(request, 'wallets/payment_detail.html', {
-        'payment': payment,
-        'bonus': bonus
-    })
+    if request.method == "POST":
+        action = request.POST.get("action", "")
+
+        if action == 'accept':
+            payment.accept_payment()
+            return redirect('pending_payments')
+
+        if action == 'cancel':
+            payment.cancel_payment()
+            return redirect('pending_payments')
+
+    else:
+        user_type, entity = payment.receiver.get_related_entity()
+        bonus = entity.bonus(payment.total_amount)
+        return render(request, 'wallets/payment_detail.html', {
+            'payment': payment,
+            'bonus': bonus
+        })
 
 
 @login_required
