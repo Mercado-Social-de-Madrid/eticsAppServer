@@ -78,6 +78,8 @@ class Wallet(models.Model):
     def notify_transaction(self, transaction, silent=False):
 
         device = FCMDevice.objects.filter(user=self.user).first()
+        if device is None:
+            return
         data = {
             'amount': transaction.amount,
             'is_bonification': transaction.is_bonification,
@@ -88,7 +90,7 @@ class Wallet(models.Model):
         if silent:
             result = device.send_message(data=data)
         else:
-            result = device.send_message(title="Has recibido una transferencia", body=data['concept'], data=data)
+            result = device.send_message(title="Ya tienes tu bonificación!", body=data['concept'], data=data)
 
         print result
 

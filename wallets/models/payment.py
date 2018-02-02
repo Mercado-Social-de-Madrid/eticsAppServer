@@ -117,5 +117,7 @@ class Payment(models.Model):
             return
             # TODO: create exception
 
+        #TODO: Notify sender
+
         self.status = STATUS_CANCELLED
         self.save()

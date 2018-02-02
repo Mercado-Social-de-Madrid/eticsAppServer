@@ -2,20 +2,30 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from wallets.models import Wallet
+from wallets.models import Wallet, Transaction
+
 
 class TransactionLogManager(models.Manager):
 
     def create_log(self, wallet, transaction, new_balance):
 
         amount = transaction.amount
+        name = ''
         if wallet == transaction.wallet_from:
             amount *= -1
+            user_type, instance = transaction.wallet_to.user.get_related_entity()
+            name = instance.name
+        elif transaction.wallet_from:
+            user_type, instance = transaction.wallet_from.user.get_related_entity()
+            name = instance.name
+
 
         return self.create(
             wallet=wallet,
             timestamp=transaction.timestamp,
             amount=amount,
+            transaction=transaction,
+            related=name,
             concept=transaction.concept,
             made_byadmin=transaction.made_byadmin,
             is_bonification=transaction.is_bonification,
@@ -33,6 +43,10 @@ class TransactionLog(models.Model):
     is_bonification = models.BooleanField(default=False, verbose_name='Bonificación')
     is_euro_purchase = models.BooleanField(default=False, verbose_name='Compra de euros')
     current_balance = models.FloatField(default=0, verbose_name='Saldo')
+    transaction = models.ForeignKey(Transaction, blank=True, null=True)
+    related = models.TextField(blank=True, null=True, verbose_name='Concepto')
+
+    objects = TransactionLogManager()
 
     class Meta:
         verbose_name = 'Movimiento'

@@ -5,7 +5,7 @@ from tastypie.authorization import Authorization
 from tastypie.exceptions import NotFound
 from tastypie.resources import ModelResource
 
-from wallets.models import Payment, Transaction, Wallet
+from wallets.models import Payment, Transaction, Wallet, TransactionLog
 
 
 class PaymentsResource(ModelResource):
@@ -37,9 +37,9 @@ class PaymentsResource(ModelResource):
 
 
 
-class TransactionsResource(ModelResource):
+class TransactionLogResource(ModelResource):
     class Meta:
-        queryset = Transaction.objects.all()
+        queryset = TransactionLog.objects.all()
         include_resource_uri = False
         list_allowed_methods = ['get', 'post']
         resource_name = 'transaction'
@@ -53,9 +53,9 @@ class TransactionsResource(ModelResource):
 
 
 class WalletResource(ModelResource):
-    transactions = fields.ToManyField(TransactionsResource,
-                                attribute=lambda bundle: Transaction.objects.filter(
-                                    Q(wallet_to=bundle.obj) | Q(wallet_from=bundle.obj)),
+    transaction_logs = fields.ToManyField(TransactionLogResource,
+                                attribute=lambda bundle: TransactionLog.objects.filter(
+                                   wallet=bundle.obj),
                                 full=True, null=True)
 
     class Meta:
@@ -75,10 +75,6 @@ class WalletResource(ModelResource):
     # Add logical amounts
     def dehydrate(self, bundle):
         print bundle.obj
-
-        for t in bundle.data['transactions']:
-            if t.obj.wallet_from == bundle.obj:
-                t.data['amount'] = -t.data['amount']
 
         return bundle
 
