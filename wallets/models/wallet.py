@@ -55,15 +55,23 @@ class Wallet(models.Model):
             **kwargs)
 
         if wallet_from:
-            wallet_from.update_balance(transaction)
-        wallet_to.update_balance(transaction)
+            wallet_from.update_balance(transaction, is_sender=True)
+        wallet_to.update_balance(transaction, is_receiver=True)
 
         return transaction
 
+    @transaction.atomic
+    def update_balance(self, new_transaction, is_sender=False, is_receiver=False):
+        self.last_transaction = new_transaction.timestamp
 
-    def update_balance(self, new_transaction):
-        self.last_transaction = timezone.now()
-        #TODO: calculate balance
+        if is_sender:
+            self.balance -= new_transaction.amount
+        if is_receiver:
+            self.balance += new_transaction.amount
+
+        from wallets.models import TransactionLog
+        TransactionLog.objects.create_log(self, new_transaction, self.balance)
+
         self.save()
 
 
