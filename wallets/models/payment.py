@@ -94,7 +94,7 @@ class Payment(models.Model):
         #If the user paid some part in currency, we make the transaction
         if self.currency_amount > 0:
             t = wallet_sender.new_transaction(self.currency_amount, wallet=wallet_receiver)
-            wallet_receiver.notify_transaction(t, silent=True)
+            #wallet_receiver.notify_transaction(t, silent=True)
 
         user_type, entity = self.receiver.get_related_entity()
         if user_type == 'entity':
