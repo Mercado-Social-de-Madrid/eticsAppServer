@@ -6,6 +6,9 @@ from django.db.models import Q
 from django.utils.deconstruct import deconstructible
 
 # Random name generator to avoid file overwrites
+from fcm_django.models import FCMDevice
+
+
 @deconstructible
 class RandomFileName(object):
     def __init__(self, path):
@@ -57,3 +60,27 @@ def get_query(query_string, search_fields):
             query = query & or_query
 
     return query
+
+
+
+def notify_user(user, data, title=None, message=None, silent=True):
+    '''
+        Sends an FCM notification to a user
+        If the message is silent, title and message are included in the data dictionary
+    '''
+
+    device = FCMDevice.objects.filter(user=user).first()
+    if device is None:
+        return
+
+    if not data:
+        data = {}
+    if not message and not title:
+        silent = True
+    if title and silent:
+        data['title'] = title
+    if message and silent:
+        data['message'] = message
+
+    result = device.send_message(title, message, data=data)
+    print result

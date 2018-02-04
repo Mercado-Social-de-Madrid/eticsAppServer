@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.db import models, transaction
 from django.utils import timezone
 
+from currency.helpers import notify_user
 from currency.models.extend_user import get_user_by_related
 from wallets.models import Wallet
 
@@ -31,7 +32,6 @@ class PaymentManager(models.Manager):
 
     def new_payment(self, sender, receiver_uuid, total_amount=0, currency_amount=0):
 
-        #TODO: Check that the user has enough currency in her wallet and no more than the max currency percent
 
         receiver = get_user_by_related(receiver_uuid)
         if receiver is not None:
@@ -39,8 +39,13 @@ class PaymentManager(models.Manager):
             status = STATUS_PENDING if user_type == 'entity' else STATUS_ACCEPTED
 
             if user_type == 'entity':
-            # Check that the currency amount is not bigger than the max amount percent
+                # Check that the currency amount is not bigger than the max amount percent
                 currency_amount = min(currency_amount, instance.max_accepted_currency(total_amount))
+
+            sender_wallet = Wallet.objects.filter(user=sender).first()
+            if sender_wallet.balance < currency_amount:
+                print 'User does not have enough cash!'
+                #TODO: Raise exception?
 
             return self.create(
                 sender=sender,
@@ -117,7 +122,7 @@ class Payment(models.Model):
             return
             # TODO: create exception
 
-        #TODO: Notify sender
+        notify_user(user=self.sender, title="Pago cancelado", message="La entidad ha cancelado el pago")
 
         self.status = STATUS_CANCELLED
         self.save()

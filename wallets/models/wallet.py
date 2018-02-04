@@ -10,6 +10,8 @@ from django.dispatch import receiver
 from django.utils import timezone
 from fcm_django.models import FCMDevice
 
+from currency.helpers import notify_user
+
 
 class Wallet(models.Model):
 
@@ -77,9 +79,6 @@ class Wallet(models.Model):
 
     def notify_transaction(self, transaction, silent=False):
 
-        device = FCMDevice.objects.filter(user=self.user).first()
-        if device is None:
-            return
         data = {
             'amount': transaction.amount,
             'is_bonification': transaction.is_bonification,
@@ -87,13 +86,8 @@ class Wallet(models.Model):
             'concept': transaction.concept
         }
 
-        if silent:
-            result = device.send_message(data=data)
-        else:
-            result = device.send_message(title="Ya tienes tu bonificación!", body=data['concept'], data=data)
-
-        print result
-
+        title = 'Ya tienes tu bonificación!' if transaction.is_bonification else 'Has recibido una transferencia'
+        notify_user(self.user, title=title, message=data['concept'], data=data, silent=silent)
 
 
 # Method to create the wallet for every new user
