@@ -85,10 +85,21 @@
 </div>
    {% endif %}
 <div id="main-content">
+{% block content %}{% endblock content %}
+</div>
 
+   {% if messages %}
+   <div class="toast-messages">
+       {{ messages | length}}
+       {% for message in messages %}
+        <div class="toast {% if message.tags %}{{ message.tags }}{% endif %}">
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}<strong>Ouch!</strong> {% endif %}
+            {{ message }}
+        </div>
+        {% endfor %}
+   </div>
+   {% endif %}
 
-    {% block content %}{% endblock content %}
-    </div>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>

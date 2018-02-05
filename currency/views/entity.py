@@ -1,20 +1,11 @@
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 
 from currency.forms.EntityForm import EntityForm
 from currency.forms.galleryform import PhotoGalleryForm
-from currency.models import Entity, Gallery, GalleryPhoto
-
-
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
-
-from currency.forms.EntityForm import EntityForm
-from currency.forms.galleryform import PhotoGalleryForm
-from currency.models import Entity, Gallery, GalleryPhoto
+from currency.models import Entity, Gallery
 from offers.models import Offer
 
 
@@ -49,7 +40,8 @@ def entity_edit(request, pk):
     can_edit = request.user.is_superuser or request.user == entity.user
 
     if not can_edit:
-        return redirect(reverse('entity_detail', kwargs={'pk':entity.pk} ) + '?permissions=false')
+        messages.add_message(request, messages.ERROR, 'No tienes permisos para editar la entidad')
+        return redirect('entity_detail', pk=entity.pk )
 
     gallery_factory = PhotoGalleryForm.getGalleryFormset(gallery)
     initial_photos = PhotoGalleryForm.get_initial(gallery)
