@@ -19,6 +19,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 
 import currency.urls as currency_urls
+import rest_api.urls as api_urls
 import offers.urls as offers_urls
 import wallets.urls as wallets_urls
 from api.urls import get_api
@@ -29,5 +30,7 @@ urlpatterns = [
     url(r'^', include(wallets_urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(get_api('v1').urls)),
+
+    url(r'^api2/', include(api_urls)),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'currency',
     'tastypie',
     'imagekit',
+    'rest_framework',
     'fcm_django',
     'ckeditor',
     'qrcode',
