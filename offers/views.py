@@ -102,6 +102,7 @@ def offer_edit(request, entity_pk, offer_pk):
         form = OfferForm(instance=offer)
 
     return render(request, 'offers/edit.html', {
+        'offer': offer,
         'entity': entity,
         'form': form
     })

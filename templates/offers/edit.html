@@ -21,30 +21,44 @@
 </div>
 
 <div class="container px-md-5">
-    <div class="card mx-md-5 mb-4 p-3">
+    <div class="card mx-lg-5 mb-4 p-3">
         <div class="card-body">
             <form method="POST" class="post-form gallery-form" enctype="multipart/form-data">
     {% csrf_token %}
             <div class="card-title primary-title"><h3><i class="ic ic-news"></i> {%if is_new %}Nueva oferta{%else%}Editar oferta{%endif%}</h3></div>
             {{form.media}}
 
-            <div class="form-group" data-links="#offer-title">
-                <label>Título</label>
-                {{ form.title }}
-            </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="form-group" data-links="#offer-title">
+                            <label>Título</label>
+                            {{ form.title }}
+                        </div>
+                    </div>
 
-            <div class="row">
-                <div class="col-md-5">
+                    <div class="col-md-5 mb-4">
+                        <label>Imagen de la oferta</label>
 
-                    <img class="img-fluid" src="{%static 'imgs/default-offer.png' %}">
-                </div>
-                <div class="col-md-7">
-                     <div class="form-group">
-                         <label>Imagen de la oferta</label>
-                        {{ form.banner_image }}
+                        <div class="card form-photo ">
+                          <img class="img-fluid" id="offer-thumb" src="{% if offer.banner_image %}{{ offer.banner_image.url }}{% else %}{%static 'imgs/default-offer.png' %}{% endif %}" alt="{{offer.title}}">
+
+                            <div class=" action-btns outside">
+                                <a class="btn btn-primary btn-float btn-lg btn-fab-photo" href="#" data-toggle="tooltip" data-placement="bottom" title="Editar oferta"><i class="material-icons">edit</i></a>
+                             </div>
+
+                            <div class="file-field" data-img-target="#offer-thumb">
+                            <div class="uploaded">
+                                    {{ form.banner_image }}
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+
                     </div>
                 </div>
-            </div>
 
 
             <div class="row">

@@ -56,7 +56,6 @@ h1, h2, h3, h4, .primary-title{
     height:100%;
     background-size:cover;
     background-position:center;
-
 }
 
 .file-field input[type=file] {
@@ -148,7 +147,11 @@ h1, h2, h3, h4, .primary-title{
     margin-top:-2rem;
     padding-right:2rem;
 }
-
+.card .action-btns.outside{
+    position:absolute;
+    bottom:-1.5rem;
+    right:1em;
+}
 .ic{ display: inline-block; background: url('icons.png') no-repeat; overflow: hidden; text-indent: -9999px; text-align: left; width: 24px; height: 24px;     vertical-align: middle;
     top: -2px;
     left: -2px;
