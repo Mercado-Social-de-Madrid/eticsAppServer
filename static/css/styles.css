@@ -88,6 +88,11 @@ h1, h2, h3, h4, .primary-title{
 }
 .nav-tabs .nav-link::before{ background-color:#912991; }
 
+.nav-tabs .nav-link i.material-icons{
+    font-size: 30px;
+    height: 24px;
+    color:#912991;
+}
 .jumbo-header{ margin-top:-2em; }
 .jumbo-header .jumbotron{
     background-color:#C6E504 ;
