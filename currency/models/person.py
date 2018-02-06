@@ -3,8 +3,10 @@ from __future__ import unicode_literals
 
 import uuid
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, ResizeToFill
@@ -44,3 +46,12 @@ class Person(models.Model):
 
     def __unicode__(self):
         return self.user.username + ':' + self.name + ' ' + self.surname
+
+# Method to add every user with a related person to the persons group
+@receiver(post_save, sender=Person)
+def add_user_to_group(sender, instance, created, **kwargs):
+
+    if created:
+        print 'Adding user to persons group'
+        group = Group.objects.get(name='persons')
+        instance.user.groups.add(group)

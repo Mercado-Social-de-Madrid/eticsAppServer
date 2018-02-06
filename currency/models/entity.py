@@ -3,8 +3,10 @@ from __future__ import unicode_literals
 
 import uuid
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, ResizeToFill
@@ -73,6 +75,17 @@ class Entity(models.Model):
         verbose_name_plural = 'Entidades'
         ordering = ['registered']
 
-
     def __unicode__(self):
         return self.name
+
+
+# Method to add every user with a related entity to the entities group
+@receiver(post_save, sender=Entity)
+def add_user_to_group(sender, instance, created, **kwargs):
+
+    if created:
+        print 'Adding user to entities group'
+        group = Group.objects.get(name='entities')
+        instance.user.groups.add(group)
+
+        instance.gallery = Gallery.objects.create()
