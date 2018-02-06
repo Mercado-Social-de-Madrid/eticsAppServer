@@ -13,18 +13,18 @@ def index(request):
 @login_required
 def profile(request):
     UserModel = get_user_model()
-    type, entity = UserModel.get_related_entity(request.user)
+    type, instance = UserModel.get_related_entity(request.user)
 
-    params = {}
+    params = { 'type': type }
+    wallet = Wallet.objects.filter(user=request.user).first()
+    params['balance'] = wallet.balance
+
     if type == 'entity':
-        params['type'] = type
-        params['entity'] = entity
-
-        params['num_offers'] = Offer.objects.current(entity=entity).count()
-        wallet = Wallet.objects.filter(user=request.user).first()
-        params['balance'] = wallet.balance
-
+        params['entity'] = instance
+        params['num_offers'] = Offer.objects.current(entity=instance).count()
         params['pending_payments'] = Payment.objects.pending(user=request.user)
-
+    elif type == 'person':
+        params['type'] = type
+        params['person'] = instance
 
     return render(request, 'profile/index.html', params)

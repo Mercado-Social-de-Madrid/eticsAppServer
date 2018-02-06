@@ -38,6 +38,9 @@ class Person(models.Model):
         verbose_name_plural = 'Personas'
         ordering = ['registered']
 
+    @property
+    def full_name(self):
+        return self.name + ' ' + self.surname
 
     def __unicode__(self):
         return self.user.username + ':' + self.name + ' ' + self.surname

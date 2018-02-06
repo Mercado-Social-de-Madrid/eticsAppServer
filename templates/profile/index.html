@@ -8,6 +8,33 @@
 <div class="container">
     <div class="row">
 
+        {% if type == 'person' %}
+        <div class="col-md-6">
+            <div class="card mb-4">
+                {% if person.profile_image %}
+                <div class="card-top-img" style="background-image:url('{{person.profile_image.url}}')"></div>
+                {% endif %}
+                <div class="card-body" href="{% url 'entity_detail' person.pk %}">
+                    <div class="card-title primary-title mb-0"><h3 class="mb-0"><i class="ic ic-entity"></i> Mi perfil</h3></div>
+                    <div class="card-text text-dark">
+                    {% if person %}
+                        <p class="lead my-0"> {{ person.full_name }}</p>
+                        {{person.email}}
+                    {% endif %}
+                    </div>
+                    <a class="btn btn-primary btn-float btn-lg" data-toggle="tooltip" data-placement="bottom" title="Editar entidad" href="{% url 'entity_edit' person.pk %}"><i class="material-icons">mode_edit</i></a>
+
+                </div>
+
+                <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Ver balance social</a>
+                    <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Ver estadísticas de favoritos</a>
+              </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if type == 'entity' %}
         <div class="col-md-4">
             <div class="card mb-4">
                 {% if entity.first_photo_url %}
@@ -30,11 +57,10 @@
                     <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Ver estadísticas de favoritos</a>
               </div>
             </div>
-
-
         </div>
+        {% endif %}
 
-        <div class="col-md-4">
+        <div class="{% if type == 'entity' %}col-md-4{% else %}col-md-6{% endif %}">
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="card-title primary-title"><h3><i class="ic ic-wallet"></i> Saldo</h3></div>
@@ -61,6 +87,7 @@
             </div>
         </div>
 
+        {% if type == 'entity' %}
         <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-body">
@@ -79,21 +106,23 @@
 
             </div>
         </div>
+        {% endif %}
 
     </div>
 
 
 
-
+    {% if type == 'entity' %}
     <div class="row">
         <button type="button" class="fab btn btn-primary btn-lg rounded-circle px-3 py-4" data-toggle="modal" data-target="#qrModal">
           <i class="fa fa-qrcode fa-2x"></i>
         </button>
 
     </div>
+    {% endif %}
 </div>
 
-
+{% if type == 'entity' %}
 <div class="modal  fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="qrModal" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content ">
@@ -111,4 +140,6 @@
     </div>
   </div>
 </div>
+{% endif %}
+
 {% endblock content %}
