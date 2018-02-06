@@ -90,7 +90,6 @@
 
    {% if messages %}
    <div class="toast-messages">
-       {{ messages | length}}
        {% for message in messages %}
         <div class="toast {% if message.tags %}{{ message.tags }}{% endif %}">
             {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}<strong>Ouch!</strong> {% endif %}
@@ -101,7 +100,7 @@
    {% endif %}
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="{% static "js/bootstrap.min.js" %}"></script>
     <!-- Then Material JavaScript on top of Bootstrap JavaScript -->

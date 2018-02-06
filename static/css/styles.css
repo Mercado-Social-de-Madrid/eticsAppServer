@@ -311,6 +311,7 @@ h1, h2, h3, h4, .primary-title{
     bottom:0;
     right:0;
     padding:1.3rem;
+    z-index:100;
 }
 .toast-messages .toast{
     padding:1.5rem;

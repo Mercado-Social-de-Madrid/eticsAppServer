@@ -14,6 +14,9 @@ def user_entity(request):
     type, entity = get_user_model().get_related_entity(request.user)
     if type == 'entity':
         return redirect('entity_detail', pk= entity.pk)
+    else:
+        messages.add_message(request, messages.ERROR, 'No tienes permisos para gestionar una entidad')
+        return redirect('dashboard')
 
 
 def entity_detail(request, pk):

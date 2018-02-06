@@ -56,4 +56,12 @@ $(function(){
 	});
 
 
+    var TOAST_DELAY = 1200;
+    var toastCounter = 1;
+    $($('.toast-messages .toast').get().reverse()).each(function(){
+        var message = $(this);
+        setTimeout(function(){ console.log(message); message.fadeOut(); }, TOAST_DELAY * toastCounter);
+        toastCounter++;
+    });
+
 });

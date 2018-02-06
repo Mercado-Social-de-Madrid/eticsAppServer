@@ -19,17 +19,26 @@ def user_offers(request):
     type, entity = get_user_model().get_related_entity(request.user)
     if type == 'entity':
         return redirect('entity_offers', entity_pk= entity.pk)
-
+    elif type == 'person':
+        messages.add_message(request, messages.ERROR, 'No tienes permisos para gestionar ofertas')
+        return redirect('dashboard')
+    else:
+        return redirect('dashboard')
 
 @login_required
 def entity_offers(request, entity_pk):
     entity = get_object_or_404(Entity, pk=entity_pk)
-    is_owner = request.user.is_authenticated and (request.user == entity.user)
+    is_owner = request.user == entity.user
+
+    if not is_owner and not request.user.is_superuser:
+        print 'add message!'
+        messages.add_message(request, messages.ERROR, 'No tienes permisos para ver las ofertas de esta entitdad')
+        return redirect('entity_detail', pk=entity.pk)
 
     current_offers = Offer.objects.current(entity=entity)
     future_offers = Offer.objects.future(entity=entity)
     past_offers = Offer.objects.past(entity=entity)
-    print current_offers
+
     return render(request, 'offers/entity_list.html', {
         'entity': entity,
         'current_offers': current_offers,
