@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
@@ -86,7 +87,8 @@ def offer_edit(request, entity_pk, offer_pk):
     can_edit = request.user.is_superuser or request.user == entity.user
 
     if not can_edit:
-        return redirect(reverse('offer_detail', kwargs={'entity_pk': entity.pk, 'offer_pk':offer.pk}) + '?permissions=false')
+        messages.add_message(request, messages.ERROR, 'No tienes permisos para editar la oferta')
+        return redirect('offer_detail', entity_pk=entity.pk, offer_pk=offer.pk )
 
     if request.method == "POST":
         form = OfferForm(request.POST, request.FILES, instance=offer)

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -22,8 +23,8 @@ def payment_detail(request, pk):
     can_edit = request.user == payment.receiver or request.user.is_superuser
 
     if not can_edit:
-        #TODO: Message with forbidden permssion
-        pass
+        messages.add_message(request, messages.ERROR, 'No tienes permisos para ver este pago')
+        return redirect('entity_detail', pk=payment.pk )
 
     if request.method == "POST":
         action = request.POST.get("action", "")
