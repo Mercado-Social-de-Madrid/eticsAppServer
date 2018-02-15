@@ -342,3 +342,8 @@ h1, h2, h3, h4, .primary-title{
 .loading-container .loading-spinner{
     display:block;
 }
+
+.page-item.active .page-link{
+
+    background-color: #C6E504;
+}
