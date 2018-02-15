@@ -24,11 +24,10 @@
 {% block scripts %}
 <script type="text/javascript">
     var list = $('#entities-list');
-    loadPaginationAjax(list);
+    list.ajaxLoader();
 
     $('.table-action').on('click', function(e){
         e.preventDefault();
-
         return false;
     });
 </script>
