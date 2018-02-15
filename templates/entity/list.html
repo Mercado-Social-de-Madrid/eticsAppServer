@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}Entidades{% endblock%}
+
+{% block bodyattrs %}class="entity"{% endblock%}
+
+{% block content %}
+
+<div class="container">
+
+<div id="entities-list">
+            <div class="results">
+                {% include 'entity/search_results.html' with entities=entities %}
+            </div>
+            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
+            <span class="sr-only">Loading...</span>
+        </div>
+</div>
+{% endblock%}
+
+{% block scripts %}
+<script type="text/javascript">
+    var list = $('#entities-list');
+    loadPaginationAjax(list);
+
+    $('.table-action').on('click', function(e){
+        e.preventDefault();
+
+        return false;
+    });
+</script>
+{% endblock scripts %}

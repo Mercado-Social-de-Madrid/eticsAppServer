@@ -4,7 +4,7 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link {% if is_entity_owner %}active{% endif %}" href="{% url 'user_entity' %}"><i class="ic ic-entity"></i> Entidades</a>
+        <a class="nav-link {% if request.resolver_match.url_name == 'entity_list' %}active{% endif %}" href="{% url 'entity_list' %}"><i class="ic ic-entity"></i> Entidades</a>
     </li>
 
     <li class="nav-item">

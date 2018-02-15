@@ -1,0 +1,16 @@
+<div class="clearfix row auto-clear" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
+    {% for entity in entities %}
+    <div class="{% if bigger %} col-sm-6 col-md-6 col-md-6 {% else %} col-sm-6 col-md-4 col-lg-4 {% endif %} resume-card-container">
+      <a href="{% url 'entity_detail' pk=entity.pk%}" class="resume_link" data-id="{{entity.pk}}"  title="{{entity.name}}">
+          {{entity}}
+      </a>
+    </div>
+     {% empty %}
+        <div class="col-sm-12 large-padding top-padding margin-top text-center">
+            <i class="fa fa-warning fa-2x" aria-hidden="true"></i><br><br>
+            No hay ninguna entidad con los criterios de búsqueda actuales...
+        </div>
+     {% endfor %}
+</div>
+
+{% include 'common/pagination.html' with page=entities %}

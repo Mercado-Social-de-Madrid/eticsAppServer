@@ -1,3 +1,35 @@
+
+function loadResults(resultsContainer, url){
+    if (url == null || url == '' || url.startsWith('#')){
+        return;
+    }
+    resultsContainer.addClass('loading-container');
+    $.get(url, {}, function(data){
+        resultsContainer.find('.results').html(data);
+        resultsContainer.removeClass('loading-container');
+        var preserveHistory = resultsContainer.attr('data-preservehistory');
+        console.log(preserveHistory);
+        if (!preserveHistory || preserveHistory != 'true')
+            window.history.replaceState({}, '', url);
+    });
+}
+
+function loadPaginationAjax(list){
+    var initialUrl = list.attr('data-initial');
+    if ((initialUrl != null) && (initialUrl!='')){
+        loadResults(list, initialUrl);
+    }
+
+    list.on('click', '.pagination a', function(e){
+        e.preventDefault();
+        if ($(this).parent().hasClass('active'))
+            return;
+        var url = $(this).attr('href')
+        loadResults(list, url);
+    });
+}
+
+
 $(function(){
 
     var menu = $('#navbar-menu');
