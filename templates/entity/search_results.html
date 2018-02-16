@@ -1,16 +1,39 @@
-<div class="clearfix row auto-clear" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
-    {% for entity in entities %}
-    <div class="{% if bigger %} col-sm-6 col-md-6 col-md-6 {% else %} col-sm-6 col-md-4 col-lg-4 {% endif %} resume-card-container">
-      <a href="{% url 'entity_detail' pk=entity.pk%}" class="resume_link" data-id="{{entity.pk}}"  title="{{entity.name}}">
-          {{entity}}
-      </a>
-    </div>
-     {% empty %}
-        <div class="col-sm-12 large-padding top-padding margin-top text-center">
-            <i class="fa fa-warning fa-2x" aria-hidden="true"></i><br><br>
-            No hay ninguna entidad con los criterios de búsqueda actuales...
-        </div>
-     {% endfor %}
+
+<div class="table-responsive card mb-4">
+<table class="table table-hover" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
+  <thead>
+    <tr>
+      <th scope="col">Usuario</th>
+      <th scope="col">Email</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Apellidos</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for entity in entities %}
+    <tr data-id="{{user.pk}}">
+      <td class="entity-td">
+          <div class="profile-circle small">
+              {% if entity.logo %} <img class="rounded-circle" src="{{entity.logo_thumbnail.url}}"> {%endif%}
+          </div>
+
+          <h5 class="mb-0">{{entity.name}}</h5>
+          {{entity.address}}
+        </td>
+        <td>{{entity.address}}</td>
+      <td>{{user.first_name}}</td>
+      <td>{{user.last_name}}</td>
+
+    </tr>
+{% empty %}
+    <tr>
+      <td colspan="4">No hay ninguna entidad con los criterios de búsqueda actuales...</td>
+    </tr>
+
+{% endfor %}
+      </tbody>
+</table>
 </div>
+{% include 'common/pagination.html' with page=users %}
 
 {% include 'common/pagination.html' with page=entities %}

@@ -347,3 +347,36 @@ h1, h2, h3, h4, .primary-title{
 
     background-color: #C6E504;
 }
+
+.table tbody td.entity-td{
+    padding-left:80px;
+    height:70px;
+    position:relative;
+}
+
+.profile-circle{
+    width: 140px;
+    height: 140px;
+    overflow: hidden;
+    text-align:center;
+    border-radius: 50%;
+    background-color:#ddd;
+}
+.profile-circle.small{
+    width:60px;
+    height:60px;
+}
+.profile-circle img {
+    display: inline;
+    margin: 0 auto;
+    height: 100%;
+    width: auto;
+}
+td.entity-td .profile-circle{
+    position:absolute;
+    top:50%;
+    left:18px;
+    height:50px;
+    width:50px;
+    margin-top:-25px;
+}
