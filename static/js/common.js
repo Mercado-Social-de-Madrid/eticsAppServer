@@ -17,8 +17,9 @@
 
     $.fn.ajaxLoader = function( url ) {
 
-        if ( url !== null) {
+        if ( url != null) {
             loadResults(this, url);
+            return this;
         }
 
         var initialUrl = this.attr('data-initial');
@@ -46,6 +47,7 @@ $(function(){
     var menu = $('#navbar-menu');
 
     $('[data-toggle="tooltip"]').tooltip();
+    $('.modal.show-on-load').modal();
 
     $(".link-row").click(function() {
         window.location = $(this).data("href");

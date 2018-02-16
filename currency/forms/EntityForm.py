@@ -12,6 +12,13 @@ class EntityForm(forms.ModelForm):
         kwargs.setdefault('label_suffix', '')
         form = super(EntityForm, self).__init__(*args, **kwargs)
 
+    owner_id = forms.CharField(max_length=100, widget=forms.HiddenInput, required=False)
+    new_user_username = forms.CharField(widget=forms.TextInput, required=False)
+    new_user_first_name = forms.CharField(widget=forms.TextInput, required=False)
+    new_user_last_name = forms.CharField(widget=forms.TextInput, required=False)
+    new_user_email = forms.EmailField(required=False)
+    new_user_password = forms.CharField(widget=forms.PasswordInput, required=False)
+
     class Meta:
         model = Entity
         exclude = ['owner','email','user']

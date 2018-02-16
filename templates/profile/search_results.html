@@ -1,0 +1,28 @@
+<table class="table table-bordered table-hover" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
+  <thead>
+    <tr>
+      <th scope="col">Usuario</th>
+      <th scope="col">Email</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Apellidos</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for user in users %}
+    <tr data-id="{{user.pk}}">
+      <td class="username">{{user.username}}</th>
+        <td>{{user.email}}</td>
+      <td>{{user.first_name}}</td>
+      <td>{{user.last_name}}</td>
+
+    </tr>
+{% empty %}
+    <tr>
+      <td colspan="4">No hay usuarios que cumplan los criterios de búsqueda...</td>
+    </tr>
+
+{% endfor %}
+      </tbody>
+</table>
+
+{% include 'common/pagination.html' with page=users %}

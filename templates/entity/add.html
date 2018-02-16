@@ -11,19 +11,6 @@
 <form method="POST" class="post-form gallery-form" enctype="multipart/form-data">
     {% csrf_token %}
 
-<div class="jumbo-header jumbo-entity minimal mb-4" >
-    <div class="jumbotron" {% if entity.first_photo_url %}style="background-image:url('{{entity.first_photo_url}}');"{%endif%}>
-        <div class="container">
-            <h3>{{entity.name}}</h3>
-            {{ entity.address }}
-        </div>
-
-        <div class="container action-btns">
-            <button type="submit" class="btn btn-primary btn-float btn-lg" href="#" data-toggle="tooltip" data-placement="bottom" title="Guardar cambios"><i class="material-icons">save</i></button>
-        </div>
-    </div>
-</div>
-
 
 <div class="container">
 
@@ -37,6 +24,19 @@
                     <div class="card-body">
                     <h4 class="card-title"><i class="material-icons">info</i> Información general</h4>
                     <div class="description">
+                        <div class="form-group mb-5" data-links="#entity-name">
+                            <label>Usuario</label>
+
+                            <div class="input-group">
+                              <input type="text" name="user_placeholder" id="entity_owner" disabled class="form-control" maxlength="250">
+                                <div class="input-group-append">
+                                <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#users-modal" style="min-width:0;"><i class="material-icons">search</i></button>
+                                <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#newuser-modal" style="min-width:0;"><i class="material-icons">add</i></button>
+                              </div>
+                            </div>
+                            {{ form.owner_id }}
+                        </div>
+
                         <div class="form-group" data-links="#entity-name">
                             <label>Nombre</label>
                             {{ form.name }}
@@ -64,39 +64,36 @@
 
             <div class="col-md-5">
                 <div class="card mb-4 ">
-                <div id="map" class="map no-resize loading-container">
-                    <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
-                    <span class="sr-only">Loading...</span>
+                    <div id="map" class="map no-resize loading-container">
+                        <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                    <div class="card-body px-3 pb-0">
+                            <h4 class="card-title"><i class="material-icons">edit_location</i> Geolocalización</h4>
+                            <p class="card-text">Mueve el pin por el mapa hasta posicionarlo en la localización correcta.</p>
+                            <div class="form-group">
+                                <label>Latitud</label>
+                                {{ form.latitude }}
+                                {% if form.latitude.errors %} <div class="alert alert-danger"> {{form.latitude.errors}}</div> {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label>Longitud</label>
+                                {{ form.longitude }}
+                                {% if form.longitude.errors %} <div class="alert alert-danger"> {{form.longitude.errors}}</div> {% endif %}
+                            </div>
+                    </div>
+
+                    <div class="card-footer">
+                      <small class="text-muted">Puedes hacer zoom en los controles del mapa para ajustar al máximo la posición, o entrar en la vista de pantalla completa.</small>
+                    </div>
                 </div>
 
-                <div class="card-body px-3">
-                        <h4 class="card-title"><i class="material-icons">edit_location</i> Geolocalización</h4>
-                        <p class="card-text">Mueve el pin por el mapa hasta posicionarlo en la localización correcta.</p>
-                        <div class="form-group">
-                            <label>Latitud</label>
-                            {{ form.latitude }}
-                            {% if form.latitude.errors %} <div class="alert alert-danger"> {{form.latitude.errors}}</div> {% endif %}
-                        </div>
-                        <div class="form-group">
-                            <label>Longitud</label>
-                            {{ form.longitude }}
-                            {% if form.longitude.errors %} <div class="alert alert-danger"> {{form.longitude.errors}}</div> {% endif %}
-                        </div>
-                </div>
-
-                <div class="card-footer">
-                  <small class="text-muted">Puedes hacer zoom en los controles del mapa para ajustar al máximo la posición, o entrar en la vista de pantalla completa.</small>
-                </div>
-                </div>
-
-            </div>
-
-            <div class="col-md-12">
                 <div class="card mb-4 ">
                     <div class="card-body">
                         <div class="card-title"><i class="material-icons">monetization_on</i> Moneda social</div>
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-md-12">
                                 <div class="form-group">
                                     <label>Máximo pago en boniatos</label>
                                     <div class="input-group">
@@ -106,7 +103,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-md-12">
                                 <div class="form-group">
                                     <label>Porcentaje de bonificación</label>
                                     <div class="input-group">
@@ -119,6 +116,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="col-md-5">
@@ -182,21 +180,21 @@
                     </div>
                 </div>
 
+                <div class="description text-center mt-5">
+                    <button type="submit" class="right-margin left-margin btn btn-primary btn-lg">{% if is_new %} Crear entidad {% else %} Guardar {% endif %}</button>
+                </div>
             </div>
-
-
-
 
        </div>
     </div>
 
     </div>
 
-    <div class="description text-center">
-        <button type="submit" class="right-margin left-margin btn btn-primary btn-lg">{% if is_new %} Crear entidad {% else %} Guardar {% endif %}</button>
-    </div>
+
 
 </div>
+
+    {% include 'profile/search_users_popup.html' %}
 </form>
 {% endblock %}
 
@@ -204,6 +202,21 @@
 <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
 {% include 'common/include_gmaps.html' %}
 <script type="text/javascript">
+
+var usersModal = $('#users-modal');
+var list = $('#users-list');
+var inputUser = $('#{{form.owner_id.auto_id }}');
+var displayUser = $('#entity_owner');
+
+list.ajaxLoader();
+list.find('.results').on('click', 'tr', function(e){
+    e.preventDefault();
+    var user = $(this);
+    inputUser.val(user.attr('data-id'));
+    displayUser.val(user.find('td.username').text());
+    usersModal.modal('hide');
+});
+
 
     $('.gallery-form-photo').formset({
         prefix: '{{ gallery_formset.prefix }}',

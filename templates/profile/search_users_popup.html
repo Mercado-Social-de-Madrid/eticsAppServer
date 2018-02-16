@@ -1,0 +1,32 @@
+<div class="modal fade" id="users-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="modal-title" id="myModalLabel">Buscar usuario</h3>
+            </div>
+            <div class="col-md-5">
+                <div class="filter">
+                    <input class="form-control" id="search" type="text" name="q" placeholder="Buscar...">
+                </div>
+            </div>
+        </div>
+
+      </div>
+      <div class="modal-body large-padding">
+              <div id="users-list" data-initial="{% url 'search_users' %}" data-preservehistory="true">
+            <div class="results">
+
+                </div>
+            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
+            <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>

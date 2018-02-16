@@ -7,14 +7,14 @@ from currency.models import Entity, Person
 def get_related_entity(self):
 
     try:
-        entity = Entity.objects.get(user=self)
+        entity = Entity.objects.filter(user=self).first()
     except Entity.DoesNotExist:
         entity = None
     if entity:
         return ('entity', entity)
     else:
         try:
-            person = Person.objects.get(user=self)
+            person = Person.objects.filter(user=self).first()
         except Person.DoesNotExist:
             person = None
         return ('person', person) if person else ('none', None)
