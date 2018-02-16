@@ -143,3 +143,14 @@
 {% endif %}
 
 {% endblock content %}
+
+
+{% block toast_messages %}
+    {% if permission_error %}
+        <div class="toast">
+            {% if permission_error == '/entity/add' %} No tienes permisos para añadir nuevas entidades {% endif %}
+            {% if permission_error == '/entities/' %} No tienes permisos para consultar la lista de entidades {% endif %}
+            {% if permission_error == '/wallets' %} No tienes permisos para ver movimientos {% endif %}
+        </div>
+    {% endif %}
+{% endblock toast_messages %}
