@@ -55,7 +55,7 @@ def entity_list(request):
         if entry_query:
             entities = entities.filter(entry_query)
 
-    paginator = Paginator(entities, 2)
+    paginator = Paginator(entities, 6)
     page = request.GET.get('page')
     try:
         entities = paginator.page(page)

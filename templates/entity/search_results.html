@@ -3,10 +3,10 @@
 <table class="table table-hover" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
   <thead>
     <tr>
-      <th scope="col">Usuario</th>
-      <th scope="col">Email</th>
       <th scope="col">Nombre</th>
-      <th scope="col">Apellidos</th>
+      <th scope="col">Máx. pago en <br>boniatos</th>
+      <th scope="col">Porcentaje de <br>bonificación</th>
+      <th scope="col">Acciones</th>
     </tr>
   </thead>
   <tbody>
@@ -20,9 +20,13 @@
           <h5 class="mb-0">{{entity.name}}</h5>
           {{entity.address}}
         </td>
-        <td>{{entity.address}}</td>
-      <td>{{user.first_name}}</td>
-      <td>{{user.last_name}}</td>
+      <td>{{entity.bonification_percent}} %</td>
+      <td>{{entity.max_percent_payment}} %</td>
+        <td>
+            <a class="btn btn-outline-primary" href="{% url 'entity_detail' entity.pk %}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Ver detalle"><i class="material-icons">visibility</i></a>
+            <a class="btn btn-outline-primary" href="{% url 'entity_edit' entity.pk %}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="material-icons">mode_edit</i></a>
+            <a class="btn btn-outline-primary" href="{% url 'entity_offers' entity.pk %}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Ver ofertas"><i class="material-icons">shopping_basket</i></a>
+        </td>
 
     </tr>
 {% empty %}
