@@ -22,58 +22,13 @@
   </head>
   <body {% block bodyattrs %}{% endblock%}>
 
-   <nav class="navbar navbar-expand navbar-light" id="top-bar">
-     <div class="container">
-      <a class="navbar-brand" href="#">appName</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbar-collapse">
-        <ul class="navbar-nav ml-auto mt-0">
-            {%if user.is_authenticated %}
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="material-icons">account_circle</i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right pt-0" aria-labelledby="navbarDropdownMenuLink">
-                    <div class="bg-light p-3">
-                        <div class="primary-title">{{user.get_username}}</div>
-                        <small class="text-muted">{{user.email}}</small>
-                    </div>
-
-                  <a class="dropdown-item" href="#"><i class="ic ic-home"></i> Inicio</a>
-                  <a class="dropdown-item" href="#"><i class="material-icons">mode_edit</i> Editar perfil</a>
-                    <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="{% url 'logout' %}?next=/"><i class="material-icons">exit_to_app</i> Cerrar sesión</a>
-                </div>
-              </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link btn btn-outline-primary" href="{% url 'login' %}"><i class="fa fa-plug" aria-hidden="true"></i> Entrar</a>
-          </li>
-            {% endif %}
-
-        </ul>
-      </div>
-     </div>
-</nav>
-
 {%if user.is_authenticated %}
-<div class="nav navbar sticky-top navbar-expand-md " id="menu-nav">
-   <div class="container">
-       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-       <div class="collapse navbar-collapse" id="navbar-menu">
-           {% if request.user.is_superuser %}
-                {% include 'common/navbar_menu_admin.html' %}
-           {% else %}
-                {% include 'common/navbar_menu_user.html' %}
-           {% endif %}
-        </div>
-   </div>
-</div>
-   {% endif %}
+    {% if request.user.is_superuser %}
+        {% include 'common/navbar_menu_admin.html' %}
+    {% else %}
+        {% include 'common/navbar_menu_user.html' %}
+    {% endif %}
+{% endif %}
 
 <div id="main-content">
 {% block content %}{% endblock content %}
@@ -90,9 +45,9 @@
    </div>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <!-- Then Material JavaScript on top of Bootstrap JavaScript -->
     <script src="{% static "js/material.min.js" %}"></script>
     <script src="{% static "js/jquery.magnific-popup.min.js" %}"></script>

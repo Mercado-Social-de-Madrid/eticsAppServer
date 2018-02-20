@@ -380,3 +380,20 @@ td.entity-td .profile-circle{
     width:50px;
     margin-top:-25px;
 }
+
+@media (min-width: 992px){
+    .navdrawer-permanent-lg + #main-content, .navbar-drawer .container{
+        margin-left:17.9rem;
+    }
+}
+.navdrawer-permanent-lg ~ #top-bar{
+    margin-left:17.9rem;
+}
+
+@media (max-width: 992px){
+    .navbar-toggler.always-show{
+        display:block;
+    }
+}
+
+

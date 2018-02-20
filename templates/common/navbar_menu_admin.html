@@ -1,21 +1,28 @@
-<ul class="nav nav-tabs nav-fill flex-column flex-md-row flex-lg-row">
-    <li class="nav-item">
-        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}"><i class="ic ic-home"></i> Inicio</a>
-    </li>
+<nav class="navbar navbar-expand navbar-light navbar-drawer" id="top-bar">
+     <div class="container">
+    <button class="navbar-toggler always-show" type="button" data-toggle="navdrawer" data-target="#doc-navdrawer" aria-controls="doc-navdrawer" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">appName</a>
 
-    <li class="nav-item">
-        <a class="nav-link {% if request.resolver_match.url_name == 'entity_list' %}active{% endif %}" href="{% url 'entity_list' %}"><i class="ic ic-entity"></i> Entidades</a>
-    </li>
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+        <ul class="navbar-nav ml-auto mt-0">
+            {% include 'common/navbar_login.html' %}
+        </ul>
+      </div>
+     </div>
+</nav>
 
-    <li class="nav-item">
-        <a class="nav-link {% if is_offers_owner %}active{% endif %}" href="{% url 'user_offers' %}"><i class="ic ic-news"></i> Ofertas</a>
-    </li>
+<div class="navdrawer navdrawer-permanent-lg doc-navdrawer" id="doc-navdrawer" tabindex="-1" aria-hidden="true">
+  <div class="navdrawer-content">
+    <div class="d-flex flex-column doc-navdrawer-body">
+      <div class="navdrawer-header">
+        <a class="navbar-brand px-0" href="/material/">Administración</a>
+      </div>
 
-    <li class="nav-item">
-        <a class="nav-link {% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}" href="{% url 'user_profile' %}"><i class="material-icons">person_outline</i> Consumidoras</a>
-    </li>
+        <p class="navdrawer-subheader">Moneda social</p>
 
-    <li class="nav-item">
-        <a class="nav-link {% if request.resolver_match.url_name == 'user_wallet' %}active{% endif %}" href="{% url 'user_wallet' %}"><i class="ic ic-wallet"></i> Monederos</a>
-    </li>
-</ul>
+
+    </div>
+  </div>
+</div>
