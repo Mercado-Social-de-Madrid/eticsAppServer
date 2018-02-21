@@ -14,7 +14,7 @@
     <tr data-id="{{user.pk}}">
       <td class="entity-td">
           <div class="profile-circle small">
-              {% if entity.logo %} <img class="rounded-circle" src="{{entity.logo_thumbnail.url}}"> {%endif%}
+              {% if entity.logo %} <img src="{{entity.logo_thumbnail.url}}"> {%endif%}
           </div>
 
           <h5 class="mb-0">{{entity.name}}</h5>
@@ -38,6 +38,4 @@
       </tbody>
 </table>
 </div>
-{% include 'common/pagination.html' with page=users %}
-
 {% include 'common/pagination.html' with page=entities %}

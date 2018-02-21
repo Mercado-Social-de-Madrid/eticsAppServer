@@ -361,16 +361,22 @@ h1, h2, h3, h4, .primary-title{
     text-align:center;
     border-radius: 50%;
     background-color:#ddd;
+    position:relative;
 }
 .profile-circle.small{
     width:60px;
     height:60px;
 }
 .profile-circle img {
-    display: inline;
-    margin: 0 auto;
-    height: 100%;
-    width: auto;
+    height:100%;
+    width:auto;
+    min-width: 100%;
+    top: 50%;
+    left: 50%;
+    position: relative;
+    -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
 }
 td.entity-td .profile-circle{
     position:absolute;
@@ -396,4 +402,15 @@ td.entity-td .profile-circle{
     }
 }
 
+@media (max-width: 992px){
+    .navbar-toggler.always-show[aria-expanded="true"]{
+        margin-left:18.5rem;
+        z-index:200;
+    }
+}
+@media (max-width: 380px){
+    .navbar-toggler.always-show[aria-expanded="true"]{
+        margin-left: calc(100% - 2.2rem);
+    }
+}
 
