@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.paginator import EmptyPage, Paginator, PageNotAnInteger, InvalidPage
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -41,18 +40,10 @@ def search_users(request):
         query_string = request.GET.get('q')
         entry_query = helpers.get_query(query_string, ['username', 'first_name', 'last_name', 'email'])
         if entry_query:
-            bands = users.filter(entry_query)
+            users = users.filter(entry_query)
 
-    paginator = Paginator(users, 3)
     page = request.GET.get('page')
-    try:
-        users = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        users = paginator.page(1)
-    except (EmptyPage, InvalidPage):
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        users = paginator.page(paginator.num_pages)
+    users = helpers.paginate(users, page, 5)
 
     params = {
         'ajax_url': reverse('search_users'),

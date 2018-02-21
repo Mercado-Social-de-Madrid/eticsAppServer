@@ -8,7 +8,8 @@ from django.urls import reverse
 
 from currency.forms.EntityForm import EntityForm
 from currency.forms.galleryform import PhotoGalleryForm
-from helpers import get_query, superuser_required
+from helpers import superuser_required
+import helpers
 from currency.models import Entity, Gallery, Category
 from offers.models import Offer
 
@@ -51,20 +52,12 @@ def entity_list(request):
     query_string = ''
     if ('q' in request.GET) and request.GET['q'].strip():
         query_string = request.GET['q']
-        entry_query = get_query(query_string, ['name', 'description', 'short_description'])
+        entry_query = helpers.get_query(query_string, ['name', 'description', 'short_description'])
         if entry_query:
             entities = entities.filter(entry_query)
 
     page = request.GET.get('page')
-    paginator = Paginator(entities, 6)
-    try:
-        entities = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        entities = paginator.page(1)
-    except (EmptyPage, InvalidPage):
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        entities = paginator.page(paginator.num_pages)
+    entities = helpers.paginate(entities, page, elems_perpage=6)
 
     params = {
         'ajax_url': reverse('entity_list'),

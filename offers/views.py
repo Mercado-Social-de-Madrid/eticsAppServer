@@ -9,6 +9,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
 from django.urls import reverse
 
+import helpers
 from currency.models import Entity
 from offers.forms.offerform import OfferForm
 from offers.models import Offer
@@ -91,10 +92,23 @@ def offer_detail(request, entity_pk, offer_pk):
 def list_offers(request):
 
     offers = Offer.objects.all().order_by('-published_date').select_related('entity')
+    page = request.GET.get('page')
+    offers = helpers.paginate(offers, page, elems_perpage=6)
 
-    return render(request, 'offers/list.html', {
-        'offers': offers
-    })
+    params = {
+        'ajax_url': reverse('list_offers'),
+        'offers': offers,
+        'page': page
+    }
+
+    if request.is_ajax():
+        response = render(request, 'offers/search_results.html', params)
+        response['Cache-Control'] = 'no-cache'
+        response['Vary'] = 'Accept'
+        return response
+    else:
+        return render(request, 'offers/list.html', params)
+
 
 
 

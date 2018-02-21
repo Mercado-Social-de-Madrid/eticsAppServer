@@ -1,5 +1,6 @@
 import re
 
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
 from django.db.models import Q
 
 def normalize_query(query_string,
@@ -43,3 +44,17 @@ def get_query(query_string, search_fields):
             query = query & or_query
 
     return query
+
+
+def paginate(list, page, elems_perpage=10):
+    paginator = Paginator(list, elems_perpage)
+    try:
+        paginated = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        paginated = paginator.page(1)
+    except (EmptyPage, InvalidPage):
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        paginated = paginator.page(paginator.num_pages)
+
+    return paginated
