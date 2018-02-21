@@ -44,7 +44,29 @@ class GalleryResource(ModelResource):
         authentication = Authentication()
         authorization = Authorization()
 
-class EntitiesResource(ModelResource):
+class EntitySimpleResource(ModelResource):
+
+    class Meta:
+        queryset = Entity.objects.all()
+        include_resource_uri = False
+        list_allowed_methods = ['get']
+        resource_name = 'simple_entity'
+        collection_name = 'simple_entity'
+        fields = ['id', 'name', 'address', 'logo']
+
+        authentication = Authentication()
+        authorization = Authorization()
+
+    # Add thumbnail field
+    def dehydrate(self, bundle):
+        if bundle.obj.logo_thumbnail:
+            bundle.data['logo_thumbnail'] = bundle.obj.logo_thumbnail.url
+
+
+        return bundle
+
+
+class EntitiesDetailResource(ModelResource):
     offers = fields.ToManyField(OffersResource,
                                 attribute=lambda bundle: Offer.objects.current().filter(entity=bundle.obj),
                                 full=True, null=True)
@@ -80,7 +102,7 @@ class EntitiesResource(ModelResource):
 
 
     def apply_filters(self, request, applicable_filters):
-        base_object_list = super(EntitiesResource, self).apply_filters(request, applicable_filters)
+        base_object_list = super(EntitiesDetailResource, self).apply_filters(request, applicable_filters)
         query = request.GET.get('q', None)
         filters = {}
         if query:

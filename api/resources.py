@@ -8,7 +8,7 @@ from offers.models import Offer
 
 class OffersResource(ModelResource):
 
-    entity = fields.ForeignKey('api.entities.EntitiesResource', 'entity', full=False, null=True)
+    entity = fields.ForeignKey('api.entities.EntitySimpleResource', 'entity', full=True, null=True)
 
     class Meta:
         queryset = Offer.objects.current()
@@ -38,7 +38,5 @@ class OffersResource(ModelResource):
         if bundle.obj.banner_thumbnail:
             bundle.data['banner_thumbnail'] = bundle.obj.banner_thumbnail.url
 
-        # Remove the URI of the entity with just the id
-        if bundle.obj.entity:
-            bundle.data['entity'] = bundle.obj.entity.id
+
         return bundle
