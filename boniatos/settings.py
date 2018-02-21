@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'wallets',
     'offers',
+    'news',
     'currency',
     'tastypie',
     'imagekit',
