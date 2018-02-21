@@ -9,7 +9,7 @@ from django.db.models import Q
 from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, ResizeToFill
 
-from currency.helpers import RandomFileName
+from helpers import RandomFileName
 from currency.models import Entity
 
 

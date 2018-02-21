@@ -90,7 +90,7 @@ def offer_detail(request, entity_pk, offer_pk):
 @login_required
 def list_offers(request):
 
-    offers = Offer.objects.select_related('entity')
+    offers = Offer.objects.all().order_by('-published_date').select_related('entity')
 
     return render(request, 'offers/list.html', {
         'offers': offers

@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.db import models, transaction
 from django.utils import timezone
 
-from currency.helpers import notify_user
+from helpers import notify_user
 from currency.models.extend_user import get_user_by_related
 from wallets.models import Wallet
 

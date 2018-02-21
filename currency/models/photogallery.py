@@ -9,7 +9,7 @@ from django.db import models
 from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, ResizeToFill
 
-from currency.helpers import RandomFileName
+from helpers import RandomFileName
 
 
 class Gallery(models.Model):

@@ -7,10 +7,8 @@ from django.contrib.auth.models import User
 from django.db import models, transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.utils import timezone
-from fcm_django.models import FCMDevice
 
-from currency.helpers import notify_user
+from helpers import notify_user
 
 
 class Wallet(models.Model):

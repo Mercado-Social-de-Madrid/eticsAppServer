@@ -8,7 +8,7 @@ from django.urls import reverse
 
 from currency.forms.EntityForm import EntityForm
 from currency.forms.galleryform import PhotoGalleryForm
-from currency.helpers import get_query, superuser_required
+from helpers import get_query, superuser_required
 from currency.models import Entity, Gallery, Category
 from offers.models import Offer
 
@@ -55,8 +55,8 @@ def entity_list(request):
         if entry_query:
             entities = entities.filter(entry_query)
 
-    paginator = Paginator(entities, 6)
     page = request.GET.get('page')
+    paginator = Paginator(entities, 6)
     try:
         entities = paginator.page(page)
     except PageNotAnInteger:

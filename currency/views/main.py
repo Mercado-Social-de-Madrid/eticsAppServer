@@ -5,7 +5,7 @@ from django.core.paginator import EmptyPage, Paginator, PageNotAnInteger, Invali
 from django.shortcuts import render
 from django.urls import reverse
 
-from currency.helpers import get_query
+import helpers
 from offers.models import Offer
 from wallets.models import Wallet, Payment
 
@@ -39,7 +39,7 @@ def search_users(request):
     query_string = ''
     if ('q' in request.GET) and request.GET['q'].strip():
         query_string = request.GET.get('q')
-        entry_query = get_query(query_string, ['username', 'first_name', 'last_name', 'email'])
+        entry_query = helpers.get_query(query_string, ['username', 'first_name', 'last_name', 'email'])
         if entry_query:
             bands = users.filter(entry_query)
 
