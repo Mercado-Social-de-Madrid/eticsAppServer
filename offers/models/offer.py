@@ -60,6 +60,17 @@ class Offer(models.Model):
 
     objects = OffersManager()
 
+    @property
+    def status(self):
+        today = datetime.date.today()
+        if (self.begin_date > today) or (self.begin_date <= today and self.end_date >= today and self.active == False):
+            return 'future'
+        elif self.begin_date <= today and self.end_date >= today and self.active:
+            return 'current'
+        else:
+            return 'past'
+
+
     class Meta:
         verbose_name = 'Oferta'
         verbose_name_plural = 'Ofertas'

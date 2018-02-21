@@ -28,6 +28,8 @@
     {% else %}
         {% include 'common/navbar_menu_user.html' %}
     {% endif %}
+{% else %}
+    {% include 'common/navbar_menu_anon.html' %}
 {% endif %}
 
 <div id="main-content">

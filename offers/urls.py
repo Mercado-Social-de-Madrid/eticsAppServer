@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^entity/(?P<entity_pk>[0-9a-f-]+)/offer/(?P<offer_pk>[0-9a-f-]+)/edit$', views.offer_edit, name='offer_edit'),
     url(r'^entity/(?P<entity_pk>[0-9a-f-]+)/add_offer', views.add_offer, name='add_entity_offer'),
 
-    url(r'^offers$', views.user_offers, name='user_offers'),
+    url(r'^offer$', views.user_offers, name='user_offers'),
+    url(r'^offers$', views.list_offers, name='list_offers'),
 ]

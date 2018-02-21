@@ -1,0 +1,42 @@
+
+<div class="table-responsive card mb-4">
+<table class="table table-hover" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
+  <thead>
+    <tr>
+      <th scope="col">Nombre</th>
+      <th scope="col">Máx. pago en <br>boniatos</th>
+      <th scope="col">Porcentaje de <br>bonificación</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for offer in offers %}
+    <tr>
+      <td class="entity-td">
+          <div class="profile-circle small">
+              {% if offer.logo %} <img class="rounded-circle" src="{{entity.logo_thumbnail.url}}"> {%endif%}
+          </div>
+
+          <h5 class="mb-0">{{offer.title}}</h5>
+          {{entity.address}}
+        </td>
+      <td>{{offer.status}} %</td>
+      <td>{{entity.max_percent_payment}} %</td>
+        <td>
+            <a class="btn btn-outline-primary" href="{% url 'offer_detail' offer.entity.pk offer.pk %}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Ver detalle"><i class="material-icons">visibility</i></a>
+            <a class="btn btn-outline-primary" href="{% url 'offer_edit' offer.entity.pk offer.pk %}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="material-icons">mode_edit</i></a>
+        <td>
+
+    </tr>
+{% empty %}
+    <tr>
+      <td colspan="4">No hay ninguna entidad con los criterios de búsqueda actuales...</td>
+    </tr>
+
+{% endfor %}
+      </tbody>
+</table>
+</div>
+{% include 'common/pagination.html' with page=users %}
+
+{% include 'common/pagination.html' with page=entities %}

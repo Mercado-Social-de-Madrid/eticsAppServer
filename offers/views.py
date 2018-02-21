@@ -31,7 +31,6 @@ def entity_offers(request, entity_pk):
     is_owner = request.user == entity.user
 
     if not is_owner and not request.user.is_superuser:
-        print 'add message!'
         messages.add_message(request, messages.ERROR, 'No tienes permisos para ver las ofertas de esta entitdad')
         return redirect('entity_detail', pk=entity.pk)
 
@@ -87,6 +86,16 @@ def offer_detail(request, entity_pk, offer_pk):
         'offer': offer,
         'can_edit':can_edit
     })
+
+@login_required
+def list_offers(request):
+
+    offers = Offer.objects.select_related('entity')
+
+    return render(request, 'offers/list.html', {
+        'offers': offers
+    })
+
 
 
 @login_required
