@@ -15,29 +15,6 @@ from pilkit.processors import ResizeToFit, ResizeToFill
 from helpers import RandomFileName
 
 
-class NewsManager(models.Manager):
-
-    def current(query, entity=None):
-        today = datetime.date.today()
-        if entity is None:
-            return query.filter(active=True, begin_date__lte=today, end_date__gte=today)
-        else:
-            return query.filter(active=True, begin_date__lte=today, end_date__gte=today, entity=entity)
-
-    def future(query, entity=None):
-        today = datetime.date.today()
-        if entity is None:
-            return query.filter(Q(begin_date__gt=today) | Q(begin_date__lte=today, end_date__gte=today, active=False))
-        else:
-            return query.filter(Q(entity=entity) & (Q(begin_date__gt=today) | Q(begin_date__lte=today, end_date__gte=today, active=False)))
-
-    def past(query, entity=None):
-        today = datetime.date.today()
-        if entity is None:
-            return query.filter(end_date__lt=today)
-        else:
-            return query.filter(end_date__lt=today, entity=entity)
-
 class News(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -56,8 +33,6 @@ class News(models.Model):
     published_date = models.DateTimeField(auto_now_add=True)
     more_info_text = models.CharField(null=True, blank=True, verbose_name='Texto del botón de info', max_length=250)
     more_info_url = models.TextField(null=True, blank=True, verbose_name='URL con más información')
-
-    objects = NewsManager()
 
 
     class Meta:
