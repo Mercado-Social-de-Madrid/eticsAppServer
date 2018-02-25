@@ -3,6 +3,7 @@ from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
 
+from news.models import News
 from offers.models import Offer
 
 
@@ -38,5 +39,27 @@ class OffersResource(ModelResource):
         if bundle.obj.banner_thumbnail:
             bundle.data['banner_thumbnail'] = bundle.obj.banner_thumbnail.url
 
+
+        return bundle
+
+
+class NewsResource(ModelResource):
+
+
+    class Meta:
+        queryset = News.objects.all()
+        include_resource_uri = False
+        list_allowed_methods = ['get']
+        resource_name = 'news'
+        collection_name = 'news'
+        excludes = ['published_by']
+        authentication = Authentication()
+        authorization = Authorization()
+
+
+    def dehydrate(self, bundle):
+        # Add thumbnail field
+        if bundle.obj.banner_thumbnail:
+            bundle.data['banner_thumbnail'] = bundle.obj.banner_thumbnail.url
 
         return bundle
