@@ -32,7 +32,6 @@ class PaymentManager(models.Manager):
 
     def new_payment(self, sender, receiver_uuid, total_amount=0, currency_amount=0):
 
-
         receiver = get_user_by_related(receiver_uuid)
         if receiver is not None:
             user_type, instance = receiver.get_related_entity()
@@ -43,16 +42,21 @@ class PaymentManager(models.Manager):
                 currency_amount = min(currency_amount, instance.max_accepted_currency(total_amount))
 
             sender_wallet = Wallet.objects.filter(user=sender).first()
+            print sender_wallet.balance
+            print currency_amount
             if sender_wallet.balance < currency_amount:
                 print 'User does not have enough cash!'
                 #TODO: Raise exception?
 
-            return self.create(
+            new_payment = self.create(
                 sender=sender,
                 receiver=receiver,
                 total_amount=total_amount,
                 currency_amount=currency_amount,
                 status=status)
+
+            new_payment.notify_receiver()
+            return new_payment
 
         else:
             print 'The user doesnt exist!'
@@ -95,11 +99,10 @@ class Payment(models.Model):
             return
             # TODO: create exception
 
-
         #If the user paid some part in currency, we make the transaction
         if self.currency_amount > 0:
             t = wallet_sender.new_transaction(self.currency_amount, wallet=wallet_receiver)
-            #wallet_receiver.notify_transaction(t, silent=True)
+            wallet_receiver.notify_transaction(t, silent=True)
 
         user_type, entity = self.receiver.get_related_entity()
         if user_type == 'entity':
@@ -126,3 +129,19 @@ class Payment(models.Model):
 
         self.status = STATUS_CANCELLED
         self.save()
+
+
+    def notify_receiver(self, silent=False):
+
+        data = {
+            'type': 'payment',
+            'amount': self.currency_amount,
+            'id': str(self.pk),
+            'sender': self.sender.username
+        }
+
+
+        print 'Notifying payment receiver'
+
+        title = 'Nuevo pago pendiente de confirmar'
+        notify_user(self.receiver, title=title, data=data, silent=silent)
