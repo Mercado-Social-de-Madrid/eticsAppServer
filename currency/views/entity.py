@@ -26,6 +26,10 @@ def user_entity(request):
 
 def entity_detail(request, pk):
     entity = get_object_or_404(Entity, pk=pk)
+    if not entity.gallery:
+        entity.gallery = Gallery.objects.create()
+        entity.save()
+
     gallery = entity.gallery.photos.all()
     current_offers = Offer.objects.current(entity=entity)
     is_owner = request.user.is_authenticated and (request.user == entity.user)

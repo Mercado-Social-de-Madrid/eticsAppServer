@@ -53,15 +53,11 @@ class RegisterResource(ModelResource):
         return bundle
 
     def dehydrate(self, bundle):
-
         user = bundle.obj
         bundle.data = gen_userwallet_data(user, include_type=False)
 
-        print bundle.data
-
-        print user
-
         return bundle
+
 
 
 def gen_userwallet_data(user, include_type=True):
