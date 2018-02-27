@@ -9,9 +9,12 @@ import datetime
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, ResizeToFill
 
+import helpers
 from helpers import RandomFileName
 
 
@@ -42,3 +45,13 @@ class News(models.Model):
 
     def __unicode__(self):
         return self.title
+
+
+
+# Method to notify when news are published
+@receiver(post_save, sender=News)
+def notify_news(sender, instance, created, **kwargs):
+
+    if created:
+        print 'Notifying news to all users'
+        helpers.broadcast_notification(title='Nueva noticia!', data={ 'type': 'news' }, message=instance.title, silent=False)

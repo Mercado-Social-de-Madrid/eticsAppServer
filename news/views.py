@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -89,7 +90,7 @@ def news_edit(request, pk):
         if form.is_valid():
 
             entry = form.save()
-            return redirect('entity_detail', pk=entry.pk)
+            return redirect('news_list')
         else:
             print form.errors.as_data()
     else:
@@ -118,8 +119,8 @@ def add_news(request):
             entry = form.save(commit=False)
             entry.published_by = request.user
             entry.save()
-
-            return redirect('news_detail', pk=entry.pk)
+            messages.add_message(request, messages.SUCCESS, 'Noticia añadida con éxito')
+            return redirect('news_list')
         else:
             print form.errors.as_data()
     else:

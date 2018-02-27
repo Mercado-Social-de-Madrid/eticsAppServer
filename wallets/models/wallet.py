@@ -78,6 +78,7 @@ class Wallet(models.Model):
     def notify_transaction(self, transaction, silent=False):
 
         data = {
+            'type': 'transaction',
             'amount': transaction.amount,
             'is_bonification': transaction.is_bonification,
             'is_euro_purchase': transaction.is_euro_purchase,
