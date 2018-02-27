@@ -15,7 +15,7 @@ from currency.models.extend_user import get_user_by_related
 
 
 class RegisterResource(ModelResource):
-    entity = fields.ToOneField('api.entities.EntitiesResource', 'entity', null=True, blank=True, full=True)
+    entity = fields.ToOneField('api.entities.EntitiesDetailResource', 'entity', null=True, blank=True, full=True)
     person = fields.ToOneField('api.persons.PersonsResource', 'person', null=True, blank=True, full=True)
 
     class Meta:
