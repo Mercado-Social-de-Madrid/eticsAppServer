@@ -33,7 +33,15 @@ class PaymentsResource(ModelResource):
         return bundle
 
     def authorized_read_list(self, object_list, bundle):
-        return object_list.filter(receiver=bundle.request.user)
+        return object_list.filter(receiver=bundle.request.user).select_related('sender')
+
+    def dehydrate(self, bundle):
+        # Include the payment sender name
+        if bundle.obj.sender.first_name or bundle.obj.sender.last_name:
+            bundle.data['sender'] = bundle.obj.sender.first_name + ' ' + bundle.obj.sender.last_name
+        else:
+            bundle.data['sender'] = bundle.obj.sender.username
+        return bundle
 
 
 class TransactionLogResource(ModelResource):
