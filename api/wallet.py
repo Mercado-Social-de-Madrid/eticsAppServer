@@ -57,7 +57,7 @@ class TransactionLogResource(ModelResource):
 class WalletResource(ModelResource):
     transaction_logs = fields.ToManyField(TransactionLogResource,
                                 attribute=lambda bundle: TransactionLog.objects.filter(
-                                   wallet=bundle.obj),
+                                   wallet=bundle.obj)[:10],
                                 full=True, null=True)
 
     class Meta:
