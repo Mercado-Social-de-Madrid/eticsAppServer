@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}{% if is_new %}Nueva oferta{% else %}{{news.title}}{% endif %}{% endblock%}
+
+
+
+
+{% block bodyattrs %}class="news"{% endblock%}
+
+{% block content %}
+
+<div class="container px-md-5">
+    <div class="card mx-lg-5 mb-4 p-3">
+        <div class="card-body">
+        <form method="POST" class="post-form gallery-form" enctype="multipart/form-data">
+    {% csrf_token %}
+            <div class="card-title primary-title"><h3><i class="ic ic-news"></i> {%if is_new %}Nueva oferta{%else%}Editar oferta{%endif%}</h3></div>
+            {{form.media}}
+
+                <div class="row">
+
+
+                    <div class="col-md-5 mb-4">
+                        <label>Imagen de la oferta</label>
+
+                        <div class="card form-photo ">
+                          <img class="img-fluid" id="offer-thumb" src="{% if news.banner_image %}{{ news.banner_image.url }}{% else %}{%static 'imgs/default-offer.png' %}{% endif %}" alt="{{offer.title}}">
+
+                            <div class=" action-btns outside">
+                                <a class="btn btn-primary btn-float btn-lg btn-fab-photo" href="#" data-toggle="tooltip" data-placement="bottom" title="Editar oferta"><i class="material-icons">edit</i></a>
+                             </div>
+
+                            <div class="file-field" data-img-target="#offer-thumb">
+                            <div class="uploaded">
+                                    {{ form.banner_image }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7">
+                        <div class="form-group" data-links="#offer-title">
+                            <label>Título</label>
+                            {{ form.title }}
+                        </div>
+
+                        <div class="form-group" data-links="#offer-title">
+                            <label>Texto del botón</label>
+                            {{ form.more_info_text }}
+                        </div>
+
+                        <div class="form-group" data-links="#offer-title">
+                            <label>Enlace del botón</label>
+                            {{ form.more_info_url }}
+                        </div>
+                    </div>
+
+                </div>
+
+
+            <div class="form-group" data-links="#short_description">
+                <label>Descripción corta</label>
+                {{ form.short_description }}
+
+            </div>
+
+            <div class="form-group" data-links="#description">
+                <label>Descripción</label>
+                {{ form.description }}
+            </div>
+
+
+
+
+            <div class="description text-center">
+                <button type="submit" class="right-margin left-margin btn btn-primary btn-lg">{% if is_new %} Crear noticia {% else %} Guardar {% endif %}</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock%}
+
+{% block scripts %}
+
+{% endblock scripts %}

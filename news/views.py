@@ -11,6 +11,7 @@ from currency.forms.galleryform import PhotoGalleryForm
 from helpers import superuser_required
 import helpers
 from currency.models import Entity, Gallery, Category
+from news.forms.NewsForm import NewsForm
 from news.models import News
 from offers.models import Offer
 
@@ -124,44 +125,29 @@ def add_entity(request):
 
 
 @login_required
-def entity_edit(request, pk):
+def news_edit(request, pk):
 
-    entity = get_object_or_404(Entity, pk=pk)
-    gallery = entity.gallery
-    can_edit = request.user.is_superuser or request.user == entity.user
+    entry = get_object_or_404(News, pk=pk)
+    can_edit = request.user.is_superuser
 
     if not can_edit:
         messages.add_message(request, messages.ERROR, 'No tienes permisos para editar la entidad')
-        return redirect('entity_detail', pk=entity.pk )
-
-    gallery_factory = PhotoGalleryForm.getGalleryFormset(gallery)
-    initial_photos = PhotoGalleryForm.get_initial(gallery)
+        return redirect('dashboard')
 
     if request.method == "POST":
-        form = EntityForm(request.POST, request.FILES, instance=entity)
-        gallery_formset = gallery_factory(request.POST, request.FILES, initial=initial_photos)
+        form = NewsForm(request.POST, request.FILES, instance=entry)
 
-        if form.is_valid() and gallery_formset.is_valid():
+        if form.is_valid():
 
-            entity = form.save(commit=False)
-            if gallery is None:
-                gallery = Gallery.objects.create()
-            entity.gallery = gallery
-            entity.save()
-
-            PhotoGalleryForm.save_galleryphoto(entity.gallery, gallery_formset)
-
-            return redirect('entity_detail', pk=entity.pk)
+            entry = form.save()
+            return redirect('entity_detail', pk=entry.pk)
         else:
             print form.errors.as_data()
-            print gallery_formset.errors
     else:
-        form = EntityForm(instance=entity)
-        gallery_formset = gallery_factory(initial=initial_photos)
+        form = NewsForm(instance=entry)
 
-    return render(request, 'entity/edit.html', {
+    return render(request, 'news/edit.html', {
         'form': form,
-        'gallery_formset':gallery_formset,
-        'entity': entity,
+        'news': entry,
         'can_edit_entity':can_edit
     })
