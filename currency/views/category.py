@@ -21,18 +21,18 @@ def category_list(request):
 def add_category(request):
 
     if request.method == "POST":
-        form = EntityForm(request.POST, request.FILES)
+        form = CategoryForm(request.POST, request.FILES)
 
         if form.is_valid():
             category = form.save()
-            messages.add_message( request, messages.SUCCESS, 'Categoría %s añadida con éxito' % category.name )
+            messages.add_message( request, messages.SUCCESS, 'Categoría "{}" añadida con éxito'.format(category.name.encode('utf-8')))
             return redirect('category_list')
         else:
             print form.errors.as_data()
     else:
-        form = EntityForm()
+        form = CategoryForm()
 
-    return render(request, 'category/add.html', {
+    return render(request, 'category/edit.html', {
         'is_new': True,
         'form': form
     })

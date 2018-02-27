@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^users/search/$', views.search_users, name='search_users'),
 
     url(r'^categories/$', views.category_list, name='category_list'),
+    url(r'^categories/add$', views.add_category, name='add_category'),
     url(r'^categories/(?P<pk>[0-9a-f-]+)/edit/$', views.category_edit, name='category_edit'),
 
     url(r'^dashboard/$', views.profile, name='dashboard'),
