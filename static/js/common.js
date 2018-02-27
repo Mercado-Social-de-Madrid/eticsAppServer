@@ -48,6 +48,7 @@ $(function(){
 
     $('[data-toggle="tooltip"]').tooltip();
     $('.modal.show-on-load').modal();
+    $('.ajax-load').ajaxLoader();
 
     $(".link-row").click(function() {
         window.location = $(this).data("href");

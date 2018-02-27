@@ -11,16 +11,16 @@
 
 <div class="container">
 
-<div id="entities-list" class="ajax-load">
+<div id="news-list" class="ajax-load">
             <div class="results">
-                {% include 'entity/search_results.html' with entities=entities %}
+                {% include 'news/search_results.html' with news=news %}
             </div>
             <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
             <span class="sr-only">Loading...</span>
         </div>
 </div>
 
-<a href="{% url 'add_entity' %}" class="fab btn btn-primary btn-lg rounded-circle btn-float"  data-toggle="tooltip" data-placement="left" title="Añadir entidad">
+<a href="{% url 'add_entity' %}" class="fab btn btn-primary btn-lg rounded-circle btn-float"  data-toggle="tooltip" data-placement="left" title="Añadir entrada">
          <i class="material-icons">add</i>
         </a>
 

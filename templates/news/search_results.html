@@ -1,0 +1,37 @@
+
+<div class="table-responsive card mb-4">
+<table class="table table-hover" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
+  <thead>
+    <tr>
+      <th scope="col">Título</th>
+      <th scope="col">Publicada por</th>
+      <th scope="col">Fecha</th>
+      <th scope="col">Descripción</th>
+        <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for entry in news %}
+    <tr >
+      <td class="entity-td">
+          {{entry.title}}
+        </td>
+      <td>{{entry.published_by}}</td>
+      <td>{{entry.published_date|date:'d/m/Y'}}</td>
+        <td class="text-truncate">{{entry.short_description}}</td>
+        <td>
+            <a class="btn btn-outline-primary" href="#" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Ver detalle"><i class="material-icons">visibility</i></a>
+            <a class="btn btn-outline-primary" href="#" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="material-icons">mode_edit</i></a>
+            </td>
+
+    </tr>
+{% empty %}
+    <tr>
+      <td colspan="4">No hay ninguna entidad con los criterios de búsqueda actuales...</td>
+    </tr>
+
+{% endfor %}
+      </tbody>
+</table>
+</div>
+{% include 'common/pagination.html' with page=entities %}

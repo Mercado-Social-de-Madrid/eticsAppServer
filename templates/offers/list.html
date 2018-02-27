@@ -11,7 +11,7 @@
 
 <div class="container">
 
-<div id="entities-list">
+<div id="offers-list" class="ajax-load">
             <div class="results">
                 {% include 'offers/search_results.html' with offers=offers %}
             </div>
@@ -25,15 +25,3 @@
         </a>
 
 {% endblock%}
-
-{% block scripts %}
-<script type="text/javascript">
-    var list = $('#entities-list');
-    list.ajaxLoader();
-
-    $('.table-action').on('click', function(e){
-        e.preventDefault();
-        return false;
-    });
-</script>
-{% endblock scripts %}
