@@ -28,7 +28,7 @@
           </li>
 
             <li class="nav-item">
-            <a class="nav-link " href="{% url 'entity_list' %}">
+            <a class="nav-link {% if request.resolver_match.url_name == 'category_list' %} active {% endif %}" href="{% url 'category_list' %}">
               <i class="material-icons mr-3">label</i>
               Categorías
             </a>

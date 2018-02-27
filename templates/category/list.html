@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}Ofertas{% endblock%}
+
+{% block bodyattrs %}class="offers"{% endblock%}
+
+{% block content %}
+
+<div class="container">
+
+<div id="offers-list" class="ajax-load">
+            <div class="results">
+
+
+<div class="table-responsive card mb-4">
+<table class="table table-hover" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
+  <thead>
+    <tr>
+      <th scope="col">Nombre</th>
+      <th scope="col">Entidades</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for cat in categories %}
+    <tr>
+      <td>
+          <h5 class="mb-0"><i class="material-icons mr-1" style="color:{{cat.color}};">label</i> {{cat.name}}</h5>
+        </td>
+      <td>
+      </td><td>
+        <a class="btn btn-outline-primary" href="#" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="material-icons">edit</i></a>
+<a class="btn btn-outline-primary" href="#" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Ver entidades"><i class="material-icons">visibility</i></a>
+
+</td>
+    </tr>
+{% empty %}
+    <tr>
+      <td colspan="4">No hay ninguna entidad con los criterios de búsqueda actuales...</td>
+    </tr>
+
+{% endfor %}
+      </tbody>
+</table>
+</div>
+{% include 'common/pagination.html' with page=categories %}
+
+
+            </div>
+            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
+            <span class="sr-only">Loading...</span>
+        </div>
+</div>
+
+<a href="{% url 'add_entity' %}" class="fab btn btn-primary btn-lg rounded-circle btn-float"  data-toggle="tooltip" data-placement="left" title="Añadir categoría">
+         <i class="material-icons">add</i>
+        </a>
+
+{% endblock%}

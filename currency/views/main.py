@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.paginator import EmptyPage, Paginator, PageNotAnInteger, InvalidPage
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -40,7 +41,7 @@ def search_users(request):
         query_string = request.GET.get('q')
         entry_query = helpers.get_query(query_string, ['username', 'first_name', 'last_name', 'email'])
         if entry_query:
-            users = users.filter(entry_query)
+            bands = users.filter(entry_query)
 
     page = request.GET.get('page')
     users = helpers.paginate(users, page, 5)

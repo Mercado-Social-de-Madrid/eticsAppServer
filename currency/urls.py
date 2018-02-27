@@ -19,5 +19,7 @@ urlpatterns = [
     url(r'^profile/(?P<pk>[0-9a-f-]+)/$', views.profile_detail, name='profile_detail'),
     url(r'^users/search/$', views.search_users, name='search_users'),
 
+    url(r'^categories/$', views.category_list, name='category_list'),
+
     url(r'^dashboard/$', views.profile, name='dashboard'),
 ]
