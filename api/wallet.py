@@ -1,11 +1,10 @@
-from django.db.models import Q
 from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
 from tastypie.exceptions import NotFound
 from tastypie.resources import ModelResource
 
-from wallets.models import Payment, Transaction, Wallet, TransactionLog
+from wallets.models import Payment, Wallet, TransactionLog
 
 
 class PaymentsResource(ModelResource):
@@ -37,7 +36,6 @@ class PaymentsResource(ModelResource):
         return object_list.filter(receiver=bundle.request.user)
 
 
-
 class TransactionLogResource(ModelResource):
     class Meta:
         queryset = TransactionLog.objects.all()
@@ -50,6 +48,9 @@ class TransactionLogResource(ModelResource):
 
         authentication = ApiKeyAuthentication()
         authorization = Authorization()
+
+    def authorized_read_list(self, object_list, bundle):
+        return object_list.filter(wallet__user=bundle.request.user)
 
 
 

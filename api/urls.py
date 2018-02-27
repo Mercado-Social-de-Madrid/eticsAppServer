@@ -2,7 +2,7 @@ from tastypie.api import Api
 
 from api.categories import CategoriesResource
 from api.entities import EntitiesDetailResource, EntitySimpleResource
-from api.wallet import PaymentsResource, WalletResource
+from api.wallet import PaymentsResource, WalletResource, TransactionLogResource
 from api.resources import OffersResource, NewsResource
 from api.accounts import RegisterResource, UserResource
 from api.profile import EntityResource, PersonResource, DeviceResource
@@ -15,6 +15,7 @@ def get_api(version_name):
     api.register(CategoriesResource())
     api.register(RegisterResource())
     api.register(UserResource())
+    api.register(TransactionLogResource())
     api.register(WalletResource())
     api.register(EntityResource())
     api.register(EntitiesDetailResource())
