@@ -3,17 +3,9 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 
 from currency.forms.EntityForm import EntityForm
+from currency.forms.category import CategoryForm
 from currency.models import Category
 from helpers import superuser_required
-
-
-@superuser_required
-def category_detail(request, pk):
-    category = get_object_or_404(Category, pk=pk)
-
-    return render(request, 'category/detail.html', {
-        'category': category
-    })
 
 
 @superuser_required
@@ -53,19 +45,20 @@ def category_edit(request, pk):
 
     if not can_edit:
         messages.add_message(request, messages.ERROR, 'No tienes permisos para editar la categoría')
-        return redirect('category_detail', pk=category.pk )
+        return redirect('category_list')
 
     if request.method == "POST":
-        form = EntityForm(request.POST, request.FILES, instance=category)
+        form = CategoryForm(request.POST, request.FILES, instance=category)
 
         if form.is_valid():
             category = form.save()
-            return redirect('category_detail', pk=category.pk)
+            messages.add_message(request, messages.SUCCESS, 'Categoría "{}" actualizada con éxito'.format(category.name.encode('utf-8')))
+            return redirect('category_list')
         else:
             print form.errors.as_data()
 
     else:
-        form = EntityForm(instance=category)
+        form = CategoryForm(instance=category)
 
     return render(request, 'category/edit.html', {
         'form': form,
