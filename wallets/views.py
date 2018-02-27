@@ -5,15 +5,29 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
+import helpers
+from helpers import superuser_required
 from wallets.models import Payment, Wallet, TransactionLog
 
 
 @login_required
 def pending_payments(request):
     pending_payments = Payment.objects.pending(user=request.user)
-    return render(request, 'wallets/pending_payments.html', {
-        'pending_payments': pending_payments
-    })
+
+    page = request.GET.get('page')
+    pending_payments = helpers.paginate(pending_payments, page, elems_perpage=10)
+    params = {
+        'payments': pending_payments
+    }
+
+    if request.is_ajax():
+        response = render(request, 'wallets/payments_query.html', params)
+        response['Cache-Control'] = 'no-cache'
+        response['Vary'] = 'Accept'
+        return response
+    else:
+        return render(request, 'wallets/pending_payments.html', params)
+
 
 
 @login_required
@@ -58,3 +72,23 @@ def user_wallet(request):
         'pending_payments': pending_payments,
         'wallet': wallet, 'transactions':transactions
     })
+
+
+
+@superuser_required
+def admin_payments(request):
+    pending_payments = Payment.objects.all()
+
+    page = request.GET.get('page')
+    payments = helpers.paginate(pending_payments, page, elems_perpage=10)
+    params = {
+        'payments': pending_payments
+    }
+
+    if request.is_ajax():
+        response = render(request, 'wallets/payments_query.html', {'payments':payments})
+        response['Cache-Control'] = 'no-cache'
+        response['Vary'] = 'Accept'
+        return response
+    else:
+        return render(request, 'wallets/pending_payments.html', {'payments':payments})
