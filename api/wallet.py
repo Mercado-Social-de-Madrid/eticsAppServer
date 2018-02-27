@@ -11,7 +11,7 @@ from wallets.models import Payment, Transaction, Wallet, TransactionLog
 class PaymentsResource(ModelResource):
 
     class Meta:
-        queryset = Payment.objects.all()
+        queryset = Payment.objects.pending()
         include_resource_uri = False
         list_allowed_methods = ['get', 'post']
         resource_name = 'payment'
@@ -23,8 +23,6 @@ class PaymentsResource(ModelResource):
         authorization = Authorization()
 
     def obj_create(self, bundle, request=None, **kwargs):
-        print bundle
-        print bundle.data
 
         sender = bundle.request.user
         receiver = bundle.data['receiver']
@@ -34,6 +32,9 @@ class PaymentsResource(ModelResource):
         bundle.obj = Payment.objects.new_payment(sender, receiver, total_amount, currency_amount)
 
         return bundle
+
+    def authorized_read_list(self, object_list, bundle):
+        return object_list.filter(receiver=bundle.request.user)
 
 
 
