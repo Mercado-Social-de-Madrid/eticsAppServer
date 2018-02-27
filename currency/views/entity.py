@@ -110,6 +110,7 @@ def add_entity(request):
             gallery = Gallery.objects.create()
             entity.gallery = gallery
             entity.save()
+            form.save_m2m()
             PhotoGalleryForm.save_galleryphoto(entity.gallery, gallery_formset)
 
             return redirect('entity_detail', pk=entity.pk)
@@ -120,8 +121,11 @@ def add_entity(request):
         form = EntityForm()
         gallery_formset = gallery_factory(initial=initial_photos)
 
+    categories = Category.objects.all()
+
     return render(request, 'entity/add.html', {
         'is_new': True,
+        'categories': categories,
         'form': form,
         'gallery_formset':gallery_formset
     })
@@ -148,10 +152,12 @@ def entity_edit(request, pk):
         if form.is_valid() and gallery_formset.is_valid():
 
             entity = form.save(commit=False)
+            print entity.categories
             if gallery is None:
                 gallery = Gallery.objects.create()
             entity.gallery = gallery
             entity.save()
+            form.save_m2m()
 
             PhotoGalleryForm.save_galleryphoto(entity.gallery, gallery_formset)
 
@@ -163,9 +169,12 @@ def entity_edit(request, pk):
         form = EntityForm(instance=entity)
         gallery_formset = gallery_factory(initial=initial_photos)
 
+    categories = Category.objects.all()
+
     return render(request, 'entity/edit.html', {
         'form': form,
         'gallery_formset':gallery_formset,
+        'categories': categories,
         'entity': entity,
         'can_edit_entity':can_edit
     })

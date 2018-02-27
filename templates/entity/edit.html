@@ -54,6 +54,14 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Categorías</label>
+                            <div class="tag-select">
+                                {% include 'common/tags_declaration.html' with tags=categories %}
+                            {{ form.categories }}
+                                </div>
+                        </div>
+
+                        <div class="form-group">
                             <label>Número de trabajadores</label>
                             {{ form.num_workers }}
                         </div>
