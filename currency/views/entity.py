@@ -2,15 +2,14 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
+import helpers
 from currency.forms.EntityForm import EntityForm
 from currency.forms.galleryform import PhotoGalleryForm
-from helpers import superuser_required
-import helpers
 from currency.models import Entity, Gallery, Category
+from helpers import superuser_required
 from offers.models import Offer
 
 
