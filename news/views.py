@@ -73,57 +73,6 @@ def news_list(request):
         return render(request, 'news/list.html', params)
 
 
-@superuser_required
-def add_entity(request):
-
-    gallery_factory = PhotoGalleryForm.getGalleryFormset()
-    initial_photos = PhotoGalleryForm.get_initial()
-
-    if request.method == "POST":
-        form = EntityForm(request.POST, request.FILES)
-        gallery_formset = gallery_factory(request.POST, request.FILES, initial=initial_photos)
-
-        if form.is_valid() and gallery_formset.is_valid():
-            entity = form.save(commit=False)
-
-            owner_id = form.cleaned_data['owner_id']
-            new_user_username = form.cleaned_data['new_user_username']
-            new_user_password = form.cleaned_data['new_user_password']
-            new_user_first_name = form.cleaned_data['new_user_first_name']
-            new_user_last_name = form.cleaned_data['new_user_last_name']
-            new_user_email = form.cleaned_data['new_user_email']
-
-            if owner_id:
-                user = User.objects.get(pk=owner_id)
-                entity.user = user
-
-            if not entity.user and (new_user_username and new_user_password and new_user_email):
-                user = User.objects.get_or_create(username=new_user_username, email=new_user_email, password=new_user_password, first_name=new_user_first_name, last_name=new_user_last_name)
-                entity.user = user
-
-            if not entity.user:
-                entity.user = request.user
-
-            gallery = Gallery.objects.create()
-            entity.gallery = gallery
-            entity.save()
-            PhotoGalleryForm.save_galleryphoto(entity.gallery, gallery_formset)
-
-            return redirect('entity_detail', pk=entity.pk)
-        else:
-            print form.errors.as_data()
-            print gallery_formset.errors
-    else:
-        form = EntityForm()
-        gallery_formset = gallery_factory(initial=initial_photos)
-
-    return render(request, 'entity/add.html', {
-        'is_new': True,
-        'form': form,
-        'gallery_formset':gallery_formset
-    })
-
-
 @login_required
 def news_edit(request, pk):
 
@@ -149,5 +98,34 @@ def news_edit(request, pk):
     return render(request, 'news/edit.html', {
         'form': form,
         'news': entry,
+        'can_edit_entity':can_edit
+    })
+
+
+
+@superuser_required
+def add_news(request):
+    can_edit = request.user.is_superuser
+
+    if not can_edit:
+        messages.add_message(request, messages.ERROR, 'No tienes permisos para editar la entidad')
+        return redirect('dashboard')
+
+    if request.method == "POST":
+        form = NewsForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            entry = form.save(commit=False)
+            entry.published_by = request.user
+            entry.save()
+
+            return redirect('news_detail', pk=entry.pk)
+        else:
+            print form.errors.as_data()
+    else:
+        form = NewsForm()
+
+    return render(request, 'news/edit.html', {
+        'form': form,
         'can_edit_entity':can_edit
     })
