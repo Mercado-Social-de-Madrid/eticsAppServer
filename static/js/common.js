@@ -8,6 +8,7 @@
         resultsContainer.addClass('loading-container');
         $.get(url, {}, function(data){
             resultsContainer.find('.results').html(data);
+            resultsContainer.find('[data-toggle="tooltip"]').tooltip();
             resultsContainer.removeClass('loading-container');
             var preserveHistory = resultsContainer.attr('data-preservehistory');
             if (!preserveHistory || preserveHistory != 'true')
