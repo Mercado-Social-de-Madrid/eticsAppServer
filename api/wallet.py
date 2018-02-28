@@ -1,8 +1,12 @@
+from django.conf.urls import url
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
 from tastypie.exceptions import NotFound
+from tastypie.http import HttpMultipleChoices, HttpGone, HttpCreated, HttpAccepted
 from tastypie.resources import ModelResource
+from tastypie.utils import trailing_slash
 
 from wallets.models import Payment, Wallet, TransactionLog
 
@@ -42,6 +46,54 @@ class PaymentsResource(ModelResource):
         else:
             bundle.data['sender'] = bundle.obj.sender.username
         return bundle
+
+    # Part related with the child /offers resource
+    def prepend_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/accept%s$" % (
+            self._meta.resource_name, trailing_slash()),
+                self.wrap_view('accept_payment'), name="api_accept_payment"),
+
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/cancel%s$" % (
+                self._meta.resource_name, trailing_slash()),
+                self.wrap_view('cancel_payment'), name="api_cancel_payment"),
+        ]
+
+    def accept_payment(self, request, **kwargs):
+
+        self.method_check(request, allowed=['post'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
+        try:
+            bundle = self.build_bundle(data={'pk': kwargs['pk']}, request=request)
+            payment = self.cached_obj_get(bundle=bundle, **self.remove_api_resource_names(kwargs))
+        except ObjectDoesNotExist:
+            return HttpGone()
+        except MultipleObjectsReturned:
+            return HttpMultipleChoices("More than one resource is found at this URI.")
+        payment.accept_payment()
+        return self.create_response(
+                request, bundle,
+                response_class = HttpCreated)
+
+    def cancel_payment(self, request, **kwargs):
+
+        self.method_check(request, allowed=['post'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
+        try:
+            bundle = self.build_bundle(data={'pk': kwargs['pk']}, request=request)
+            payment = self.cached_obj_get(bundle=bundle, **self.remove_api_resource_names(kwargs))
+        except ObjectDoesNotExist:
+            return HttpGone()
+        except MultipleObjectsReturned:
+            return HttpMultipleChoices("More than one resource is found at this URI.")
+        payment.cancel_payment()
+        return self.create_response(
+                request, bundle,
+                response_class = HttpCreated)
 
 
 class TransactionLogResource(ModelResource):

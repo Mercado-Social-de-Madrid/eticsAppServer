@@ -72,7 +72,7 @@ class Payment(models.Model):
     sender = models.ForeignKey(User, null=True, related_name='payments_sent')
     receiver = models.ForeignKey(User, null=True, related_name='payments_received')
 
-    status = models.CharField(max_length=8, choices=PAYMENT_STATUS)
+    status = models.CharField(max_length=10, choices=PAYMENT_STATUS)
     total_amount = models.FloatField(default=0, verbose_name='Importe total')
     currency_amount = models.FloatField(default=0, verbose_name='Cantidad en boniatos')
 
@@ -112,7 +112,7 @@ class Payment(models.Model):
                 t = wallet_receiver.new_transaction(bonification, wallet=wallet_sender, bonification=True)
                 wallet_sender.notify_transaction(t)
 
-
+        print "Payment accepted"
         self.status = STATUS_ACCEPTED
         self.processed = timezone.now()
         self.save()
@@ -125,9 +125,11 @@ class Payment(models.Model):
             return
             # TODO: create exception
 
-        notify_user(user=self.sender, title="Pago cancelado", message="La entidad ha cancelado el pago")
+        notify_user(user=self.sender, data={}, title="Pago cancelado", message="La entidad ha cancelado el pago")
 
+        print "Payment cancelled"
         self.status = STATUS_CANCELLED
+        self.processed = timezone.now()
         self.save()
 
 
