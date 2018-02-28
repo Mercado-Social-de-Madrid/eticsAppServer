@@ -60,37 +60,13 @@
         </div>
 
         <div class="card">
-
             <div class="card-body py-4">
                 <h5 class="card-title px-2"><i class="ic ic-wallet"></i>Últimos movimientos</h5>
-
-                <table class="table table-hover">
-              <thead>
-                <tr>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Hora</th>
-                    <!--TODO:añadir referencia de alguna forma-->
-                  <th scope="col">Cuenta</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Bonificación</th>
-                    <th scope="col">Saldo</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for tr in transactions %}
-                <tr>
-                  <th scope="row">{{tr.timestamp|date:'d/m/Y'}}</th>
-                    <td scope="row">{{tr.timestamp|date:'H:i:s'}}</td>
-
-                  <td>{{tr.related}}</td>
-                  <td class="amount {% if tr.amount > 0 %}positive{%else%}negative{%endif%}">{{tr.amount}}</td>
-                  <td class="text-center">{%if tr.is_bonification %} <i class="material-icons">done</i> {% endif %}</td>
-                    <td class="amount {% if tr.current_balance < 0 %}negative{%endif%}">{{tr.current_balance}}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-
+                <div class="ajax-load">
+                    <div class="results">
+                {% include 'wallets/transaction_logs_query.html' with transactions=transactions %}
+                    </div>
+                </div>
         </div>
         </div>
 </div>

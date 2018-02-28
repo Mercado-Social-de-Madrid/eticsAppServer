@@ -65,14 +65,20 @@ def user_wallet(request):
 
     pending_payments = Payment.objects.pending(user=request.user)
     wallet = Wallet.objects.filter(user=request.user).first()
-
     transactions = TransactionLog.objects.filter(wallet=wallet)
+    page = request.GET.get('page')
+    transactions = helpers.paginate(transactions, page, elems_perpage=10)
 
-    return render(request, 'wallets/user_wallet.html', {
-        'pending_payments': pending_payments,
-        'wallet': wallet, 'transactions':transactions
-    })
-
+    if request.is_ajax():
+        response = render(request, 'wallets/transaction_logs_query.html', {'transactions':transactions})
+        response['Cache-Control'] = 'no-cache'
+        response['Vary'] = 'Accept'
+        return response
+    else:
+        return render(request, 'wallets/user_wallet.html', {
+            'pending_payments': pending_payments,
+            'wallet': wallet, 'transactions': transactions
+        })
 
 
 @superuser_required

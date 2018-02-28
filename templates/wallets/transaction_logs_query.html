@@ -1,0 +1,29 @@
+<div class="table-responsive">
+<table class="table table-hover" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
+  <thead>
+    <tr>
+        <th scope="col">Fecha</th>
+        <th scope="col">Hora</th>
+        <!--TODO:añadir referencia de alguna forma-->
+      <th scope="col">Cuenta</th>
+      <th scope="col">Cantidad</th>
+      <th scope="col" class="text-center">Bonificación</th>
+        <th scope="col">Saldo</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for tr in transactions %}
+    <tr>
+      <th scope="row">{{tr.timestamp|date:'d/m/Y'}}</th>
+        <td scope="row">{{tr.timestamp|date:'H:i:s'}}</td>
+
+      <td>{{tr.related}}</td>
+      <td class="amount {% if tr.amount > 0 %}positive{%else%}negative{%endif%}">{{tr.amount|floatformat:2}}</td>
+      <td class="text-center">{%if tr.is_bonification %} <i class="material-icons">done</i> {% endif %}</td>
+        <td class="amount {% if tr.current_balance < 0 %}negative{%endif%}">{{tr.current_balance|floatformat:2}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% include 'common/pagination.html' with page=transactions %}
