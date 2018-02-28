@@ -29,6 +29,7 @@ class EntityForm(forms.ModelForm):
             'longitude': forms.NumberInput(attrs={'class': 'form-control', 'readonly':True}),
             'max_percent_payment': forms.NumberInput(attrs={'class': 'form-control'}),
             'bonus_percent_general': forms.NumberInput(attrs={'class': 'form-control'}),
+            'bonus_percent_entity': forms.NumberInput(attrs={'class': 'form-control'}),
             'num_workers': forms.NumberInput(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
             'facebook_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Página de Facebook'}),
