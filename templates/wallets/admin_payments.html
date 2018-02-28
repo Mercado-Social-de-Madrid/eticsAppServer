@@ -3,21 +3,42 @@
 {% load settings_value %}
 {% load l10n %}
 
-{% block title %}Ofertas{% endblock%}
+{% block title %}Pagos pendientes{% endblock%}
 
-{% block bodyattrs %}class="offers"{% endblock%}
+{% block bodyattrs %}class="entity"{% endblock%}
 
 {% block content %}
 
 <div class="container">
+    <div class="row">
 
-<div id="offers-list" class="ajax-load">
-            <div class="results">
-                {% include 'offers/search_results.html' with offers=offers %}
+        <div class="col-md-12 px-4 pb-4">
+            <h2 class="primary-title mb-4 mt-0">Pagos </h2>
+
+            <div class="ajax-load">
+                    <div class="results">
+                        {% include 'wallets/payments_query.html' with payments=payments %}
+                    </div>
+                    <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
+                    <span class="sr-only">Loading...</span>
+                </div>
             </div>
-            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
-            <span class="sr-only">Loading...</span>
-        </div>
-</div>
 
+
+
+            <hr class="mt-3">
+
+        </div>
+    </div>
+</div>
 {% endblock%}
+
+{% block scripts %}
+<script type="text/javascript">
+    $('.table-action').on('click', function(e){
+        e.preventDefault();
+
+        return false;
+    });
+</script>
+{% endblock scripts %}

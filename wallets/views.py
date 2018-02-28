@@ -91,4 +91,4 @@ def admin_payments(request):
         response['Vary'] = 'Accept'
         return response
     else:
-        return render(request, 'wallets/pending_payments.html', {'payments':payments})
+        return render(request, 'wallets/admin_payments.html', {'payments':payments})

@@ -22,13 +22,12 @@
                         {{person.email}}
                     {% endif %}
                     </div>
-                    <a class="btn btn-primary btn-float btn-lg" data-toggle="tooltip" data-placement="bottom" title="Editar entidad" href="{% url 'entity_edit' person.pk %}"><i class="material-icons">mode_edit</i></a>
+                    <a class="btn btn-primary btn-float btn-lg" data-toggle="tooltip" data-placement="bottom" title="Editar perfil" href="{% url 'profile_edit' person.pk %}"><i class="material-icons">mode_edit</i></a>
 
                 </div>
 
                 <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Ver balance social</a>
-                    <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Ver estadísticas de favoritos</a>
+                    <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Ver entidades favoritas</a>
               </div>
             </div>
         </div>
@@ -110,8 +109,7 @@
 
     </div>
 
-
-
+    
     {% if type == 'entity' %}
     <div class="row">
         <button type="button" class="fab btn btn-primary btn-lg rounded-circle px-3 py-4"  data-toggle="modal" data-target="#qrModal">

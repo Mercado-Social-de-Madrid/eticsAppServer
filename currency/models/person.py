@@ -22,7 +22,8 @@ class Person(models.Model):
     nif = models.CharField(null=True, blank=True, verbose_name='NIF/CIF', max_length=50)
     email = models.CharField(null=False, blank=False, verbose_name='Email', max_length=250)
     name = models.CharField(null=True, blank=True, verbose_name='Nombre', max_length=250)
-    surname = models.TextField(null=True, blank=True, verbose_name='Dirección')
+    surname = models.CharField(null=True, blank=True, verbose_name='Apellidos', max_length=250)
+    address = models.TextField(null=True, blank=True, verbose_name='Dirección')
 
     profile_image = ProcessedImageField(null=True, blank=True, upload_to=RandomFileName('profiles/'),
                                 verbose_name='Imagen de perfil',
