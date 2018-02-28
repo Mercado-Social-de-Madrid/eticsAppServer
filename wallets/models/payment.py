@@ -42,8 +42,6 @@ class PaymentManager(models.Manager):
                 currency_amount = min(currency_amount, instance.max_accepted_currency(total_amount))
 
             sender_wallet = Wallet.objects.filter(user=sender).first()
-            print sender_wallet.balance
-            print currency_amount
             if sender_wallet.balance < currency_amount:
                 print 'User does not have enough cash!'
                 #TODO: Raise exception?
@@ -105,11 +103,14 @@ class Payment(models.Model):
             wallet_receiver.notify_transaction(t, silent=True)
 
         user_type, entity = self.receiver.get_related_entity()
+        print user_type
         if user_type == 'entity':
             # If the receiver is an entity, we calculate the bonification to give the sender
-            bonification = self.total_amount * (entity.bonification_percent / 100.0)
+            bonification = self.total_amount * (entity.bonus_percent_general / 100.0)
+            print bonification
             if bonification > 0:
                 t = wallet_receiver.new_transaction(bonification, wallet=wallet_sender, bonification=True)
+                print t
                 wallet_sender.notify_transaction(t)
 
         print "Payment accepted"
