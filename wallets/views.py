@@ -84,7 +84,7 @@ def user_wallet(request):
 
 @superuser_required
 def admin_payments(request):
-    payments = Payment.objects.all()
+    payments = Payment.objects.all().order_by('-timestamp')
 
     page = request.GET.get('page')
     payments = helpers.paginate(payments, page, elems_perpage=10)

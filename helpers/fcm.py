@@ -8,9 +8,7 @@ def notify_user(user, data, title=None, message=None, silent=True):
         If the message is silent, title and message are included in the data dictionary
     '''
 
-    device = FCMDevice.objects.filter(user=user).first()
-    if device is None:
-        return
+
 
     if not data:
         data = {}
@@ -21,7 +19,15 @@ def notify_user(user, data, title=None, message=None, silent=True):
     if message and silent:
         data['message'] = message
 
-    result = device.send_message(title, message, data=data)
+    print data
+
+    device = FCMDevice.objects.filter(user=user).first()
+    if device is None:
+        return
+    if silent:
+        result = device.send_message(data=data)
+    else:
+        result = device.send_message(title=title, message=message, data=data)
     print result
 
 
@@ -44,5 +50,9 @@ def broadcast_notification(users=None, data=None, title=None, message=None, sile
     if message and silent:
         data['message'] = message
 
-    result = devices.send_message(title, message, data=data)
+    if silent:
+        result = devices.send_message(data=data)
+    else:
+        result = devices.send_message(title=title, message=message, data=data)
+
     print result
