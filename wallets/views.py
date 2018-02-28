@@ -52,11 +52,14 @@ def payment_detail(request, pk):
             return redirect('pending_payments')
 
     else:
-        user_type, entity = payment.receiver.get_related_entity()
-        bonus = entity.bonus(payment.total_amount)
+        sender_type, sender = payment.sender.get_related_entity()
+        receiver_type, entity = payment.receiver.get_related_entity()
+
+        bonus = entity.bonus(payment.total_amount, sender_type)
         return render(request, 'wallets/payment_detail.html', {
             'payment': payment,
-            'bonus': bonus
+            'bonus': bonus,
+            'sender': sender
         })
 
 

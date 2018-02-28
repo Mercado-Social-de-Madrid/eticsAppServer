@@ -28,7 +28,7 @@ class Wallet(models.Model):
 
 
     @transaction.atomic
-    def new_transaction(self, amount, wallet=None, concept=None, bonification=False, is_euro_purchase=False, **kwargs):
+    def new_transaction(self, amount, wallet=None, concept=None, bonus=False, is_euro_purchase=False, **kwargs):
 
         if wallet:
             wallet_from = self
@@ -38,7 +38,7 @@ class Wallet(models.Model):
             wallet_to = self
 
         if not concept:
-            if bonification:
+            if bonus:
                 concept = "Bonificación en boniatos por compra"
             elif wallet_from:
                 concept = "Transferencia"
@@ -49,7 +49,7 @@ class Wallet(models.Model):
             wallet_from=wallet_from,
             wallet_to=wallet_to,
             amount=amount,
-            is_bonification=bonification,
+            is_bonification=bonus,
             concept=concept,
             is_euro_purchase=is_euro_purchase,
             **kwargs)

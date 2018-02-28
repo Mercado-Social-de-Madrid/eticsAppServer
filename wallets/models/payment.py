@@ -102,14 +102,14 @@ class Payment(models.Model):
             t = wallet_sender.new_transaction(self.currency_amount, wallet=wallet_receiver)
             wallet_receiver.notify_transaction(t, silent=True)
 
-        user_type, entity = self.receiver.get_related_entity()
-        print user_type
-        if user_type == 'entity':
+        receiver_type, entity = self.receiver.get_related_entity()
+        sender_type, entity = self.sender.get_related_entity()
+
+        if receiver_type == 'entity':
             # If the receiver is an entity, we calculate the bonification to give the sender
-            bonification = self.total_amount * (entity.bonus_percent_general / 100.0)
-            print bonification
-            if bonification > 0:
-                t = wallet_receiver.new_transaction(bonification, wallet=wallet_sender, bonification=True)
+            bonus = entity.bonus(self.total_amount, sender_type)
+            if bonus > 0:
+                t = wallet_receiver.new_transaction(bonus, wallet=wallet_sender, bonus=True)
                 print t
                 wallet_sender.notify_transaction(t)
 

@@ -41,7 +41,7 @@ class Entity(models.Model):
 
     categories = models.ManyToManyField(Category, blank=True, verbose_name='Categorías')
 
-    # Business fields
+    # Currency fields
     bonus_percent_entity = models.FloatField(default=0, verbose_name='Porcentaje de bonificación a entidades')
     bonus_percent_general = models.FloatField(default=0, verbose_name='Porcentaje de bonificación general')
     max_percent_payment = models.FloatField(default=0, verbose_name='Máximo porcentaje de pago aceptado')
@@ -65,8 +65,12 @@ class Entity(models.Model):
                 return image.image.url
         return None
 
-    def bonus(self, total_amount):
-        return total_amount * (self.bonus_percent_general / 100.0)
+    def bonus(self, total_amount, bonusable_type=None):
+        percent = self.bonus_percent_general
+        if bonusable_type == 'entity':
+            percent = self.bonus_percent_entity
+
+        return total_amount * (percent / 100.0)
 
     def max_accepted_currency(self, total_amount):
         return total_amount * (self.max_percent_payment / 100.0)
