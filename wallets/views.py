@@ -77,24 +77,26 @@ def user_wallet(request):
     else:
         return render(request, 'wallets/user_wallet.html', {
             'pending_payments': pending_payments,
+            'showing_all': False,
             'wallet': wallet, 'transactions': transactions
         })
 
 
 @superuser_required
 def admin_payments(request):
-    pending_payments = Payment.objects.all()
+    payments = Payment.objects.all()
 
     page = request.GET.get('page')
-    payments = helpers.paginate(pending_payments, page, elems_perpage=10)
+    payments = helpers.paginate(payments, page, elems_perpage=10)
     params = {
-        'payments': pending_payments
+        'payments': payments,
+        'showing_all': True
     }
 
     if request.is_ajax():
-        response = render(request, 'wallets/payments_query.html', {'payments':payments})
+        response = render(request, 'wallets/payments_query.html', params)
         response['Cache-Control'] = 'no-cache'
         response['Vary'] = 'Accept'
         return response
     else:
-        return render(request, 'wallets/admin_payments.html', {'payments':payments})
+        return render(request, 'wallets/admin_payments.html', params)

@@ -17,7 +17,7 @@
 
             <div class="ajax-load">
                     <div class="results">
-                        {% include 'wallets/payments_query.html' with payments=payments %}
+                        {% include 'wallets/payments_query.html' with payments=payments showing_all=showing_all %}
                     </div>
                     <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
                     <span class="sr-only">Loading...</span>

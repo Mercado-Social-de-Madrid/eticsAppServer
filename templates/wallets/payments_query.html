@@ -5,6 +5,11 @@
     <tr>
         <th scope="col">Fecha</th>
       <th scope="col">Pagador</th>
+        {% if showing_all %}
+        <th>
+            Estado
+        </th>
+        {% endif %}
       <th scope="col">Cantidad total</th>
       <th scope="col">En boniatos</th>
     </tr>
@@ -12,13 +17,24 @@
   <tbody>
     {% for payment in payments %}
     <tr class="link-row" data-href="{%url 'payment_detail' payment.pk%}" data-toggle="tooltip" data-placement="bottom" title="Ver detalles de pago">
-      <th scope="row">{{payment.timestamp}}</th>
+      <th scope="row">{{payment.timestamp|date:'d/m/Y H:i'}}</th>
+
       <td>{{payment.sender}}</td>
+        {% if showing_all %}
+        <td>
+            {% if payment.status == 'accepted' %}<span class="text-success"><i class="material-icons md-36" >play_circle_outline</i> Aceptado</span> {% endif %}
+            {% if payment.status == 'pending' %}<span class="text-info"><i class="material-icons md-36" >play_circle_outline</i> Pendiente</span> {% endif %}
+            {% if payment.status == 'cancelled' %}<span class="text-danger"><i class="material-icons md-36" >play_circle_outline</i> Cancelado</span> {% endif %}
+
+        </td>
+        {% endif %}
       <td>{{payment.total_amount}} €</td>
       <td>{{payment.currency_amount}} Boniatos</td>
         <td>
+            {% if payment.status == 'pending' %}
             <a href="#" class="table-action rounded-circle" data-toggle="tooltip" data-placement="bottom" title="Aceptar pago"><i class="material-icons">done</i></a>
             <a href="#" class="table-action rounded-circle" data-toggle="tooltip" data-placement="bottom" title="Cancelar pago"><i class="material-icons">clear</i></a>
+            {% endif %}
         </td>
     </tr>
     {% endfor %}
