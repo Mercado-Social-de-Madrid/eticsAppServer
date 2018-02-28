@@ -27,7 +27,7 @@ def notify_user(user, data, title=None, message=None, silent=True):
     if silent:
         result = device.send_message(data=data)
     else:
-        result = device.send_message(title=title, message=message, data=data)
+        result = device.send_message(title=title, body=message, data=data)
     print result
 
 
@@ -53,6 +53,6 @@ def broadcast_notification(users=None, data=None, title=None, message=None, sile
     if silent:
         result = devices.send_message(data=data)
     else:
-        result = devices.send_message(title=title, message=message, data=data)
+        result = devices.send_message(title=title, body=message, data=data)
 
     print result
