@@ -31,7 +31,7 @@ def notify_user(user, data, title=None, message=None, silent=True):
     print result
 
 
-def broadcast_notification(users=None, data=None, title=None, message=None, silent=True):
+def broadcast_notification(users=None, data=None, title=None, body=None, silent=True):
     '''
         Sends an FCM notification to a user
         If the message is silent, title and message are included in the data dictionary
@@ -43,16 +43,16 @@ def broadcast_notification(users=None, data=None, title=None, message=None, sile
 
     if not data:
         data = {}
-    if not message and not title:
+    if not body and not title:
         silent = True
     if title and silent:
         data['title'] = title
-    if message and silent:
-        data['message'] = message
+    if body and silent:
+        data['message'] = body
 
     if silent:
         result = devices.send_message(data=data)
     else:
-        result = devices.send_message(title=title, body=message, data=data)
+        result = devices.send_message(title=title, body=body, data=data)
 
     print result
