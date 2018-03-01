@@ -54,4 +54,10 @@ def notify_news(sender, instance, created, **kwargs):
 
     if created:
         print 'Notifying news to all users'
-        helpers.broadcast_notification(title='Nueva noticia!', data={ 'type': 'news', 'id':str(instance.pk) }, message=instance.title, silent=False)
+        data = {
+            'type': 'news',
+            'id':str(instance.pk),
+            'title': instance.title,
+            'short_description': instance.short_description
+        }
+        helpers.broadcast_notification(title='Nueva noticia!', data=data, body=instance.title, silent=False)
