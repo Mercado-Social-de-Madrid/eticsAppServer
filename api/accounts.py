@@ -73,7 +73,11 @@ def gen_userwallet_data(user, include_type=True):
 
     if (data['entity'] is not None) and 'user' in data['entity']:
         data['entity']['id'] = instance.pk
+        if data['entity']['logo']:
+            data['entity']['logo'] = data['entity']['logo'].url
+            data['entity']['logo_thumbnail'] = instance.logo_thumbnail.url
         del data['entity']['user']
+
     if (data['person'] is not None) and 'user' in data['person']:
         data['person']['id'] = instance.pk
         del data['person']['user']
