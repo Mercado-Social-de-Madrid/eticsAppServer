@@ -14,25 +14,61 @@
             <h3>{{person.full_name}}</h3>
             {{ person.email }}
         </div>
-        {% if can_edit %}
-            <div class="container action-btns">
-                <a class="btn btn-primary btn-float btn-lg" href="{% url 'profile_edit' person.pk  %}" data-toggle="tooltip" data-placement="bottom" title="Editar perfil"><i class="material-icons">edit</i></a>
-             </div>
-            {% endif %}
+
     </div>
 </div>
 
 <div class="container px-md-5">
         <div class="card mx-md-5" >
 
-
           <div class="card-body px-5 py-4">
             <h4 class="card-title">{{person.full_name}}</h4>
-            <div class="card-text">
-                {{form.as_p}}
+              <div class="card-text">
+              <div class="row">
+                  <div class="col-md-6 my-2">
+                      <label>Nombre</label><br>
+                      {{person.name}}
+                  </div>
+
+                  <div class="col-md-6 my-2">
+                      <label>Apellidos</label><br>
+                      {{person.surname}}
+                  </div>
+
+                  <div class="col-md-6 my-2">
+                      <label>NIF/CIF</label><br>
+                      {{person.nif}}
+                  </div>
+
+                  <div class="col-md-6 my-2">
+                      <label>Email</label><br>
+                      {{person.email}}
+                  </div>
+
+                  <div class="col-md-6 my-2">
+                      <label>Dirección</label><br>
+                      {{person.address}}
+                  </div>
+
+                  <div class="col-md-6 my-2">
+                      <label>Fecha de registro</label><br>
+                      {{person.registered}}
+                  </div>
+
+
+              </div>
+
+
             </div>
+
           </div>
+            {% if can_edit %}
+            <div class=" action-btns top">
+                <a class="btn btn-primary btn-float btn-lg" href="{% url 'profile_edit' person.pk  %}" data-toggle="tooltip" data-placement="bottom" title="Editar perfil"><i class="material-icons">edit</i></a>
+             </div>
+            {% endif %}
         </div>
+
 </div>
 {% endblock%}
 

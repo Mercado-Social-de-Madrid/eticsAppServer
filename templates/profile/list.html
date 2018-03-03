@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}Ofertas{% endblock%}
+
+{% block bodyattrs %}class="offers"{% endblock%}
+
+{% block content %}
+
+<div class="container">
+<h3>Consumidoras</h3>
+<div id="offers-list" class="ajax-load">
+            <div class="results">
+                {% include 'profile/profile_query.html' with profiles=profiles %}
+            </div>
+            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
+            <span class="sr-only">Loading...</span>
+        </div>
+</div>
+
+{% endblock%}

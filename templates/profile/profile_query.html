@@ -1,0 +1,30 @@
+<table class="table table-bordered table-hover" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
+  <thead>
+    <tr>
+      <th scope="col">Usuario</th>
+      <th scope="col">Email</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for profile in profiles %}
+    <tr data-id="{{user.pk}}">
+        <td class="text-muted">{{profile.user}}</td>
+      <td>{{profile.full_name}}</th>
+        <td>{{profile.email}}</td>
+        <td>
+            <a class="btn btn-outline-primary" href="{% url 'profile_detail' profile.pk %}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Ver detalle"><i class="material-icons">visibility</i></a>
+            <a class="btn btn-outline-primary" href="{% url 'profile_edit' profile.pk %}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="material-icons">mode_edit</i></a>
+        </td>
+    </tr>
+{% empty %}
+    <tr>
+      <td colspan="4">No hay consumidoras que cumplan los criterios de búsqueda...</td>
+    </tr>
+
+{% endfor %}
+      </tbody>
+</table>
+
+{% include 'common/pagination.html' with page=profiles %}
