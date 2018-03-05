@@ -1,0 +1,41 @@
+{% if transactions %}
+<div class="table-responsive card">
+<table class="table table-hover" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
+  <thead>
+    <tr>
+        <th scope="col">Fecha</th>
+      <th scope="col">Emisor</th>
+      <th scope="col">Receptor</th>
+      <th scope="col">Cantidad</th>
+        <th scope="col" colspan="2">Concepto</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for tr in transactions %}
+    <tr>
+      <th scope="row">{{tr.timestamp|date:'d/m/Y H:i'}}</th>
+
+      <td>{{tr.wallet_from.user}}</td>
+        <td>{{tr.wallet_to.user}}</td>
+
+      <td class="amount">{{tr.amount}}B</td>
+      <td>{{tr.concept}}</td>
+       <td>
+           {% if tr.made_byadmin %}
+           <span class="text-info"><i class="material-icons md-36" data-toggle="tooltip" data-placement="bottom" title="Realizada por Administrador">play_circle_outline</i> </span>
+           {% endif %}
+
+           {% if tr.is_bonification %}
+           <span class="text-success"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Bonificación">redeem</i> </span>
+           {% endif %}
+       </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+    </div>
+{% else %}
+    <div class="text-grey px-3">No tienes ningún pago pendiente de confirmación actualmente.</div>
+{% endif %}
+
+{% include 'common/pagination.html' with page=transactions %}

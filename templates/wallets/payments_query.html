@@ -28,8 +28,8 @@
 
         </td>
         {% endif %}
-      <td>{{payment.total_amount}} €</td>
-      <td>{{payment.currency_amount}} Boniatos</td>
+      <td class="amount">{{payment.total_amount}}€</td>
+      <td class="amount">{{payment.currency_amount}}B</td>
         <td>
             {% if payment.status == 'pending' %}
             <a href="#" class="table-action rounded-circle" data-toggle="tooltip" data-placement="bottom" title="Aceptar pago"><i class="material-icons">done</i></a>

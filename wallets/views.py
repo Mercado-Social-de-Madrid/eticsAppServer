@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 import helpers
 from helpers import superuser_required
-from wallets.models import Payment, Wallet, TransactionLog
+from wallets.models import Payment, Wallet, TransactionLog, Transaction
 
 
 @login_required
@@ -103,3 +103,21 @@ def admin_payments(request):
         return response
     else:
         return render(request, 'wallets/admin_payments.html', params)
+
+@superuser_required
+def transaction_list(request):
+    transactions = Transaction.objects.all().order_by('-timestamp')
+
+    page = request.GET.get('page')
+    transactions = helpers.paginate(transactions, page, elems_perpage=10)
+    params = {
+        'transactions': transactions,
+    }
+
+    if request.is_ajax():
+        response = render(request, 'wallets/transactions_query.html', params)
+        response['Cache-Control'] = 'no-cache'
+        response['Vary'] = 'Accept'
+        return response
+    else:
+        return render(request, 'wallets/transactions_list.html', params)

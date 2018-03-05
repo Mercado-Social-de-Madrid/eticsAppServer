@@ -142,7 +142,7 @@ class Payment(models.Model):
             'id': str(self.pk),
             'sender': self.sender
         }
-
+        print data
 
         print 'Notifying payment receiver'
 
