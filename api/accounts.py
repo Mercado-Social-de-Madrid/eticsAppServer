@@ -37,6 +37,13 @@ class RegisterResource(ModelResource):
                 bundle.data['entity']['email'] = bundle.data['email']
             elif 'person' in bundle.data and not ('email' in bundle.data['person']):
                 bundle.data['person']['email'] = bundle.data['email']
+
+        if 'person' in bundle.data:
+            if 'name' in bundle.data['person']:
+                bundle.data['first_name'] = bundle.data['person']['name']
+            if 'surname' in bundle.data['person']:
+                bundle.data['lastt_name'] = bundle.data['person']['surname']
+
         return bundle
 
     def obj_create(self, bundle, request=None, **kwargs):

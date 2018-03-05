@@ -140,7 +140,7 @@ class Payment(models.Model):
             'type': 'payment',
             'amount': self.currency_amount,
             'id': str(self.pk),
-            'sender': self.sender.username
+            'sender': self.sender
         }
 
 
