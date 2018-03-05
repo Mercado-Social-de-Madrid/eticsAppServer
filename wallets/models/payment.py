@@ -136,14 +136,15 @@ class Payment(models.Model):
 
     def notify_receiver(self, silent=False):
 
+        user_type, sender_instance = self.sender.get_related_entity()
         data = {
             'type': 'payment',
             'amount': self.currency_amount,
             'id': str(self.pk),
-            'sender': self.sender.username
+            'user_type': user_type,
+            'sender': str(sender_instance)
         }
 
         print 'Notifying payment receiver'
-
         title = 'Nuevo pago pendiente de confirmar'
         notify_user(self.receiver, title=title, data=data, silent=silent)
