@@ -140,9 +140,8 @@ class Payment(models.Model):
             'type': 'payment',
             'amount': self.currency_amount,
             'id': str(self.pk),
-            'sender': self.sender
+            'sender': self.sender.username
         }
-        print data
 
         print 'Notifying payment receiver'
 
