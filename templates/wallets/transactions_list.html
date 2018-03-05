@@ -14,6 +14,9 @@
         <div class="col-sm-6 col-md-8"><h2 class="primary-title mb-4 mt-0">Transferencias </h2></div>
         <div class="col-sm-6 col-md-4 text-right mb-4"><a href="#" class="btn btn-block btn-primary btn-lg">Nueva transferencia</a> </div>
 
+        <div class="col-sm-12">
+        {% include "common/activity_graph.html" with graph_data=transactions_bydate %}
+        </div>
         <div class="col-md-12 px-4 pb-4">
 
             <div class="ajax-load">

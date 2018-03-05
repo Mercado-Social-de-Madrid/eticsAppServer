@@ -2,6 +2,8 @@ import re
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
 from django.db.models import Q
+import datetime
+
 
 def normalize_query(query_string,
                     findterms=re.compile(r'"([^"]+)"|(\S+)').findall,
@@ -58,3 +60,31 @@ def paginate(list, page, elems_perpage=10):
         paginated = paginator.page(paginator.num_pages)
 
     return paginated
+
+
+def generate_graph_data(stats_bydate, is_monthly=False):
+    dates = []
+
+    current_date = None
+    current_stats = {}
+
+    for date in stats_bydate:
+        if is_monthly:
+            #depending if it is monthly or daily, we parse differently the day "tag"
+            day = datetime.date(month=date['month'], year=date['year'], day=1)
+        else:
+            day = date['day']
+
+        if current_date is None or day != current_date:
+            if current_date != None:
+                dates.append([current_date, current_stats])
+            current_date = day
+            current_stats = {'total':0}
+
+        current_stats['bonus' if date['is_bonification'] else 'normal'] = date['total']
+        current_stats['total'] += date['total']
+
+    if current_date is not None:
+        dates.append([current_date, current_stats])
+
+    return dates

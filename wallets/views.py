@@ -3,12 +3,16 @@ from __future__ import unicode_literals
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count, Sum
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models.functions import TruncDay
 
 import helpers
 from helpers import superuser_required
 from wallets.models import Payment, Wallet, TransactionLog, Transaction
+from django.utils import timezone
 
+import datetime
 
 @login_required
 def pending_payments(request):
@@ -106,7 +110,17 @@ def admin_payments(request):
 
 @superuser_required
 def transaction_list(request):
+
+    start_date = timezone.now() - datetime.timedelta(days=71)
+    end_date = timezone.now()
+
     transactions = Transaction.objects.all().order_by('-timestamp')
+    transactions_bydate = Transaction.objects.filter(timestamp__gte=start_date,
+                                                  timestamp__lte=end_date) \
+                                        .annotate(day=TruncDay('timestamp')) \
+                                      .values('day') \
+                                      .annotate(total=Sum('amount')).order_by('day')
+
 
     page = request.GET.get('page')
     transactions = helpers.paginate(transactions, page, elems_perpage=10)
@@ -120,4 +134,5 @@ def transaction_list(request):
         response['Vary'] = 'Accept'
         return response
     else:
+        params['transactions_bydate'] = transactions_bydate
         return render(request, 'wallets/transactions_list.html', params)
