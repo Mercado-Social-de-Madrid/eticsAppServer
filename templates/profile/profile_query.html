@@ -13,7 +13,7 @@
         <td class="text-muted">{{profile.user}}</td>
       <td>{{profile.full_name}}</th>
         <td>{{profile.email}}</td>
-        <td>
+        <td  class="table-actions">
             <a class="btn btn-outline-primary" href="{% url 'profile_detail' profile.pk %}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Ver detalle"><i class="material-icons">visibility</i></a>
             <a class="btn btn-outline-primary" href="{% url 'profile_edit' profile.pk %}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="material-icons">mode_edit</i></a>
         </td>

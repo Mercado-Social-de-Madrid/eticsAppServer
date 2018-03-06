@@ -444,3 +444,12 @@ td.entity-td .profile-circle{
 .select2-container .select2-selection--multiple .select2-selection__rendered{ overflow: visible; }
 
 .graph{ width:100%;}
+
+.btn.narrow{
+    min-width:auto;
+}
+td.table-actions a.btn{
+    padding-left:0.4rem;
+    padding-right:0.4rem;
+    border-radius:1rem;
+}

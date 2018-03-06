@@ -22,8 +22,8 @@ class OfferForm(forms.ModelForm):
             'active': forms.CheckboxInput(attrs={'class': 'custom-control-input'}),
             'discount_percent': forms.NumberInput(attrs={'class': 'form-control'}),
             'discounted_price': forms.NumberInput(attrs={'class': 'form-control'}),
-            'begin_date': forms.DateInput(attrs={'class': 'form-control'}),
-            'end_date': forms.DateInput(attrs={'class': 'form-control'}),
+            'begin_date': forms.DateInput(attrs={'class': 'form-control', 'type':'hidden'}),
+            'end_date': forms.DateInput(attrs={'class': 'form-control', 'type':'hidden'}),
             'banner_image': forms.FileInput(attrs={}),
         }
 

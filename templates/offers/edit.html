@@ -6,7 +6,9 @@
 {% block title %}{% if is_new %}Nueva oferta{% else %}{{offer.title}}{% endif %}{% endblock%}
 
 
-
+{% block extra_styles %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/daterangepicker.css" %}"/>
+{% endblock extra_styles %}
 
 {% block bodyattrs %}class="entity"{% endblock%}
 
@@ -34,6 +36,29 @@
                             <label>Título</label>
                             {{ form.title }}
                         </div>
+
+                        <div class="form-group">
+                            {{form.begin_date}}
+                            {{form.end_date}}
+                            <label>Periodo de validez</label>
+                            <div class="input-group  flex-wrap">
+                                  <input class="form-control" id="dateRange" type="text" name="date_range" placeholder="Desde - hasta...">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-primary narrow" id="dateRangeBtn" type="button"><i class="material-icons">event</i></button>
+                                  </span>
+                                </div>
+                            {%if form.begin_date.errors %}
+                            <div class="d-block invalid-feedback">
+                                {%for error in form.begin_date.errors %} {{error}} {%endfor%}
+                            </div>
+                            {% endif %}
+
+                            {%if form.end_date.errors %}
+                            <div class="d-block invalid-feedback">
+                                {%for error in form.end_date.errors %} {{error}} {%endfor%}
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
 
                     <div class="col-md-5 mb-4">
@@ -60,47 +85,6 @@
                     </div>
                 </div>
 
-
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group" data-links="#begin-date">
-                        <label>Fecha de inicio</label>
-                        <div class="input-group flex-wrap">
-                          {{form.begin_date}}
-
-                          <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button"><i class="material-icons">event</i></button>
-                          </span>
-
-
-                        </div>
-                        {%if form.begin_date.errors %}
-                        <div class="d-block invalid-feedback">
-                            {%for error in form.begin_date.errors %} {{error}} {%endfor%}
-                        </div>
-                        {% endif %}
-                    </div>
-
-                </div>
-
-                <div class="col-sm-6">
-                    <div class="form-group" data-links="#end-date">
-                        <label>Fecha de fin</label>
-                        <div class="input-group">
-                          {{form.end_date}}
-                          <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button"><i class="material-icons">event</i></button>
-                          </span>
-                        </div>
-                        {%if form.end_date.errors %}
-                        <div class="d-block invalid-feedback">
-                            {%for error in form.end_date.errors %} {{error}} {%endfor%}
-                        </div>
-                        {% endif %}
-                    </div>
-
-                </div>
-            </div>
 
             <div class="form-group" data-links="#offer-description">
                 <label>Descripción</label>
@@ -151,5 +135,25 @@
 {% endblock%}
 
 {% block scripts %}
+<script type="text/javascript" src="{% static "js/moment.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/daterangepicker.js" %}"></script>
+<script type="text/javascript">
+    var startDate = $('input[name="begin_date"]');
+    var endDate = $('input[name="end_date"]');
 
+    options = {
+        cancelClass: 'btn-flat text-primary',
+        locale: calendarLocale
+    }
+    if (startDate.val()){ options['startDate'] = startDate.val(); }
+    if (endDate.val()){ options['endDate'] = endDate.val(); }
+
+    var daterange = $('#dateRange').daterangepicker(options, function(start, end, label){
+        startDate.val(start.format('DD/MM/YYYY'));
+        endDate.val(end.format('DD/MM/YYYY'));
+    });
+
+    $('#dateRangeBtn').on('click', function(){ daterange.focus(); });
+
+</script>
 {% endblock scripts %}

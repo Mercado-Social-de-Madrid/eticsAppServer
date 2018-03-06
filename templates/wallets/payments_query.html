@@ -30,7 +30,7 @@
         {% endif %}
       <td class="amount">{{payment.total_amount}}€</td>
       <td class="amount">{{payment.currency_amount}}B</td>
-        <td>
+        <td  class="table-actions">
             {% if payment.status == 'pending' %}
             <a href="#" class="table-action rounded-circle" data-toggle="tooltip" data-placement="bottom" title="Aceptar pago"><i class="material-icons">done</i></a>
             <a href="#" class="table-action rounded-circle" data-toggle="tooltip" data-placement="bottom" title="Cancelar pago"><i class="material-icons">clear</i></a>
