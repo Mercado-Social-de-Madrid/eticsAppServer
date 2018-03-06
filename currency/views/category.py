@@ -1,5 +1,6 @@
 # coding=utf-8
 from django.contrib import messages
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
 
 from currency.forms.EntityForm import EntityForm
@@ -11,7 +12,7 @@ from helpers import superuser_required
 @superuser_required
 def category_list(request):
 
-    categories = Category.objects.all()
+    categories = Category.objects.annotate(num_entities=Count('entity'))
     params = { 'categories': categories, }
 
     return render(request, 'category/list.html', params)

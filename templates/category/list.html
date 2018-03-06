@@ -30,7 +30,7 @@
       <td>
           <h5 class="mb-0"><i class="material-icons mr-1" style="color:{{cat.color}};">label</i> {{cat.name}}</h5>
         </td>
-      <td>
+      <td>{{cat.num_entities}}
       </td><td>
         <a class="btn btn-outline-primary" href="{% url 'category_edit' cat.pk %}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="material-icons">edit</i></a>
 <a class="btn btn-outline-primary" href="{% url 'entity_list' %}?cat={{cat.id}}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Ver entidades"><i class="material-icons">visibility</i></a>
