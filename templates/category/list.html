@@ -10,11 +10,9 @@
 {% block content %}
 
 <div class="container">
-
-<div id="offers-list" class="ajax-load">
+<h3 class="primary-title mb-3"><i class="material-icons mr-2">label</i>Categorías</h3>
+<div id="category-list" class="ajax-load">
             <div class="results">
-
-
 <div class="table-responsive card mb-4">
 <table class="table table-hover" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
   <thead>
@@ -48,7 +46,6 @@
 </table>
 </div>
 {% include 'common/pagination.html' with page=categories %}
-
 
             </div>
             <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
