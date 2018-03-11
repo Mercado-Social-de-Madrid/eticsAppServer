@@ -38,6 +38,6 @@ class EntityForm(forms.ModelForm):
             'telegram_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Canal de Telegram'}),
             'instagram_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Perfil de Instagram'}),
             'profile_image': forms.FileInput(attrs={}),
-            'image': forms.FileInput(attrs={}),
+            'logo': forms.FileInput(attrs={}),
         }
 

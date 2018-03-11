@@ -32,11 +32,22 @@
     <div class="card-deck">
         <div class="size-check visible-md-block visible-lg-block"></div>
         <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-7 px-2">
                 <div class="card mb-4 px-1">
-                    <div class="card-body">
-                    <h4 class="card-title"><i class="material-icons">info</i> Información general</h4>
+                    <div class="card-body pt-0">
+                        <div class="file-field image-field d-inline-block" data-ref="#profile-image" data-ref-type="image">
+                            <div class="profile-circle"><img id="profile-image" src="{%if entity.logo %} {{entity.logo_thumbnail.url}}{% endif %}"></div>
+                            <div class="btn btn-primary btn-float" data-toggle="tooltip" data-placement="bottom" title="Actualizar imagen">
+                                <span><i class="fa fa-file-image-o" aria-hidden="true"></i></span>
+                                {{form.logo}}
+                            </div>
+                        </div>
+
                     <div class="description">
+
+
+
+
                         <div class="form-group" data-links="#entity-name">
                             <label>Nombre</label>
                             {{ form.name }}
@@ -70,7 +81,7 @@
                 </div>
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-5 px-2">
                 <div class="card mb-4 ">
                 <div id="map" class="map no-resize loading-container">
                     <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
@@ -99,7 +110,7 @@
 
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-12  px-2">
                 <div class="card mb-4 ">
                     <div class="card-body">
                         <div class="card-title"><i class="material-icons">monetization_on</i> Moneda social</div>
@@ -138,7 +149,7 @@
                 </div>
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-5  px-2">
                 <div class="card mb-4 pb-4">
                     <div class="social-links card-body pr-5">
                         <div class="card-title"><i class="material-icons">share</i> Redes sociales</div>
@@ -177,7 +188,7 @@
                 </div>
             </div>
 
-            <div class="col-md-7">
+            <div class="col-md-7  px-2">
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="card-title"><i class="material-icons">photo_library</i> Galería </div>
