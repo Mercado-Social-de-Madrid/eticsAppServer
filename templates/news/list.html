@@ -3,9 +3,9 @@
 {% load settings_value %}
 {% load l10n %}
 
-{% block title %}Entidades{% endblock%}
+{% block title %}Noticias{% endblock%}
 
-{% block bodyattrs %}class="entity"{% endblock%}
+{% block bodyattrs %}class="news"{% endblock%}
 
 {% block content %}
 
@@ -19,7 +19,28 @@
             <span class="sr-only">Loading...</span>
         </div>
 </div>
-
+<form method="POST" id="deleteForm" >
+     {% csrf_token %}
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">Eliminar noticia</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ¿Estás segura de que quieres eliminar la noticia? Esta acción no se puede deshacer.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
 <a href="{% url 'add_news' %}" class="fab btn btn-primary btn-lg rounded-circle btn-float"  data-toggle="tooltip" data-placement="left" title="Añadir entrada">
          <i class="material-icons">add</i>
         </a>
@@ -28,8 +49,14 @@
 
 {% block scripts %}
 <script type="text/javascript">
-    $('.table-action').on('click', function(e){
+
+    var deleteModal = $('#deleteModal');
+    var deleteForm  = $('#deleteForm');
+    $('#news-list').on('click', '.action-delete', function(e){
         e.preventDefault();
+        var action = $(this).attr('data-action');
+        deleteForm.attr('action', action);
+        deleteModal.modal('show');
         return false;
     });
 </script>

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}{% if is_new %}Nueva oferta{% else %}{{news.title}}{% endif %}{% endblock%}
+
+
+
+
+{% block bodyattrs %}class="news"{% endblock%}
+
+{% block content %}
+<form method="POST" class="post-form gallery-form" enctype="multipart/form-data">
+<div class="container px-md-5">
+    <div class="card mx-lg-5 mb-4 p-3">
+        <div class="card-body">
+
+    {% csrf_token %}
+            <div class="card-title primary-title"><h3><i class="material-icons mr-2">speaker_notes</i> Eliminar noticia</h3></div>
+            <div class="description text-center">
+                <p class="lead">¿Estás segura de que quieres eliminar la noticia seleccionada?<br></p>
+                 <button type="submit" class="right-margin left-margin btn btn-primary btn-lg">Aceptar</button>
+                <a href="#" class="right-margin left-margin btn btn-outline-primary btn-lg" onclick="window.history.go(-1);">Cancelar</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p class="text-black-secondary typography-subheading">Discard draft?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-info" data-dismiss="modal" type="button">Cancel</button>
+        <button class="btn btn-outline-info" type="button">Discard</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+{% endblock%}
+
+{% block scripts %}
+
+{% endblock scripts %}

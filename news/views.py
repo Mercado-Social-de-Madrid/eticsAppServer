@@ -81,7 +81,7 @@ def news_edit(request, pk):
     can_edit = request.user.is_superuser
 
     if not can_edit:
-        messages.add_message(request, messages.ERROR, 'No tienes permisos para editar la entidad')
+        messages.add_message(request, messages.ERROR, 'No tienes permisos para editar la noticia')
         return redirect('dashboard')
 
     if request.method == "POST":
@@ -98,8 +98,7 @@ def news_edit(request, pk):
 
     return render(request, 'news/edit.html', {
         'form': form,
-        'news': entry,
-        'can_edit_entity':can_edit
+        'news': entry
     })
 
 
@@ -109,7 +108,7 @@ def add_news(request):
     can_edit = request.user.is_superuser
 
     if not can_edit:
-        messages.add_message(request, messages.ERROR, 'No tienes permisos para editar la entidad')
+        messages.add_message(request, messages.ERROR, 'No tienes permisos para editar noticias')
         return redirect('dashboard')
 
     if request.method == "POST":
@@ -127,6 +126,26 @@ def add_news(request):
         form = NewsForm()
 
     return render(request, 'news/edit.html', {
-        'form': form,
-        'can_edit_entity':can_edit
+        'form': form
     })
+
+
+@superuser_required
+def news_delete(request, pk):
+
+    entry = get_object_or_404(News, pk=pk)
+    can_edit = request.user.is_superuser
+
+    if not can_edit:
+        messages.add_message(request, messages.ERROR, 'No tienes permisos para editar la noticia')
+        return redirect('dashboard')
+
+    if request.method == "POST":
+        entry.delete()
+        return redirect('news_list')
+    else:
+        return render(request, 'news/delete.html', {
+            'news': entry
+        })
+
+
