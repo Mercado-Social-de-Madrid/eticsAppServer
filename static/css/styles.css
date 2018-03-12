@@ -336,8 +336,8 @@ h1, h2, h3, h4, .primary-title{
     position:absolute;
     top:50%;
     left:50%;
-    margin-top:-20px;
-    margin-left:-20px;
+    margin-top:-75px;
+    margin-left:-75px;
     display:none;
 }
 .loading-container{
@@ -414,6 +414,22 @@ td.entity-td .profile-circle{
     .navbar-toggler.always-show[aria-expanded="true"]{
         margin-left: calc(100% - 2.2rem);
     }
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(-360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(-360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(-360deg); transform:rotate(-360deg); } }
+.mes-loader{
+    display:block;
+    width:150px;
+    height:150px;
+    background-image:url('mes-loader.png');
+    background-repeat:no-repeat;
+    background-position:center;
+     -webkit-animation:spin 1.2s linear infinite;
+    -moz-animation:spin 1.2s linear infinite;
+    animation:spin 1.2s linear infinite;
+    margin:auto;
+    opacity:0.7;
 }
 
 .color-container{ position:relative; }
