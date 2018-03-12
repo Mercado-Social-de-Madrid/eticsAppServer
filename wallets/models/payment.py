@@ -140,6 +140,7 @@ class Payment(models.Model):
         data = {
             'type': 'payment',
             'amount': self.currency_amount,
+            'total_amount': self.total_amount,
             'id': str(self.pk),
             'user_type': user_type,
             'sender': str(sender_instance)
