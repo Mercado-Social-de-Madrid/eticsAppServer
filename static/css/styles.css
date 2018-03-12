@@ -81,6 +81,7 @@ h1, h2, h3, h4, .primary-title{
 .file-field .btn{
     position:absolute;
     bottom:0;
+    cursor:pointer;
     left:70px;
     z-index:120;
 }

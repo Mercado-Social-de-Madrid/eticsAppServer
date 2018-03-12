@@ -18,10 +18,13 @@
     </div>
 </div>
 
-<div class="container px-md-5">
-        <div class="card mx-md-5" >
+<div class="container px-md-5 mt-4">
+        <div class="card mx-md-5">
+          <div class="card-body px-5 pt-0 pb-4">
+              <div class="file-field image-field d-inline-block mb-4" data-ref="#profile-image" data-ref-type="image">
+                <div class="profile-circle"><img id="profile-image" src="{%if person.profile_image %} {{person.profile_thumbnail.url}}{% endif %}"></div>
+            </div>
 
-          <div class="card-body px-5 py-4">
             <h4 class="card-title">{{person.full_name}}</h4>
               <div class="card-text">
               <div class="row">
