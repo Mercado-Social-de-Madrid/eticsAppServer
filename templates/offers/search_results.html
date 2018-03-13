@@ -33,8 +33,8 @@
       <td>{{offer.begin_date|date:'d/m/Y'}}</td>
         <td>{{offer.end_date|date:'d/m/Y'}}</td>
         <td  class="table-actions">
-            <a class="btn btn-outline-primary" href="{% url 'offer_detail' offer.entity.pk offer.pk %}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Ver detalle"><i class="material-icons">visibility</i></a>
-            <a class="btn btn-outline-primary" href="{% url 'offer_edit' offer.entity.pk offer.pk %}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="material-icons">mode_edit</i></a>
+            <a class="btn btn-outline-primary" href="{% url 'offer_detail' offer.entity.pk offer.pk %}" data-toggle="tooltip" data-placement="bottom" title="Ver detalle"><i class="material-icons">visibility</i></a>
+            <a class="btn btn-outline-primary" href="{% url 'offer_edit' offer.entity.pk offer.pk %}" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="material-icons">mode_edit</i></a>
         <td>
 
     </tr>

@@ -31,8 +31,8 @@
       <td>{{cat.num_entities}}
       </td>
         <td  class="table-actions">
-        <a class="btn btn-outline-primary" href="{% url 'category_edit' cat.pk %}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="material-icons">edit</i></a>
-<a class="btn btn-outline-primary" href="{% url 'entity_list' %}?cat={{cat.id}}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Ver entidades"><i class="material-icons">visibility</i></a>
+        <a class="btn btn-outline-primary" href="{% url 'category_edit' cat.pk %}" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="material-icons">edit</i></a>
+<a class="btn btn-outline-primary" href="{% url 'entity_list' %}?cat={{cat.id}}" data-toggle="tooltip" data-placement="bottom" title="Ver entidades"><i class="material-icons">visibility</i></a>
 
 </td>
     </tr>

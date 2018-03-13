@@ -361,6 +361,7 @@ h1, h2, h3, h4, .primary-title{
     height: 140px;
     overflow: hidden;
     text-align:center;
+    line-height:140px;
     border-radius: 50%;
     background-color:#ddd;
     position:relative;
@@ -368,11 +369,13 @@ h1, h2, h3, h4, .primary-title{
 .profile-circle.small{
     width:60px;
     height:60px;
+    line-height:60px;
 }
 .profile-circle img {
     height:100%;
     width:auto;
     min-width: 100%;
+    vertical-align:top;
     top: 50%;
     left: 50%;
     position: relative;
@@ -386,6 +389,7 @@ td.entity-td .profile-circle{
     left:18px;
     height:50px;
     width:50px;
+    line-height:50px;
     margin-top:-25px;
 }
 
@@ -459,10 +463,15 @@ td.entity-td .profile-circle{
 .btn.narrow{
     min-width:auto;
 }
+td.table-actions{
+    width: 1%;
+    white-space: nowrap;
+}
 td.table-actions a.btn{
     padding-left:0.4rem;
     padding-right:0.4rem;
     border-radius:1rem;
+    min-width:0;
 }
 
 .social-links .input-group-addon{ width:3.3rem; text-align:center; color:#9c27b0; }

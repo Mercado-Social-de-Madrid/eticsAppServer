@@ -21,7 +21,7 @@
       <td>{{payment.sender}}</td>
         {% if showing_all %}
         <td>{{payment.receiver}}</td>
-        <td>
+        <td class="table-actions">
             {% if payment.status == 'accepted' %}<span class="text-success"><i class="material-icons md-36" >play_circle_outline</i> Aceptado</span> {% endif %}
             {% if payment.status == 'pending' %}<span class="text-info"><i class="material-icons md-36" >play_circle_outline</i> Pendiente</span> {% endif %}
             {% if payment.status == 'cancelled' %}<span class="text-danger"><i class="material-icons md-36" >play_circle_outline</i> Cancelado</span> {% endif %}
@@ -32,8 +32,8 @@
       <td class="amount">{{payment.currency_amount}}B</td>
         <td  class="table-actions">
             {% if payment.status == 'pending' %}
-            <a href="#" class="table-action rounded-circle" data-toggle="tooltip" data-placement="bottom" title="Aceptar pago"><i class="material-icons">done</i></a>
-            <a href="#" class="table-action rounded-circle" data-toggle="tooltip" data-placement="bottom" title="Cancelar pago"><i class="material-icons">clear</i></a>
+            <a href="#" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Aceptar pago"><i class="material-icons">done</i></a>
+            <a href="#" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Cancelar pago"><i class="material-icons">clear</i></a>
             {% endif %}
         </td>
     </tr>
