@@ -20,8 +20,8 @@
           <h5 class="mb-0">{{entity.name}}</h5>
           {{entity.address}}
         </td>
-      <td>{{entity.bonus_percent_general}} %</td>
-      <td>{{entity.max_percent_payment}} %</td>
+        <td>{{ entity.max_percent_payment }} %</td>
+        <td>{{ entity.bonus_percent_general }} %</td>
         <td class="table-actions">
             <a class="btn btn-outline-primary" href="{% url 'entity_detail' entity.pk %}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Ver detalle"><i class="material-icons">visibility</i></a>
             <a class="btn btn-outline-primary" href="{% url 'entity_edit' entity.pk %}" style="min-width:0;" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="material-icons">mode_edit</i></a>
