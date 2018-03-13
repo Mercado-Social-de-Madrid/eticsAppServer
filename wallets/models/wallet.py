@@ -10,7 +10,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from helpers import notify_user
-from wallets.models.wallet_type import WalletType
+from wallets.models import WalletType
 
 
 class Wallet(models.Model):
