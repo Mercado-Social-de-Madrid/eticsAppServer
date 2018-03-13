@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^payments/(?P<pk>[0-9a-f-]+)/$', views.payment_detail, name='payment_detail'),
 
     url(r'^wallet/$', views.user_wallet, name='user_wallet'),
+    url(r'^wallet/types$', views.wallet_types_list, name='wallet_types_list'),
     url(r'^transactions/$', views.transaction_list, name='transaction_list'),
 
 ]

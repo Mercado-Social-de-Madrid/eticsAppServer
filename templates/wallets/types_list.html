@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}Tipos de cuenta{% endblock%}
+
+{% block bodyattrs %}class="wallets"{% endblock%}
+
+{% block content %}
+
+<div class="container">
+<h3 class="primary-title mb-3"><i class="material-icons mr-2">account_balance_wallet</i>Tipos de cuenta</h3>
+<div id="category-list" class="ajax-load">
+            <div class="results">
+<div class="table-responsive card mb-4">
+<table class="table table-hover" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
+  <thead>
+    <tr>
+      <th scope="col">Tipo de cuenta</th>
+      <th scope="col">Límite de crédito</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for type in wallet_types %}
+    <tr>
+      <td class="entity-td">
+          <div class="profile-circle small">
+              <i class="ic ic-wallet-type ic-wallet-type-{{type.id}}"></i>
+          </div>
+          <h5 class="mb-0"> {{type.name}}</h5>
+          {{type.description}}
+        </td>
+        <td >
+            {% if type.unlimited %} Ilimitado {% else %} {{type.credit_limit}} {% endif %}
+        </td>
+        <td class="table-actions">
+            <a class="btn btn-outline-primary" href="#" data-toggle="tooltip" data-placement="bottom" title="Ver monederos"><i class="material-icons">mode_edit</i></a>
+        </td>
+    </tr>
+{% empty %}
+    <tr>
+      <td colspan="4">No hay ningún tipo con los criterios de búsqueda actuales...</td>
+    </tr>
+
+{% endfor %}
+      </tbody>
+</table>
+</div>
+            </div>
+            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw loading-spinner"></i>
+            <span class="sr-only">Loading...</span>
+        </div>
+</div>
+
+
+{% endblock%}

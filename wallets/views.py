@@ -9,7 +9,7 @@ from django.db.models.functions import TruncDay
 
 import helpers
 from helpers import superuser_required
-from wallets.models import Payment, Wallet, TransactionLog, Transaction
+from wallets.models import Payment, Wallet, TransactionLog, Transaction, WalletType
 from django.utils import timezone
 
 import datetime
@@ -136,3 +136,11 @@ def transaction_list(request):
     else:
         params['transactions_bydate'] = transactions_bydate
         return render(request, 'wallets/transactions_list.html', params)
+
+
+
+@superuser_required
+def wallet_types_list(request):
+
+    wallet_types = WalletType.objects.all()
+    return render(request, 'wallets/types_list.html', {'wallet_types':wallet_types})
