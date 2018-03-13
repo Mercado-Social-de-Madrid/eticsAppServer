@@ -22,25 +22,45 @@
             <div class="col-md-7">
                 <div class="card mb-4 px-1">
                     <div class="card-body">
-                    <h4 class="card-title"><i class="material-icons">info</i> Información general</h4>
+                    <h4 class="card-title"><i class="material-icons">face</i> Usuario</h4>
                     <div class="description">
-                        <div class="form-group mb-5" data-links="#entity-name">
+                        <div class="form-group mb-2" data-links="#entity-name">
                             <label>Usuario</label>
 
                             <div class="input-group">
                               <input type="text" name="user_placeholder" id="entity_owner" disabled class="form-control" maxlength="250">
                                 <div class="input-group-append">
-                                <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#users-modal" style="min-width:0;"><i class="material-icons">search</i></button>
-                                <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#newuser-modal" style="min-width:0;"><i class="material-icons">add</i></button>
+                                <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#users-modal" style="min-width:0;"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Buscar existente">search</i></button>
+                                <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#newuser-modal" style="min-width:0;"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Añadir nuevo">add</i></button>
                               </div>
                             </div>
                             {{ form.owner_id }}
                         </div>
 
-                        <div class="form-group" data-links="#entity-name">
-                            <label>Nombre</label>
-                            {{ form.name }}
-                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="card mb-4 px-1">
+                    <div class="card-body">
+                        <div class="description">
+                            <div class="row">
+                            <div class="col-md-4 text-center">
+                                <div class="file-field image-field d-inline-block" data-ref="#profile-image" data-ref-type="image">
+                                    <div class="profile-circle"><img id="profile-image" src="{%if entity.logo %} {{entity.logo_thumbnail.url}}{% endif %}"></div>
+                                    <div class="btn btn-primary btn-float" data-toggle="tooltip" data-placement="bottom" title="Actualizar imagen">
+                                        <span><i class="material-icons">insert_photo</i></span>
+                                        {{form.logo}}
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="col-md-8">
+                                    <div class="form-group" data-links="#entity-name">
+                                        <label>Nombre</label>
+                                        {{ form.name }}
+                                    </div>
+                                </div>
+                            </div>
+
 
                         <div class="form-group" data-links="#entity-address">
                             <label>Dirección</label>
