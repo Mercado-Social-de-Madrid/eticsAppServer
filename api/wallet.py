@@ -1,10 +1,10 @@
 from django.conf.urls import url
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, PermissionDenied
 from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
 from tastypie.exceptions import NotFound
-from tastypie.http import HttpMultipleChoices, HttpGone, HttpCreated, HttpAccepted
+from tastypie.http import HttpMultipleChoices, HttpGone, HttpCreated, HttpAccepted, HttpForbidden
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 
@@ -31,8 +31,9 @@ class PaymentsResource(ModelResource):
         receiver = bundle.data['receiver']
         total_amount =bundle.data['total_amount']
         currency_amount = bundle.data['currency_amount']
+        pin_code = bundle.data['pin_code']
 
-        bundle.obj = Payment.objects.new_payment(sender, receiver, total_amount, currency_amount)
+        bundle.obj = Payment.objects.new_payment(sender, receiver, total_amount, currency_amount, pin_code)
 
         return bundle
 

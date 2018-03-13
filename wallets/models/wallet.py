@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import uuid
 
+from django.contrib.auth import hashers
 from django.contrib.auth.models import User
 from django.db import models, transaction
 from django.db.models.signals import post_save
@@ -17,6 +18,7 @@ class Wallet(models.Model):
     user = models.OneToOneField(User)
     balance = models.FloatField(default=0, verbose_name='Saldo actual')
     last_transaction = models.DateTimeField(blank=True, null=True, verbose_name='Última transacción')
+    pin_code = models.CharField(null=True, max_length=100, verbose_name='Código PIN (hasheado)')
 
     class Meta:
         verbose_name = 'Monedero'
@@ -89,10 +91,23 @@ class Wallet(models.Model):
         notify_user(self.user, title=title, message=data['concept'], data=data, silent=silent)
 
 
+    def update_pin_code(self, pin_code):
+        self.pin_code = hashers.make_password(pin_code)
+        self.save()
+
+    @staticmethod
+    def update_user_pin_code(user, pin_code):
+        wallet = Wallet.objects.filter(user=user).first()
+        if wallet:
+            wallet.update_pin_code(pin_code)
+
+
 # Method to create the wallet for every new user
 @receiver(post_save, sender=User)
 def create_user_wallet(sender, instance, created, **kwargs):
     if created:
         print 'Creating user wallet!'
-        Wallet.objects.create(user=instance)
+        wallet, new = Wallet.objects.get_or_create(user=instance)
+        if not new:
+            print 'Wallet for user already existed'
 

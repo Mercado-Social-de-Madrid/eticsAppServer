@@ -12,6 +12,7 @@ from tastypie.validation import FormValidation
 
 from currency.forms.user import UserForm
 from currency.models.extend_user import get_user_by_related
+from wallets.models import Wallet
 
 
 class RegisterResource(ModelResource):
@@ -50,12 +51,14 @@ class RegisterResource(ModelResource):
         bundle = super(RegisterResource, self).obj_create(bundle, request=request, **kwargs)
         user = bundle.obj
         password = bundle.data.get('password')
+        pin_code = bundle.data.get('pin_code')
 
         user.set_password(password)
         user.save()
 
         u = authenticate(username=user.username, password=password)
         if u is not None and u.is_active:
+            Wallet.update_user_pin_code(u, pin_code)
             login(bundle.request, u)
         return bundle
 

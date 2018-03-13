@@ -4,7 +4,10 @@ from __future__ import unicode_literals
 import uuid
 
 import math
+
+from django.contrib.auth import hashers
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
 from django.db import models, transaction
 from django.utils import timezone
 
@@ -30,7 +33,7 @@ class PaymentManager(models.Manager):
             q = q.filter(receiver=user)
         return q
 
-    def new_payment(self, sender, receiver_uuid, total_amount=0, currency_amount=0):
+    def new_payment(self, sender, receiver_uuid, total_amount=0, currency_amount=0, pin_code=None):
 
         receiver = get_user_by_related(receiver_uuid)
         if receiver is not None:
@@ -42,6 +45,18 @@ class PaymentManager(models.Manager):
                 currency_amount = min(currency_amount, instance.max_accepted_currency(total_amount))
 
             sender_wallet = Wallet.objects.filter(user=sender).first()
+
+            if (not pin_code and sender_wallet.pin_code) or (pin_code and not sender_wallet.pin_code):
+                print "Wrrrroooong"
+                raise PermissionDenied('Wrong ping code')
+            elif pin_code and sender_wallet.pin_code:
+                valid = hashers.check_password(pin_code, sender_wallet.pin_code)
+                print valid
+                if not valid:
+                    raise PermissionDenied('Wrong ping code')
+            else:
+                print "AAAAAAA"
+
             if sender_wallet.balance < currency_amount:
                 print 'User does not have enough cash!'
                 #TODO: Raise exception?
