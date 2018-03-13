@@ -10,15 +10,18 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from helpers import notify_user
+from wallets.models.wallet_type import WalletType
 
 
 class Wallet(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User)
+    type = models.ForeignKey(WalletType, null=True, related_name='wallets')
     balance = models.FloatField(default=0, verbose_name='Saldo actual')
     last_transaction = models.DateTimeField(blank=True, null=True, verbose_name='Última transacción')
     pin_code = models.CharField(null=True, max_length=100, verbose_name='Código PIN (hasheado)')
+
 
     class Meta:
         verbose_name = 'Monedero'
@@ -27,6 +30,18 @@ class Wallet(models.Model):
 
     def __unicode__(self):
         return self.user.username + ': ' + str(self.balance)
+
+    def set_type(self, type='default'):
+        if not type:
+            type = 'default'
+        try:
+            wallet_type = WalletType.objects.find(id=type)
+        except WalletType.DoesNotExist:
+            wallet_type = None
+
+        if wallet_type:
+            self.type = wallet_type
+            self.save()
 
 
     @transaction.atomic
