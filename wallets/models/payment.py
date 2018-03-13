@@ -46,16 +46,10 @@ class PaymentManager(models.Manager):
 
             sender_wallet = Wallet.objects.filter(user=sender).first()
 
-            if (not pin_code and sender_wallet.pin_code) or (pin_code and not sender_wallet.pin_code):
-                print "Wrrrroooong"
-                raise PermissionDenied('Wrong ping code')
-            elif pin_code and sender_wallet.pin_code:
+            if sender_wallet.pin_code:
                 valid = hashers.check_password(pin_code, sender_wallet.pin_code)
-                print valid
                 if not valid:
                     raise PermissionDenied('Wrong ping code')
-            else:
-                print "AAAAAAA"
 
             if sender_wallet.balance < currency_amount:
                 print 'User does not have enough cash!'
