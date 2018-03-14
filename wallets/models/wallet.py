@@ -12,6 +12,7 @@ from django.dispatch import receiver
 from currency.models import Entity
 from currency.models.extend_user import get_related_entity
 from helpers import notify_user
+from wallets.exceptions import NotEnoughBalance
 from wallets.models import WalletType
 
 
@@ -24,6 +25,7 @@ class Wallet(models.Model):
     last_transaction = models.DateTimeField(blank=True, null=True, verbose_name='Última transacción')
     pin_code = models.CharField(null=True, max_length=100, verbose_name='Código PIN (hasheado)')
 
+    NotEnoughBalance = NotEnoughBalance
 
     class Meta:
         verbose_name = 'Monedero'
@@ -45,6 +47,19 @@ class Wallet(models.Model):
             self.type = wallet_type
             self.save()
 
+    def has_enough_balance(self, amount_to_pay):
+
+        credit_limit = 0.0
+        if self.type:
+            if self.type.unlimited:
+                return True
+            else:
+                credit_limit = self.type.credit_limit
+
+        value = self.balance + credit_limit
+        print amount_to_pay
+        print value
+        return amount_to_pay <= (self.balance + credit_limit)
 
     @transaction.atomic
     def new_transaction(self, amount, wallet=None, concept=None, bonus=False, is_euro_purchase=False, **kwargs):
@@ -61,6 +76,9 @@ class Wallet(models.Model):
                 concept = "Bonificación en boniatos por compra"
             elif wallet_from:
                 concept = "Transferencia"
+
+        if wallet_from and not wallet_from.has_enough_balance(amount):
+            raise NotEnoughBalance
 
         from wallets.models.transaction import Transaction
 

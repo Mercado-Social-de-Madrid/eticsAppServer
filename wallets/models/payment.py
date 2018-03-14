@@ -51,9 +51,9 @@ class PaymentManager(models.Manager):
                 if not valid:
                     raise PermissionDenied('Wrong ping code')
 
-            if sender_wallet.balance < currency_amount:
+            if not sender_wallet.has_enough_balance(currency_amount):
                 print 'User does not have enough cash!'
-                #TODO: Raise exception?
+                raise PermissionDenied('Not enough cash!')
 
             new_payment = self.create(
                 sender=sender,
