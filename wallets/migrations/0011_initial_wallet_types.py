@@ -11,7 +11,7 @@ def create_initial_wallet_types(apps, schema_editor):
     Wallet = apps.get_model('wallets', 'Wallet')
     WalletType = apps.get_model('wallets', 'WalletType')
 
-    default_type = WalletType.objects.create(id='default', name='Normal', credit_limit=50, unlimited=False)
+    default_type = WalletType.objects.create(id='default', name='Normal', credit_limit=0, unlimited=False)
     debit_type = WalletType.objects.create(id='debit', name='Débito', credit_limit=0, unlimited=True)
 
     # set all wallets to the default type

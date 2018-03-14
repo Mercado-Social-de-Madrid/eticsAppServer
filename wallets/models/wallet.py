@@ -9,6 +9,8 @@ from django.db import models, transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from currency.models import Entity
+from currency.models.extend_user import get_related_entity
 from helpers import notify_user
 from wallets.models import WalletType
 
@@ -35,7 +37,7 @@ class Wallet(models.Model):
         if not type:
             type = 'default'
         try:
-            wallet_type = WalletType.objects.find(id=type)
+            wallet_type = WalletType.objects.get(id=type)
         except WalletType.DoesNotExist:
             wallet_type = None
 
@@ -123,6 +125,20 @@ def create_user_wallet(sender, instance, created, **kwargs):
     if created:
         print 'Creating user wallet!'
         wallet, new = Wallet.objects.get_or_create(user=instance)
+
+        type, related = instance.get_related_entity()
+        print type
+        wallet_type = 'entity' if type == 'entity' else 'default'
+        wallet.set_type(wallet_type)
+
         if not new:
             print 'Wallet for user already existed'
 
+
+# Method to generate the entity wallet type
+@receiver(post_save, sender=Entity)
+def add_user_to_group(sender, instance, created, **kwargs):
+
+    if created:
+        wallet, new = Wallet.objects.get_or_create(user=instance.user)
+        wallet.set_type('entity')
