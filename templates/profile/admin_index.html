@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}Inicio{% endblock%}
+
+{% block bodyattrs %}class="index"{% endblock%}
+
+{% block content %}
+
+<div class="container">
+<h3 class="primary-title mb-3">¡Bienvenida!</h3>
+<p class="lead">
+    Ésta es la página principal del panel de administración. Navega a las distintas secciones a través del menú.
+</p>
+
+{% endblock%}

@@ -18,7 +18,7 @@
         </td>
       <td>{{entry.published_by}}</td>
       <td>{{entry.published_date|date:'d/m/Y'}}</td>
-        <td class="text-truncate" style="max-width:220px;">{{entry.short_description|striptags}}</td>
+        <td class="text-truncate" style="max-width:220px;">{{entry.short_description|striptags|safe}}</td>
         <td class="table-actions">
             <a class="btn btn-outline-primary" href="{% url 'news_edit' entry.pk %}" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="material-icons">mode_edit</i></a>
             <a class="btn btn-outline-primary action-delete" href="{% url 'news_delete' entry.pk %}" data-action="{% url 'news_delete' entry.pk %}" data-toggle="tooltip" data-placement="bottom" title="Eliminar noticia"><i class="material-icons">delete</i></a>
