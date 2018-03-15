@@ -12,7 +12,7 @@ from django.dispatch import receiver
 from currency.models import Entity
 from currency.models.extend_user import get_related_entity
 from helpers import notify_user
-from wallets.exceptions import NotEnoughBalance
+from wallets.exceptions import NotEnoughBalance, WrongPinCode
 from wallets.models import WalletType
 
 
@@ -26,6 +26,7 @@ class Wallet(models.Model):
     pin_code = models.CharField(null=True, max_length=100, verbose_name='Código PIN (hasheado)')
 
     NotEnoughBalance = NotEnoughBalance
+    WrongPinCode = WrongPinCode
 
     class Meta:
         verbose_name = 'Monedero'

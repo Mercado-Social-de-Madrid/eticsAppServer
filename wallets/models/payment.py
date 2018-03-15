@@ -49,11 +49,11 @@ class PaymentManager(models.Manager):
             if sender_wallet.pin_code:
                 valid = hashers.check_password(pin_code, sender_wallet.pin_code)
                 if not valid:
-                    raise PermissionDenied('Wrong ping code')
+                    raise Wallet.WrongPinCode
 
             if not sender_wallet.has_enough_balance(currency_amount):
                 print 'User does not have enough cash!'
-                raise PermissionDenied('Not enough cash!')
+                raise Wallet.NotEnoughBalance(sender_wallet)
 
             new_payment = self.create(
                 sender=sender,
