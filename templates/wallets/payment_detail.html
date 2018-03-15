@@ -32,10 +32,20 @@
                             <div class="col-sm-4 feature"><span class="primary-title"></span>  <div class="display-4">{{ payment.currency_amount }}</div><span>Boniatos</span></div>
                             <div class="col-sm-4 feature"><span class="primary-title"><strong>Bonificación:</strong></span>  <div class="display-4">{{ bonus }}</div><span>Boniatos</span></div>
                         </div>
+
+
                     </div>
 
                     {% if payment.status == 'pending' %}
                     <div class="card-footer p-4 border-primary text-center">
+                        {% if notenoughbalance %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                            <strong>Saldo insuficiente!</strong> No hay suficiente saldo disponible en el monedero para realizar este pago.
+                        </div>
+                        {% endif %}
                         <form method="POST" class="d-inline-block"> {% csrf_token %} <input type="hidden" name="action" value="accept"> <button type="submit" href="#" class="btn btn-lg btn-primary mr-3">Aceptar</button></form>
                         <form method="POST" class="d-inline-block"> {% csrf_token %} <input type="hidden" name="action" value="cancel"> <button type="submit" href="#" class="btn btn-lg">Cancelar</button></form>
                     </div>
