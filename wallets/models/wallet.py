@@ -6,6 +6,7 @@ import uuid
 from django.contrib.auth import hashers
 from django.contrib.auth.models import User
 from django.db import models, transaction
+from django.db.models import Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -48,19 +49,20 @@ class Wallet(models.Model):
             self.type = wallet_type
             self.save()
 
+    @property
+    def credit_balance(self):
+        from wallets.models import Payment
+        pending_amount = Payment.objects.pending().filter(sender=self.user).aggregate(sum=Sum('currency_amount'))['sum']
+        credit_limit = 0.0 if not self.type else self.type.credit_limit
+        balance = self.balance + credit_limit - pending_amount
+
+        return balance
+
     def has_enough_balance(self, amount_to_pay):
-
-        credit_limit = 0.0
-        if self.type:
-            if self.type.unlimited:
+        if self.type and self.type.unlimited:
                 return True
-            else:
-                credit_limit = self.type.credit_limit
 
-        value = self.balance + credit_limit
-        print amount_to_pay
-        print value
-        return amount_to_pay <= (self.balance + credit_limit)
+        return amount_to_pay <= self.credit_balance
 
     @transaction.atomic
     def new_transaction(self, amount, wallet=None, concept=None, bonus=False, is_euro_purchase=False, **kwargs):
