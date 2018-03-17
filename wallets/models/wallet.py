@@ -52,7 +52,8 @@ class Wallet(models.Model):
     @property
     def credit_balance(self):
         from wallets.models import Payment
-        pending_amount = Payment.objects.pending().filter(sender=self.user).aggregate(sum=Sum('currency_amount'))['sum']
+        pending_payments = Payment.objects.pending().filter(sender=self.user).aggregate(sum=Sum('currency_amount'))
+        pending_amount = 0 if not pending_payments['sum'] else pending_payments['sum']
         credit_limit = 0.0 if not self.type else self.type.credit_limit
         balance = self.balance + credit_limit - pending_amount
 
@@ -61,7 +62,6 @@ class Wallet(models.Model):
     def has_enough_balance(self, amount_to_pay):
         if self.type and self.type.unlimited:
                 return True
-
         return amount_to_pay <= self.credit_balance
 
     @transaction.atomic
