@@ -13,9 +13,10 @@ class TransactionLogManager(models.Manager):
         name = ''
         if wallet == transaction.wallet_from:
             amount *= -1
-            user_type, instance = transaction.wallet_to.user.get_related_entity()
-            name = instance.name
-        elif transaction.wallet_from:
+            if transaction.wallet_to.user:
+                user_type, instance = transaction.wallet_to.user.get_related_entity()
+                name = instance.name
+        elif transaction.wallet_from and transaction.wallet_from.user:
             user_type, instance = transaction.wallet_from.user.get_related_entity()
             name = instance.name
 

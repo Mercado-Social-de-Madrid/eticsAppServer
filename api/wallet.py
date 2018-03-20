@@ -148,3 +148,33 @@ class WalletResource(ModelResource):
             raise NotFound("User has no associated wallet")
 
         return wallet
+
+        # Part related with the child /offers resource
+
+    def prepend_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/purchase%s$" % (
+                self._meta.resource_name, trailing_slash()),
+                self.wrap_view('wallet_purchase'), name="api_wallet_purchase"),
+        ]
+
+    def wallet_purchase(self, request, **kwargs):
+
+        self.method_check(request, allowed=['post'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
+        data = self.deserialize(request, request.body,
+                                format=request.META.get('CONTENT_TYPE', 'application/json'))
+        bundle = self.build_bundle(data=data, request=request)
+        amount = data.get('amount', None)
+
+        if not amount:
+            return HttpGone()
+
+        user_wallet = self.obj_get(bundle)
+        bundle.obj = Wallet.debit_transaction(user_wallet, amount)
+
+        return self.create_response(
+            request, bundle,
+            response_class=HttpCreated)

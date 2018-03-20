@@ -15,7 +15,14 @@
     <tr>
       <th scope="row">{{tr.timestamp|date:'d/m/Y H:i'}}</th>
 
-      <td>{{tr.wallet_from.user}}</td>
+      <td>
+        {% if tr.is_euro_purchase %}
+            <span class="text-muted">MES <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Cuenta débito">local_atm</i> </span>
+          {% else %}
+              {{tr.wallet_from.user}}
+          {% endif %}
+
+      </td>
         <td>{{tr.wallet_to.user}}</td>
 
       <td class="amount">{{tr.amount}}B</td>

@@ -121,7 +121,6 @@ class Wallet(models.Model):
 
 
     def notify_transaction(self, transaction, silent=False):
-
         data = {
             'type': 'transaction',
             'amount': transaction.amount,
@@ -144,6 +143,12 @@ class Wallet(models.Model):
         if wallet:
             wallet.update_pin_code(pin_code)
 
+    @staticmethod
+    def debit_transaction(wallet, amount):
+        debit_wallet = Wallet.objects.filter(type__id='debit').first()
+        t = debit_wallet.new_transaction(amount, wallet=wallet, concept='Compra de boniatos', is_euro_purchase=True)
+        wallet.notify_transaction(t)
+        return t
 
 # Method to create the wallet for every new user
 @receiver(post_save, sender=User)
