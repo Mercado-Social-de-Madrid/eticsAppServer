@@ -62,19 +62,26 @@ function getCookie(name) {
         });
     }
 
-    $.fn.ajaxLoader = function( url ) {
-
-        if ( url != null) {
-            loadResults(this, url);
-            return this;
-        }
-
-        var initialUrl = this.attr('data-initial');
-        if ((initialUrl != null) && (initialUrl!='')){
-            loadResults(this, initialUrl);
-        }
-
+    $.fn.ajaxLoader = function( url_or_action ) {
         var self = this;
+
+        if ( url_or_action != null) {
+
+            if (url_or_action === 'reload'){
+                var current = self.find('.pagination .page-item.active > a').attr('href');
+                loadResults(self, current);
+                return self;
+            }
+
+            loadResults(self, url);
+            return self;
+        }
+
+        var initialUrl = self.attr('data-initial');
+        if ((initialUrl != null) && (initialUrl!='')){
+            loadResults(self, initialUrl);
+        }
+
         self.on('click', '.pagination a', function(e){
             e.preventDefault();
             if ($(this).parent().hasClass('active'))
