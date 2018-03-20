@@ -25,7 +25,9 @@ calendarLocale = {
         "Diciembre"
     ],
      "firstDay": 1
-  };
+};
+var TOAST_DELAY = 1200;
+
 
 function getCookie(name) {
     var cookieValue = null;
@@ -94,6 +96,11 @@ function getCookie(name) {
 
 }( jQuery ));
 
+function showToast(message, messageClasses){
+    var toast = $('<div class="toast"></div>').text(message).addClass(messageClasses);
+    toast.appendTo('#main-toasts');
+    setTimeout(function(){ toast.fadeOut(); }, TOAST_DELAY);
+}
 
 $.ajaxSetup({
     beforeSend: function(xhr, settings) {
@@ -213,11 +220,10 @@ $(function(){
         });
     });
 
-    var TOAST_DELAY = 1200;
     var toastCounter = 1;
     $($('.toast-messages .toast').get().reverse()).each(function(){
         var message = $(this);
-        setTimeout(function(){ console.log(message); message.fadeOut(); }, TOAST_DELAY * toastCounter);
+        setTimeout(function(){ message.fadeOut(); }, TOAST_DELAY * toastCounter);
         toastCounter++;
     });
 
