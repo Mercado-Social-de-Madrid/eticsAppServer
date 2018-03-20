@@ -75,7 +75,8 @@ def payment_detail(request, pk):
     sender_type, sender = payment.sender.get_related_entity()
     receiver_type, entity = payment.receiver.get_related_entity()
     params['sender'] = sender
-    params['bonus'] = entity.bonus(payment.total_amount, sender_type)
+    if receiver_type == 'entity':
+        params['bonus'] = entity.bonus(payment.total_amount, sender_type)
 
     return render(request, 'wallets/payment_detail.html', params)
 
