@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import uuid
 
 from django.contrib.auth.models import User, Group
+from django.core.mail import send_mail
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -11,6 +12,7 @@ from django.dispatch import receiver
 from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, ResizeToFill
 
+import helpers
 from helpers import RandomFileName
 from currency.models import Category, Gallery
 
@@ -93,4 +95,12 @@ def add_user_to_group(sender, instance, created, **kwargs):
         group = Group.objects.get(name='entities')
         instance.user.groups.add(group)
 
-        instance.gallery = Gallery.objects.create()
+        if not instance.gallery:
+            instance.gallery = Gallery.objects.create()
+
+        helpers.mailing.send_template_email(
+            'Bienvenid@ a la app del Mercado social',
+            instance.email,
+            'welcome_entity',
+            { 'entity': instance }
+        )

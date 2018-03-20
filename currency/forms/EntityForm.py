@@ -21,9 +21,10 @@ class EntityForm(forms.ModelForm):
 
     class Meta:
         model = Entity
-        exclude = ['owner','email','user']
+        exclude = ['owner','user']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'description': CKEditorWidget(attrs={'class': 'form-control'}),
             'latitude': forms.NumberInput(attrs={'class': 'form-control', 'readonly':True}),
             'longitude': forms.NumberInput(attrs={'class': 'form-control', 'readonly':True}),

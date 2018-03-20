@@ -21,19 +21,20 @@
 				data.setValue({{ forloop.counter0 }},1,{%if floatvalues %} {{ row.total|unlocalize }} {%else%} {{ row.total }} {%endif%});
 			{% endfor %}
 	        var chart = new google.visualization.AreaChart(document.getElementById('activity_graph_div'));
-	        chart.draw(data, {	width: "100%",
-	                			height: 250,
-	                			vAxis: {minValue:0, maxLines:2, viewWindow: {min:0 }, format: 'currency' },
-	                			hAxis: {gridlines: {color: 'transparent'}},
-	                			colors: ['#9c27b0'],
+	        chart.draw(data, {
+	            width: "100%",
+                height: 250,
+                vAxis: {minValue:0, maxLines:2, viewWindow: {min:0 }, format: 'currency' },
+                hAxis: {gridlines: {color: 'transparent'}},
+                colors: ['#9c27b0'],
 
-	                			lineWidth: 2,
-	                			pointSize: 0,
-	                			chartArea: {left:0,top:10,width:"100%",height:"100%"},
-	                			backgroundColor: 'transparent',
-	                			legend: 'none',
-	                			series: [{areaOpacity:0.2}]
-	                			});
+                lineWidth: 2,
+                pointSize: 0,
+                chartArea: {left:0,top:10,width:"100%",height:"100%"},
+                backgroundColor: 'transparent',
+                legend: 'none',
+                series: [{areaOpacity:0.2}]
+                });
 	      }
 	</script>
 	{% endblock extra_scripts %}
