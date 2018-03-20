@@ -70,16 +70,20 @@ class RegisterResource(ModelResource):
 
 
 
-def gen_userwallet_data(user, include_type=True):
+def gen_userwallet_data(user, include_type=True, include_apikey=True):
 
     data = {}
 
     user_type, instance = user.get_related_entity()
     if include_type:
         data['type'] = user_type
+    if include_apikey:
+        data['api_key'] = ApiKey.objects.get_or_create(user=user)[0].key
+
     data['entity'] = model_to_dict(instance) if user_type is 'entity' else None
     data['person'] = model_to_dict(instance) if user_type is 'person' else None
-    data['api_key'] = ApiKey.objects.get_or_create(user=user)[0].key
+
+
 
     if (data['entity'] is not None) and 'user' in data['entity']:
         data['entity']['id'] = instance.pk
@@ -157,6 +161,6 @@ class UserResource(ModelResource):
 
     def dehydrate(self, bundle):
         user = bundle.obj
-        bundle.data = gen_userwallet_data(user)
+        bundle.data = gen_userwallet_data(user, include_apikey=False)
 
         return bundle
