@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load staticfiles %}
+{% load l10n %}
 
 {% block extra_scripts %}
 	<script type='text/javascript' src='https://www.google.com/jsapi'></script>
@@ -17,7 +18,7 @@
 			data.addRows( {{ graph_data|length }} );
 			{% for row in graph_data %}
 				data.setValue({{ forloop.counter0 }},0,new Date({{ row.day| date:'Y' }},{{ row.day|date:'n' }}-1,{{row.day|date:'j'}}));
-				data.setValue({{ forloop.counter0 }},1,{{ row.total }});
+				data.setValue({{ forloop.counter0 }},1,{%if floatvalues %} {{ row.total|unlocalize }} {%else%} {{ row.total }} {%endif%});
 			{% endfor %}
 	        var chart = new google.visualization.AreaChart(document.getElementById('activity_graph_div'));
 	        chart.draw(data, {	width: "100%",

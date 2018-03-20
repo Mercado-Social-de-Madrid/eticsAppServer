@@ -15,7 +15,7 @@
         <div class="col-sm-5 col-md-4 text-right mb-2"><a href="#" class="btn btn-block btn-primary btn-lg">Nueva transferencia</a> </div>
 
         <div class="col-sm-12">
-        {% include "common/activity_graph.html" with graph_data=transactions_bydate %}
+        {% include "common/activity_graph.html" with graph_data=transactions_bydate floatvalues=True %}
         </div>
         <div class="col-md-12 px-4 pb-4">
 
