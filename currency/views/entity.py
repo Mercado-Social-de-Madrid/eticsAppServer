@@ -103,11 +103,11 @@ def add_entity(request):
                 user = User.objects.get(pk=owner_id)
                 entity.user = user
 
-            if not entity.user and (new_user_username and new_user_password and new_user_email):
-                user = User.objects.get_or_create(username=new_user_username, email=new_user_email, password=new_user_password, first_name=new_user_first_name, last_name=new_user_last_name)
+            elif new_user_username and new_user_password:
+                user_email = new_user_email if new_user_email else entity.email
+                user, created = User.objects.get_or_create(username=new_user_username, email=user_email, password=new_user_password, first_name=new_user_first_name, last_name=new_user_last_name)
                 entity.user = user
-
-            if not entity.user:
+            else:
                 entity.user = request.user
 
             gallery = Gallery.objects.create()

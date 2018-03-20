@@ -5,6 +5,7 @@ import uuid
 
 from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -44,10 +45,10 @@ class Entity(models.Model):
     categories = models.ManyToManyField(Category, blank=True, verbose_name='Categorías')
 
     # Currency fields
-    bonus_percent_entity = models.FloatField(default=0, verbose_name='Porcentaje de bonificación a entidades')
-    bonus_percent_general = models.FloatField(default=0, verbose_name='Porcentaje de bonificación general')
-    max_percent_payment = models.FloatField(default=0, verbose_name='Máximo porcentaje de pago aceptado')
-    num_workers = models.IntegerField(default=0, verbose_name='Número de trabajadores')
+    bonus_percent_entity = models.FloatField(default=0, verbose_name='Porcentaje de bonificación a entidades', validators = [MinValueValidator(0), MaxValueValidator(100)])
+    bonus_percent_general = models.FloatField(default=0, verbose_name='Porcentaje de bonificación general', validators = [MinValueValidator(0), MaxValueValidator(100)])
+    max_percent_payment = models.FloatField(default=0, verbose_name='Máximo porcentaje de pago aceptado', validators = [MinValueValidator(0), MaxValueValidator(100)])
+    num_workers = models.IntegerField(default=0, verbose_name='Número de trabajadores', validators = [MinValueValidator(0)])
     legal_form = models.TextField(null=True, blank=True, verbose_name='Formulario legal')
 
     # Social links

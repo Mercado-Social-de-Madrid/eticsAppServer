@@ -479,3 +479,9 @@ td.table-actions a.btn{
 .navdrawer-nav .nav-link.active, .navdrawer-nav .nav-link:active {
     color: #99bb14;
 }
+
+.alert ul.errorlist{
+    list-style:none;
+    margin:0;
+    padding:0;
+}

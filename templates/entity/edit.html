@@ -122,6 +122,7 @@
                                             {{ form.max_percent_payment }}
                                             <span class="input-group-addon"><i class="fa fa-percent" aria-hidden="true"></i></span>
                                     </div>
+                                    {% if form.max_percent_payment.errors %} <div class="alert alert-danger"> {{form.max_percent_payment.errors}}</div> {% endif %}
                                 </div>
                             </div>
 
@@ -132,6 +133,7 @@
                                         {{ form.bonus_percent_general }}
                                         <span class="input-group-addon"><i class="fa fa-percent" aria-hidden="true"></i></span>
                                     </div>
+                                    {% if form.bonus_percent_general.errors %} <div class="alert alert-danger"> {{form.bonus_percent_general.errors}}</div> {% endif %}
                                 </div>
                             </div>
 
@@ -142,6 +144,7 @@
                                         {{ form.bonus_percent_entity }}
                                         <span class="input-group-addon"><i class="fa fa-percent" aria-hidden="true"></i></span>
                                     </div>
+                                    {% if form.bonus_percent_entity.errors %} <div class="alert alert-danger"> {{form.bonus_percent_entity.errors}}</div> {% endif %}
                                 </div>
                             </div>
                         </div>

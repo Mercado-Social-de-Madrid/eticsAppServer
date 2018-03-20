@@ -11,7 +11,6 @@
 <form method="POST" class="post-form gallery-form" enctype="multipart/form-data">
     {% csrf_token %}
 
-
 <div class="container">
 
     {{form.form_errors}}
@@ -28,12 +27,14 @@
                             <label>Usuario</label>
 
                             <div class="input-group">
-                              <input type="text" name="user_placeholder" id="entity_owner" disabled class="form-control" maxlength="250">
+                              <input type="text" name="user_placeholder" id="entity_owner" disabled class="form-control" maxlength="250" value="{{form.new_user_username.value|default:''}}">
                                 <div class="input-group-append">
                                 <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#users-modal" style="min-width:0;"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Buscar existente">search</i></button>
-                                <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#newuser-modal" style="min-width:0;"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Añadir nuevo">add</i></button>
+                                <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#new-user-modal" style="min-width:0;"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Añadir nuevo">add</i></button>
                               </div>
                             </div>
+                            {% if form.owner_id.errors %} <div class="alert alert-danger"> {{form.owner_id.errors}}</div> {% endif %}
+                            {% if form.new_user_username.errors %} <div class="alert alert-danger"> {{form.new_user_username.errors}}</div> {% endif %}
                             {{ form.owner_id }}
                         </div>
 
@@ -59,13 +60,12 @@
                                 </div>
                             </div>
                                 <div class="col-md-8">
-                                    <div class="form-group" data-links="#entity-name">
+                                    <div class="form-group" data-links="#entity-name" style="position:relative;z-index:150;">
                                         <label>Nombre</label>
                                         {{ form.name }}
                                     </div>
                                 </div>
                             </div>
-
 
                         <div class="form-group" data-links="#entity-address">
                             <label>Dirección</label>
@@ -126,34 +126,36 @@
                     <div class="card-body">
                         <div class="card-title"><i class="material-icons">monetization_on</i> Moneda social</div>
                         <div class="row">
-                            <div class="col-sm-4 col-md-12">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <label>Máximo pago en boniatos</label>
                                     <div class="input-group">
                                             {{ form.max_percent_payment }}
                                             <span class="input-group-addon"><i class="fa fa-percent" aria-hidden="true"></i></span>
                                     </div>
+                                    {% if form.max_percent_payment.errors %} <div class="alert alert-danger"> {{form.max_percent_payment.errors}}</div> {% endif %}
                                 </div>
                             </div>
 
-                            <div class="col-sm-4 col-md-12">
+                            <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label>Porcentaje de bonificación</label>
+                                    <label>Porcentaje de bonificación general</label>
                                     <div class="input-group">
                                         {{ form.bonus_percent_general }}
                                         <span class="input-group-addon"><i class="fa fa-percent" aria-hidden="true"></i></span>
                                     </div>
-
+                                    {% if form.bonus_percent_general.errors %} <div class="alert alert-danger"> {{form.bonus_percent_general.errors}}</div> {% endif %}
                                 </div>
                             </div>
 
-                            <div class="col-sm-4 col-md-12">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <label>Porcentaje de bonificación a entidades</label>
                                     <div class="input-group">
                                         {{ form.bonus_percent_entity }}
                                         <span class="input-group-addon"><i class="fa fa-percent" aria-hidden="true"></i></span>
                                     </div>
+                                    {% if form.bonus_percent_entity.errors %} <div class="alert alert-danger"> {{form.bonus_percent_entity.errors}}</div> {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -231,13 +233,55 @@
        </div>
     </div>
 
-    </div>
-
+</div>
 
 
 </div>
 
-    {% include 'profile/search_users_popup.html' %}
+    <div class="modal fade" id="new-user-modal" tabindex="-1" role="dialog" aria-labelledby="new-user-label">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h3 class="modal-title" id="new-user-label">Nuevo usuario</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+      </div>
+      <div class="modal-body large-padding px-5">
+                <div class="form-group">
+                    <label>Nombre de usuario</label>
+                    {{ form.new_user_username }}
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    {{ form.new_user_password }}
+                </div>
+
+                <div class="form-group">
+                    <label>Nombre</label>
+                    {{ form.new_user_first_name }}
+                </div>
+
+                <div class="form-group">
+                    <label>Apellidos</label>
+                    {{ form.new_user_last_name }}
+                </div>
+
+               <div class="form-group">
+                    <label>Email de usuario</label>
+                    {{ form.new_user_email }}
+                </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+           <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'profile/search_users_popup.html' %}
 </form>
 {% endblock %}
 
@@ -247,9 +291,13 @@
 <script type="text/javascript">
 
 var usersModal = $('#users-modal');
+var newUserModal = $('#new-user-modal');
 var list = $('#users-list');
 var inputUser = $('#{{form.owner_id.auto_id }}');
 var displayUser = $('#entity_owner');
+
+var inputUsername = $('input[name="new_user_username"]');
+var inputPassword = $('input[name="new_user_password"]');
 
 list.ajaxLoader();
 list.find('.results').on('click', 'tr', function(e){
@@ -260,6 +308,12 @@ list.find('.results').on('click', 'tr', function(e){
     usersModal.modal('hide');
 });
 
+newUserModal.find('.btn-primary').on('click', function (e) {
+    if (inputUsername.val() && inputPassword.val()){
+        displayUser.val(inputUsername.val());
+        inputUser.val('');
+    }
+})
 
     $('.gallery-form-photo').formset({
         prefix: '{{ gallery_formset.prefix }}',
