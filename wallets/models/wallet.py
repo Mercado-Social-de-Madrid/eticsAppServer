@@ -20,7 +20,7 @@ from wallets.models import WalletType
 class Wallet(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, null=True)
     type = models.ForeignKey(WalletType, null=True, related_name='wallets')
     balance = models.FloatField(default=0, verbose_name='Saldo actual')
     last_transaction = models.DateTimeField(blank=True, null=True, verbose_name='Última transacción')
@@ -35,7 +35,12 @@ class Wallet(models.Model):
         ordering = ['user']
 
     def __unicode__(self):
-        return self.user.username + ': ' + str(self.balance)
+        if self.user:
+            return self.user.username + ': ' + str(self.balance)
+        elif self.type:
+            return self.type.id + ': ' + str(self.balance)
+        else:
+            return 'Unknown wallet'
 
     def set_type(self, type='default'):
         if not type:
