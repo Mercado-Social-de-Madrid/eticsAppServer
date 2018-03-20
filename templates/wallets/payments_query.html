@@ -15,7 +15,7 @@
   </thead>
   <tbody>
     {% for payment in payments %}
-    <tr class="link-row" data-href="{%url 'payment_detail' payment.pk%}" data-toggle="tooltip" data-placement="bottom" title="Ver detalles de pago">
+    <tr data-href="{%url 'payment_detail' payment.pk%}">
       <th scope="row">{{payment.timestamp|date:'d/m/Y H:i'}}</th>
 
       <td>{{payment.sender}}</td>
@@ -30,10 +30,11 @@
         {% endif %}
       <td class="amount">{{payment.total_amount}}€</td>
       <td class="amount">{{payment.currency_amount}}B</td>
-        <td  class="table-actions">
+        <td class="table-actions">
+            <a href="{%url 'payment_detail' payment.pk%}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Ver detalles de pago"><i class="material-icons">visibility</i></a>
             {% if payment.status == 'pending' %}
-            <a href="#" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Aceptar pago"><i class="material-icons">done</i></a>
-            <a href="#" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Cancelar pago"><i class="material-icons">clear</i></a>
+            <a href="#" class="btn btn-outline-primary" data-action="accept" data-toggle="tooltip" data-placement="bottom" title="Aceptar pago"><i class="material-icons">done</i></a>
+            <a href="#" class="btn btn-outline-primary" data-action="cancel" data-toggle="tooltip" data-placement="bottom" title="Cancelar pago"><i class="material-icons">clear</i></a>
             {% endif %}
         </td>
     </tr>

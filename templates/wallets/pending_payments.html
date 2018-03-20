@@ -16,7 +16,7 @@
             <div class="text-center"><img class="img-fluid" src="{%static '/imgs/icon-payment.png' %}" alt="Pagos pendientes"> </div>
             <h2 class="primary-title mb-4 mt-0">Pagos pendientes</h2>
 
-            <div class="ajax-load">
+            <div class="ajax-load" id="payments">
                     <div class="results">
                         {% include 'wallets/payments_query.html' with payments=payments %}
                     </div>
@@ -36,10 +36,27 @@
 
 {% block scripts %}
 <script type="text/javascript">
-    $('.table-action').on('click', function(e){
-        e.preventDefault();
+    var payments = $('#payments');
+    payments.on('click','.table-actions a', function(e){
+        e.stopPropagation();
+        var $this = $(this);
+        var link = $this.parents('tr').attr('data-href');
+        var action = $this.attr('data-action');
+        if (!action) return;
 
+        $.post(link, {action:action}, function(data){
+            payments.ajaxLoader('reload');
+        }).fail(function(request){
+            if (request.responseJSON.error_message){
+                showToast(request.responseJSON.error_message);
+            }
+        });
+
+        e.preventDefault();
         return false;
     });
+
+
 </script>
 {% endblock scripts %}
+

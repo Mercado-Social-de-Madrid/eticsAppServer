@@ -37,7 +37,7 @@
 {% block content %}{% endblock content %}
 </div>
 
-   <div class="toast-messages">
+   <div class="toast-messages" id="main-toasts">
        {% for message in messages %}
         <div class="toast {% if message.tags %}{{ message.tags }}{% endif %}">
             {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}<strong>Ouch!</strong> {% endif %}

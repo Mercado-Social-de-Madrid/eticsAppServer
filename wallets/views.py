@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import json
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models.functions import TruncDay
 
@@ -48,17 +51,26 @@ def payment_detail(request, pk):
 
     if request.method == "POST":
         action = request.POST.get("action", "")
-
         if action == 'accept':
             try:
                 payment.accept_payment()
-                return redirect('pending_payments')
+                if request.is_ajax():
+                    return JsonResponse({'success':True})
+                else:
+                    return redirect('pending_payments')
             except Wallet.NotEnoughBalance:
                 params['notenoughbalance'] = True
+                if request.is_ajax():
+                    response = JsonResponse({'error':'notenoughbalance', 'error_message':'El monedero no tiene saldo suficiente.'})
+                    response.status_code = 400
+                    return response
 
         if action == 'cancel':
             payment.cancel_payment()
-            return redirect('pending_payments')
+            if request.is_ajax():
+                return JsonResponse({'success': True})
+            else:
+                return redirect('pending_payments')
 
     sender_type, sender = payment.sender.get_related_entity()
     receiver_type, entity = payment.receiver.get_related_entity()
