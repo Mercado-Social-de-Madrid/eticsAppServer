@@ -14,6 +14,7 @@ class EntityForm(forms.ModelForm):
         form = super(EntityForm, self).__init__(*args, **kwargs)
 
     owner_id = forms.CharField(max_length=100, widget=forms.HiddenInput, required=False)
+    is_new_entity = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput())
     new_user_username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
     new_user_first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
     new_user_last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
@@ -52,18 +53,18 @@ class EntityForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(EntityForm, self).clean()
-        print cleaned_data
-        owner_id = cleaned_data.get("owner_id")
-        new_user_username = cleaned_data.get("new_user_username")
-        new_user_password = cleaned_data.get("new_user_password")
 
-        print new_user_username
-        print new_user_password
-        if owner_id or (new_user_password and new_user_username):
-            return cleaned_data
-        else:
-            if new_user_username and not new_user_password:
-                self.add_error('owner_id', 'Introduce una contraseña')
+        is_new = cleaned_data.get('is_new_entity')
+        if is_new:
+            owner_id = cleaned_data.get("owner_id")
+            new_user_username = cleaned_data.get("new_user_username")
+            new_user_password = cleaned_data.get("new_user_password")
+
+            if owner_id or (new_user_password and new_user_username):
+                return cleaned_data
             else:
-                self.add_error('owner_id', 'Selecciona un usuario asociado a la entidad o crea uno nuevo')
+                if new_user_username and not new_user_password:
+                    self.add_error('owner_id', 'Introduce una contraseña')
+                else:
+                    self.add_error('owner_id', 'Selecciona un usuario asociado a la entidad o crea uno nuevo')
 

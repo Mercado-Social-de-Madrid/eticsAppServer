@@ -36,6 +36,7 @@
                             {% if form.owner_id.errors %} <div class="alert alert-danger"> {{form.owner_id.errors}}</div> {% endif %}
                             {% if form.new_user_username.errors %} <div class="alert alert-danger"> {{form.new_user_username.errors}}</div> {% endif %}
                             {{ form.owner_id }}
+                            {{form.is_new_entity}}
                         </div>
 
                         <div class="form-group" data-links="#entity-name">

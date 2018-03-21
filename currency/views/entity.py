@@ -86,7 +86,7 @@ def add_entity(request):
     initial_photos = PhotoGalleryForm.get_initial()
 
     if request.method == "POST":
-        form = EntityForm(request.POST, request.FILES)
+        form = EntityForm(request.POST, request.FILES, initial={'is_new_entity':True})
         gallery_formset = gallery_factory(request.POST, request.FILES, initial=initial_photos)
 
         if form.is_valid() and gallery_formset.is_valid():
@@ -121,7 +121,7 @@ def add_entity(request):
             print form.errors.as_data()
             print gallery_formset.errors
     else:
-        form = EntityForm()
+        form = EntityForm(initial={'is_new_entity':True})
         gallery_formset = gallery_factory(initial=initial_photos)
 
     categories = Category.objects.all()
@@ -155,7 +155,6 @@ def entity_edit(request, pk):
         if form.is_valid() and gallery_formset.is_valid():
 
             entity = form.save(commit=False)
-            print entity.categories
             if gallery is None:
                 gallery = Gallery.objects.create()
             entity.gallery = gallery
