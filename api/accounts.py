@@ -1,11 +1,13 @@
 from django.conf.urls import url
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
 from django.forms import model_to_dict
 from tastypie import fields
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
-from tastypie.http import HttpForbidden, HttpUnauthorized
+from tastypie.http import HttpForbidden, HttpUnauthorized, HttpBadRequest
 from tastypie.models import ApiKey
 from tastypie.resources import ModelResource
 from tastypie.validation import FormValidation
@@ -116,6 +118,7 @@ class UserResource(ModelResource):
         return [
             url(r"^login/$", self.wrap_view('login'), name="api_login"),
             url(r"^logout/$", self.wrap_view('logout'), name='api_logout'),
+            url(r"^reset_password/$", self.wrap_view('reset_password'), name='api_reset_password'),
         ]
 
 
@@ -153,6 +156,28 @@ class UserResource(ModelResource):
             return self.create_response(request, {'success': True})
         else:
             return self.create_response(request, {'success': False}, HttpUnauthorized)
+
+
+    def reset_password(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+
+        data = self.deserialize(request, request.body,
+                                format=request.META.get('CONTENT_TYPE', 'application/json'))
+
+        email = data.get('email', '')
+        form = PasswordResetForm({'email': email})
+        if form.is_valid():
+            opts = {
+                'use_https': request.is_secure(),
+                'token_generator': default_token_generator,
+                'email_template_name':'registration/password_reset_email.html',
+                'subject_template_name':'registration/password_reset_subject.txt',
+                'request': request,
+            }
+            form.save(**opts)
+            return self.create_response(request, {'success': True})
+        else:
+            return self.create_response(request, {'success': False}, HttpBadRequest)
 
 
     def obj_get(self, bundle, **kwargs):
