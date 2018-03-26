@@ -84,7 +84,7 @@ class Entity(models.Model):
         ordering = ['registered']
 
     def __unicode__(self):
-        return self.name
+        return self.name if self.name else 'Entidad'
 
 
 # Method to add every user with a related entity to the entities group

@@ -77,4 +77,4 @@ class Offer(models.Model):
         ordering = ['-published_date']
 
     def __unicode__(self):
-        return self.title
+        return self.title if self.title else str(self.published_date)

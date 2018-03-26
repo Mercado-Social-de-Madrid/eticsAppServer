@@ -19,4 +19,4 @@ class Category(models.Model):
         ordering = ['name']
 
     def __unicode__(self):
-        return self.name
+        return self.name if self.name else ''
