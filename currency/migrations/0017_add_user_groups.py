@@ -7,7 +7,7 @@ from django.db import migrations
 def create_entity_group(apps, schema_editor):
     # We can't import the model directly as it may be a newer
     # version than this migration expects. We use the historical version.
-    Entity = apps.get_model('currency', 'Entity')
+    Entity = apps.get_model('currency', 'entity')
     ContentType = apps.get_model('contenttypes', 'ContentType')
     Permission = apps.get_model('auth', 'Permission')
     Group = apps.get_model('auth', 'Group')
