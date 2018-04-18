@@ -2,7 +2,7 @@
 import json
 
 from django.core.exceptions import PermissionDenied
-from tastypie.http import HttpUnauthorized
+from tastypie.http import HttpUnauthorized, HttpForbidden
 
 
 class WrongPinCode(PermissionDenied):
@@ -14,7 +14,7 @@ class WrongPinCode(PermissionDenied):
             'message': 'El código pin introducido no es correcto'
         }
 
-        self.response = HttpUnauthorized(content=json.dumps(response), content_type='application/json')
+        self.response = HttpForbidden(content=json.dumps(response), content_type='application/json')
 
 
 class NotEnoughBalance(Exception):
@@ -26,7 +26,7 @@ class NotEnoughBalance(Exception):
             'message': 'El monedero no tiene suficiente saldo disponible para realizar la operación'
         }
 
-        self.response = HttpUnauthorized(content=json.dumps(response), content_type='application/json')
+        self.response = HttpForbidden(content=json.dumps(response), content_type='application/json')
 
 
 
