@@ -15,7 +15,7 @@ from currency.models.extend_user import get_related_entity
 from helpers import notify_user
 from wallets.exceptions import NotEnoughBalance, WrongPinCode
 from wallets.models import WalletType
-from wallets.models.payment import STATUS_PENDING
+
 
 
 class Wallet(models.Model):
@@ -66,6 +66,7 @@ class Wallet(models.Model):
         return balance
 
     def has_enough_balance(self, amount_to_pay, payment=None):
+        from wallets.models.payment import STATUS_PENDING
         if self.type and self.type.unlimited:
                 return True
 

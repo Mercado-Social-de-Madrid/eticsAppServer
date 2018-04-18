@@ -20,16 +20,20 @@ def notify_user(user, data, title=None, message=None, silent=True):
     if message and silent:
         data['message'] = message
 
-    print data
-
     device = FCMDevice.objects.filter(user=user).first()
     if device is None:
         return
     if silent:
         result = device.send_message(data=data)
     else:
-        result = device.send_message(title=title, body=message, data=data)
-    print result
+        kwargs = {
+            'extra_kwargs': {
+                'mutable_content': True,
+            }
+        }
+        result = device.send_message(title=title, body=message, data=data, time_to_live=30, content_available=True, sound='default', **kwargs)
+    return result
+
 
 
 def broadcast_notification(users=None, data=None, title=None, body=None, silent=True):
@@ -54,6 +58,11 @@ def broadcast_notification(users=None, data=None, title=None, body=None, silent=
     if silent:
         result = devices.send_message(data=data)
     else:
-        result = devices.send_message(title=title, body=body, data=data)
+        kwargs = {
+            'extra_kwargs': {
+                'mutable_content': True,
+            }
+        }
+        result = devices.send_message(title=title, body=body, data=data, time_to_live=30, content_available=True, sound='default', **kwargs)
 
-    print result
+    return result
