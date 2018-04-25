@@ -78,7 +78,7 @@ class Wallet(models.Model):
         return amount_to_pay <= credit_balance
 
     @transaction.atomic
-    def new_transaction(self, amount, wallet=None, concept=None, bonus=False, is_euro_purchase=False, **kwargs):
+    def new_transaction(self, amount, wallet=None, concept=None, bonus=False, is_euro_purchase=False, from_payment=None, **kwargs):
 
         if wallet:
             wallet_from = self
@@ -93,7 +93,7 @@ class Wallet(models.Model):
             elif wallet_from:
                 concept = "Transferencia"
 
-        if wallet_from and not wallet_from.has_enough_balance(amount):
+        if wallet_from and not wallet_from.has_enough_balance(amount, from_payment):
             raise NotEnoughBalance
 
         from wallets.models.transaction import Transaction
