@@ -29,11 +29,12 @@ class PaymentsResource(ModelResource):
 
         sender = bundle.request.user
         receiver = bundle.data['receiver']
-        total_amount =bundle.data['total_amount']
+        total_amount = bundle.data['total_amount']
         currency_amount = bundle.data['currency_amount']
+        concept = bundle.data['concept']
         pin_code = bundle.data['pin_code']
 
-        bundle.obj = Payment.objects.new_payment(sender, receiver, total_amount, currency_amount, pin_code)
+        bundle.obj = Payment.objects.new_payment(sender, receiver, total_amount, currency_amount, concept, pin_code)
 
         return bundle
 

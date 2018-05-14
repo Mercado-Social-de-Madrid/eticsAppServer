@@ -33,7 +33,7 @@ class PaymentManager(models.Manager):
             q = q.filter(receiver=user)
         return q
 
-    def new_payment(self, sender, receiver_uuid, total_amount=0, currency_amount=0, pin_code=None):
+    def new_payment(self, sender, receiver_uuid, total_amount=0, currency_amount=0, concept=None, pin_code=None):
 
         receiver = get_user_by_related(receiver_uuid)
         if receiver is not None:
@@ -59,6 +59,7 @@ class PaymentManager(models.Manager):
                 sender=sender,
                 receiver=receiver,
                 total_amount=total_amount,
+                concept=concept,
                 currency_amount=currency_amount,
                 status=status)
 
@@ -78,6 +79,7 @@ class Payment(models.Model):
     processed = models.DateTimeField(auto_now_add=False, null=True, verbose_name='Timestamp procesado')
     sender = models.ForeignKey(User, null=True, related_name='payments_sent')
     receiver = models.ForeignKey(User, null=True, related_name='payments_received')
+    concept = models.TextField(null=True, blank=True, verbose_name='Concepto (opcional)')
 
     status = models.CharField(max_length=10, choices=PAYMENT_STATUS)
     total_amount = models.FloatField(default=0, verbose_name='Importe total')
@@ -108,7 +110,7 @@ class Payment(models.Model):
 
         #If the user paid some part in currency, we make the transaction
         if self.currency_amount > 0:
-            t = wallet_sender.new_transaction(self.currency_amount, wallet=wallet_receiver, from_payment=self)
+            t = wallet_sender.new_transaction(self.currency_amount, wallet=wallet_receiver, from_payment=self, concept=self.concept)
             wallet_receiver.notify_transaction(t, silent=True)
 
         receiver_type, entity = self.receiver.get_related_entity()
@@ -118,7 +120,7 @@ class Payment(models.Model):
             # If the receiver is an entity, we calculate the bonification to give the sender
             bonus = entity.bonus(self.total_amount, sender_type)
             if bonus > 0:
-                t = wallet_receiver.new_transaction(bonus, wallet=wallet_sender, bonus=True)
+                t = wallet_receiver.new_transaction(bonus, wallet=wallet_sender, bonus=True, concept=self.concept)
                 wallet_sender.notify_transaction(t)
 
         print "Payment accepted"
