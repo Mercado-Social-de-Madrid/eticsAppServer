@@ -20,7 +20,7 @@ def notify_user(user, data, title=None, message=None, silent=True):
     if message and silent:
         data['message'] = message
 
-    device = FCMDevice.objects.filter(user=user).first()
+    device = FCMDevice.objects.filter(user=user, active=True).first()
     if device is None:
         return
     if silent:
@@ -44,7 +44,7 @@ def broadcast_notification(users=None, data=None, title=None, body=None, silent=
 
     devices = FCMDevice.objects.all()
     if users is not None:
-        devices.filter(user__in=users)
+        devices.filter(user__in=users, active=True)
 
     if not data:
         data = {}
