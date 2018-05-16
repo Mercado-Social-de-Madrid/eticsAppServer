@@ -31,7 +31,7 @@ class PaymentsResource(ModelResource):
         receiver = bundle.data['receiver']
         total_amount = bundle.data['total_amount']
         currency_amount = bundle.data['currency_amount']
-        concept = bundle.data['concept']
+        concept = None if not 'concept' in bundle.data else bundle.data['concept']
         pin_code = bundle.data['pin_code']
 
         bundle.obj = Payment.objects.new_payment(sender, receiver, total_amount, currency_amount, concept, pin_code)
@@ -96,6 +96,33 @@ class PaymentsResource(ModelResource):
         return self.create_response(
                 request, bundle,
                 response_class = HttpCreated)
+
+
+class SentPaymentsResource(ModelResource):
+
+    class Meta:
+        queryset = Payment.objects.pending()
+        include_resource_uri = False
+        list_allowed_methods = ['get']
+        resource_name = 'sent_payment'
+        collection_name = 'payments'
+        excludes = []
+        always_return_data = True
+
+        authentication = ApiKeyAuthentication()
+        authorization = Authorization()
+
+
+    def authorized_read_list(self, object_list, bundle):
+        return object_list.filter(sender=bundle.request.user).select_related('receiver')
+
+    def dehydrate(self, bundle):
+        # Include the payment sender name
+        if bundle.obj.receiver.first_name or bundle.obj.receiver.last_name:
+            bundle.data['receiver'] = bundle.obj.receiver.first_name + ' ' + bundle.obj.receiver.last_name
+        else:
+            bundle.data['receiver'] = bundle.obj.receiver.username
+        return bundle
 
 
 class TransactionLogResource(ModelResource):
