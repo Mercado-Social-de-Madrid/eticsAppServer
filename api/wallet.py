@@ -43,8 +43,9 @@ class PaymentsResource(ModelResource):
 
     def dehydrate(self, bundle):
         # Include the payment sender name
-        if bundle.obj.sender.first_name or bundle.obj.sender.last_name:
-            bundle.data['sender'] = bundle.obj.sender.first_name + ' ' + bundle.obj.sender.last_name
+        user_type, sender_instance = bundle.obj.sender.get_related_entity()
+        if sender_instance:
+            bundle.data['sender'] =  str(sender_instance)
         else:
             bundle.data['sender'] = bundle.obj.sender.username
         return bundle

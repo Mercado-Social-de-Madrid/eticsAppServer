@@ -43,11 +43,10 @@ class Person(models.Model):
 
     @property
     def full_name(self):
-
         return '{} {}'.format(self.name if self.name else '', self.surname if self.surname else '')
 
     def __unicode__(self):
-        return '{}: {} {}'.format(self.user.username, self.name if self.name else '', self.surname if self.surname else '')
+        return '{} {}'.format(self.name if self.name else '', self.surname if self.surname else '')
 
 # Method to add every user with a related person to the persons group
 @receiver(post_save, sender=Person)
