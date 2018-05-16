@@ -46,6 +46,7 @@ class PaymentsResource(ModelResource):
         user_type, sender_instance = bundle.obj.sender.get_related_entity()
         if sender_instance:
             bundle.data['sender'] =  str(sender_instance)
+            bundle.data['user_type'] = user_type
         else:
             bundle.data['sender'] = bundle.obj.sender.username
         return bundle
