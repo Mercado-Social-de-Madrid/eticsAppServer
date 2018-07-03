@@ -85,8 +85,6 @@ def gen_userwallet_data(user, include_type=True, include_apikey=True):
     data['entity'] = model_to_dict(instance) if user_type is 'entity' else None
     data['person'] = model_to_dict(instance) if user_type is 'person' else None
 
-
-
     if (data['entity'] is not None) and 'user' in data['entity']:
         data['entity']['id'] = instance.pk
         if data['entity']['logo']:
@@ -99,9 +97,10 @@ def gen_userwallet_data(user, include_type=True, include_apikey=True):
         data['person']['id'] = instance.pk
         del data['person']['user']
 
+        data['person']['profile_image'] = instance.profile_image.url
+        data['person']['profile_thumbnail'] = instance.profile_thumbnail.url
+
         if data['person']['fav_entities']:
-            data['person']['profile_image'] = instance.profile_image.url
-            data['person']['profile_thumbnail'] = instance.profile_thumbnail.url
             for i, fav in enumerate(data['person']['fav_entities']):
                 data['person']['fav_entities'][i] = fav.pk
 
