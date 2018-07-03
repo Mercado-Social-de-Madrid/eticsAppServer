@@ -91,7 +91,7 @@ class Wallet(models.Model):
             if bonus:
                 concept = "Bonificación en boniatos por compra"
             elif wallet_from:
-                concept = "Transferencia"
+                concept = "Movimiento"
 
         if wallet_from and not wallet_from.has_enough_balance(amount, from_payment):
             raise NotEnoughBalance
@@ -137,7 +137,7 @@ class Wallet(models.Model):
             'concept': transaction.concept
         }
 
-        title = 'Ya tienes tu bonificación!' if transaction.is_bonification else 'Has recibido una transferencia'
+        title = 'Ya tienes tu bonificación!' if transaction.is_bonification else 'Has recibido un movimiento'
         notify_user(self.user, title=title, message=data['concept'], data=data, silent=silent)
 
 
