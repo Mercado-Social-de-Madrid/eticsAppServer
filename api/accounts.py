@@ -100,6 +100,8 @@ def gen_userwallet_data(user, include_type=True, include_apikey=True):
         del data['person']['user']
 
         if data['person']['fav_entities']:
+            data['person']['profile_image'] = instance.profile_image.url
+            data['person']['profile_thumbnail'] = instance.profile_thumbnail.url
             for i, fav in enumerate(data['person']['fav_entities']):
                 data['person']['fav_entities'][i] = fav.pk
 
