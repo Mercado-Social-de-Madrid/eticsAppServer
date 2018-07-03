@@ -11,6 +11,13 @@ def notify_user(user, data, title=None, message=None, silent=True):
     if not user:
         return
 
+    device = FCMDevice.objects.filter(user=user, active=True).first()
+    if device is None:
+        return
+
+    if device.type == 'android':
+        silent = True
+
     if not data:
         data = {}
     if not message and not title:
@@ -20,9 +27,7 @@ def notify_user(user, data, title=None, message=None, silent=True):
     if message and silent:
         data['message'] = message
 
-    device = FCMDevice.objects.filter(user=user, active=True).first()
-    if device is None:
-        return
+
     if silent:
         result = device.send_message(data=data)
     else:
