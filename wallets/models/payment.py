@@ -3,16 +3,13 @@ from __future__ import unicode_literals
 
 import uuid
 
-import math
-
 from django.contrib.auth import hashers
 from django.contrib.auth.models import User
-from django.core.exceptions import PermissionDenied
 from django.db import models, transaction
 from django.utils import timezone
 
-from helpers import notify_user
 from currency.models.extend_user import get_user_by_related
+from helpers import notify_user
 from wallets.models import Wallet
 
 STATUS_ACCEPTED = 'accepted'
@@ -36,13 +33,19 @@ class PaymentManager(models.Manager):
     def new_payment(self, sender, receiver_uuid, total_amount=0, currency_amount=0, concept=None, pin_code=None):
 
         receiver = get_user_by_related(receiver_uuid)
-        if receiver is not None:
-            user_type, instance = receiver.get_related_entity()
-            status = STATUS_PENDING if user_type == 'entity' else STATUS_ACCEPTED
 
-            if user_type == 'entity':
+        receiver_type, entity = receiver.get_related_entity()
+        sender_type, sender_entity = sender.get_related_entity()
+
+        if entity.city != sender_entity.city:
+            raise Exception('Different cities!')
+
+        if receiver is not None:
+            status = STATUS_PENDING if receiver_type == 'entity' else STATUS_ACCEPTED
+
+            if receiver_type == 'entity':
                 # Check that the currency amount is not bigger than the max amount percent
-                currency_amount = min(currency_amount, instance.max_accepted_currency(total_amount))
+                currency_amount = min(currency_amount, entity.max_accepted_currency(total_amount))
 
             sender_wallet = Wallet.objects.filter(user=sender).first()
 
@@ -108,13 +111,13 @@ class Payment(models.Model):
             return
             # TODO: create exception
 
+        receiver_type, entity = self.receiver.get_related_entity()
+        sender_type, sender = self.sender.get_related_entity()
+
         #If the user paid some part in currency, we make the transaction
         if self.currency_amount > 0:
             t = wallet_sender.new_transaction(self.currency_amount, wallet=wallet_receiver, from_payment=self, concept=self.concept)
             wallet_receiver.notify_transaction(t, silent=True)
-
-        receiver_type, entity = self.receiver.get_related_entity()
-        sender_type, sender = self.sender.get_related_entity()
 
         if receiver_type == 'entity':
             # If the receiver is an entity, we calculate the bonification to give the sender

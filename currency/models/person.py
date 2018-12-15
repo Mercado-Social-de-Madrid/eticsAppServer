@@ -12,13 +12,15 @@ from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, ResizeToFill
 
 from helpers import RandomFileName
-from currency.models import Entity
+from currency.models import Entity, City
 
 
 class Person(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, null=False, blank=False)
+    city = models.ForeignKey(City, null=False, blank=False)
+
     nif = models.CharField(null=True, blank=True, verbose_name='NIF/CIF', max_length=50)
     email = models.CharField(null=False, blank=False, verbose_name='Email', max_length=250)
     name = models.CharField(null=True, blank=True, verbose_name='Nombre', max_length=250)

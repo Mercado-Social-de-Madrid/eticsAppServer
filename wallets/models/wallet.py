@@ -153,7 +153,8 @@ class Wallet(models.Model):
 
     @staticmethod
     def debit_transaction(wallet, amount):
-        debit_wallet = Wallet.objects.filter(type__id='debit').first()
+
+        debit_wallet = wallet.user.get_related_entity().city.wallet
         t = debit_wallet.new_transaction(amount, wallet=wallet, concept='Compra de boniatos', is_euro_purchase=True)
         wallet.notify_transaction(t)
         return t

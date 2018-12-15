@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import uuid
 
+import math
 from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -15,13 +16,15 @@ from pilkit.processors import ResizeToFit, ResizeToFill
 
 import helpers
 from helpers import RandomFileName
-from currency.models import Category, Gallery
+from currency.models import Category, Gallery, City
 
 
 class Entity(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, null=False, blank=False)
+    city = models.ForeignKey(City, null=False, blank=False)
+
     cif = models.CharField(null=True, blank=True, verbose_name='NIF/CIF', max_length=50)
     email = models.CharField(null=False, blank=False, verbose_name='Email', max_length=250)
     name = models.CharField(null=True, blank=True, verbose_name='Nombre', max_length=250)
@@ -73,10 +76,10 @@ class Entity(models.Model):
         if bonusable_type == 'entity':
             percent = self.bonus_percent_entity
 
-        return total_amount * (percent / 100.0)
+        return round(total_amount * (percent / 100.0), 2)
 
     def max_accepted_currency(self, total_amount):
-        return total_amount * (self.max_percent_payment / 100.0)
+        return round(total_amount * (self.max_percent_payment / 100.0), 2)
 
     class Meta:
         verbose_name = 'Entidad'
