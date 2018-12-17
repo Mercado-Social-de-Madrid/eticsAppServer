@@ -1,11 +1,15 @@
+from tastypie import fields
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
 
+from api.cities import CitiesResource
 from currency.models import Person
 
 
 class PersonsResource(ModelResource):
+
+    city = fields.ForeignKey(CitiesResource, 'city', full=False, null=True)
 
     class Meta:
         queryset = Person.objects.all()

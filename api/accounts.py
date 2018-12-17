@@ -13,6 +13,7 @@ from tastypie.resources import ModelResource
 from tastypie.validation import FormValidation
 
 from currency.forms.user import UserForm
+from currency.models import City
 from currency.models.extend_user import get_user_by_related
 from wallets.models import Wallet
 
@@ -41,11 +42,22 @@ class RegisterResource(ModelResource):
             elif 'person' in bundle.data and not ('email' in bundle.data['person']):
                 bundle.data['person']['email'] = bundle.data['email']
 
+        city_id = None
+        if 'person' in bundle.data and 'city' in bundle.data['person']:
+            city_id = bundle.data['person']['city']
+        elif 'entity' in bundle.data and 'city' in bundle.data['entity']:
+            city_id = bundle.data['entity']['city']
+        else:
+            city_id = 'mad'
+
         if 'person' in bundle.data:
             if 'name' in bundle.data['person']:
                 bundle.data['first_name'] = bundle.data['person']['name']
             if 'surname' in bundle.data['person']:
                 bundle.data['lastt_name'] = bundle.data['person']['surname']
+            bundle.data['person']['city'] = City.objects.get(id=city_id)
+        elif 'entity' in bundle.data:
+            bundle.data['entity']['city'] = City.objects.get(id=city_id)
 
         return bundle
 

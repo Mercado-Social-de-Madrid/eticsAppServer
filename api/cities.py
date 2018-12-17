@@ -9,7 +9,7 @@ class CitiesResource(ModelResource):
 
     class Meta:
         queryset = City.objects.all()
-        include_resource_uri = True
+        include_resource_uri = False
         list_allowed_methods = ['get']
         resource_name = 'cities'
         collection_name = 'cities'
