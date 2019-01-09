@@ -85,6 +85,11 @@ class PersonResource(ModelResource):
     def hydrate(self, bundle):
         if bundle.request.user:
             bundle.obj.user = bundle.request.user
+
+        if bundle.data['fav_entities']:
+            for i, fav in enumerate(bundle.data['fav_entities']):
+                bundle.data['fav_entities'][i] = Entity.objects.get(pk=bundle.data['fav_entities'][i])
+
         return bundle
 
 
