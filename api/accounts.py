@@ -132,6 +132,7 @@ class UserResource(ModelResource):
             url(r"^login/$", self.wrap_view('login'), name="api_login"),
             url(r"^logout/$", self.wrap_view('logout'), name='api_logout'),
             url(r"^reset_password/$", self.wrap_view('reset_password'), name='api_reset_password'),
+            url(r"^reset_pincode/$", self.wrap_view('reset_pincode'), name='api_reset_pincode'),
         ]
 
 
@@ -169,6 +170,31 @@ class UserResource(ModelResource):
             return self.create_response(request, {'success': True})
         else:
             return self.create_response(request, {'success': False}, HttpUnauthorized)
+
+    def reset_pincode(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        if request.user and request.user.is_authenticated():
+            data = self.deserialize(request, request.body,
+                                    format=request.META.get('CONTENT_TYPE', 'application/json'))
+            pincode = data.get('username', '')
+            password = data.get('password', '')
+
+            user = authenticate(username=request.user.username, password=password)
+            if user:
+                if user.is_active:
+                    Wallet.update_user_pin_code(user=user, pin_code=pincode)
+                    return self.create_response(request, {'success': True})
+                else:
+                    return self.create_response(request, {
+                        'success': False,
+                        'reason': 'disabled',
+                    }, HttpForbidden)
+            else:
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'incorrect',
+                }, HttpUnauthorized)
+
 
 
     def reset_password(self, request, **kwargs):
