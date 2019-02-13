@@ -38,10 +38,17 @@ class Person(models.Model):
     registered = models.DateTimeField(auto_now_add=True)
     fav_entities = models.ManyToManyField(Entity, blank=True, verbose_name="Favoritos")
 
+    is_guest_account = models.BooleanField(default=False, verbose_name='Es usuario invitado')
+    expiration_date = models.DateField(null=True, blank=True, verbose_name='Fecha de expiración')
+
     class Meta:
         verbose_name = 'Persona'
         verbose_name_plural = 'Personas'
         ordering = ['registered']
+
+    @property
+    def display_name(self):
+        return "{} {}".format(self.name, self.surname)
 
     @property
     def full_name(self):

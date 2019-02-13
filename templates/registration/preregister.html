@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load settings_value %}
+
+{% block title %}Login{% endblock %}
+
+{% block bodyattrs %} id="login-page"{% endblock%}
+
+{% block content %}
+
+<div class="jumbo-header minimal" >
+    <div class="jumbotron">
+        <div class="container text-center">
+            <h1>Registro</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container justify-content-center">
+    <div class="card px-5" style="max-width:600px;margin:auto;margin-top:-20px;">
+        <div class="card-body">
+
+            {% if badtoken %}
+<p class="lead text-primary">Ouch, enlace erróneo </p>
+        <h3 class="lead ">
+            El código de registro es incorrecto...
+        </h3>
+            ¿Quizás ya has realizado el registro previamente? Puedes probar a <a href="{% url 'password_reset' %}"> recuperar tu contraseña</a> introduciendo tu email.<br><br>
+        Si estás segur@ de que aún no te has registrado, ponte en contacto con soporte.<br><br>
+
+        {% else %}
+
+  <form method="post" class="edit-form" >
+    {% csrf_token %}
+        <p class="lead text-primary">Hola, {{instance.display_name}} </p>
+        <h3 class="lead ">
+            Solo te falta este paso para empezar a usar etics!
+        </h3>
+
+        Introduce el nombre de usuario y contraseña que utilizarás a partir de ahora en la app para gestionar
+        tus compras en etics y la información de tu perfil.<br><br>
+
+        <div class="form-group">
+            <label>Nombre de usuario</label>
+            <input class="form-control" id="{{ form.username.id_for_label }}" maxlength="30" name="{{ form.username.html_name }}" type="text" placeholder="Usuario"/>
+            {%if form.username.errors %}
+            <div class="d-block invalid-feedback">
+                {%for error in form.username.errors %} {{error}} {%endfor%}
+            </div>
+            {% endif %}
+        </div>
+
+      <div class="form-group">
+          <label>Contraseña</label>
+            <input class="form-control" id="{{ form.password.id_for_label }}" maxlength="30" name="{{ form.password.html_name }}" type="password" />
+            {%if form.password.errors %}
+            <div class="d-block invalid-feedback">
+                {%for error in form.password.errors %} {{error}} {%endfor%}
+            </div>
+            {% endif %}
+        </div>
+        <br>
+
+      {% if form.non_field_errors %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>Ouch!</strong> {%for error in form.non_field_errors %} {{error}} {%endfor%}
+        </div>
+      {% endif %}
+
+      <p class="text-center">
+          <button type="submit" class="btn btn-primary btn-lg btn-block ">Guardar</button>
+      </p>
+
+
+  </form>
+            {% endif %}
+            </div>
+</div>
+</div>
+
+{% endblock %}

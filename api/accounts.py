@@ -1,3 +1,7 @@
+from random import choice
+from string import ascii_lowercase
+
+import requests
 from django.conf.urls import url
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import PasswordResetForm
@@ -13,7 +17,7 @@ from tastypie.resources import ModelResource
 from tastypie.validation import FormValidation
 
 from currency.forms.user import UserForm
-from currency.models import City
+from currency.models import City, PreRegisteredUser
 from currency.models.extend_user import get_user_by_related
 from wallets.models import Wallet
 
@@ -81,6 +85,72 @@ class RegisterResource(ModelResource):
         bundle.data = gen_userwallet_data(user, include_type=False)
 
         return bundle
+
+
+class PreRegisterResource(ModelResource):
+    entity = fields.ToOneField('api.entities.EntitiesDetailResource', 'entity', null=True, blank=True, full=True)
+    person = fields.ToOneField('api.persons.PersonsResource', 'person', null=True, blank=True, full=True)
+
+    class Meta:
+        queryset = User.objects.all()
+        include_resource_uri = False
+        list_allowed_methods = ['post']
+        resource_name = 'preregister'
+        excludes = ['password', 'is_staff', 'is_superuser', 'id']
+
+        authentication = Authentication()  # No need for auth, public resource
+        authorization = Authorization()
+
+    def generate_random_username(self, length=16, chars=ascii_lowercase):
+
+        username = ''.join([choice(chars) for i in xrange(length)])
+        try:
+            User.objects.get(username=username)
+            return self.generate_random_username(length=length, chars=chars)
+        except User.DoesNotExist:
+            return username
+
+
+    def hydrate(self, bundle):
+
+        email = None
+        if 'email' in bundle.data and bundle.data.get('email') != '':
+            email = bundle.data.get('email')
+            if 'entity' in bundle.data and not ('email' in bundle.data['entity']):
+                bundle.data['entity']['email'] = email
+            elif 'person' in bundle.data and not ('email' in bundle.data['person']):
+                bundle.data['person']['email'] = email
+
+        city_id = None
+        if 'person' in bundle.data and 'city' in bundle.data['person']:
+            city_id = bundle.data['person']['city']
+        elif 'entity' in bundle.data and 'city' in bundle.data['entity']:
+            city_id = bundle.data['entity']['city']
+        else:
+            city_id = 'mad'
+
+        bundle.data['username'] = self.generate_random_username()
+        bundle.data['email'] = email
+
+        if 'person' in bundle.data:
+            if 'name' in bundle.data['person']:
+                bundle.data['first_name'] = bundle.data['person']['name']
+            if 'surname' in bundle.data['person']:
+                bundle.data['lastt_name'] = bundle.data['person']['surname']
+            bundle.data['person']['city'] = City.objects.get(id=city_id)
+        elif 'entity' in bundle.data:
+            bundle.data['entity']['city'] = City.objects.get(id=city_id)
+        return bundle
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        bundle = super(PreRegisterResource, self).obj_create(bundle, request=request, **kwargs)
+        user = bundle.obj
+
+        preregister = PreRegisteredUser.objects.create(user=user, email=user.email)
+
+
+        return bundle
+
 
 
 
@@ -194,6 +264,7 @@ class UserResource(ModelResource):
                     'success': False,
                     'reason': 'incorrect',
                 }, HttpUnauthorized)
+
 
 
 

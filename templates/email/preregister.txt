@@ -1,0 +1,14 @@
+{% load settings_value %}
+
+Bienvenid@ al Mercado Social!
+Hola, {{entity}}!
+Recibes este email porque has sido dada de alta recientemente para utilizar etics, la app del Mercado Social de Madrid.
+Solo falta un último paso, que es que cuentes con una manera de acceder a tu área privada.
+Introduce el nombre de usuario y contraseña que utilizarás a partir de ahora en la app para gestionar tus compras en etics y la información de tu perfil en el siguiente enlace: {% settings_value 'BASESITE_URL' %}{% url 'preregister' token %}
+
+Desde ese momento, podrás acceder a tu panel de usuario y configurar el perfil de tu entidad y tus ofertas, así como gestionar tu uso de la moneda social.
+
+
+Aplicación móvil
+¿Sabías que hay una app desde la que gestionar tus movimientos con la moneda social de forma más cómoda? ¡Pruébala!
+Enlace a la app: https://play.google.com/store/apps/details?id=net.mercadosocial.moneda

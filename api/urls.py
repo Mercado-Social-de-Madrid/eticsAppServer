@@ -5,7 +5,7 @@ from api.cities import CitiesResource
 from api.entities import EntitiesDetailResource, EntitySimpleResource
 from api.wallet import PaymentsResource, WalletResource, TransactionLogResource, SentPaymentsResource
 from api.resources import OffersResource, NewsResource
-from api.accounts import RegisterResource, UserResource
+from api.accounts import RegisterResource, UserResource, PreRegisterResource
 from api.profile import EntityResource, PersonResource, DeviceResource
 
 
@@ -28,5 +28,6 @@ def get_api(version_name):
     api.register(DeviceResource())
     api.register(NewsResource())
     api.register(SentPaymentsResource())
+    api.register(PreRegisterResource())
 
     return api

@@ -64,6 +64,10 @@ class Entity(models.Model):
     gallery = models.OneToOneField(Gallery, blank=True, null=True, on_delete=models.SET_NULL)
 
     @property
+    def display_name(self):
+        return self.name
+
+    @property
     def first_photo_url(self):
         if self.gallery and self.gallery.photos.count() > 0:
             image = self.gallery.photos.all().first()
@@ -102,9 +106,12 @@ def add_user_to_group(sender, instance, created, **kwargs):
         if not instance.gallery:
             instance.gallery = Gallery.objects.create()
 
+
+    """
         helpers.mailing.send_template_email(
             'Bienvenid@ a la app del Mercado social',
             instance.email,
             'welcome_entity',
             { 'entity': instance }
         )
+    """

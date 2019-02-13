@@ -1,11 +1,14 @@
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import EmptyPage, Paginator, PageNotAnInteger, InvalidPage
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 import helpers
+from currency.forms.user import UserForm
+from currency.models import PreRegisteredUser
 from offers.models import Offer
 from wallets.models import Wallet, Payment
 
@@ -63,3 +66,36 @@ def search_users(request):
     response['Cache-Control'] = 'no-cache'
     response['Vary'] = 'Accept'
     return response
+
+
+def preregister(request, pk):
+
+    preuser = PreRegisteredUser.objects.filter(id=pk).first()
+    if preuser is None:
+        return render(request, 'registration/preregister.html', {
+            'badtoken': True,
+        })
+
+    user = preuser.user
+    kind, instance = user.get_related_entity()
+
+    if request.method == "POST":
+        form = UserForm(request.POST)
+        if form.is_valid():
+            user.username = form.cleaned_data['username']
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+
+            preuser.delete()
+            messages.add_message(request, messages.SUCCESS, 'Datos de acceso modificados satisfactoriamente')
+            return redirect('login')
+    else:
+        form = UserForm()
+
+
+    return render(request, 'registration/preregister.html', {
+        'form': form,
+        'token': preuser.id,
+
+        'instance': instance,
+    })

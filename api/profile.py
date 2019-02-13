@@ -1,8 +1,11 @@
+import requests
+from django.conf.urls import url
 from fcm_django.models import FCMDevice
 from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
 from tastypie.exceptions import NotFound
+from tastypie.http import HttpBadRequest
 from tastypie.resources import ModelResource
 
 from currency.models import Entity, Person
@@ -69,6 +72,46 @@ class PersonResource(ModelResource):
             raise NotFound("User has no associated person")
 
         return person
+
+
+    def prepend_urls(self):
+        return [
+            url(r"^invite/$", self.wrap_view('invite'), name='api_invite'),
+        ]
+
+    def invite(self,  request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        self.is_authenticated(request)
+        print request.user
+
+        data = self.deserialize(request, request.body,
+                                format=request.META.get('CONTENT_TYPE', 'application/json'))
+        bundle = self.build_bundle(data=data, request=request)
+        print bundle.request.user
+
+        if request.user and request.user.is_authenticated():
+            data = self.deserialize(request, request.body,
+                                    format=request.META.get('CONTENT_TYPE', 'application/json'))
+            email = data.get('email', '')
+            account_pk = None
+            type, account = request.user.get_related_entity()
+            if type == 'entity':
+                account_pk = account.cif
+            elif type == 'person':
+                account_pk = account.nif
+
+            base_url = account.city.server_base_url
+            api_url = '{}api/v1/account/{}/invite/'.format(base_url, account_pk)
+
+            r = requests.post(api_url, json={'email': email})
+            if r.ok:
+                return self.create_response(request, r.json())
+            else:
+                response = self.create_response(request, r.json(), HttpBadRequest)
+                response.status_code = r.status_code
+                return response
+        else:
+            return self.create_response(request, {'success': False}, HttpBadRequest)
 
 
     def dehydrate(self, bundle):
