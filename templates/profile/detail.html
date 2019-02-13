@@ -25,7 +25,12 @@
                 <div class="profile-circle"><img id="profile-image" src="{%if person.profile_image %} {{person.profile_thumbnail.url}}{% endif %}"></div>
             </div>
 
-            <h4 class="card-title">{{person.full_name}}</h4>
+              {% if person.is_guest_account %}
+            <h4 class="card-title mb-0">{{person.full_name}}</h4>
+              <h5 class="text-primary">Cuenta invitada</h5>
+              {% else %}
+              <h4 class="card-title">{{person.full_name}}</h4>
+              {% endif %}
               <div class="card-text">
               <div class="row">
                   <div class="col-md-6 my-2">
