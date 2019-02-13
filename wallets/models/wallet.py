@@ -89,7 +89,7 @@ class Wallet(models.Model):
 
         if not concept:
             if bonus:
-                concept = "Bonificación en boniatos por compra"
+                concept = "Bonificación en etics por compra"
             elif wallet_from:
                 concept = "Movimiento"
 
@@ -157,7 +157,7 @@ class Wallet(models.Model):
         rel_type, related = wallet.user.get_related_entity()
         debit_wallet = related.city.wallet
 
-        t = debit_wallet.new_transaction(amount, wallet=wallet, concept='Compra de boniatos', is_euro_purchase=True)
+        t = debit_wallet.new_transaction(amount, wallet=wallet, concept='Compra de etics', is_euro_purchase=True)
         wallet.notify_transaction(t)
         return t
 

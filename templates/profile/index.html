@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load qr_tags %}
 {% load i18n %}
-{% block title %}Boniatos-server{% endblock%}
+{% block title %}Perfil{% endblock%}
 
 {% block content %}
 <div class="container">
@@ -65,7 +65,7 @@
                     <div class="card-title primary-title"><h3><i class="ic ic-wallet"></i> Saldo</h3></div>
                     <div class="figure">
                         <span class="number">{{balance|floatformat:2}}</span>
-                        <span class="label">boniatos</span>
+                        <span class="label">etics</span>
                     </div>
                 </div>
 
@@ -81,7 +81,7 @@
                      {% endif %}
                     <a class="list-group-item list-group-item-action" href="{% url 'user_wallet' %}"><i class="material-icons">chevron_right</i> Consultar movimientos</a>
                     <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Nuevo movimiento</a>
-                     <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Obtener boniatos</a>
+                     <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Obtener etics</a>
                   </div>
             </div>
         </div>

@@ -10,7 +10,7 @@
         <th>Estado</th>
         {% endif %}
       <th scope="col">Cantidad total</th>
-      <th scope="col">En boniatos</th>
+      <th scope="col">En etics</th>
     </tr>
   </thead>
   <tbody>
@@ -21,13 +21,13 @@
       <td>{{payment.sender}}</td>
         {% if showing_all %}
         <td>{{payment.receiver}}</td>
+
+        {% endif %}
         <td class="table-actions">
             {% if payment.status == 'accepted' %}<span class="text-success"><i class="material-icons md-36" >play_circle_outline</i> Aceptado</span> {% endif %}
             {% if payment.status == 'pending' %}<span class="text-info"><i class="material-icons md-36" >play_circle_outline</i> Pendiente</span> {% endif %}
             {% if payment.status == 'cancelled' %}<span class="text-danger"><i class="material-icons md-36" >play_circle_outline</i> Cancelado</span> {% endif %}
-
         </td>
-        {% endif %}
       <td class="amount">{{payment.total_amount}}€</td>
       <td class="amount">{{payment.currency_amount}}B</td>
         <td class="table-actions">
