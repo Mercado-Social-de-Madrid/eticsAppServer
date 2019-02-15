@@ -171,7 +171,7 @@ def gen_userwallet_data(user, include_type=True, include_apikey=True):
         data['entity']['id'] = instance.pk
         if data['entity']['logo']:
             data['entity']['logo'] = data['entity']['logo'].url
-            data['entity']['logo_thumbnail'] = instance.logo_thumbnail.url
+            data['entity']['logo_thumbnail'] = instance.logo_thumbnail.url if instance.logo_thumbnail else None
         del data['entity']['user']
         del data['entity']['gallery']
 
@@ -179,8 +179,8 @@ def gen_userwallet_data(user, include_type=True, include_apikey=True):
         data['person']['id'] = instance.pk
         del data['person']['user']
 
-        data['person']['profile_image'] = instance.profile_image.url
-        data['person']['profile_thumbnail'] = instance.profile_thumbnail.url
+        data['person']['profile_image'] = instance.profile_image.url if instance.profile_image else None
+        data['person']['profile_thumbnail'] = instance.profile_thumbnail.url if instance.profile_thumbnail else None
 
         if data['person']['fav_entities']:
             for i, fav in enumerate(data['person']['fav_entities']):
