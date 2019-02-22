@@ -42,6 +42,7 @@ class EntityForm(forms.ModelForm):
             'instagram_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Perfil de Instagram'}),
             'profile_image': forms.FileInput(attrs={}),
             'logo': forms.FileInput(attrs={}),
+            'city': forms.HiddenInput(),
         }
 
     def clean_new_user_username(self):
