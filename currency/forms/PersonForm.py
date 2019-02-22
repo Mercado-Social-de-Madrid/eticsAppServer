@@ -24,5 +24,6 @@ class PersonForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control', }),
             'registered': forms.TextInput(attrs={'class': 'form-control', 'readonly':True}),
             'profile_image': forms.FileInput(attrs={}),
+            'city': forms.HiddenInput(),
         }
 
