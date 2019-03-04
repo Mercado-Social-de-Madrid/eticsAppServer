@@ -145,6 +145,12 @@ class Wallet(models.Model):
         self.pin_code = hashers.make_password(pin_code)
         self.save()
 
+    def update_wallet_type(self):
+
+        type, related = self.user.get_related_entity()
+        wallet_type = 'entity' if type == 'entity' else 'default'
+        self.set_type(wallet_type)
+
     @staticmethod
     def update_user_pin_code(user, pin_code):
         wallet = Wallet.objects.filter(user=user).first()

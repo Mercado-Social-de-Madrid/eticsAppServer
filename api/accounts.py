@@ -94,6 +94,7 @@ class PreRegisterResource(ModelResource):
     class Meta:
         queryset = User.objects.all()
         include_resource_uri = False
+        always_return_data = True
         list_allowed_methods = ['post']
         resource_name = 'preregister'
         excludes = ['password', 'is_staff', 'is_superuser', 'id']
@@ -147,7 +148,7 @@ class PreRegisterResource(ModelResource):
         user = bundle.obj
 
         preregister = PreRegisteredUser.objects.create(user=user, email=user.email)
-
+        user.wallet.update_wallet_type()
 
         return bundle
 
