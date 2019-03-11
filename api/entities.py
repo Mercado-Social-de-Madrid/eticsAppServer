@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models import Q
+from django.urls import reverse
 from tastypie import fields
 from tastypie.authentication import Authentication, MultiAuthentication, ApiKeyAuthentication
 from tastypie.authorization import Authorization
@@ -14,7 +15,7 @@ from api.cities import CitiesResource
 from api.resources import OffersResource
 from currency.models import Entity, Gallery, GalleryPhoto
 from offers.models import Offer
-
+from django.conf import settings
 
 class PhotoGalleryResource(ModelResource):
 
@@ -96,6 +97,8 @@ class EntitiesDetailResource(ModelResource):
     def dehydrate(self, bundle):
         if bundle.obj.logo_thumbnail:
             bundle.data['logo_thumbnail'] = bundle.obj.logo_thumbnail.url
+
+        bundle.data['qr_code'] = settings.BASESITE_URL + reverse('entity_qr_detail', args=(bundle.obj.pk,) )
 
         if bundle.obj.city:
             bundle.data['city'] = bundle.obj.city.id

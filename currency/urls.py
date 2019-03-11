@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^register/(?P<pk>[0-9a-f-]+)/$', views.preregister, name='preregister'),
     url(r'^entity/$', views.user_entity, name='user_entity'),
     url(r'^entity/add$', views.add_entity, name='add_entity'),
+    url(r'^qr/(?P<pk>[0-9a-f-]+)/$', views.entity_detail, name='entity_qr_detail'),
     url(r'^entity/(?P<pk>[0-9a-f-]+)/$', views.entity_detail, name='entity_detail'),
     url(r'^entity/(?P<pk>[0-9a-f-]+)/edit/$', views.entity_edit, name='entity_edit'),
     url(r'^entities/$', views.entity_list, name='entity_list'),
