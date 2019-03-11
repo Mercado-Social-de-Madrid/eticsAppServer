@@ -216,6 +216,19 @@ class UserResource(ModelResource):
         username = data.get('username', '')
         password = data.get('password', '')
 
+        city = data.get('city', '')
+        if city:
+            user = User.objects.filter(username=username).first()
+            if user:
+                type, entity = user.get_related_entity()
+                if entity is not None:
+                    user_city = entity.city
+                    if user_city and user_city.pk != city:
+                        return self.create_response(request, {
+                            'success': False,
+                            'reason': 'wrong_city',
+                        }, HttpUnauthorized)
+
         user = authenticate(username=username, password=password)
         if user:
             if user.is_active:
