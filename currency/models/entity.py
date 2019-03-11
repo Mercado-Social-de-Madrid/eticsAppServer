@@ -88,7 +88,7 @@ class Entity(models.Model):
     class Meta:
         verbose_name = 'Entidad'
         verbose_name_plural = 'Entidades'
-        ordering = ['registered']
+        ordering = ['name']
 
     def __unicode__(self):
         return self.name if self.name else 'Entidad'
