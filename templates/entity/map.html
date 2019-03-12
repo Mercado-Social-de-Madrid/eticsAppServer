@@ -88,6 +88,24 @@ function createMarker(map, latlng, info, visible, is_waypoint, marker_callback){
     return marker;
 }
 
+
+function fitBoundsToMarkers(map, only_visible){
+
+    var bounds = new google.maps.LatLngBounds();
+    var visibleCount = 0;
+    for (marker of markers){
+        if (!only_visible || marker.visible){
+            visibleCount++;
+            bounds.extend(marker.position);
+        }
+    }
+
+    if (visibleCount > 0){
+        map.fitBounds(bounds, 50);
+
+    }
+}
+
   function initMap() {
 
     var center = new google.maps.LatLng({% settings_value "INITIAL_LATITUDE"|unlocalize %}, {% settings_value "INITIAL_LONGITUDE"|unlocalize %});
