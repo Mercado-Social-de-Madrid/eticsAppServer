@@ -33,16 +33,16 @@ class PreRegisteredUser(models.Model):
 @receiver(post_save, sender=PreRegisteredUser)
 def send_welcome_email(sender, instance, created, **kwargs):
 
-    print 'aaaa'
     if created:
         user = instance.user
         kind, entity = user.get_related_entity()
 
-        print entity
+        template = 'preregister_entity' if kind == 'entity' else 'preregister_person'
+        title = 'Todo listo para que tu entidad aparezca en la aplicación móvil del Mercado Social' if kind == 'entity' else 'Todo listo para empezar a usar la aplicación móvil del Mercado Social'
 
         send_template_email(
-            title='Etics - Registro',
+            title=title,
             destination=instance.email,
-            template_name='preregister',
+            template_name=template,
             template_params={'token': instance.id, 'entity': entity.display_name}
         )

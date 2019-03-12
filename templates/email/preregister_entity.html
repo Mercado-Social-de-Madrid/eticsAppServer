@@ -1,0 +1,28 @@
+{% extends 'common/email/base.html' %}
+{% load settings_value %}
+
+{% block title %}Registro{% endblock %}
+
+{% block maintitle %}Bienvenid@!{% endblock %}
+
+{% block content %}
+
+<h2 style="color: #757575; line-height: 100%;">Hola, {{entity}}!</h2>
+
+
+<p>Recibes este email porque has sido dada de alta recientemente para utilizar etics, la app del Mercado Social de Madrid.</p>
+<p>Solo falta un último paso, que es que cuentes con una manera de acceder a tu área privada.</p>
+<p>Introduce el nombre de usuario y contraseña que utilizarás a partir de ahora en la app para gestionar tus compras en etics y la información de tu perfil en el siguiente enlace: {% settings_value 'BASESITE_URL' %}{% url 'preregister' token %}</p>
+<p></p>
+<p>Desde ese momento, podrás acceder a tu panel de usuario y configurar el perfil de tu entidad y tus ofertas, así como gestionar tu uso de la moneda social.</p>
+<p></p>
+
+{% endblock%}
+
+{% block call_button %}
+
+{% url 'preregister' token as link %}
+{% settings_value 'BASESITE_URL' as basesite %}
+
+{% include 'common/email/button.html' with link_text='Registro' link_href=basesite|add:link %}
+{% endblock call_button %}
