@@ -4,6 +4,10 @@ html,body{ min-height:100%; }
     background:#ddd;
     min-height:280px;
 }
+.map.fullscreen{
+    height:100vh;
+    width:100vw;
+}
 body{ background-color:#fafafa; }
 h1, h2, h3, h4, .primary-title{
     font-family: 'Comfortaa', cursive;
@@ -224,15 +228,16 @@ h1, h2, h3, h4, .primary-title{
 }
 .marker-wrapper{
     position:absolute;
+    border-color: #9c27b0;
 }
 .marker-wrapper:before{
     width: 0;
     height: 0;
     content:'';
-    border-color: inherit;
+    border-color: #9c27b0;
     border-left: 9px solid transparent;
     border-right: 9px solid transparent;
-    border-top: 14px solid;
+    border-top: 14px solid #9c27b0;
     position:absolute;
     top:-10px;
     left:-9px;
@@ -241,7 +246,7 @@ h1, h2, h3, h4, .primary-title{
 .marker{
     height:50px;
     width:50px;
-    border:2px solid #912991;
+    border:2px solid #9c27b0;
     border-color:inherit;
     border-radius:100%;
     position:absolute;
@@ -495,4 +500,52 @@ td.table-actions a.btn{
     height:24px;
     width:24px;
     margin:0 6px;
+}
+
+.infowindow .profile-circle{
+    position:absolute;
+    left:10px;
+    top:10px;
+    height:45px;
+    width:45px;
+}
+.infowindow .profile-circle{
+    overflow: hidden;
+    text-align:center;
+    border-radius: 50%;
+    border: 2px solid #fdfdfd;
+    background-color:#ddd;
+}
+.infowindow .profile-circle.small{
+    width:90px;
+    height:90px;
+}
+.infowindow .profile-circle img {
+    display: inline;
+    margin: 0 auto;
+    height: 100%;
+    width: auto;
+}
+.infowindow:hover{
+    text-decoration:none;
+}
+.infowindow{
+    font-weight: 500;
+    color:#347289;
+    font-size:12px;
+    background:#ff0000;
+}
+.infowindow .title, .infowindow .address, .infowindow span{
+    display:block;
+    padding-left:55px;
+}
+.infowindow .title{
+    color:#222;
+    font-size:18px;
+}
+.infowindow_base.hidden{ display:none; }
+.infowindow .address{
+    color:#777;
+    font-weight: 500;
+    min-height:20px;
 }

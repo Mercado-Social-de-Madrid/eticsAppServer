@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 import helpers
 from currency.forms.EntityForm import EntityForm
@@ -180,3 +181,29 @@ def entity_edit(request, pk):
         'entity': entity,
         'can_edit_entity':can_edit
     })
+
+
+@xframe_options_exempt
+def entity_map(request):
+
+    entities = Entity.objects.all()
+    query_string = ''
+    if ('q' in request.GET) and request.GET['q'].strip():
+        query_string = request.GET['q']
+        entry_query = helpers.get_query(query_string, ['name', 'description', 'short_description'])
+        if entry_query:
+            entities = entities.filter(entry_query)
+
+    city = request.GET.get('city', '')
+    if city:
+        entities = entities.filter(city=city)
+
+    params = {
+        'ajax_url': reverse('entity_list'),
+        'query_string': query_string,
+        'entities': entities,
+    }
+
+
+
+    return render(request, 'entity/map.html', params)

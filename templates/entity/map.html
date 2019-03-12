@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load l10n %}
+{% load settings_value %}
+<html lang="es">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="initial-scale=1, shrink-to-fit=no, width=device-width" name="viewport">
+    <title>{% block title %}Mapa{% endblock title%}</title>
+
+    <!-- CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <!-- Add Material CSS, replace Bootstrap CSS -->
+    <link href="{% static "css/magnific-popup.css" %}" rel="stylesheet" />
+    <link href="{% static "css/material.min.css" %}" rel="stylesheet" />
+    <link href="{% static "css/styles.css" %}?v=3" rel="stylesheet" />
+
+  </head>
+  <body>
+
+
+<div id="map" class="map fullscreen"></div>
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Then Material JavaScript on top of Bootstrap JavaScript -->
+    <script src="{% static "js/material.min.js" %}"></script>
+    <script src="{% static "js/jquery.magnific-popup.min.js" %}"></script>
+    <script src="{% static "js/common.js" %}?v=3"></script>
+
+
+    <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+{% include 'common/include_gmaps.html' %}
+<script type="text/javascript">
+
+var infoWindow_base = $('.infowindow_base');
+var prev_infowindow = false;
+var markers = [];
+var waypoints = [];
+
+function createMarker(map, latlng, info, visible, is_waypoint, marker_callback){
+    var windowContent = infoWindow_base.clone()
+        .find('.title').text(info['title']).end()
+        .find('.address').text(info['address']==null?'':info['address']).end()
+        .find('img').attr('src', info['img']).end();
+
+    var infowindow = new google.maps.InfoWindow({
+        content: windowContent.html(),
+        maxWidth: 350
+    });
+
+    var marker = new RichMarker({
+          position: latlng,
+          map: map,
+          infowindow: infowindow,
+          content: '<div class="marker-wrapper"><div class="marker"><img src="' + info['img'] + '"></div></div>'
+    });
+    marker['pk'] = info['pk'];
+    marker.visible = visible;
+    markers.push(marker);
+
+    if (is_waypoint){
+        waypoints.push({ 'location': latlng, 'stopover':true} );
+    }
+
+    google.maps.event.addListener(marker, 'click', (function(marker, infowindow){
+        return function() {
+            if( prev_infowindow ) {
+               prev_infowindow.close();
+            }
+            prev_infowindow = infowindow;
+            this.infowindow.open(map, this);
+
+            if ((marker_callback) && ( typeof marker_callback == 'function')){
+                marker_callback(marker);
+            }
+        };
+    })(marker, infowindow));
+
+    return marker;
+}
+
+  function initMap() {
+
+    var center = new google.maps.LatLng({% settings_value "INITIAL_LATITUDE"|unlocalize %}, {% settings_value "INITIAL_LONGITUDE"|unlocalize %});
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 16,
+        center: center,
+        zoomControl: true,
+        scaleControl: true,
+        streetViewControl: false,
+        mapTypeControl:false
+    });
+
+    $('#map').removeClass('loading-container');
+
+    {% for entity in entities %}
+
+      var entity{{forloop.counter}} = new google.maps.LatLng({{ entity.latitude|unlocalize }}, {{ entity.longitude|unlocalize }});
+      createMarker(map, entity{{forloop.counter}}, {
+            title:'{{ entity.name }}',
+            address:'{{ entity.address }}',
+            img:'{% if entity.logo %}{{ entity.logo.url}}{% else %}{% endif %}'
+        }, true, true);
+
+    {% endfor %}
+
+
+
+  }
+
+</script>
+
+
+  </body>
+</html>
+

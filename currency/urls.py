@@ -15,6 +15,8 @@ urlpatterns = [
     url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
 
     url(r'^register/(?P<pk>[0-9a-f-]+)/$', views.preregister, name='preregister'),
+
+    url(r'^map/$', views.entity_map, name='map'),
     url(r'^entity/$', views.user_entity, name='user_entity'),
     url(r'^entity/add$', views.add_entity, name='add_entity'),
     url(r'^qr/(?P<pk>[0-9a-f-]+)/$', views.entity_detail, name='entity_qr_detail'),
