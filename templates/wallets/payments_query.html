@@ -29,7 +29,7 @@
             {% if payment.status == 'cancelled' %}<span class="text-danger"><i class="material-icons md-36" >play_circle_outline</i> Cancelado</span> {% endif %}
         </td>
       <td class="amount">{{payment.total_amount}}€</td>
-      <td class="amount">{{payment.currency_amount}}B</td>
+      <td class="amount">{{payment.currency_amount}}<i class="currency-icon"></i></td>
         <td class="table-actions">
             <a href="{%url 'payment_detail' payment.pk%}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Ver detalles de pago"><i class="material-icons">visibility</i></a>
             {% if payment.status == 'pending' %}

@@ -485,3 +485,14 @@ td.table-actions a.btn{
     margin:0;
     padding:0;
 }
+
+.currency-icon{
+    background-image:url('currency-icon.png');
+    background-repeat:no-repeat;
+    background-position:center;
+    display:inline-block;
+    vertical-align:middle;
+    height:24px;
+    width:24px;
+    margin:0 6px;
+}
