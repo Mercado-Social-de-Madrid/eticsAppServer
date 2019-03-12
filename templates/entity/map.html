@@ -18,7 +18,7 @@
     <!-- Add Material CSS, replace Bootstrap CSS -->
     <link href="{% static "css/magnific-popup.css" %}" rel="stylesheet" />
     <link href="{% static "css/material.min.css" %}" rel="stylesheet" />
-    <link href="{% static "css/styles.css" %}?v=3" rel="stylesheet" />
+    <link href="{% static "css/styles.css" %}?v=4" rel="stylesheet" />
 
   </head>
   <body>
@@ -34,7 +34,7 @@
     <!-- Then Material JavaScript on top of Bootstrap JavaScript -->
     <script src="{% static "js/material.min.js" %}"></script>
     <script src="{% static "js/jquery.magnific-popup.min.js" %}"></script>
-    <script src="{% static "js/common.js" %}?v=3"></script>
+    <script src="{% static "js/common.js" %}?v=4"></script>
 
 
     <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
@@ -114,7 +114,7 @@ function createMarker(map, latlng, info, visible, is_waypoint, marker_callback){
     {% endfor %}
 
 
-
+    fitBoundsToMarkers(map, true);
   }
 
 </script>
