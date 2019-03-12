@@ -126,7 +126,7 @@ function fitBoundsToMarkers(map, only_visible){
       createMarker(map, entity{{forloop.counter}}, {
             title:'{{ entity.name }}',
             address:'{{ entity.address }}',
-            img:'{% if entity.logo %}{{ entity.logo.url}}{% else %}{% endif %}'
+            img:'{% if entity.logo %}{{ entity.logo.url}}{% else %}{% static "imgs/etics-icon.png" %}{% endif %}'
         }, true, true);
 
     {% endfor %}
