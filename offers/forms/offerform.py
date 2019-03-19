@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.db.models import BLANK_CHOICE_DASH

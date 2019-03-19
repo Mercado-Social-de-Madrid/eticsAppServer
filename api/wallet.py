@@ -1,10 +1,11 @@
+import requests
 from django.conf.urls import url
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, PermissionDenied
 from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
 from tastypie.exceptions import NotFound
-from tastypie.http import HttpMultipleChoices, HttpGone, HttpCreated, HttpAccepted, HttpForbidden
+from tastypie.http import HttpMultipleChoices, HttpGone, HttpCreated, HttpAccepted, HttpForbidden, HttpBadRequest
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 
@@ -202,9 +203,22 @@ class WalletResource(ModelResource):
         if not amount:
             return HttpGone()
 
-        user_wallet = self.obj_get(bundle)
-        bundle.obj = Wallet.debit_transaction(user_wallet, amount)
+        type, account = request.user.get_related_entity()
+        if not account:
+            return HttpGone()
 
-        return self.create_response(
-            request, bundle,
-            response_class=HttpCreated)
+        if type == 'entity':
+            account_pk = account.cif
+        elif type == 'person':
+            account_pk = account.nif
+
+        base_url = account.city.server_base_url
+        api_url = '{}api/v1/account/{}/purchase/'.format(base_url, account_pk)
+
+        r = requests.post(api_url, json={'amount': amount})
+        if r.ok:
+            return self.create_response(request, r.json())
+        else:
+            response = self.create_response(request, r.json(), HttpBadRequest)
+            response.status_code = r.status_code
+            return response
