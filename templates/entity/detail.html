@@ -42,6 +42,23 @@
             {% include 'common/gallery.html' with gallery=gallery%}
             <hr>
             {% include 'common/social_links.html' with obj=entity %}
+
+            {% if request.user.is_superuser %}
+            <hr class="mt-4">
+            <h4 class="mb-3">Usuario</h4>
+                {% if preregister_user %}
+                    <span class="primary-title"><strong>Prerregistro: </strong></span> aún no se ha creado usuario<br>
+                    <span class="primary-title"><strong>Enlace: </strong></span>
+                <a href="{% settings_value 'BASESITE_URL' %}{% url 'preregister' preregister_user.id %}" style="color:blue;" target="_blank">
+                {% settings_value 'BASESITE_URL' %}{% url 'preregister' preregister_user.id %}</a>
+                {% else %}
+                    <span class="primary-title"><strong>Username:</strong></span>
+                    {{ entity.user.username }}<br>
+                    <span class="primary-title"><strong>Último acceso:</strong></span>
+                    {% if entity.user.last_login %} Hace {{entity.user.last_login|timesince}}{% else %} Nunca {% endif %}
+                {% endif %}
+
+            {% endif %}
         </div>
 
         <div class="col-md-12">

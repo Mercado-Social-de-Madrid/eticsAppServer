@@ -9,7 +9,7 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 import helpers
 from currency.forms.EntityForm import EntityForm
 from currency.forms.galleryform import PhotoGalleryForm
-from currency.models import Entity, Gallery, Category
+from currency.models import Entity, Gallery, Category, PreRegisteredUser
 from helpers import superuser_required
 from offers.models import Offer
 
@@ -30,18 +30,23 @@ def entity_detail(request, pk):
         entity.gallery = Gallery.objects.create()
         entity.save()
 
-    gallery = entity.gallery.photos.all()
-    current_offers = Offer.objects.current(entity=entity)
     is_owner = request.user.is_authenticated and (request.user == entity.user)
-    can_edit = is_owner or request.user.is_superuser
 
-    return render(request, 'entity/detail.html', {
+    data = {
         'entity': entity,
-        'gallery': gallery,
-        'offers': current_offers,
-        'can_edit_entity': can_edit,
-        'is_entity_owner':is_owner
-    })
+        'gallery': entity.gallery.photos.all(),
+        'offers': Offer.objects.current(entity=entity),
+        'can_edit_entity': is_owner or request.user.is_superuser,
+        'is_entity_owner': is_owner
+    }
+
+    if request.user.is_superuser:
+        preuser = PreRegisteredUser.objects.filter(user=entity.user).first()
+        if preuser:
+            data['preregister_user'] = preuser
+
+
+    return render(request, 'entity/detail.html', data)
 
 
 @superuser_required
