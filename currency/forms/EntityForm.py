@@ -40,6 +40,7 @@ class EntityForm(forms.ModelForm):
             'webpage_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Página web'}),
             'telegram_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Canal de Telegram'}),
             'instagram_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Perfil de Instagram'}),
+            'cif': forms.HiddenInput(attrs={'readonly': True}),
             'profile_image': forms.FileInput(attrs={}),
             'logo': forms.FileInput(attrs={}),
             'city': forms.HiddenInput(),

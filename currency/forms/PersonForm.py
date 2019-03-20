@@ -16,7 +16,7 @@ class PersonForm(forms.ModelForm):
         model = Person
         exclude = ['fav_entities', 'user']
         widgets = {
-            'nif': forms.TextInput(attrs={'class': 'form-control'}),
+            'nif': forms.TextInput(attrs={'class': 'form-control', 'readonly':True }),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control', }),
             'surname': forms.TextInput(attrs={'class': 'form-control', }),

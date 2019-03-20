@@ -28,6 +28,3 @@ class PersonsResource(ModelResource):
             bundle.data['profile_thumbnail'] = bundle.obj.profile_thumbnail.url
         return bundle
 
-    def hydrate(self, bundle):
-        if bundle.obj.profile_image:
-            del bundle.obj.profile_image
