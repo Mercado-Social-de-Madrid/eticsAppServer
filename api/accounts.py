@@ -260,7 +260,7 @@ class UserResource(ModelResource):
         if request.user and request.user.is_authenticated():
             data = self.deserialize(request, request.body,
                                     format=request.META.get('CONTENT_TYPE', 'application/json'))
-            pincode = data.get('username', '')
+            pincode = data.get('pincode', '')
             password = data.get('password', '')
 
             user = authenticate(username=request.user.username, password=password)
