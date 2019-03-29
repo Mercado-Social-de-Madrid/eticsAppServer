@@ -255,32 +255,6 @@ class UserResource(ModelResource):
         else:
             return self.create_response(request, {'success': False}, HttpUnauthorized)
 
-    def reset_pincode(self, request, **kwargs):
-        self.method_check(request, allowed=['post'])
-        if request.user and request.user.is_authenticated():
-            data = self.deserialize(request, request.body,
-                                    format=request.META.get('CONTENT_TYPE', 'application/json'))
-            pincode = data.get('pincode', '')
-            password = data.get('password', '')
-
-            user = authenticate(username=request.user.username, password=password)
-            if user:
-                if user.is_active:
-                    Wallet.update_user_pin_code(user=user, pin_code=pincode)
-                    return self.create_response(request, {'success': True})
-                else:
-                    return self.create_response(request, {
-                        'success': False,
-                        'reason': 'disabled',
-                    }, HttpForbidden)
-            else:
-                return self.create_response(request, {
-                    'success': False,
-                    'reason': 'incorrect',
-                }, HttpUnauthorized)
-
-
-
 
     def reset_password(self, request, **kwargs):
         self.method_check(request, allowed=['post'])

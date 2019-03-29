@@ -1,11 +1,13 @@
 import requests
 from django.conf.urls import url
+from django.contrib.auth import authenticate
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, PermissionDenied
 from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
 from tastypie.exceptions import NotFound
-from tastypie.http import HttpMultipleChoices, HttpGone, HttpCreated, HttpAccepted, HttpForbidden, HttpBadRequest
+from tastypie.http import HttpMultipleChoices, HttpGone, HttpCreated, HttpAccepted, HttpForbidden, HttpBadRequest, \
+    HttpUnauthorized
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 
@@ -168,7 +170,7 @@ class WalletResource(ModelResource):
 
     # Add logical amounts
     def dehydrate(self, bundle):
-        print bundle.obj
+        bundle.data['has_pincode'] = bundle.obj.pin_code is not None
 
         return bundle
 
@@ -187,6 +189,10 @@ class WalletResource(ModelResource):
             url(r"^(?P<resource_name>%s)/purchase%s$" % (
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('wallet_purchase'), name="api_wallet_purchase"),
+
+            url(r"^(?P<resource_name>%s)/reset_pincode%s$" % (
+                self._meta.resource_name, trailing_slash()),
+                self.wrap_view('reset_pincode'), name="api_reset_pincode"),
         ]
 
     def wallet_purchase(self, request, **kwargs):
@@ -207,6 +213,7 @@ class WalletResource(ModelResource):
         if not account:
             return HttpGone()
 
+        account_pk = None
         if type == 'entity':
             account_pk = account.cif
         elif type == 'person':
@@ -222,3 +229,32 @@ class WalletResource(ModelResource):
             response = self.create_response(request, r.json(), HttpBadRequest)
             response.status_code = r.status_code
             return response
+
+
+    def reset_pincode(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        self.is_authenticated(request)
+
+        if request.user:
+            data = self.deserialize(request, request.body,
+                                    format=request.META.get('CONTENT_TYPE', 'application/json'))
+            pincode = data.get('pincode', '')
+            password = data.get('password', '')
+
+            user = authenticate(username=request.user.username, password=password)
+            if user:
+                if user.is_active:
+                    Wallet.update_user_pin_code(user=user, pin_code=pincode)
+                    return self.create_response(request, {'success': True})
+                else:
+                    return self.create_response(request, {
+                        'success': False,
+                        'reason': 'disabled',
+                    }, HttpForbidden)
+            else:
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'incorrect',
+                }, HttpUnauthorized)
+        else:
+            return self.create_response(request, {'success': False}, HttpUnauthorized)

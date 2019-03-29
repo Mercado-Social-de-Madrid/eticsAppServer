@@ -25,7 +25,7 @@ class Wallet(models.Model):
     type = models.ForeignKey(WalletType, null=True, related_name='wallets')
     balance = models.FloatField(default=0, verbose_name='Saldo actual')
     last_transaction = models.DateTimeField(blank=True, null=True, verbose_name='Última transacción')
-    pin_code = models.CharField(null=True, max_length=100, verbose_name='Código PIN (hasheado)')
+    pin_code = models.CharField(null=True, blank=True, max_length=100, verbose_name='Código PIN (hasheado)')
 
     NotEnoughBalance = NotEnoughBalance
     WrongPinCode = WrongPinCode
