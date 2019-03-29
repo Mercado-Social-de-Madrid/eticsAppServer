@@ -10,7 +10,18 @@
   <tbody>
 {% for profile in profiles %}
     <tr data-id="{{user.pk}}">
-        <td class="text-muted">{{profile.user}}</td>
+        <td> {% if profile.user.is_registered %}
+                {% if profile.is_guest_account %}
+                    <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Invitada">card_membership</i>
+                {% else %}
+                    <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Registrada">done_all</i>
+                {% endif %}
+
+                <span class="text-muted" >{{profile.user}}</span></td>
+            {% else %}
+                <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Pendiente registro">schedule</i>
+                <span class="text-muted" >Prerregistro</span></td>
+            {% endif %}
       <td>{{profile.full_name}}</th>
         <td>{{profile.email}}</td>
         <td  class="table-actions">

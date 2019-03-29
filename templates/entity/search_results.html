@@ -17,6 +17,18 @@
               {% if entity.logo %} <img src="{{entity.logo_thumbnail.url}}"> {%endif%}
           </div>
 
+          <span class="entity-status">
+              {% if entity.user.is_registered %}
+                {% if entity.is_guest_account %}
+                    <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Invitada">card_membership</i>
+                {% else %}
+                    <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Registrada">done_all</i>
+                {% endif %}
+              {% else %}
+                <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Pendiente registro">schedule</i>
+              {% endif %}
+          </span>
+
           <h5 class="mb-0">{{entity.name}}</h5>
           {{entity.address}}
         </td>

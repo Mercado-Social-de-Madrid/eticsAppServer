@@ -361,6 +361,18 @@ h1, h2, h3, h4, .primary-title{
     height:70px;
     position:relative;
 }
+td.entity-td .entity-status{
+    position:absolute;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    line-height:26px;
+    text-align:center;
+    background-color:#fff;
+    color:#9c27b0;
+    top:35px;
+    left:52px;
+}
 .profile-circle{
     width: 140px;
     height: 140px;
@@ -548,3 +560,18 @@ td.table-actions a.btn{
     font-weight: 500;
     min-height:20px;
 }
+.form-control.pincode{
+    font-size:43px;
+    letter-spacing:9px;
+    width:136px;
+    margin:auto;
+    padding:30px 20px;
+    background-color:#c69cd6;
+    border-radius:2px;
+}
+.form-control.pincode::-webkit-input-placeholder{ font-size:38px !important; letter-spacing:7px; }
+ .form-control.pincode::-moz-placeholder{ font-size:38px !important; letter-spacing:7px; }
+ .form-control.pincode:-moz-placeholder{ font-size:38px !important; letter-spacing:7px; }
+  .form-control.pincode::-ms-input-placeholder{ font-size:38px !important; letter-spacing:7px; }
+ .form-control.pincode:-ms-input-placeholder{ font-size:38px !important; letter-spacing:7px; }
+ .form-control.pincode::placeholder{ font-size:38px !important; letter-spacing:7px; }

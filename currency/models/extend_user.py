@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 
-from currency.models import Entity, Person
+from currency.models import Entity, Person, PreRegisteredUser
 
 
 def get_related_entity(self):
@@ -19,6 +19,9 @@ def get_related_entity(self):
             person = None
         return ('person', person) if person else ('none', None)
 
+def is_registered(self):
+    return not PreRegisteredUser.objects.filter(user=self).exists()
+
 def get_user_by_related(uuid):
     instance = None
     try:
@@ -35,3 +38,4 @@ def get_user_by_related(uuid):
 
 UserModel = get_user_model()
 UserModel.add_to_class("get_related_entity", get_related_entity)
+UserModel.add_to_class("is_registered", is_registered)

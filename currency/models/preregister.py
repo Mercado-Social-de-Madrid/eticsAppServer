@@ -15,7 +15,7 @@ from helpers import send_template_email
 class PreRegisteredUser(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, null=True, blank=True)
+    user = models.ForeignKey(User, null=True, blank=True, related_name='preregister')
     entity = models.ForeignKey(Entity, verbose_name='Entidad', null=True)
     person = models.ForeignKey(Person, verbose_name='Consumidora', null=True)
     email = models.EmailField(blank=True)
