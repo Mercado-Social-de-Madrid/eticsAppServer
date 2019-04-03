@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'fcm_django',
     'ckeditor',
     'qrcode',
+    'django_filters',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
