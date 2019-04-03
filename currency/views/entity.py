@@ -1,3 +1,5 @@
+# coding=utf-8
+import django_filters
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -5,12 +7,19 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django_filters.views import FilterMixin, FilterView
 
 import helpers
 from currency.forms.EntityForm import EntityForm
 from currency.forms.galleryform import PhotoGalleryForm
 from currency.models import Entity, Gallery, Category, PreRegisteredUser
 from helpers import superuser_required
+from helpers.filters.LabeledOrderingFilter import LabeledOrderingFilter
+from helpers.filters.SearchFilter import SearchFilter
+from helpers.forms.BootstrapForm import BootstrapForm
+from helpers.mixins.AjaxTemplateResponseMixin import AjaxTemplateResponseMixin
+from helpers.mixins.ExportAsCSVMixin import ExportAsCSVMixin
+from helpers.mixins.ListItemUrlMixin import ListItemUrlMixin
 from offers.models import Offer
 
 
@@ -83,6 +92,37 @@ def entity_list(request):
     else:
         params['categories'] = Category.objects.all()
         return render(request, 'entity/list.html', params)
+
+
+class EntityFilterForm(BootstrapForm):
+    field_order = ['o', 'search', 'status', ]
+
+
+class EntityFilter(django_filters.FilterSet):
+
+    search = SearchFilter(names=['address', 'name', 'email'], lookup_expr='in', label='Buscar...')
+    o = LabeledOrderingFilter(fields=['name', 'max_percent_payment', 'registered'], field_labels={'name':'Nombre', 'max_percent_payment':'Max. pago aceptado','registered':'Fecha de registro'})
+
+    class Meta:
+        model = Entity
+        form = EntityFilterForm
+        fields = {  }
+
+
+class EntityListView(ExportAsCSVMixin, FilterView, ListItemUrlMixin, AjaxTemplateResponseMixin):
+
+    model = Entity
+    queryset = Entity.objects.all()
+    objects_url_name = 'entity_detail'
+    template_name = 'entity/list.html'
+    ajax_template_name = 'entity/query.html'
+    filterset_class = EntityFilter
+    paginate_by = 7
+
+    csv_filename = 'entidades'
+    available_fields = ['cif', 'name', 'business_name', 'public_address', 'address',  'contact_email', 'contact_phone',
+                        'postalcode', 'city', 'address', 'province', 'iban_code', 'registration_date', 'is_physical_store',
+                        'bonus_percent_entity', 'bonus_percent_general', 'max_percent_payment', 'start_year']
 
 
 @superuser_required

@@ -1,0 +1,41 @@
+{% extends 'common/list/base.html' %}
+
+ {% block table_head %}
+    <th scope="col">Nombre</th>
+      <th scope="col">Máx. pago en <br>boniatos</th>
+      <th scope="col">Porcentaje de <br>bonificación</th>
+      <th scope="col">Acciones</th>
+{% endblock %}
+
+
+{% block item_row %}
+
+<td class="entity-td">
+          <div class="profile-circle small">
+              {% if item.logo %} <img src="{{item.logo_thumbnail.url}}"> {%endif%}
+          </div>
+
+          <span class="entity-status">
+              {% if item.user.is_registered %}
+                {% if item.is_guest_account %}
+                    <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Invitada">card_membership</i>
+                {% else %}
+                    <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Registrada">done_all</i>
+                {% endif %}
+              {% else %}
+                <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Pendiente registro">schedule</i>
+              {% endif %}
+          </span>
+
+          <h5 class="mb-0">{{item.name}}</h5>
+          {{item.address}}
+        </td>
+        <td>{{ item.max_percent_payment }} %</td>
+        <td>{{ item.bonus_percent_general }} %</td>
+        <td class="table-actions">
+            <a class="btn btn-outline-primary" href="{% url 'entity_detail' item.pk %}"  data-toggle="tooltip" data-placement="bottom" title="Ver detalle"><i class="material-icons">visibility</i></a>
+            <a class="btn btn-outline-primary" href="{% url 'entity_edit' item.pk %}" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="material-icons">mode_edit</i></a>
+            <a class="btn btn-outline-primary" href="{% url 'entity_offers' item.pk %}"  data-toggle="tooltip" data-placement="bottom" title="Ver ofertas"><i class="material-icons">shopping_basket</i></a>
+        </td>
+
+{% endblock %}
