@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 import helpers
-from currency.forms.user import UserForm
+from currency.forms.preregister import UserForm
 from currency.models import PreRegisteredUser
 from offers.models import Offer
 from wallets.models import Wallet, Payment
@@ -82,9 +82,11 @@ def preregister(request, pk):
     if request.method == "POST":
         form = UserForm(request.POST)
         if form.is_valid():
-            user.username = form.cleaned_data['username']
-            user.set_password(form.cleaned_data['password'])
+            user.username = form.cleaned_data.get('username', '')
+            user.set_password(form.cleaned_data.get('password', ''))
             user.save()
+
+            Wallet.update_user_pin_code(user=user, pin_code=form.cleaned_data.get('pincode', ''))
 
             preuser.delete()
             messages.add_message(request, messages.SUCCESS, 'Datos de acceso modificados satisfactoriamente')
