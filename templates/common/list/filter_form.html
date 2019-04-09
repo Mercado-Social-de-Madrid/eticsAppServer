@@ -7,7 +7,7 @@
     {% for field in filter.form.visible_fields %}
 
         {% if field.field.widget.input_type == 'text' %}
-            <div class="input-group align-self-stretch mb-2 flex-fill mr-md-3">
+            <div class="input-group align-self-start mb-2 mr-md-3">
                 {{field}}
                 <div class="input-group-append">
                 <button class="btn btn-outline" type="submit"><i class="material-icons">search</i></button>
@@ -17,7 +17,7 @@
 
         {% if field.field.widget.input_type == 'select' %}
             {% if field.name == 'o' %}
-                <div class="d-flex mb-2 align-self-stretch flex-fill mr-md-3">
+                <div class="d-flex mb-2 align-self-start flex-fill mr-md-3">
                     <i class="material-icons mr-1 align-self-center">import_export</i>
                     {{ field }}
                 </div>
@@ -26,7 +26,8 @@
                 <div class="d-flex mb-2 mr-md-3">
                     <label class="mr-1 align-self-center">{{ field.label }}</label>
                     <div class="tag-select">
-                        {{ field }}</div>
+                        {% include "common/forms/multiselect.html" with field=field hide_label=True %}
+                        </div>
                 </div>
             {% endif %}
 

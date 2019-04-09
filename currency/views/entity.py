@@ -106,7 +106,7 @@ class EntityFilter(django_filters.FilterSet):
     class Meta:
         model = Entity
         form = EntityFilterForm
-        fields = {  }
+        fields = [ 'categories' ]
 
 
 class EntityListView(ExportAsCSVMixin, FilterView, ListItemUrlMixin, AjaxTemplateResponseMixin):
