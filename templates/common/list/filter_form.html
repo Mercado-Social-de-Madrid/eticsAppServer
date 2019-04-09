@@ -23,9 +23,10 @@
                 </div>
 
             {% else %}
-                <div class="d-flex align-self-stretch mb-2 flex-fill mr-md-3">
+                <div class="d-flex mb-2 mr-md-3">
                     <label class="mr-1 align-self-center">{{ field.label }}</label>
-                    {{ field }}
+                    <div class="tag-select">
+                        {{ field }}</div>
                 </div>
             {% endif %}
 

@@ -94,6 +94,34 @@ function getCookie(name) {
 
     };
 
+     $.fn.ajaxFilter = function() {
+        var self = this;
+        var resultsTarget = self.attr('data-results') || '#results';
+        var resultsContainer = $(resultsTarget);
+        var initialUrl = resultsContainer.attr('data-initial');
+        var filterUrl = ((initialUrl != null) && (initialUrl!=''))? initialUrl : '' + '?';
+
+        self.on('submit', function(e){
+            e.preventDefault();
+            var query = filterUrl + self.serialize();
+            loadResults(resultsContainer, query)
+        });
+
+        self.on('change', 'select', function(e){
+            var query = filterUrl + self.serialize();
+            loadResults(resultsContainer, query);
+        });
+
+        self.on('click', '.pagination a', function(e){
+            e.preventDefault();
+            if ($(this).parent().hasClass('active'))
+                return;
+            var url = $(this).attr('href')
+            loadResults(self, url);
+        });
+
+    };
+
 }( jQuery ));
 
 function showToast(message, messageClasses){
@@ -111,12 +139,51 @@ $.ajaxSetup({
     }
 });
 
+
+function initElems(container){
+    container.find('.floating-label .form-control').floatinglabel();
+    container.find('.show-at-load').modal('show');
+    container.find('.datepicker').pickdate();
+    container.find('.ajax-load').ajaxLoader();
+    container.find('.ajax-filter').ajaxFilter();
+
+    container.find('[data-toggle="tooltip"]').tooltip();
+
+    container.find(".link-row").click(function(e) {
+        var target = $(e.target);
+        if (!target.is('button') && !target.parents('button').length && !target.is('a') && !target.parents('a').length){
+            window.location = $(this).data("href");
+        }
+
+    });
+
+    container.find('.special-select').select2({ 'theme': 'default custom-select' });
+
+    container.find('.popup-gallery').magnificPopup({
+		delegate: 'a',
+		type: 'image',
+		mainClass: 'mfp-img-mobile',
+		gallery: {
+			enabled: true,
+			navigateByImgClick: true,
+			preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+		}
+	});
+
+    container.find('.color-widget').each(function(){
+        $(this).wrap('<div class="color-container"></div>').spectrum({ preferredFormat: "hex"}).show();
+    });
+
+}
+
+
 $(function(){
     var menu = $('#navbar-menu');
 
     $('[data-toggle="tooltip"]').tooltip();
     $('.modal.show-on-load').modal();
     $('.ajax-load').ajaxLoader();
+
 
     $(".link-row").click(function() {
         window.location = $(this).data("href");
@@ -226,5 +293,7 @@ $(function(){
         setTimeout(function(){ message.fadeOut(); }, TOAST_DELAY * toastCounter);
         toastCounter++;
     });
+
+    initElems($('body'));
 
 });

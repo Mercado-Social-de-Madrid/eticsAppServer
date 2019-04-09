@@ -1,11 +1,20 @@
+import django_filters
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
+from django_filters.views import FilterView
 
 import helpers
 from currency.forms.PersonForm import PersonForm
 from currency.models import Person
+from helpers.filters.LabeledOrderingFilter import LabeledOrderingFilter
+from helpers.filters.SearchFilter import SearchFilter
+from helpers.forms.BootstrapForm import BootstrapForm
+from helpers.mixins.AjaxTemplateResponseMixin import AjaxTemplateResponseMixin
+from helpers.mixins.ExportAsCSVMixin import ExportAsCSVMixin
+from helpers.mixins.ListItemUrlMixin import ListItemUrlMixin
+
 
 @login_required
 def user_profile(request):
@@ -45,6 +54,34 @@ def profile_list(request):
     else:
         return render(request, 'profile/list.html', params)
 
+
+class ProfileFilterForm(BootstrapForm):
+    field_order = ['o', 'search', 'status', ]
+
+
+class ProfileFilter(django_filters.FilterSet):
+
+    search = SearchFilter(names=['surname', 'name', 'email'], lookup_expr='in', label='Buscar...')
+    o = LabeledOrderingFilter(fields=['surname', 'registered'], field_labels={'surname':'Apellidos', 'registered':'Fecha de registro'})
+
+    class Meta:
+        model = Person
+        form = ProfileFilterForm
+        fields = [ ]
+
+
+class ProfileListView(ExportAsCSVMixin, FilterView, ListItemUrlMixin, AjaxTemplateResponseMixin):
+
+    model = Person
+    queryset = Person.objects.all()
+    objects_url_name = 'profile_detail'
+    template_name = 'profile/list.html'
+    ajax_template_name = 'profile/query.html'
+    filterset_class = ProfileFilter
+    paginate_by = 7
+
+    csv_filename = 'consumidoras'
+    available_fields = ['nif',]
 
 @login_required
 def profile_detail(request, pk):

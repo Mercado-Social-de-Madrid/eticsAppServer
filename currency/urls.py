@@ -22,12 +22,11 @@ urlpatterns = [
     url(r'^qr/(?P<pk>[0-9a-f-]+)/$', views.entity_detail, name='entity_qr_detail'),
     url(r'^entity/(?P<pk>[0-9a-f-]+)/$', views.entity_detail, name='entity_detail'),
     url(r'^entity/(?P<pk>[0-9a-f-]+)/edit/$', views.entity_edit, name='entity_edit'),
-    url(r'^entities/$', views.entity_list, name='entity_list'),
-
-    url(r'^entitiess/$', views.EntityListView.as_view(), name='entity_list'),
+    #url(r'^entities/$', views.entity_list, name='entity_list'),
+    url(r'^entities/$', views.EntityListView.as_view(), name='entity_list'),
 
     url(r'^profile/$', views.user_profile, name='user_profile'),
-    url(r'^profile/admin/$', views.profile_list, name='profile_list'),
+    url(r'^profile/admin/$', views.ProfileListView.as_view(), name='profile_list'),
 
     url(r'^profile/(?P<pk>[0-9a-f-]+)/$', views.profile_detail, name='profile_detail'),
     url(r'^profile/(?P<pk>[0-9a-f-]+)/edit/$', views.profile_edit, name='profile_edit'),
