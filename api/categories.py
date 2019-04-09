@@ -13,6 +13,7 @@ class CategoriesResource(ModelResource):
         list_allowed_methods = ['get']
         resource_name = 'categories'
         collection_name = 'categories'
+        limit = 100
         excludes = []
 
         authentication = Authentication()
