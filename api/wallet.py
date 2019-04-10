@@ -11,6 +11,7 @@ from tastypie.http import HttpMultipleChoices, HttpGone, HttpCreated, HttpAccept
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 
+from currency.models import Entity, Person
 from wallets.models import Payment, Wallet, TransactionLog
 
 
@@ -168,7 +169,6 @@ class WalletResource(ModelResource):
     def dispatch_list(self, request, **kwargs):
         return self.dispatch_detail(request, **kwargs)
 
-    # Add logical amounts
     def dehydrate(self, bundle):
         bundle.data['has_pincode'] = bundle.obj.pin_code is not None
 
@@ -182,7 +182,6 @@ class WalletResource(ModelResource):
 
         return wallet
 
-        # Part related with the child /offers resource
 
     def prepend_urls(self):
         return [
@@ -193,7 +192,49 @@ class WalletResource(ModelResource):
             url(r"^(?P<resource_name>%s)/reset_pincode%s$" % (
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('reset_pincode'), name="api_reset_pincode"),
+
+            url(r"^(?P<resource_name>%s)/currency_purchased%s$" % (
+                self._meta.resource_name, trailing_slash()),
+                self.wrap_view('currency_purchased'), name="currency_purchased"),
         ]
+
+
+    def currency_purchased(self, request, **kwargs):
+
+        self.method_check(request, allowed=['post'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
+        if not request.user.is_superuser:
+            return HttpForbidden()
+
+        data = self.deserialize(request, request.body,
+                                format=request.META.get('CONTENT_TYPE', 'application/json'))
+
+        account = data.get('account', None)
+        amount = float(data.get('amount', 0))
+        concept = data.get('concept', None)
+        euro_purchase = data.get('euro_purchase', False)
+
+        if not amount or not account:
+            return HttpGone()
+
+        try:
+            instance = Entity.objects.get(cif=account)
+        except Entity.DoesNotExist:
+            try:
+                instance = Person.objects.get(nif=account)
+            except Person.DoesNotExist:
+                instance = None
+
+        if not instance:
+            raise ObjectDoesNotExist('Sorry, no results on that page.')
+
+        wallet = instance.user.wallet
+        t = Wallet.debit_transaction(wallet=wallet, amount=amount, concept=concept)
+
+        return self.create_response(request, {'success': True, 'id':t.id})
+
 
     def wallet_purchase(self, request, **kwargs):
 
