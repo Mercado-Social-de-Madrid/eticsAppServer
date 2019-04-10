@@ -17,14 +17,14 @@
 
       <td>
         {% if tr.wallet_from.user %}
-                {{tr.wallet_from.user}}
+                {{tr.wallet_from.user.get_related_entity.1 }}
             {% else %}
                 <span class="text-muted">MES <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Cuenta débito">local_atm</i> </span>
             {% endif %}
 
       </td>
         <td>{% if tr.wallet_to.user %}
-                {{tr.wallet_to.user}}
+                {{tr.wallet_to.user.get_related_entity.1 }}
             {% else %}
                 <span class="text-muted">MES <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Cuenta débito">local_atm</i> </span>
             {% endif %}
