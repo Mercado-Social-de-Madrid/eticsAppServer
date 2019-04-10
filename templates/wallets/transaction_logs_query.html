@@ -17,7 +17,12 @@
       <th scope="row">{{tr.timestamp|date:'d/m/Y'}}</th>
         <td scope="row">{{tr.timestamp|date:'H:i:s'}}</td>
 
-      <td>{{tr.related}}</td>
+      <td>{% if tr.related %}
+          {{tr.related}}
+          {% else %}
+        <span class="text-muted">MES <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Cuenta débito">local_atm</i> </span>
+          {% endif %}
+      </td>
       <td class="amount {% if tr.amount > 0 %}positive{%else%}negative{%endif%}">{{tr.amount|floatformat:2}}</td>
       <td class="text-center">{%if tr.is_bonification %} <i class="material-icons">done</i> {% endif %}</td>
         <td class="amount {% if tr.current_balance < 0 %}negative{%endif%}">{{tr.current_balance|floatformat:2}}</td>

@@ -16,14 +16,19 @@
       <th scope="row">{{tr.timestamp|date:'d/m/Y H:i'}}</th>
 
       <td>
-        {% if tr.is_euro_purchase %}
-            <span class="text-muted">MES <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Cuenta débito">local_atm</i> </span>
-          {% else %}
-              {{tr.wallet_from.user}}
-          {% endif %}
+        {% if tr.wallet_from.user %}
+                {{tr.wallet_from.user}}
+            {% else %}
+                <span class="text-muted">MES <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Cuenta débito">local_atm</i> </span>
+            {% endif %}
 
       </td>
-        <td>{{tr.wallet_to.user}}</td>
+        <td>{% if tr.wallet_to.user %}
+                {{tr.wallet_to.user}}
+            {% else %}
+                <span class="text-muted">MES <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Cuenta débito">local_atm</i> </span>
+            {% endif %}
+        </td>
 
       <td class="amount">{{tr.amount}}<i class="currency-icon"></i> </td>
       <td>{{tr.concept}}</td>

@@ -90,6 +90,8 @@ class Wallet(models.Model):
         if not concept:
             if bonus:
                 concept = "Bonificación en etics por compra"
+            elif is_euro_purchase:
+                concept = "Compra de etics"
             elif wallet_from:
                 concept = "Movimiento"
 
@@ -158,12 +160,24 @@ class Wallet(models.Model):
             wallet.update_pin_code(pin_code)
 
     @staticmethod
-    def debit_transaction(wallet, amount):
+    def debit_transaction(wallet, amount, concept=None):
 
+        if amount == 0:
+            return
+
+        concept = concept if concept != None else 'Compra de etics'
         rel_type, related = wallet.user.get_related_entity()
         debit_wallet = related.city.wallet
 
-        t = debit_wallet.new_transaction(amount, wallet=wallet, concept='Compra de etics', is_euro_purchase=True)
+        if amount > 0:
+            orig_wallet = debit_wallet
+            dest_wallet = wallet
+        else:
+            amount = -amount
+            orig_wallet = wallet
+            dest_wallet = debit_wallet
+
+        t = orig_wallet.new_transaction(amount, wallet=dest_wallet, concept=concept, is_euro_purchase=True)
         wallet.notify_transaction(t)
         return t
 
