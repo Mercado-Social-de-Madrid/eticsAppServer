@@ -1,0 +1,33 @@
+{% extends 'common/email/base.html' %}
+{% load settings_value %}
+
+{% block title %}Registro{% endblock %}
+
+{% block maintitle %}Bienvenid@!{% endblock %}
+
+{% block content %}
+
+<h2 style="color: #757575; line-height: 100%;">Hola, {{entity}}!</h2>
+
+<p>Recibes este correo electrónico porque en algún momento has sido consumidor/a del Mercado Social y has utilizado los antiguos Boniatos. Te informamos de que te hemos dado de alta en la nueva <b>aplicación móvil del Mercado Social.</b> </p>
+
+<p>Solo faltan un par de pasos para empezar a usarla. Primero, que te <b>descargues la aplicación</b>. Búscala en google play con las palabras "Mercado Social". Segundo, <b>sigue el enlace</b> que te enviamos en este correo. </p>
+
+<p>Una vez hecho esto, podrás acceder desde tu móvil a tu perfil, consultar tu saldo en etics (sistema de bonificaciones del Mercado Social que ha sustituido a los antiguos Boniatos), ver y localizar todas las entidades que forman parte del mercado, recibir ofertas y convocatorias interesantes y muchas cosas más. </p>
+
+<p>Como invitada/o solo podrás utilizar los puntos etics <b>durante 3 meses</b>. Después nos encantaría que te hicieras parte de la cooperativa para poder seguir disfrutando de un consumo consciente y ético. </p>
+
+<p>Puedes hacerte socia/o desde la misma app en 1 minuto. La cuota es de tan sólo 20€ al año (más un pago único de 10€ como capital social que se devuelve cuando, esperemos que no pase, se abandona el Mercado).</p>
+<p></p>
+¡Entra, disfruta y practica el consumo consciente!
+
+
+{% endblock%}
+
+{% block call_button %}
+
+{% url 'preregister' token as link %}
+{% settings_value 'BASESITE_URL' as basesite %}
+
+{% include 'common/email/button.html' with link_text='Registro' link_href=basesite|add:link %}
+{% endblock call_button %}

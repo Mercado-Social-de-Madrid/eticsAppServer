@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import uuid
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
@@ -37,7 +38,11 @@ def send_welcome_email(sender, instance, created, **kwargs):
         user = instance.user
         kind, entity = user.get_related_entity()
 
+        template = 'preregister_entity'
         template = 'preregister_entity' if kind == 'entity' else 'preregister_person'
+        if kind == 'person' and entity.is_guest_account and settings.SPECIAL_WELCOME:
+            template = 'preregister_special'
+
         title = 'Todo listo para que tu entidad aparezca en la aplicación móvil del Mercado Social' if kind == 'entity' else 'Todo listo para empezar a usar la aplicación móvil del Mercado Social'
 
         send_template_email(

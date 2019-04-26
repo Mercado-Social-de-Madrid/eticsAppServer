@@ -1,0 +1,18 @@
+{% load settings_value %}
+
+Bienvenid@ al Mercado Social!
+
+Hola, {{entity}}
+
+Recibes este correo electrónico porque en algún momento has sido consumidor/a del Mercado Social y has utilizado los antiguos Boniatos. Te informamos de que te hemos dado de alta en la nueva aplicación móvil del Mercado Social.
+Solo faltan un par de pasos para empezar a usarla. Primero, que te descargues la aplicación. Búscala en google play con las palabras "Mercado Social". Segundo, sigue el enlace que te enviamos en este correo.
+Una vez hecho esto, podrás acceder desde tu móvil a tu perfil, consultar tu saldo en etics (sistema de bonificaciones del Mercado Social que ha sustituido a los antiguos Boniatos), ver y localizar todas las entidades que forman parte del mercado, recibir ofertas y convocatorias interesantes y muchas cosas más.
+
+*Como invitada/o solo podrás utilizar los puntos etics durante 3 meses*. Después nos encantaría que te hicieras parte de la cooperativa para poder seguir disfrutando de un consumo consciente y ético.
+Puedes hacerte socia/o desde la misma app en 1 minuto. La cuota es de tan sólo 20€ al año (más un pago único de 10€ como capital social que se devuelve cuando, esperemos que no pase, se abandona el Mercado).
+
+¡Entra, disfruta y practica el consumo consciente!
+
+Aplicación móvil
+¿Sabías que hay una app desde la que gestionar tus movimientos con la moneda social de forma más cómoda? ¡Pruébala!
+Enlace a la app: https://play.google.com/store/apps/details?id=net.mercadosocial.moneda
