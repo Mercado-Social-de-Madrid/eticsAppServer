@@ -2,12 +2,19 @@
 from __future__ import unicode_literals
 
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django_filters.views import FilterView
 
 import helpers
+from currency.models import Entity
+from currency.views import EntityFilter
 from helpers import superuser_required
+from helpers.mixins.AjaxTemplateResponseMixin import AjaxTemplateResponseMixin
+from helpers.mixins.ListItemUrlMixin import ListItemUrlMixin
+from wallets.forms.PaymentForm import PaymentForm
 from wallets.models import Payment, Wallet
 
 
@@ -75,37 +82,50 @@ def payment_detail(request, pk):
     return render(request, 'wallets/payment_detail.html', params)
 
 
+class SelectPaymentReceiverView(FilterView, ListItemUrlMixin, AjaxTemplateResponseMixin):
+
+    model = Entity
+    queryset = Entity.objects.all()
+    objects_url_name = 'create_payment'
+    template_name = 'payment/select_entity.html'
+    ajax_template_name = 'payment/entity.html'
+    filterset_class = EntityFilter
+    paginate_by = 9
+
+    def get_context_data(self, **kwargs):
+        context = super(SelectPaymentReceiverView, self).get_context_data(**kwargs)
+        UserModel = get_user_model()
+        type, instance = UserModel.get_related_entity(self.request.user)
+        context['is_entity'] = type == 'entity'
+
+        return context
+
+
 @login_required
 def new_payment(request, pk):
 
-    payment = get_object_or_404(Payment, pk=pk)
-    can_edit = request.user == payment.receiver or request.user.is_superuser
-
-    if not can_edit:
-        messages.add_message(request, messages.ERROR, 'No tienes permisos para ver este pago')
-        return redirect('entity_detail', pk=payment.pk )
+    entity = get_object_or_404(Entity, pk=pk)
+    UserModel = get_user_model()
+    type, instance = UserModel.get_related_entity(request.user)
 
     if request.method == "POST":
-        action = request.POST.get("action", "")
+        form = PaymentForm(request.POST, request.FILES)
 
-        if action == 'accept':
-            payment.accept_payment()
+        if form.is_valid():
+            messages.add_message(request, messages.SUCCESS,
+                                 'Pago enviado con éxito')
             return redirect('pending_payments')
-
-        if action == 'cancel':
-            payment.cancel_payment()
-            return redirect('pending_payments')
-
+        else:
+            print form.errors.as_data()
     else:
-        sender_type, sender = payment.sender.get_related_entity()
-        receiver_type, entity = payment.receiver.get_related_entity()
+        form = PaymentForm(initial={'sender':request.user, 'receiver':entity.user})
 
-        bonus = entity.bonus(payment.total_amount, sender_type)
-        return render(request, 'wallets/payment_detail.html', {
-            'payment': payment,
-            'bonus': bonus,
-            'sender': sender
-        })
+    return render(request, 'payment/create.html', {
+        'receiver':entity,
+        'is_sender_entity': type == 'entity',
+        'form': form
+    })
+
 
 @superuser_required
 def admin_payments(request):

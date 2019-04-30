@@ -1,0 +1,20 @@
+{% extends 'common/list/card_base.html' %}
+
+
+
+{% block item_card %}
+
+<div class="card-body entity-card">
+      <div class="profile-circle small">
+          {% if item.logo %} <img src="{{item.logo_thumbnail.url}}"> {%endif%}
+      </div>
+      <h5 class="mb-0">{{item.name}}</h5>
+      {{item.address}}
+
+     <div class="row mt-2">
+        <div class="col-sm-6 feature mb-3"><span class="primary-title"><strong>Acepta</strong></span> <div class="lead"> {{ item.max_percent_payment }}%</div><span>en etics</span></div>
+         <div class="col-sm-6 feature"><span class="primary-title"><strong>Bonifica</strong></span> <div class="lead">{% if is_entity %} {{ item.bonus_percent_entity }} {% else %}  {{ item.bonus_percent_general }} {% endif %} %</div><span>etics</span></div>
+         </div>
+</div>
+
+{% endblock %}

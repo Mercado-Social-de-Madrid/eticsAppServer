@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}Detalles de pago{% endblock%}
+
+{% block bodyattrs %}class="entity"{% endblock%}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3 col-md-4 mb-0">
+            <div class="text-center"><img class="img-fluid" src="{%static '/imgs/icon-payment.png' %}" alt="Pagos pendientes"> </div>
+        </div>
+        <div class="col-sm-9 col-md-8 px-4">
+                <div class="card">
+                    <div class="card-body px-5 pt-5">
+                        <h4 class="card-title">Detalles de pago</h4>
+                        <p><strong>Fecha: </strong> {{payment.timestamp}}</p>
+                        <p><strong>Estado:</strong>
+                        {% if payment.status == 'accepted' %}<span class="text-success"><i class="material-icons md-36" >play_circle_outline</i> Aceptado</span> {% endif %}
+                        {% if payment.status == 'pending' %}<span class="text-info"><i class="material-icons md-36" >play_circle_outline</i> Pendiente</span> {% endif %}
+                        {% if payment.status == 'cancelled' %}<span class="text-danger"><i class="material-icons md-36" >play_circle_outline</i> Cancelado</span> {% endif %}
+                        </p>
+
+                        <p class="lead">{{sender}}</p>
+                        {% if payment.concept %} {{payment.concept}} {% endif %}
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-4 feature"><span class="primary-title"><strong>Importe total:</strong></span> <div class="display-4"> {{payment.total_amount}}</div><span>Euros</span></div>
+                            <div class="col-sm-4 feature"><span class="primary-title"><strong>Pago:</strong></span>  <div class="display-4">{{ payment.currency_amount }}</div><span>Etics</span></div>
+                            <div class="col-sm-4 feature"><span class="primary-title"><strong>Bonificación:</strong></span>  <div class="display-4">{{ bonus|default:0}}</div><span>Etics</span></div>
+                        </div>
+
+
+                    </div>
+
+                    {% if payment.status == 'pending' %}
+                    <div class="card-footer p-4 border-primary text-center">
+                        {% if notenoughbalance %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                            <strong>Saldo insuficiente!</strong> No hay suficiente saldo disponible en el monedero para realizar este pago.
+                        </div>
+                        {% endif %}
+                        <form method="POST" class="d-inline-block"> {% csrf_token %} <input type="hidden" name="action" value="accept"> <button type="submit" href="#" class="btn btn-lg btn-primary mr-3">Aceptar</button></form>
+                        <form method="POST" class="d-inline-block"> {% csrf_token %} <input type="hidden" name="action" value="cancel"> <button type="submit" href="#" class="btn btn-lg">Cancelar</button></form>
+                    </div>
+                    {% endif %}
+                </div>
+
+
+        </div>
+    </div>
+</div>
+{% endblock%}
+
+{% block scripts %}
+<script type="text/javascript">
+    $('.table-action').on('click', function(e){
+        e.preventDefault();
+
+        return false;
+    });
+</script>
+{% endblock scripts %}

@@ -1,0 +1,14 @@
+<div class="row auto-clear" >
+    {% for item in object_list %}
+    <div class="col-md-4 col-sm-6">
+        <div class="card mb-4 link-row" data-pk="{{item.pk}}" {% if object_url_name %} data-href="{% url object_url_name item.pk %}"{% endif %}>
+            {% block item_card %} {% endblock %}
+        </div>
+
+    </div>
+    {% empty %}
+    <div class="col-md-12">No hay ninguna entidad con los criterios de búsqueda actuales...</div>
+    {% endfor %}
+</div>
+
+{% include 'common/pagination.html' with page=page_obj %}
