@@ -4,7 +4,7 @@
             <li data-pk="{{choice.pk}}" data-color="{{choice.color}}">{{choice}}</li>
         {% endfor %}
     {% else %}
-        {% for tag in tags %}
+        {% for choice in tags %}
             <li data-pk="{{choice.pk}}" data-color="{{choice.color}}"></li>
         {% endfor %}
     {% endif %}
