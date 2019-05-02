@@ -4,12 +4,15 @@ from __future__ import unicode_literals
 import uuid
 
 import math
+
+from django.conf import settings
 from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.urls import reverse
 
 from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, ResizeToFill
@@ -74,6 +77,10 @@ class Entity(models.Model):
             if image:
                 return image.image.url
         return None
+
+    @property
+    def qr_code(self):
+        return settings.BASESITE_URL + reverse('entity_qr_detail',  kwargs={'pk': self.pk} )
 
     def bonus(self, total_amount, bonusable_type=None):
         percent = self.bonus_percent_general
