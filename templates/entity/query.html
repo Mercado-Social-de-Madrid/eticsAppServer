@@ -1,10 +1,11 @@
 {% extends 'common/list/base.html' %}
 
  {% block table_head %}
+{% if request.user.is_superuser %}
     <th scope="col">Nombre</th>
-      <th scope="col">Máx. pago en <br>boniatos</th>
+      <th scope="col">Máx. pago en <br>etics</th>
       <th scope="col">Porcentaje de <br>bonificación</th>
-      <th scope="col">Acciones</th>
+      <th scope="col">Acciones</th>{%endif%}
 {% endblock %}
 
 
@@ -15,6 +16,7 @@
               {% if item.logo %} <img src="{{item.logo_thumbnail.url}}"> {%endif%}
           </div>
 
+        {% if request.user.is_superuser %}
           <span class="entity-status">
               {% if item.user.is_registered %}
                 {% if item.is_guest_account %}
@@ -26,10 +28,13 @@
                 <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Pendiente registro">schedule</i>
               {% endif %}
           </span>
+        {% endif %}
 
           <h5 class="mb-0">{{item.name}}</h5>
           {{item.address}}
         </td>
+
+        {% if request.user.is_superuser %}
         <td>{{ item.max_percent_payment }} %</td>
         <td>{{ item.bonus_percent_general }} %</td>
         <td class="table-actions">
@@ -38,4 +43,9 @@
             <a class="btn btn-outline-primary" href="{% url 'entity_offers' item.pk %}"  data-toggle="tooltip" data-placement="bottom" title="Ver ofertas"><i class="material-icons">shopping_basket</i></a>
         </td>
 
+
+        {% else %}
+            <td><div class="feature"><span class="primary-title"><strong>Acepta</strong></span> <div class="lead"> {{ item.max_percent_payment }}%</div><span>en etics</span></div></td>
+            <td><div class="feature"><span class="primary-title"><strong>Bonifica</strong></span> <div class="lead"> {{ item.bonus_percent_general }}%</div><span>en etics</span></div></td>
+        {% endif %}
 {% endblock %}
