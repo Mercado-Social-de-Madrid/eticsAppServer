@@ -107,24 +107,32 @@ def new_payment(request, pk):
     entity = get_object_or_404(Entity, pk=pk)
     UserModel = get_user_model()
     type, instance = UserModel.get_related_entity(request.user)
+    data = {
+        'receiver': entity,
+        'is_sender_entity': type == 'entity',
+    }
 
     if request.method == "POST":
         form = PaymentForm(request.POST, request.FILES)
 
         if form.is_valid():
-            messages.add_message(request, messages.SUCCESS,
-                                 'Pago enviado con éxito')
-            return redirect('pending_payments')
+            try:
+                payment = form.save()
+                messages.add_message(request, messages.SUCCESS,
+                                     'Pago enviado con éxito')
+                return redirect('pending_payments')
+            except Wallet.WrongPinCode as e:
+                print 'Wrong pincode!'
+                data['wrongpingcode'] = True
+            except Wallet.NotEnoughBalance:
+                data['notenoughbalance'] = True
         else:
             print form.errors.as_data()
     else:
         form = PaymentForm(initial={'sender':request.user, 'receiver':entity.user})
 
-    return render(request, 'payment/create.html', {
-        'receiver':entity,
-        'is_sender_entity': type == 'entity',
-        'form': form
-    })
+    data['form'] = form
+    return render(request, 'payment/create.html', data)
 
 
 @superuser_required

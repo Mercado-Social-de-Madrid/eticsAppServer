@@ -10,15 +10,11 @@
 {% block content %}
 
 <div class="container">
-<h3 class="primary-title mb-3"><i class="material-icons mr-2">store</i>Entidades</h3>
+<h3 class="primary-title mb-0">Nuevo pago</h3>
+    <p class="lead">Selecciona entidad a la que realizar el pago</p>
         {% include 'common/list/filter_form.html' %}
         {% include 'common/list/ajax_wrapper.html' with query_template='payment/entity.html' %}
-
 </div>
-
-<a href="{% url 'add_entity' %}" class="fab btn btn-primary btn-lg rounded-circle btn-float"  data-toggle="tooltip" data-placement="left" title="Añadir entidad">
-         <i class="material-icons">add</i>
-        </a>
 
 {% endblock%}
 

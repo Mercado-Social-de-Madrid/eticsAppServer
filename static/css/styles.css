@@ -304,6 +304,7 @@ h1, h2, h3, h4, .primary-title{
     text-transform:uppercase;
     font-size:0.9em;
 }
+.feature input{ text-align:center; }
 .gallery{ overflow:auto; clear:both;}
 .gallery > a{
     float:left;
@@ -393,6 +394,9 @@ h1, h2, h3, h4, .primary-title{
 .entity-card{
      padding-left:80px;
     position:relative;
+}
+.display-4 .form-control{
+    font-size:inherit;
 }
 td.entity-td .entity-status{
     position:absolute;

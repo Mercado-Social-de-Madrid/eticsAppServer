@@ -12,25 +12,38 @@ class PaymentForm(forms.ModelForm):
         kwargs.setdefault('label_suffix', '')
         form = super(PaymentForm, self).__init__(*args, **kwargs)
 
+    pincode = forms.CharField(max_length=30, widget=forms.PasswordInput, required=True,
+                              label="Código PIN (cuatro dígitos)")
 
     class Meta:
         model = Payment
-        exclude = ['timestamp', 'status']
+        exclude = ['timestamp', 'status', 'processed']
         widgets = {
-            'nif': forms.TextInput(attrs={'class': 'form-control', 'readonly':True }),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'name': forms.TextInput(attrs={'class': 'form-control', }),
-            'surname': forms.TextInput(attrs={'class': 'form-control', }),
-            'address': forms.Textarea(attrs={'class': 'form-control', 'rows':3,}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control', }),
-            'registered': forms.TextInput(attrs={'class': 'form-control', 'readonly':True}),
-            'profile_image': forms.FileInput(attrs={}),
-            'city': forms.HiddenInput(),
+            'sender': forms.HiddenInput(),
+            'receiver': forms.HiddenInput() ,
+            'total_amount': forms.NumberInput(attrs={'class': 'form-control', }),
+            'currency_amount': forms.NumberInput(attrs={'class': 'form-control', }),
+            'concept': forms.Textarea(attrs={'class': 'form-control', 'rows':3 }),
         }
 
+    def clean_total_amount(self):
+        total_amount = self.cleaned_data['total_amount']
+        if total_amount <= 0:
+            raise forms.ValidationError("El importe total tiene que ser positivo")
 
-    def clean_amount(self):
-        username = self.cleaned_data['new_user_username']
-        if User.objects.exclude(pk=self.instance.pk).filter(username=username).exists():
-            self.add_error('new_user_username', u'El nombre de usuario "%s" ya está en uso.' % username)
-        return username
+        return total_amount
+
+    def save(self, commit=True):
+        if not commit:
+            return None
+
+        total_amount = self.cleaned_data.get('total_amount')
+        currency_amount = self.cleaned_data.get('currency_amount')
+        type, receiver = self.cleaned_data.get('receiver').get_related_entity()
+        sender = self.cleaned_data.get('sender')
+        concept = self.cleaned_data.get('concept')
+        pincode = self.cleaned_data.get('pincode', None)
+
+        payment = Payment.objects.new_payment(sender=sender, receiver_uuid=receiver.pk,
+                                              total_amount=total_amount, currency_amount=currency_amount,concept=concept, pin_code=pincode )
+

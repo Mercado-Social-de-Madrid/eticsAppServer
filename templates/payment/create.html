@@ -13,44 +13,77 @@
     <div class="row">
         <div class="col-sm-3 col-md-4 mb-0">
             <div class="text-center"><img class="img-fluid" src="{%static '/imgs/icon-payment.png' %}" alt="Pagos pendientes"> </div>
+            {% include 'wallets/wallet_balance.html' with wallet=request.user.wallet %}
+
         </div>
         <div class="col-sm-9 col-md-8 px-4">
                 <div class="card">
+                    <form method="POST" class="d-inline-block"> {% csrf_token %}
+                    {{form.receiver}} {{form.sender}}
                     <div class="card-body px-5 pt-5">
-                        <h4 class="card-title">Detalles de pago</h4>
-                        <p><strong>Fecha: </strong> {{payment.timestamp}}</p>
-                        <p><strong>Estado:</strong>
-                        {% if payment.status == 'accepted' %}<span class="text-success"><i class="material-icons md-36" >play_circle_outline</i> Aceptado</span> {% endif %}
-                        {% if payment.status == 'pending' %}<span class="text-info"><i class="material-icons md-36" >play_circle_outline</i> Pendiente</span> {% endif %}
-                        {% if payment.status == 'cancelled' %}<span class="text-danger"><i class="material-icons md-36" >play_circle_outline</i> Cancelado</span> {% endif %}
+                        <h4 class="card-title">
+                       Nuevo pago > {{receiver.display_name}}
+                    </h4>
+                        <p>
+                            <strong>Bonificación:</strong> {% if is_sender_entity %} {{ receiver.bonus_percent_entity }} {% else %}  {{ receiver.bonus_percent_general }} {% endif %} % <br>
+                            <strong>Acepta:</strong> {{ receiver.max_percent_payment }} %
                         </p>
-
-                        <p class="lead">{{sender}}</p>
-                        {% if payment.concept %} {{payment.concept}} {% endif %}
-                        <hr>
                         <div class="row">
-                            <div class="col-sm-4 feature"><span class="primary-title"><strong>Importe total:</strong></span> <div class="display-4"> {{payment.total_amount}}</div><span>Euros</span></div>
-                            <div class="col-sm-4 feature"><span class="primary-title"><strong>Pago:</strong></span>  <div class="display-4">{{ payment.currency_amount }}</div><span>Etics</span></div>
-                            <div class="col-sm-4 feature"><span class="primary-title"><strong>Bonificación:</strong></span>  <div class="display-4">{{ bonus|default:0}}</div><span>Etics</span></div>
-                        </div>
-
-
-                    </div>
-
-                    {% if payment.status == 'pending' %}
-                    <div class="card-footer p-4 border-primary text-center">
-                        {% if notenoughbalance %}
+                            <div class="col-sm-4 feature">
+                                <span class="primary-title"><strong>Importe total:</strong></span>
+                                <div class="display-4 my-2" id="total_amount"> {{form.total_amount}}</div><span>Euros</span>
+                                {%if form.total_amount.errors %}
+                                <div class="d-block invalid-feedback">
+                                    {% for error in form.total_amount.errors %} {{error}} {%endfor%}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-4 feature">
+                                <span class="primary-title"><strong>Pago:</strong></span>  <div class="display-4 my-2">{{ form.currency_amount }}</div><span>Etics</span>
+                                {% if notenoughbalance %}
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
-                            <strong>Saldo insuficiente!</strong> No hay suficiente saldo disponible en el monedero para realizar este pago.
+                            <strong>Saldo insuficiente!</strong>
                         </div>
                         {% endif %}
-                        <form method="POST" class="d-inline-block"> {% csrf_token %} <input type="hidden" name="action" value="accept"> <button type="submit" href="#" class="btn btn-lg btn-primary mr-3">Aceptar</button></form>
-                        <form method="POST" class="d-inline-block"> {% csrf_token %} <input type="hidden" name="action" value="cancel"> <button type="submit" href="#" class="btn btn-lg">Cancelar</button></form>
+                            </div>
+
+
+                            <div class="col-sm-4 feature"><span class="primary-title"><strong>Bonificación:</strong></span>  <div class="display-4 mb-2" data-calculate="percent" data-target="#total_amount" data-oper="{% if is_sender_entity %} {{ receiver.bonus_percent_entity|unlocalize }} {% else %}{{ receiver.bonus_percent_general|unlocalize }} {% endif %}">0</div><span>Etics</span></div>
+                        </div>
+
+                        <div class="my-3 form-group">
+                        <label class="text-primary">{{form.concept.label}}</label>
+                         {{form.concept}}</div>
+
+
+                        {% if request.user.wallet.pin_code %}{% endif %}
+
+                        <div class="form-group text-center">
+                          Introduce tu código PIN para validad la transacción:
+                          <label class="text-center d-block mt-3">Código PIN</label>
+
+                            <input class="form-control pincode" value="{{form.pincode.value|default:''}}" pattern="[0-9]{4}" maxlength="4" id="{{ form.pincode.id_for_label }}" placeholder="____" name="{{ form.pincode.html_name }}" type="password" />
+                            {%if form.pincode.errors %}
+                            <div class="d-block invalid-feedback">
+                                {% for error in form.pincode.errors %} {{error}} {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+
+
+
+                        <div class="text-center">
+                         <input type="hidden" name="action" value="accept"> <button type="submit" href="#" class="btn btn-lg btn-primary mr-3">Enviar pago</button>
+                        </div>
+
                     </div>
-                    {% endif %}
+
+                    </form>
+
                 </div>
 
 
@@ -61,10 +94,44 @@
 
 {% block scripts %}
 <script type="text/javascript">
-    $('.table-action').on('click', function(e){
-        e.preventDefault();
 
-        return false;
+function updateDisplay(operation, operand, target, display){
+    if (operation == 'percent'){
+        result = (operand * target.val()) / 100;
+        display.text( result.toFixed(2) );
+    }
+}
+
+var total_amount = $('[name="total_amount"]');
+var currency_amount = $('[name="currency_amount"]');
+
+function updateMaxCurrency(){
+    var total = Number(total_amount.val());
+    var currency = Number(currency_amount.val());
+
+    var max_currency = ({{ receiver.max_percent_payment|unlocalize }} * total / 100).toFixed(2);
+    console.log(currency);
+    console.log(max_currency);
+    if (currency > max_currency){
+        console.log("AAAA");
+        currency_amount.val(max_currency);
+    }
+}
+
+total_amount.on('input', updateMaxCurrency);
+currency_amount.on('input', updateMaxCurrency);
+
+$('[data-calculate]').each(function(i, elem){
+    var display = $(elem);
+    var operation = display.attr('data-calculate');
+    var target = $(display.attr('data-target')).find('input');
+    var oper = display.attr('data-oper');
+
+    target.on('input', function(){
+        updateDisplay(operation, oper, target, display);
     });
+    updateDisplay(operation, oper, target, display);
+
+});
 </script>
 {% endblock scripts %}
