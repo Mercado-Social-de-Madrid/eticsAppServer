@@ -1,0 +1,14 @@
+
+{% with wallet.user.get_related_entity as instance %}
+
+{% if instance.1 %}
+    {% if instance.0 == 'entity' %}
+        {% include 'entity/row_display.html' with item=instance.1 %}
+    {% else %}
+        {% include 'profile/row_display.html' with item=instance.1 %}
+    {% endif %}
+{% else %}
+<td>-</td>
+{% endif %}
+
+{% endwith %}

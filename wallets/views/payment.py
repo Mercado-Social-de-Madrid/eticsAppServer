@@ -29,12 +29,12 @@ def pending_payments(request):
     }
 
     if request.is_ajax():
-        response = render(request, 'wallets/payments_query.html', params)
+        response = render(request, 'payment/query.html', params)
         response['Cache-Control'] = 'no-cache'
         response['Vary'] = 'Accept'
         return response
     else:
-        return render(request, 'wallets/pending_payments.html', params)
+        return render(request, 'payment/pending_payments.html', params)
 
 
 
@@ -79,7 +79,7 @@ def payment_detail(request, pk):
     if receiver_type == 'entity':
         params['bonus'] = entity.bonus(payment.total_amount, sender_type)
 
-    return render(request, 'wallets/payment_detail.html', params)
+    return render(request, 'payment/detail.html', params)
 
 
 class SelectPaymentReceiverView(FilterView, ListItemUrlMixin, AjaxTemplateResponseMixin):
@@ -147,9 +147,9 @@ def admin_payments(request):
     }
 
     if request.is_ajax():
-        response = render(request, 'wallets/payments_query.html', params)
+        response = render(request, 'payment/query.html', params)
         response['Cache-Control'] = 'no-cache'
         response['Vary'] = 'Accept'
         return response
     else:
-        return render(request, 'wallets/admin_payments.html', params)
+        return render(request, 'payment/admin.html', params)

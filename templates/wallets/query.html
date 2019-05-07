@@ -1,0 +1,20 @@
+{% extends 'common/list/base.html' %}
+
+ {% block table_head %}
+
+    <th scope="col">Usuario</th>
+      <th scope="col">Titular</th>
+      <th scope="col">Tipo</th>
+      <th scope="col">Balance</th>
+<th scope="col">Última transacción</th>
+{% endblock %}
+
+
+{% block item_row %}
+<td>{% if item.user.is_registered %} {{item.user}} {% else %} <span class="text-grey">Pendiente</span> {% endif %}</td>
+{% include 'wallets/account.html' with wallet=item %}
+<td>{{item.type}}</td>
+<td> {% include 'wallets/currency_amount.html' with amount=item.balance %}</td>
+<td>{% if item.last_transaction %}{{ item.last_transaction|timesince }}{% else %} Nunca {% endif %} </td>
+
+{% endblock %}

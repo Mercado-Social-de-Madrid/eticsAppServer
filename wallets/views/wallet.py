@@ -3,15 +3,23 @@ from __future__ import unicode_literals
 
 import json
 
+import django_filters
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models.functions import TruncDay
+from django.utils.decorators import method_decorator
+from django_filters.views import FilterView
 
 import helpers
 from helpers import superuser_required
+from helpers.filters.LabeledOrderingFilter import LabeledOrderingFilter
+from helpers.filters.SearchFilter import SearchFilter
+from helpers.forms.BootstrapForm import BootstrapForm
+from helpers.mixins.AjaxTemplateResponseMixin import AjaxTemplateResponseMixin
+from helpers.mixins.ListItemUrlMixin import ListItemUrlMixin
 from wallets.models import Payment, Wallet, TransactionLog, Transaction, WalletType
 from django.utils import timezone
 
@@ -22,6 +30,31 @@ def wallet_types_list(request):
     wallet_types = WalletType.objects.all()
     return render(request, 'wallets/types_list.html', {'wallet_types':wallet_types})
 
+
+class WalletFilterForm(BootstrapForm):
+    field_order = ['o', 'type', ]
+
+
+class WalletFilter(django_filters.FilterSet):
+
+    o = LabeledOrderingFilter(fields=['last_transaction', 'balance'], field_labels={'last_transaction':'Última transacción','balance':'Saldo'})
+
+    class Meta:
+        model = Wallet
+        form = WalletFilterForm
+        fields = [ 'type' ]
+
+
+@method_decorator(superuser_required, name='dispatch')
+class WalletListView(FilterView, ListItemUrlMixin, AjaxTemplateResponseMixin):
+
+    model = Wallet
+    queryset = Wallet.objects.filter(user__isnull=False).order_by('-last_transaction')
+    objects_url_name = 'create_payment'
+    template_name = 'wallets/list.html'
+    ajax_template_name = 'wallets/query.html'
+    filterset_class = WalletFilter
+    paginate_by = 10
 
 
 @login_required
