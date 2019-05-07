@@ -121,7 +121,7 @@ def new_payment(request, pk):
                 messages.add_message(request, messages.SUCCESS,
                                      'Pago enviado con éxito')
                 return redirect('pending_payments')
-            except Wallet.WrongPinCode as e:
+            except Wallet.WrongPinCode:
                 print 'Wrong pincode!'
                 data['wrongpingcode'] = True
             except Wallet.NotEnoughBalance:
