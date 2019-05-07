@@ -22,6 +22,13 @@ from helpers import RandomFileName
 from currency.models import Category, Gallery, City
 
 
+
+class EntityManager(models.Manager):
+
+    def active(query):
+        return query.filter(user__preregister__isnull=True)
+
+
 class Entity(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -66,6 +73,8 @@ class Entity(models.Model):
 
     gallery = models.OneToOneField(Gallery, blank=True, null=True, on_delete=models.SET_NULL)
 
+    objects = EntityManager()
+
     @property
     def display_name(self):
         return self.name
@@ -99,6 +108,8 @@ class Entity(models.Model):
 
     def __unicode__(self):
         return self.name if self.name else 'Entidad'
+
+
 
 
 # Method to add every user with a related entity to the entities group

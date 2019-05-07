@@ -119,6 +119,12 @@ class EntityListView(ExportAsCSVMixin, FilterView, ListItemUrlMixin, AjaxTemplat
     filterset_class = EntityFilter
     paginate_by = 7
 
+    def get_queryset(self):
+        queryset = super(EntityListView, self).get_queryset()
+        if not self.request.user.is_superuser:
+            queryset = Entity.objects.active()
+        return queryset
+
     csv_filename = 'entidades'
     available_fields = ['cif', 'name', 'business_name', 'public_address', 'address',  'contact_email', 'contact_phone',
                         'postalcode', 'city', 'address', 'province', 'iban_code', 'registration_date', 'is_physical_store',

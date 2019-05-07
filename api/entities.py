@@ -49,7 +49,7 @@ class GalleryResource(ModelResource):
 class EntitySimpleResource(ModelResource):
 
     class Meta:
-        queryset = Entity.objects.all()
+        queryset = Entity.objects.active()
         include_resource_uri = False
         list_allowed_methods = ['get']
         resource_name = 'simple_entity'
@@ -78,7 +78,7 @@ class EntitiesDetailResource(ModelResource):
     gallery = fields.ToOneField(GalleryResource, 'gallery', full=True, null=True)
 
     class Meta:
-        queryset = Entity.objects.all()
+        queryset = Entity.objects.active()
         include_resource_uri = False
         list_allowed_methods = ['get', 'post']
         resource_name = 'entities'

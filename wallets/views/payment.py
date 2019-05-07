@@ -85,7 +85,7 @@ def payment_detail(request, pk):
 class SelectPaymentReceiverView(FilterView, ListItemUrlMixin, AjaxTemplateResponseMixin):
 
     model = Entity
-    queryset = Entity.objects.all()
+    queryset = Entity.objects.active()
     objects_url_name = 'create_payment'
     template_name = 'payment/select_entity.html'
     ajax_template_name = 'payment/entity.html'
