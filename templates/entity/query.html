@@ -11,28 +11,7 @@
 
 {% block item_row %}
 
-<td class="entity-td">
-          <div class="profile-circle small">
-              {% if item.logo %} <img src="{{item.logo_thumbnail.url}}"> {%endif%}
-          </div>
-
-        {% if request.user.is_superuser %}
-          <span class="entity-status">
-              {% if item.user.is_registered %}
-                {% if item.is_guest_account %}
-                    <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Invitada">card_membership</i>
-                {% else %}
-                    <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Registrada">done_all</i>
-                {% endif %}
-              {% else %}
-                <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Pendiente registro">schedule</i>
-              {% endif %}
-          </span>
-        {% endif %}
-
-          <h5 class="mb-0">{{item.name}}</h5>
-          {{item.address}}
-        </td>
+{% include 'entity/row_display.html'  %}
 
         {% if request.user.is_superuser %}
         <td>{{ item.max_percent_payment }} %</td>
