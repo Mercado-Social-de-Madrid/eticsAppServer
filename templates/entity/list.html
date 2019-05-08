@@ -15,10 +15,11 @@
         {% include 'common/list/ajax_wrapper.html' with query_template='entity/query.html' %}
 
 </div>
-
+{% if request.user.is_superuser %}
 <a href="{% url 'add_entity' %}" class="fab btn btn-primary btn-lg rounded-circle btn-float"  data-toggle="tooltip" data-placement="left" title="Añadir entidad">
          <i class="material-icons">add</i>
         </a>
+{% endif %}
 
 {% endblock%}
 

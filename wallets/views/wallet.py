@@ -75,7 +75,8 @@ def wallet_detail(request, pk):
         start_date = timezone.now() - datetime.timedelta(days=71)
         end_date = timezone.now()
 
-        transactions_bydate = Transaction.objects.filter(timestamp__gte=start_date,
+        transactions_bydate = TransactionLog.objects.filter(wallet=wallet,
+                                                        timestamp__gte=start_date,
                                                          timestamp__lte=end_date) \
             .annotate(day=TruncDay('timestamp')) \
             .values('day') \
