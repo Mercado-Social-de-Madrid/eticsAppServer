@@ -38,7 +38,6 @@ class WalletFilterForm(BootstrapForm):
 class WalletFilter(django_filters.FilterSet):
 
     o = LabeledOrderingFilter(fields=['last_transaction', 'balance'], field_labels={'last_transaction':'Última transacción','balance':'Saldo'})
-
     class Meta:
         model = Wallet
         form = WalletFilterForm
@@ -50,11 +49,42 @@ class WalletListView(FilterView, ListItemUrlMixin, AjaxTemplateResponseMixin):
 
     model = Wallet
     queryset = Wallet.objects.filter(user__isnull=False).order_by('-last_transaction')
-    objects_url_name = 'create_payment'
+    objects_url_name = 'wallet_detail'
     template_name = 'wallets/list.html'
     ajax_template_name = 'wallets/query.html'
     filterset_class = WalletFilter
     paginate_by = 10
+
+
+@superuser_required
+def wallet_detail(request, pk):
+
+    wallet = get_object_or_404(Wallet, pk=pk)
+    user_type, instance = wallet.user.get_related_entity()
+    transactions = TransactionLog.objects.filter(wallet=wallet)
+    page = request.GET.get('page')
+    transactions = helpers.paginate(transactions, page, elems_perpage=10)
+
+    if request.is_ajax():
+        response = render(request, 'wallets/transaction_logs_query.html', {'transactions':transactions})
+        response['Cache-Control'] = 'no-cache'
+        response['Vary'] = 'Accept'
+        return response
+    else:
+
+        start_date = timezone.now() - datetime.timedelta(days=71)
+        end_date = timezone.now()
+
+        transactions_bydate = Transaction.objects.filter(timestamp__gte=start_date,
+                                                         timestamp__lte=end_date) \
+            .annotate(day=TruncDay('timestamp')) \
+            .values('day') \
+            .annotate(total=Sum('amount')).order_by('day')
+
+        return render(request, 'wallets/detail.html', {
+            'showing_all': False, 'instance':instance, 'user_type':user_type,
+            'wallet': wallet, 'transactions': transactions,'transactions_bydate':transactions_bydate
+        })
 
 
 @login_required

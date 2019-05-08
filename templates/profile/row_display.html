@@ -1,6 +1,6 @@
 {% load staticfiles %}
 
-<td class="entity-td">
+<{% if show_inline %}div{% else %}td{% endif%} class="entity-td">
       <div class="profile-circle small">
            <img src="{% if item.profile_image %}{{item.profile_thumbnail.url}}{% else %}{% static 'imgs/profile.png' %}{% endif %}">
       </div>
@@ -20,4 +20,4 @@
 
     <h5 class="mb-0">{{item.name}}</h5>
     {{item.address}}
-</td>
+</{% if show_inline %}div{% else %}td{% endif%}>

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+{% load i18n %}
+{% block title %}Monedero{% endblock%}
+
+{% block bodyattrs %}class="entity"{% endblock%}
+
+{% block content %}
+
+<div class="container px-md-5">
+        <div class="row">
+            <div class="col-md-7">
+                 <div class="card mb-4">
+                     <div class="card-body py-4">
+                         <div class="row">
+                             <div class="col-sm-5" style="border-right:1px solid #ccc;">
+                                 {% include 'wallets/wallet_balance.html' with wallet=wallet %}<br>
+                                 <strong class="ml-4 text-primary">Tipo:</strong> {{wallet.type}}<br>
+                                 <strong class="ml-4 text-primary">Límite de crédito:</strong>{% if wallet.type.unlimited %} Ilimitado {% else %} {{wallet.type.credit_limit}} {% endif %}
+
+                             </div>
+
+                             {% if user_type == 'entity' %}
+                             <div class="col-sm-7">
+
+                                 {% include 'entity/row_display.html' with item=instance show_inline=True %}
+                                 <div class="ml-4 mt-3">
+
+                                        <a href="{% url 'entity_detail' instance.pk %}" class="btn btn-lg mb-3 btn-primary">Ver detalle entidad</a><br>
+
+
+                                     <button type="button" class="btn btn-lg disabled">Ver pagos pendientes</button>
+                                     </div>
+                              </div>
+
+
+                             {% else %}
+
+                              <div class="col-sm-7">
+
+                                 {% include 'profile/row_display.html' with item=instance show_inline=True %}
+                                 <div class="ml-4 mt-3">
+
+                                       <a href="{% url 'profile_detail' instance.pk %}" class="btn btn-lg mb-3 btn-primary">Ver perfil</a><br>
+
+
+                                     <button type="button" class="btn btn-lg disabled">Ver pagos pendientes</button>
+                                     </div>
+                              </div>
+
+                                     {% endif %}
+                         </div>
+
+                     </div>
+                 </div>
+            </div>
+            <div class="col-md-5">
+                {% include "common/activity_graph.html" with graph_data=transactions_bydate floatvalues=True %}
+            </div>
+
+        </div>
+
+        <div class="card">
+            <div class="card-body py-4">
+                <h5 class="card-title px-2"><i class="material-icons mr-2 text-primary">swap_horiz</i>Últimos movimientos</h5>
+                <div class="ajax-load">
+                    <div class="results">
+                {% include 'wallets/transaction_logs_query.html' with transactions=transactions %}
+                    </div>
+                </div>
+        </div>
+        </div>
+</div>
+
+
+{% endblock%}
+
+{% block scripts %}
+<script type="text/javascript">
+    $('.table-action').on('click', function(e){
+        e.preventDefault();
+
+        return false;
+    });
+</script>
+{% endblock scripts %}

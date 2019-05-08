@@ -386,10 +386,14 @@ h1, h2, h3, h4, .primary-title{
     background-color: #C6E504;
 }
 
-.table tbody td.entity-td{
+.table tbody td.entity-td, .entity-td{
     padding-left:80px;
     height:70px;
     position:relative;
+}
+div.entity-td{
+    padding-bottom: .919643rem;
+    padding-top: .919643rem;
 }
 .entity-card{
      padding-left:80px;
@@ -398,7 +402,7 @@ h1, h2, h3, h4, .primary-title{
 .display-4 .form-control{
     font-size:inherit;
 }
-td.entity-td .entity-status{
+.entity-td .entity-status{
     position:absolute;
     width:26px;
     height:26px;
@@ -437,7 +441,8 @@ td.entity-td .entity-status{
       -ms-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
 }
-td.entity-td .profile-circle, .entity-card .profile-circle{
+.entity-td .profile-circle, .entity-card .profile-circle{
+    font-size: .8125rem;
     position:absolute;
     top:50%;
     left:18px;
@@ -446,7 +451,9 @@ td.entity-td .profile-circle, .entity-card .profile-circle{
     line-height:50px;
     margin-top:-25px;
 }
-
+.entity-td h5{
+    font-family: 'Comfortaa', cursive;
+}
 @media (min-width: 992px){
     .navdrawer-permanent-lg + #main-content, .navbar-drawer .container{
         margin-left:17.9rem;
