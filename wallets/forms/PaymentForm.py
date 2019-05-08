@@ -12,7 +12,7 @@ class PaymentForm(forms.ModelForm):
         kwargs.setdefault('label_suffix', '')
         form = super(PaymentForm, self).__init__(*args, **kwargs)
 
-    pincode = forms.CharField(max_length=30, widget=forms.PasswordInput, required=True,
+    pincode = forms.CharField(max_length=30, widget=forms.PasswordInput, required=False,
                               label="Código PIN (cuatro dígitos)")
 
     class Meta:
@@ -44,6 +44,6 @@ class PaymentForm(forms.ModelForm):
         concept = self.cleaned_data.get('concept')
         pincode = self.cleaned_data.get('pincode', None)
 
-        payment = Payment.objects.new_payment(sender=sender, receiver_uuid=receiver.pk,
+        return Payment.objects.new_payment(sender=sender, receiver_uuid=receiver.pk,
                                               total_amount=total_amount, currency_amount=currency_amount,concept=concept, pin_code=pincode )
 
