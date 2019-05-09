@@ -2,11 +2,20 @@
 
 Bienvenid@ al Mercado Social!
 Hola, {{entity}}!
-Recibes este email porque has sido dada de alta recientemente para utilizar etics, la app del Mercado Social de Madrid.
-Solo falta un último paso, que es que cuentes con una manera de acceder a tu área privada.
-Introduce el nombre de usuario y contraseña que utilizarás a partir de ahora en la app para gestionar tus compras en etics y la información de tu perfil en el siguiente enlace: {% settings_value 'BASESITE_URL' %}{% url 'preregister' token %}
 
-Desde ese momento, podrás acceder a tu panel de usuario y configurar el perfil de tu entidad y tus ofertas, así como gestionar tu uso de la moneda social.
+
+Recibes este email porque eres entidad proveedora del Mercado Social de Madrid. Te informamos de que te hemos dado de alta para utilizar la nueva app móvil del mercado.
+Muchas entidades de la red ya están registradas. Salimos a la calle el 10 de mayo, por fin ha llegado el momento.
+Para acceder solo falta un último paso, que cuentes con la manera de acceder a tu área privada:
+Introduce el nombre de usuario y contraseña que utilizarás a partir de ahora en la app en el siguiente enlace: {% settings_value 'BASESITE_URL' %}{% url 'preregister' token %}
+
+Desde ese momento, podrás acceder al perfil de tu entidad, gestionar tus ofertas, así como acceder al uso de los nuevos puntos etics. Si tenías saldo pendiente de boniatos (positivo o negativo) verás que lo recuperamos en esta nueva etapa convertidos en puntos etics (bonificaciones en compra).
+
+Tenemos una nueva app:
+* Que establece un nuevo canal de comunicación con nuestras consumidoras y nuestras entidades.
+* Que nos proporciona herramientas para ser más visibles.
+* Que permite recibir bonificaciones y pagar con ellas.
+* Que nos da la oportunidad de actuar en colectivo y apoyar otra forma de hacer economía: social y solidaria.
 
 
 Aplicación móvil
