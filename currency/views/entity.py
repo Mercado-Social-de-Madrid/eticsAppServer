@@ -237,7 +237,7 @@ def entity_edit(request, pk):
 @xframe_options_exempt
 def entity_map(request):
 
-    entities = Entity.objects.all()
+    entities = Entity.objects.active()
     query_string = ''
     if ('q' in request.GET) and request.GET['q'].strip():
         query_string = request.GET['q']
@@ -254,7 +254,5 @@ def entity_map(request):
         'query_string': query_string,
         'entities': entities,
     }
-
-
 
     return render(request, 'entity/map.html', params)
