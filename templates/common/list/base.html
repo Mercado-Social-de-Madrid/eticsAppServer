@@ -26,4 +26,6 @@
 </table>
 </div>
 
-{% include 'common/pagination.html' with page=page_obj %}
+{% if page or page_obj %}
+    {% include 'common/pagination.html' with page=page_obj %}
+{% endif %}

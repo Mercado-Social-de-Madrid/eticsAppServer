@@ -1,7 +1,9 @@
 {% load query_string %}
 
+<nav class="row mt-3">
+    <div class="col-md-3 d-sm-none d-xs-none d-md-block pt-4 pl-5">{% if page.paginator %}<small>{{page.paginator.count|default:0}} elementos</small>{% endif %}</div>
+    <div class="col-md-6">
 {% if page.has_previous or page.has_next %}
-<nav class="text-center">
   <ul class="pagination justify-content-center">
       {% if page.has_previous %}
           <li class="page-item">
@@ -36,5 +38,13 @@
          </li>
       {% endif %}
   </ul>
+        </div>
+    <div class="col-md-3">
+
+    </div>
+
+
+</nav>
+
 </nav>
 {% endif %}
