@@ -1,6 +1,7 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from fcm_django.models import FCMDevice
-
+from pyfcm import FCMNotification
 
 def notify_user(user, data, title=None, message=None, silent=True):
     '''
@@ -70,4 +71,20 @@ def broadcast_notification(users=None, data=None, title=None, body=None, silent=
         }
         result = devices.send_message(title=title, body=body, data=data, time_to_live=30, content_available=True, sound='default', **kwargs)
 
+    return result
+
+
+def topic_message(topic, data=None, title=None, body=None, silent=True):
+    push_service = FCMNotification(api_key=settings.FCM_SERVER_KEY)
+
+    if not data:
+        data = {}
+    if not body and not title:
+        silent = True
+    if title and silent:
+        data['title'] = title
+    if body and silent:
+        data['message'] = body
+
+    result = push_service.notify_topic_subscribers(topic_name=topic, message_title=title, message_body=body, data_message=data)
     return result

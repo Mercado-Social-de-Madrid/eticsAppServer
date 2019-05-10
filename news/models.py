@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-
 import uuid
-
-import datetime
 
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Q
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from imagekit.models import ProcessedImageField, ImageSpecField
@@ -17,6 +13,7 @@ from pilkit.processors import ResizeToFit, ResizeToFill
 import helpers
 from helpers import RandomFileName
 
+NEWS_NOTIFICATION_TOPIC = 'news'
 
 class News(models.Model):
 
@@ -60,4 +57,4 @@ def notify_news(sender, instance, created, **kwargs):
             'title': instance.title,
             'short_description': instance.short_description
         }
-        helpers.broadcast_notification(title='Nueva noticia!', data=data, body=instance.title, silent=False)
+        helpers.topic_message(NEWS_NOTIFICATION_TOPIC, title='Nueva noticia!', data=data, body=instance.title, silent=False)
