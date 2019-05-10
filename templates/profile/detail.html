@@ -43,10 +43,12 @@
                       {{person.surname}}
                   </div>
 
+                  {% if not person.is_guest_account %}
                   <div class="col-md-6 my-2">
                       <label>NIF/CIF</label><br>
                       {{person.nif}}
                   </div>
+                  {% endif %}
 
                   <div class="col-md-6 my-2">
                       <label>Email</label><br>

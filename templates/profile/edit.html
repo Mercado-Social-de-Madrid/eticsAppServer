@@ -43,10 +43,19 @@
 
             <h4 class="card-title">{{person.full_name}}</h4>
             <div class="card-text">
-                <p>
+
+                {% if person.is_guest_account %}
+                <div {% if not request.user.is_superuser %}style="display:nne;"{%endif%}>
+                    <label>ID invitada</label>
+                    {{form.nif}}
+                </div>
+                {% else %}
+                    <p>
                     <label>{{form.nif.label}}</label>
                     {{form.nif}}
                 </p>
+                {% endif %}
+
                 <p>
                     <label>{{form.name.label}}</label>
                     {{form.name}}
