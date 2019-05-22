@@ -7,7 +7,7 @@ from django_filters.views import FilterView
 
 import helpers
 from currency.forms.PersonForm import PersonForm
-from currency.models import Person
+from currency.models import Person, PreRegisteredUser
 from helpers.filters.LabeledOrderingFilter import LabeledOrderingFilter
 from helpers.filters.SearchFilter import SearchFilter
 from helpers.forms.BootstrapForm import BootstrapForm
@@ -88,9 +88,17 @@ def profile_detail(request, pk):
     person = get_object_or_404(Person, pk=pk)
     can_edit = request.user.is_superuser or request.user == person.user
     form = PersonForm(instance=person)
-    return render(request, 'profile/detail.html', {
-        'person': person, 'form':form, 'can_edit':can_edit
-    })
+    data = {
+        'person': person,
+        'form': form,
+        'can_edit': can_edit
+    }
+    if request.user.is_superuser:
+        preuser = PreRegisteredUser.objects.filter(user=person.user).first()
+        if preuser:
+            data['preregister_user'] = preuser
+
+    return render(request, 'profile/detail.html', data)
 
 
 @login_required

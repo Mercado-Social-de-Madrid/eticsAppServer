@@ -68,6 +68,27 @@
 
               </div>
 
+                  {% if request.user.is_superuser %}
+            <hr class="mt-4">
+            <h4 class="mb-3">Usuario</h4>
+                {% if preregister_user %}
+                    <span class="primary-title"><strong>Prerregistro: </strong></span> aún no se ha creado usuario<br>
+                    <span class="primary-title"><strong>Enlace: </strong></span>
+                <a href="{% settings_value 'BASESITE_URL' %}{% url 'preregister' preregister_user.id %}" style="color:blue;" target="_blank">
+                {% settings_value 'BASESITE_URL' %}{% url 'preregister' preregister_user.id %}</a>
+                {% else %}
+                    <span class="primary-title"><strong>Username:</strong></span>
+                    {{ person.user.username }}<br>
+                    <span class="primary-title"><strong>Último acceso:</strong></span>
+                    {% if entity.user.last_login %} Hace {{person.user.last_login|timesince}}{% else %} Nunca {% endif %}
+
+                    <h4 class="mt-3">Saldo</h4>
+                    <span class="display-4"> {{person.user.wallet.balance|floatformat:2}}<i class="currency-icon"></i><a href="{% url 'wallet_detail' person.user.wallet.pk %}" class="btn ml-2">Ver movimientos</a></span>
+
+            {% endif %}
+
+            {% endif %}
+
 
             </div>
 
