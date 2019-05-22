@@ -43,14 +43,16 @@ def payment_detail(request, pk):
 
     payment = get_object_or_404(Payment, pk=pk)
     can_edit = request.user == payment.receiver or request.user.is_superuser
+    can_view = request.user == payment.sender or request.user.is_superuser
 
-    if not can_edit:
+    if not can_edit and not can_view:
         messages.add_message(request, messages.ERROR, 'No tienes permisos para ver este pago')
-        return redirect('entity_detail', pk=payment.pk )
+        return redirect('pending_payments')
 
-    params = { 'payment': payment }
 
-    if request.method == "POST":
+    params = { 'payment': payment, 'can_edit':can_edit }
+
+    if request.method == "POST" and can_edit:
         action = request.POST.get("action", "")
         if action == 'accept':
             try:
@@ -58,7 +60,11 @@ def payment_detail(request, pk):
                 if request.is_ajax():
                     return JsonResponse({'success':True})
                 else:
-                    return redirect('pending_payments')
+                    messages.add_message(request, messages.SUCCESS, 'Pago aceptado con éxito')
+                    if request.user.is_superuser:
+                        return redirect('admin_payments')
+                    else:
+                        return redirect('pending_payments')
             except Wallet.NotEnoughBalance:
                 params['notenoughbalance'] = True
                 if request.is_ajax():
@@ -71,11 +77,17 @@ def payment_detail(request, pk):
             if request.is_ajax():
                 return JsonResponse({'success': True})
             else:
-                return redirect('pending_payments')
+                messages.add_message(request, messages.SUCCESS, 'Pago rechazado con éxito')
+                if request.user.is_superuser:
+                    return redirect('admin_payments')
+                else:
+                    return redirect('pending_payments')
 
     sender_type, sender = payment.sender.get_related_entity()
     receiver_type, entity = payment.receiver.get_related_entity()
     params['sender'] = sender
+    params['receiver'] = entity
+
     if receiver_type == 'entity':
         params['bonus'] = entity.bonus(payment.total_amount, sender_type)
 
@@ -120,7 +132,7 @@ def new_payment(request, pk):
                 payment = form.save()
                 messages.add_message(request, messages.SUCCESS,
                                      'Pago enviado con éxito')
-                return redirect('pending_payments')
+                return redirect('payment_detail', pk=payment.pk)
             except Wallet.WrongPinCode:
                 print 'Wrong pincode!'
                 data['wrongpingcode'] = True

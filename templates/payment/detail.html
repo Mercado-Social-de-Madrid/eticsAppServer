@@ -18,6 +18,7 @@
                 <div class="card">
                     <div class="card-body px-5 pt-5">
                         <h4 class="card-title">Detalles de pago</h4>
+                        <span class="lead">{{sender}}</span> <i class="material-icons md-18 ">arrow_forward_ios</i><span class="lead"> {{receiver}}</span>
                         <p><strong>Fecha: </strong> {{payment.timestamp}}</p>
                         <p><strong>Estado:</strong>
                         {% if payment.status == 'accepted' %}<span class="text-success"><i class="material-icons md-36" >play_circle_outline</i> Aceptado</span> {% endif %}
@@ -25,7 +26,7 @@
                         {% if payment.status == 'cancelled' %}<span class="text-danger"><i class="material-icons md-36" >play_circle_outline</i> Cancelado</span> {% endif %}
                         </p>
 
-                        <p class="lead">{{sender}}</p>
+
                         {% if payment.concept %} {{payment.concept}} {% endif %}
                         <hr>
                         <div class="row">
@@ -37,7 +38,7 @@
 
                     </div>
 
-                    {% if payment.status == 'pending' %}
+                    {% if payment.status == 'pending' and can_edit %}
                     <div class="card-footer p-4 border-primary text-center">
                         {% if notenoughbalance %}
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
