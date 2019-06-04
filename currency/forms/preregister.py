@@ -20,7 +20,7 @@ class UserForm(forms.ModelForm):
 
 
     repeat_password = forms.CharField(max_length=30, widget=forms.PasswordInput, required=True, label="Repetir contraseña")
-    pincode = forms.CharField(max_length=30, widget=forms.PasswordInput, required=True,
+    pincode = forms.CharField(max_length=4, widget=forms.PasswordInput, required=True,
                                       label="Código PIN (cuatro dígitos)")
 
 
@@ -32,6 +32,7 @@ class UserForm(forms.ModelForm):
         if not re.compile('^\d+$').match(pincode):
             raise forms.ValidationError("El PIN solo puede contener dígitos")
 
+        return pincode
 
     def clean_username(self):
         username = self.cleaned_data.get('username','')

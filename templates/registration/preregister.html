@@ -41,7 +41,7 @@
 
         <div class="form-group">
             <label>Nombre de usuario</label>
-            <input class="form-control" value="{{form.username.value}}" id="{{ form.username.id_for_label }}" maxlength="30" name="{{ form.username.html_name }}" type="text" placeholder="Usuario"/>
+            <input class="form-control" value="{{form.username.value|default_if_none:''}}" id="{{ form.username.id_for_label }}" maxlength="30" name="{{ form.username.html_name }}" type="text" placeholder="Usuario"/>
             {%if form.username.errors %}
             <div class="d-block invalid-feedback">
                 {%for error in form.username.errors %} {{error}} {%endfor%}
@@ -51,7 +51,7 @@
 
       <div class="form-group">
           <label>Contraseña</label>
-            <input class="form-control" value="{{form.password.value}}" id="{{ form.password.id_for_label }}" maxlength="30" name="{{ form.password.html_name }}" type="password" />
+            <input class="form-control" value="{{form.password.value|default_if_none:''}}" id="{{ form.password.id_for_label }}" maxlength="30" name="{{ form.password.html_name }}" type="password" />
             {%if form.password.errors %}
             <div class="d-block invalid-feedback">
                 {%for error in form.password.errors %} {{error}} {%endfor%}
@@ -61,7 +61,7 @@
 
       <div class="form-group">
           <label>Repetir contraseña</label>
-            <input class="form-control" value="{{form.repeat_password.value}}" id="{{ form.repeat_password.id_for_label }}" maxlength="30" name="{{ form.repeat_password.html_name }}" type="password" />
+            <input class="form-control" value="{{form.repeat_password.value|default_if_none:''}}" id="{{ form.repeat_password.id_for_label }}" maxlength="30" name="{{ form.repeat_password.html_name }}" type="password" />
             {%if form.repeat_password.errors %}
             <div class="d-block invalid-feedback">
                 {%for error in form.repeat_password.errors %} {{error}} {%endfor%}
@@ -73,7 +73,7 @@
           Para asegurar tus transacciones en etics, introduce un código PIN de cuatro dígitos que se te solicitará antes de cada movimiento:
           <label class="text-center d-block mt-3">Código PIN</label>
 
-            <input class="form-control pincode" value="{{form.pincode.value}}" pattern="[0-9]{4}" maxlength="4" id="{{ form.pincode.id_for_label }}" placeholder="____" name="{{ form.pincode.html_name }}" type="password" />
+            <input class="form-control pincode" value="{{form.pincode.value|default_if_none:''}}" pattern="[0-9]{4}" maxlength="4" id="{{ form.pincode.id_for_label }}" placeholder="____" name="{{ form.pincode.html_name }}" type="password" />
             {%if form.pincode.errors %}
             <div class="d-block invalid-feedback">
                 {%for error in form.pincode.errors %} {{error}} {%endfor%}
