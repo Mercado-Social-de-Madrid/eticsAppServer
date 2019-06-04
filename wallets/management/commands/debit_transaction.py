@@ -17,14 +17,14 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('cif', type=str, help='The id for the user')
         parser.add_argument('amount', type=str, help='The amount to add from the debit wallet')
-
+        parser.add_argument('concept', type=str, nargs='?', default='Compra de etics')
 
     def handle(self, *args, **options):
 
         account = options['cif']
         amount = float(options['amount'])
+        concept = options['concept']
 
-        concept = 'Compra de etics'
         if not amount or not account:
             print 'Wrong arguments'
             return
