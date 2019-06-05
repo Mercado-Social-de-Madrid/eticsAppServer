@@ -95,7 +95,7 @@ def preregister(request, pk):
 
             preuser.delete()
             messages.add_message(request, messages.SUCCESS, 'Datos de acceso modificados satisfactoriamente')
-            return redirect('login')
+            return redirect('preregister_success')
     else:
         form = UserForm()
 
@@ -106,6 +106,11 @@ def preregister(request, pk):
 
         'instance': instance,
     })
+
+
+def preregister_success(request):
+    return render(request, 'registration/success.html', {
+})
 
 @login_required
 def edit_profile(request):

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load settings_value %}
+
+{% block title %}Registro{% endblock %}
+
+
+{% block content %}
+
+<div class="jumbo-header minimal" >
+    <div class="jumbotron">
+        <div class="container text-center">
+            <h1>Registro</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+        <h4>¡Tu registro se ha completado!</h4>
+        Ya puedes entrar en la app para gestionar tus compras en etics y la información de tu perfil.
+
+        <div class="text-center mt-3">
+            ¿Aún no tienes la app del Mercado Social?
+            <br><br>
+            <a href="https://play.google.com/store/apps/details?id=net.mercadosocial.moneda" target="_blank" class="btn btn-primary mx-2"> Descarga en Google Play</a>
+            <a href="https://itunes.apple.com/es/app/mercado-social/id1458549528?mt=8" target="_blank" class="btn btn-primary mx-2"> Descarga en App Store</a>
+        </div>
+
+        <div class="text-center mt-3">
+            <img src="{% static 'imgs/people-success.png' %}" class="img-fluid">
+        </div>
+    </div>
+
+
+{% endblock %}

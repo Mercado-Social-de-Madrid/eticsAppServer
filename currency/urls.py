@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^user/edit/password/$', views.profile_password, name='profile_password'),
 
     url(r'^register/(?P<pk>[0-9a-f-]+)/$', views.preregister, name='preregister'),
+    url(r'^register/success/$', views.preregister_success, name='preregister_success'),
 
     url(r'^map/$', views.entity_map, name='map'),
     url(r'^entity/$', views.user_entity, name='user_entity'),
