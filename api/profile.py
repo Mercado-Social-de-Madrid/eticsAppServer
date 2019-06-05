@@ -10,6 +10,8 @@ from tastypie.exceptions import NotFound
 from tastypie.http import HttpBadRequest
 from tastypie.resources import ModelResource
 
+from api.categories import CategoriesResource
+from api.cities import CitiesResource
 from currency.models import Entity, Person
 from wallets.models import Wallet
 
@@ -57,6 +59,9 @@ class InviteResource(ModelResource):
 
 
 class EntityResource(InviteResource):
+
+    categories = fields.ToManyField(CategoriesResource, 'categories', full=False, null=True)
+    city = fields.ForeignKey(CitiesResource, 'city', full=False, null=True)
 
     class Meta:
         queryset = Entity.objects.all()
