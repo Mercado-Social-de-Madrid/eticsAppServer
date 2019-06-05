@@ -14,6 +14,9 @@ urlpatterns = [
         auth_views.password_reset_confirm, name='password_reset_confirm'),
     url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
 
+    url(r'^user/edit/$', views.edit_profile, name='edit_user_profile'),
+    url(r'^user/edit/password/$', views.profile_password, name='profile_password'),
+
     url(r'^register/(?P<pk>[0-9a-f-]+)/$', views.preregister, name='preregister'),
 
     url(r'^map/$', views.entity_map, name='map'),

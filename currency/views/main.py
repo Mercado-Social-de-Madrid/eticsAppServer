@@ -1,5 +1,6 @@
+# coding=utf-8
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import EmptyPage, Paginator, PageNotAnInteger, InvalidPage
@@ -7,7 +8,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 import helpers
+from currency.forms.password import PasswordForm
 from currency.forms.preregister import UserForm
+from currency.forms.profile import ProfileForm
 from currency.models import PreRegisteredUser
 from offers.models import Offer
 from wallets.models import Wallet, Payment
@@ -86,7 +89,9 @@ def preregister(request, pk):
             user.set_password(form.cleaned_data.get('password', ''))
             user.save()
 
-            Wallet.update_user_pin_code(user=user, pin_code=form.cleaned_data.get('pincode', ''))
+            pin_code = form.cleaned_data.get('pincode', '')
+            print pin_code
+            Wallet.update_user_pin_code(user=user, pin_code=pin_code)
 
             preuser.delete()
             messages.add_message(request, messages.SUCCESS, 'Datos de acceso modificados satisfactoriamente')
@@ -101,3 +106,43 @@ def preregister(request, pk):
 
         'instance': instance,
     })
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        profile_form = ProfileForm(request.POST, instance=request.user)
+        if profile_form.is_valid():
+            profile_form.save()
+        else:
+            print profile_form.errors
+    else:
+        profile_form = ProfileForm(instance=request.user)
+    password_form = PasswordForm(user=request.user)
+
+    return render(request, 'registration/profile.html',
+                  {'profile_form': profile_form,
+                   'password_form':password_form,
+                   'profile_tab': True
+                   })
+
+@login_required
+def profile_password(request):
+    if request.method == 'POST':
+        password_form = PasswordForm(data=request.POST, user=request.user)
+
+        if password_form.is_valid():
+            user = password_form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Contraseña actualizada correctamente')
+            return redirect('edit_user_profile')
+        else:
+            print password_form.errors
+    else:
+        password_form = PasswordForm(user=request.user)
+
+    profile_form = ProfileForm(instance=request.user)
+    return render(request, 'registration/profile.html', {
+            'profile_form': profile_form,
+            'password_form':password_form,
+            'password_tab':True
+            })

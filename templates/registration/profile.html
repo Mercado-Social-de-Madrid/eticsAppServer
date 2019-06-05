@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}Mi perfil{% endblock %}
+
+{% block bodyattrs %}  {% endblock%}
+
+{% block content %}
+
+
+<div class="jumbo-header jumbo-entity form" >
+    <div class="jumbotron" style="background-image:url('{% static 'css/mes.jpg' %}');">
+        <div class="container">
+            <h3>Perfil de usuario</h3>
+        </div>
+
+    </div>
+</div>
+
+<div class="container px-md-5 mt-4">
+        <div class="card mx-md-5">
+          <div class="card-body px-5 py-5 pb-4">
+             <div class="card-text">
+<div class="row">
+    <div class="col-md-6 mb-4">
+
+            <h5 class="card-title mb-0 text-primary">Datos de conexión</h5>
+
+                  <div class="my-2">
+                      <label>Nombre de usuario</label><br>
+                      {{request.user.username}}
+                  </div>
+
+                  <div class="my-2">
+                      <label>Email de contacto</label><br>
+                      {{request.user.email}}
+                  </div>
+
+                  {% if not person.is_guest_account %}
+                  <div class="my-2">
+                      <label>Fecha de alta</label><br>
+                      {{request.user.date_joined}}
+                  </div>
+                  {% endif %}
+
+                  <div class="my-2">
+                      <label>Última conexión</label><br>
+                      {{request.user.last_login}}
+                  </div>
+
+
+              </div>
+
+        <div class="col-md-6">
+            <form method="post" class="edit-form" action="{% url 'profile_password' %}">
+
+        <h4><i class="material-icons">vpn_key</i> Actualizar contraseña</h4>
+         {% csrf_token %}
+
+        <div class="row justify-content-md-center">
+            <div class="col-md-12">
+                <div class="form-group" >
+                    <label>{{password_form.old_password.label}}</label>
+                    {{ password_form.old_password }}
+                </div>
+
+            </div>
+            <div class="col-md-12">
+                <div class="form-group" >
+                    <label>{{password_form.new_password1.label}}</label>
+                    {{ password_form.new_password1 }}
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group" >
+                    <label>{{password_form.new_password2.label}}</label>
+                    {{ password_form.new_password2 }}
+                </div>
+
+            </div>
+        </div>
+
+        <p class="text-center mt-3">
+          <button type="submit" class="btn btn-primary btn-lg">Cambiar contraseña</button>
+      </p>
+    </form>
+        </div>
+
+
+            </div>
+</div>
+          </div>
+
+        </div>
+
+</div>
+
+
+
+
+{% endblock %}
