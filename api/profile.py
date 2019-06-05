@@ -1,5 +1,7 @@
 import requests
+from django.conf import settings
 from django.conf.urls import url
+from django.urls import reverse
 from fcm_django.models import FCMDevice
 from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication
@@ -80,6 +82,24 @@ class EntityResource(InviteResource):
             raise NotFound("User has no associated entity")
 
         return entity
+
+
+    def dehydrate(self, bundle):
+        # Add thumbnail field
+        if bundle.obj.logo_thumbnail:
+            bundle.data['logo_thumbnail'] = bundle.obj.logo_thumbnail.url
+
+        bundle.data['qr_code'] = settings.BASESITE_URL + reverse('entity_qr_detail', args=(bundle.obj.pk,) )
+
+        if bundle.obj.city:
+            bundle.data['city'] = bundle.obj.city.id
+
+        if bundle.data['categories']:
+            for i, cat in enumerate(bundle.data['categories']):
+                bundle.data['categories'][i] = cat.split('/')[-2:][0]
+
+        return bundle
+
 
     def hydrate(self, bundle):
         if bundle.request.user:
