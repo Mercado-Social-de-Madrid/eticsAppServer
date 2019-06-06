@@ -15,5 +15,6 @@ urlpatterns = [
     url(r'^wallet/(?P<pk>[0-9a-f-]+)/$', views.wallet_detail, name='wallet_detail'),
     url(r'^wallet/types/$', views.wallet_types_list, name='wallet_types_list'),
     url(r'^transactions/$', views.transaction_list, name='transaction_list'),
+    url(r'^transactions/new/$', views.new_transaction, name='new_transaction'),
 
 ]

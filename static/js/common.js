@@ -46,7 +46,7 @@ function getCookie(name) {
 }
 
 (function( $ ) {
-    function loadResults(resultsContainer, url){
+    function loadResults(resultsContainer, url, keepUrl){
         if (url == null || url == '' || url.startsWith('#')){
             return;
         }
@@ -54,24 +54,32 @@ function getCookie(name) {
         $.get(url, {}, function(data){
             resultsContainer.find('.results').html(data);
             resultsContainer.find('[data-toggle="tooltip"]').tooltip();
-            resultsContainer.find(".link-row").click(function() {
-                window.location = $(this).data("href");
-            });
+
             resultsContainer.removeClass('loading-container');
-            var preserveHistory = resultsContainer.attr('data-preservehistory');
-            if (!preserveHistory || preserveHistory != 'true')
-                window.history.replaceState({}, '', url);
+            if (!keepUrl){
+                resultsContainer.find(".link-row").click(function() {
+                    window.location = $(this).data("href");
+                });
+
+                var preserveHistory = resultsContainer.attr('data-preservehistory');
+                if (!preserveHistory || preserveHistory != 'true')
+                    window.history.replaceState({}, '', url);
+            }
+
         });
     }
 
+
     $.fn.ajaxLoader = function( url_or_action ) {
         var self = this;
+        var initialUrl = self.attr('data-initial');
+        var keepUrl = (self.attr('data-keepurl') != null) && (self.attr('data-keepurl')!='');
 
         if ( url_or_action != null) {
 
             if (url_or_action === 'reload'){
                 var current = self.find('.pagination .page-item.active > a').attr('href');
-                loadResults(self, current);
+                loadResults(self, current, keepUrl);
                 return self;
             }
 
@@ -79,17 +87,19 @@ function getCookie(name) {
             return self;
         }
 
-        var initialUrl = self.attr('data-initial');
         if ((initialUrl != null) && (initialUrl!='')){
-            loadResults(self, initialUrl);
+            loadResults(self, initialUrl, keepUrl);
         }
 
         self.on('click', '.pagination a', function(e){
             e.preventDefault();
             if ($(this).parent().hasClass('active'))
                 return;
-            var url = $(this).attr('href')
-            loadResults(self, url);
+            var url = $(this).attr('href');
+            if ((url.startsWith('?')) && (initialUrl != null)){
+                url = initialUrl + url;
+            }
+            loadResults(self, url, keepUrl);
         });
 
     };

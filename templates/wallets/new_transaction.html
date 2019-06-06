@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}Transferencias{% endblock%}
+
+{% block bodyattrs %}class="entity"{% endblock%}
+
+{% block content %}
+<form method="POST" class="post-form gallery-form" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.media}}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12"><h3 class="primary-title mb-3">Nueva Transferencia</h3></div>
+        {% if notenoughbalance %}
+        <div class="col-sm-12">
+
+            <div class="alert alert-danger text-center"> El monedero seleccionado no tiene saldo suficiente para realizar la transferencia </div>
+                </div>
+        {% endif %}
+            <div class="col-md-5 mb-3">
+                <div class="input-group">
+                  <input type="text" name="user_placeholder" id="wallet_from" disabled class="form-control" maxlength="250" value="{% if wallet_from_display %}{{wallet_from_display }}{%endif%}" placeholder="Monedero origen">
+                    <div class="input-group-append">
+                    <button class="btn btn-outline-primary" type="button" id="fromBtn" style="min-width:0;"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Buscar">search</i></button>
+                  </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-1 text-center">
+                {{ form.wallet_from }}
+                <i class="material-icons mr-2" style="font-size:3rem;">swap_horiz</i>
+                {{ form.wallet_to }}
+            </div>
+
+            <div class="col-md-5 mb-2">
+                <div class="input-group">
+                  <input type="text" name="user_placeholder" id="wallet_to" disabled class="form-control" maxlength="250" value="{% if wallet_to_display %}{{wallet_to_display }}{%endif%}" placeholder="Monedero destino">
+                    <div class="input-group-append">
+                    <button class="btn btn-outline-primary" type="button" id="toBtn" style="min-width:0;"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Buscar">search</i></button>
+                  </div>
+                </div>
+            </div>
+    </div>
+    <div class="form-group">
+        <label>Cantidad</label>
+        {{form.amount}}
+    </div>
+
+    <div class="form-group">
+        <label>Concepto</label>
+        {{form.concept}}
+    </div>
+
+    <div class="custom-control custom-checkbox" style="display:none;">
+
+      {{form.is_bonification}}
+      <label class="custom-control-label" for="{{form.is_bonification.auto_id}}">{{form.is_bonification.label}}</label>
+    </div>
+
+    <div class="description text-center">
+                    <br>
+
+                <button type="submit" class="right-margin left-margin btn btn-primary btn-lg"> Añadir </button>
+            </div>
+
+</div>
+    </form>
+
+    <div class="modal fade" id="wallets-modal" tabindex="-1" role="dialog" aria-labelledby="new-user-label">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h3 class="modal-title" id="new-user-label">Selecciona monedero</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+      </div>
+      <div class="modal-body large-padding px-5">
+                <div class="ajax-load" data-initial="{{ ajax_url }}" data-keepurl="true">
+                    <div class="results">
+
+                    </div>
+                    <div class="loading-spinner"><div class="mes-loader"></div></div>
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+{% endblock%}
+
+{% block scripts %}
+<script type="text/javascript">
+    var walletFrom = $('#wallet_from');
+    var walletTo = $('#wallet_to');
+    var fromValue = $('#{{form.wallet_from.auto_id}}');
+    var toValue = $('#{{form.wallet_to.auto_id}}');
+
+    var walletFromBtn = $('#fromBtn');
+    var walletToBtn = $('#toBtn');
+
+    var current = '';
+    var walletModal = $('#wallets-modal');
+
+    walletFromBtn.on('click', function(){
+        current = 'from';
+        walletModal.modal('show');
+    });
+    walletFrom.parent().on('click', function(){
+        current = 'from';
+        walletModal.modal('show');
+    });
+    walletToBtn.on('click', function(){
+        current = 'to';
+        walletModal.modal('show');
+    });
+    walletTo.parent().on('click', function(){
+        current = 'to';
+        walletModal.modal('show');
+    });
+
+    walletModal.on('click', 'tr.link-row', function(e){
+        e.preventDefault();
+        $(this).off('click');
+        e.stopPropagation();
+
+        var walletName = $(this).find('h5').text();
+        var walletId = $(this).attr('data-pk');
+        if (current == 'to'){
+            walletTo.val(walletName);
+            toValue.val(walletId);
+        }
+        else{
+            walletFrom.val(walletName);
+            fromValue.val(walletId);
+        }
+        walletModal.modal('hide');
+        return false;
+    });
+
+</script>
+{% endblock scripts %}

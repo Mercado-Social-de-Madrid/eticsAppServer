@@ -10,6 +10,7 @@ from django.db.models import Count, Sum
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models.functions import TruncDay
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django_filters.views import FilterView
 
@@ -108,3 +109,4 @@ def user_wallet(request):
             'showing_all': False,
             'wallet': wallet, 'transactions': transactions
         })
+
