@@ -27,6 +27,10 @@
     .auto-clear .col-xs-6:nth-child(odd){clear:left;}
 }
 
+.btn-flat-secondary, .btn-flat-secondary:active, .btn-flat-secondary:focus, .btn-flat-secondary:hover, .btn-outline-secondary, .btn-outline-secondary:active, .btn-outline-secondary:focus, .btn-outline-secondary:hover {
+    color: #99bb14;
+}
+
 html,body{ min-height:100%; }
 .map{
     width:100%;

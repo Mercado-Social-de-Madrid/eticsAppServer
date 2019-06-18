@@ -6,8 +6,12 @@
 
 <div class="container">
     <div class="row">
+        <div class="col-md-12 mb-4">
+            {% include "reports/ranges_filter.html"  %}
+        </div>
+
         <div class="col-md-5">
-            <div class="ajax-load" data-initial="{% url 'reports:offers' %}" data-keepurl="false">
+            <div class="ajax-load" data-initial="{% url 'reports:offers' %}?last={{last}}" data-keepurl="false">
                 <div class="results">
 
                 </div>

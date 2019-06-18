@@ -32,8 +32,10 @@ def user_entity(request):
 
 
 def index(request):
-    return render(request, 'reports/index.html', {
-})
+    last = request.GET.get('last', 'month')
+    query = days_query[last]
+
+    return render(request, 'reports/index.html', { 'last': last})
 
 
 def entity_detail(request, pk):
