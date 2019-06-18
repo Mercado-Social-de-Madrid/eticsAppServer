@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}Informes{% endblock%}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="ajax-load" data-initial="{% url 'reports:offers' %}" data-keepurl="false">
+                <div class="results">
+
+                </div>
+                <div class="loading-spinner"><div class="mes-loader"></div></div>
+                <span class="sr-only">Loading...</span>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+<script type="text/javascript">
+    // Load the Visualization API and the piechart package.
+    google.load('visualization', '1.0', {'packages':['corechart']});
+</script>
+{% endblock scripts %}

@@ -1,0 +1,32 @@
+
+{% load l10n %}
+
+<div class="card">
+    {% if request.is_ajax %}
+        <div class="card-header">
+            <h4 class="primary-title ml-3 mb-4"><i class="material-icons mr-2">shopping_basket</i>Ofertas</h4>
+        </div>
+
+    {% endif %}
+
+    <div class="card-body">
+
+        <div class="row mb-4">
+            <div class="col-sm-4 feature"><span class="primary-title"><strong>Activas</strong></span> <div class="display-4"> {{active.count}}</div><span>Ofertas</span></div>
+            <div class="col-sm-4 feature"><span class="primary-title"><strong>Publicadas</strong></span> <div class="display-4"> {{published.count}}</div><span>Ofertas</span></div>
+            <div class="col-sm-4 feature"><span class="primary-title"><strong>Por</strong></span> <div class="display-4"> {{entities.count}}</div><span>Entidades</span></div>
+        </div>
+
+        {% if request.is_ajax %}
+            {% include "common/activity_bars.html" with graph_data=daily floatvalues=False chart_height=180 %}
+        {% else %}
+            {% include "common/activity_bars.html" with graph_data=daily floatvalues=False  %}
+        {% endif %}
+    </div>
+    {% if request.is_ajax %}
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" href="{% url 'reports:offers' %}">Ver detalles</a>
+        <a class="btn btn-outline-secondary" href="{% url 'list_offers' %}">Ir a ofertas</a>
+      </div>
+    {% endif %}
+</div>

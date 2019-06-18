@@ -31,6 +31,11 @@ def user_entity(request):
         return redirect('dashboard')
 
 
+def index(request):
+    return render(request, 'reports/index.html', {
+})
+
+
 def entity_detail(request, pk):
     entity = get_object_or_404(Entity, pk=pk)
     gallery = entity.gallery.photos.all()
@@ -82,7 +87,13 @@ def offers(request):
         'last': last
     }
 
-    return render(request, 'reports/offers.html', params)
+    if request.is_ajax():
+        response = render(request, 'reports/offers_card.html', params)
+        response['Cache-Control'] = 'no-cache'
+        response['Vary'] = 'Accept'
+        return response
+    else:
+        return render(request, 'reports/offers.html', params)
 
 
 @login_required

@@ -23,17 +23,7 @@
         </div>
 
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row mb-4">
-                        <div class="col-sm-6 feature"><span class="primary-title"><strong>Publicadas</strong></span> <div class="display-4"> {{published.count}}</div><span>Ofertas</span></div>
-                        <div class="col-sm-6 feature"><span class="primary-title"><strong>Activas</strong></span> <div class="display-4"> {{active.count}}</div><span>Ofertas</span></div>
-                    </div>
-
-                    {% include "common/activity_bars.html" with graph_data=daily floatvalues=False %}
-
-                </div>
-            </div>
+             {% include "reports/offers_card.html"  %}
 
             <div class="card mt-4">
                 <div class="card-body">
