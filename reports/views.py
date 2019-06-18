@@ -74,8 +74,6 @@ def offers(request):
         'last': last
     }
 
-    print params
-
     return render(request, 'reports/offers.html', params)
 
 
