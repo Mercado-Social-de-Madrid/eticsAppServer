@@ -1,0 +1,26 @@
+{% extends 'common/list/base.html' %}
+
+ {% block table_head %}
+    <th scope="col">Nombre</th>
+    <th scope="col">Estado</th>
+    <th scope="col">Publicada</th>
+    <th scope="col">Fecha inicio</th>
+    <th scope="col">Fecha fin</th>
+{% endblock %}
+
+
+{% block item_row %}
+
+        {% include 'entity/row_display.html' with item=item.entity hide_address=True %}
+
+        <td>
+          {% if item.status == 'current' %} <i class="material-icons md-36 text-success" data-toggle="tooltip" data-placement="bottom" title="En curso">play_circle_outline</i> {% endif %}
+          {% if item.status == 'future' %} <i class="material-icons md-36 text-warning" data-toggle="tooltip" data-placement="bottom" title="Pendiente">update</i> {% endif %}
+          {% if item.status == 'past' %} <i class="material-icons md-36 text-info" data-toggle="tooltip" data-placement="bottom" title="Pasada">restore</i> {% endif %}
+      </td>
+
+        <td>{{item.published_date|date:'d/m/Y'}}</td>
+      <td>{{item.begin_date|date:'d/m/Y'}}</td>
+        <td>{{item.end_date|date:'d/m/Y'}}</td>
+
+{% endblock %}

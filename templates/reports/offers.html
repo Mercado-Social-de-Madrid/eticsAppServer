@@ -34,6 +34,12 @@
 
                 </div>
             </div>
+
+            <div class="card mt-4">
+                <div class="card-body">
+                    {% include 'offers/query.html' with object_list=published %}</a>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-4">
@@ -45,7 +51,6 @@
                     {% for entity in entities %}
                     <a href="{% url 'entity_offers' entity.pk %}">
                         {% include 'entity/row_display.html' with show_inline=True item=entity %}</a>
-                        <hr>
                     {% endfor %}
                 </div>
             </div>
