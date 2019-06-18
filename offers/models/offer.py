@@ -15,6 +15,18 @@ from currency.models import Entity
 
 class OffersManager(models.Manager):
 
+
+    def published_last_days(query, days=30):
+        today = datetime.date.today()
+        since = today - datetime.timedelta(days=days)
+        return query.filter(published_date__gte=since)
+
+    def active_last_days(query, days=30):
+        today = datetime.date.today()
+        since = today - datetime.timedelta(days=days)
+        return query.filter(Q(active=True) &
+                            (Q(end_date__gte=since) | Q(begin_date__lte=today, begin_date__gte=since) ))
+
     def current(query, entity=None):
         today = datetime.date.today()
         if entity is None:
@@ -77,4 +89,4 @@ class Offer(models.Model):
         ordering = ['-published_date']
 
     def __unicode__(self):
-        return self.title if self.title else str(self.published_date)
+        return self.title if self.title else self.pk
