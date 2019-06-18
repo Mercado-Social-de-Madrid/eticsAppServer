@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}Movimientos{% endblock%}
+
+{% block bodyattrs %}class="entity"{% endblock%}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-7 col-md-8"><h3 class="primary-title mb-3"><i class="material-icons mr-2">timeline</i>Ofertas</h3></div>
+
+        <div class="col-sm-12 mb-4">
+
+            <div class="btn-group" role="group" aria-label="Filtro">
+              <a  href="?last=3month" class="btn {% if last == '3month' %} btn-outline-primary active {% endif %}">Últimos 3 meses</a>
+              <a  href="?last=month" class="btn {% if last == 'month' %} btn-outline-primary active {% endif %}">Último mes</a>
+              <a  href="?last=week" class="btn {% if last == 'week' %} btn-outline-primary active {% endif %}">Última semana</a>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-sm-6 feature"><span class="primary-title"><strong>Publicadas</strong></span> <div class="display-4"> {{published.count}}</div><span>Ofertas</span></div>
+                        <div class="col-sm-6 feature"><span class="primary-title"><strong>Activas</strong></span> <div class="display-4"> {{active.count}}</div><span>Ofertas</span></div>
+                    </div>
+
+                    {% include "common/activity_graph.html" with graph_data=daily floatvalues=False %}
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="mx-2 mb-4">
+                    <span class="display-2"> {{entities.count}} </span> entidades distintas publicaron ofertas
+                    </div>
+                    {% for entity in entities %}
+                    <a href="{% url 'entity_offers' entity.pk %}">
+                        {% include 'entity/row_display.html' with show_inline=True item=entity %}</a>
+                        <hr>
+                    {% endfor %}
+                </div>
+            </div>
+
+        <div class="col-sm-12">
+
+        </div>
+
+        </div>
+    </div>
+</div>
+{% endblock%}
+
+{% block scripts %}
+<script type="text/javascript">
+    $('.table-action').on('click', function(e){
+        e.preventDefault();
+
+        return false;
+    });
+</script>
+{% endblock scripts %}

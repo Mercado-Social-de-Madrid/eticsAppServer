@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'offers',
     'news',
     'currency',
+    'reports',
     'tastypie',
     'imagekit',
     'fcm_django',
