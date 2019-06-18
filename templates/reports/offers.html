@@ -48,10 +48,14 @@
                     <div class="mx-2 mb-4">
                     <span class="display-2"> {{entities.count}} </span> entidades distintas publicaron ofertas
                     </div>
+                    <table>
+
                     {% for entity in entities %}
-                    <a href="{% url 'entity_offers' entity.pk %}">
-                        {% include 'entity/row_display.html' with show_inline=True item=entity %}</a>
+
+                    <tr class="link-row" data-href="{% url 'entity_offers' entity.pk %}">
+                        {% include 'entity/row_display.html' with  item=entity %}</tr>
                     {% endfor %}
+                        </table>
                 </div>
             </div>
 
