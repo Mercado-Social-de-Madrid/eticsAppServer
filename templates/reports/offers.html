@@ -32,9 +32,13 @@
             <div class="card">
                 <div class="card-body">
                     <div class="mx-2 mb-4">
-                    <span class="display-2"> {{entities.count}} </span> entidades distintas publicaron ofertas
+                        <div class="display-2 float-left">{{entities.count}} </div>
+                            <div class="float-left pl-3">
+                                 <h5 class="lead text-primary mb-0"> entidades distintas</h5>
+                                publicaron ofertas
+                            </div>
                     </div>
-                    <table>
+                    <table class="table">
 
                     {% for entity in entities %}
 
