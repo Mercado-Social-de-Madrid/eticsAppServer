@@ -39,11 +39,11 @@ def index(request):
 
     total_entities = Entity.objects.count()
     new_entities = Entity.objects.filter(registered__gte=since).order_by('-registered')
-    new_entities = helpers.paginate(new_entities, 0, elems_perpage=6)
+    new_entities = helpers.paginate(new_entities, 1, elems_perpage=6)
 
     total_persons = Person.objects.count()
     new_persons = Person.objects.filter(registered__gte=since).order_by('-registered')
-    new_persons = helpers.paginate(new_persons, 0, elems_perpage=6)
+    new_persons = helpers.paginate(new_persons, 1, elems_perpage=6)
 
     return render(request, 'reports/index.html', { 'last': last, 'total_entities':total_entities, 'total_persons':total_persons, 'persons':new_persons, 'entities':new_entities })
 
