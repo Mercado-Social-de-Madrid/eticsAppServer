@@ -15,7 +15,7 @@ from currency.forms.EntityForm import EntityForm
 from currency.forms.galleryform import PhotoGalleryForm
 from helpers import superuser_required
 import helpers
-from currency.models import Entity, Gallery, Category
+from currency.models import Entity, Gallery, Category, Person
 from news.forms.NewsForm import NewsForm
 from news.models import News
 from offers.models import Offer
@@ -41,7 +41,11 @@ def index(request):
     new_entities = Entity.objects.filter(registered__gte=since).order_by('-registered')
     new_entities = helpers.paginate(new_entities, 0, elems_perpage=6)
 
-    return render(request, 'reports/index.html', { 'last': last, 'total_entities':total_entities, 'entities':new_entities })
+    total_persons = Person.objects.count()
+    new_persons = Person.objects.filter(registered__gte=since).order_by('-registered')
+    new_persons = helpers.paginate(new_persons, 0, elems_perpage=6)
+
+    return render(request, 'reports/index.html', { 'last': last, 'total_entities':total_entities, 'total_persons':total_persons, 'persons':new_persons, 'entities':new_entities })
 
 
 def entity_detail(request, pk):

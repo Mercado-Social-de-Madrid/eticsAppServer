@@ -17,7 +17,7 @@
                         <div class="card-body">
                             <div class="display-2 float-left"> {{total_entities}} </div>
                             <div class="float-left pl-3">
-                                 <h4 class="lead text-primary text-light mb-0"> entidades <i class="material-icons">store</i></h4>
+                                 <h5 class="lead text-primary text-light mb-0"> entidades <i class="material-icons">store</i></h5>
                                 {{entities.paginator.count}} nuevas
                             </div>
                             <table class="table table-stripped bg-primary ">
@@ -33,10 +33,30 @@
                             <a class="btn btn-outline-secondary" href="{% url 'entity_list' %}">Ir a entidades</a>
                           </div>
                     </div>
+
+
+
                 </div>
                 <div class="col">
-                    <div class="card">
-
+                    <div class="card bg-secondary">
+                        <div class="card-body">
+                            <div class="display-2 float-left"> {{total_persons}} </div>
+                            <div class="float-left pl-3">
+                                 <h5 class="lead text-primary mb-0"> consumidoras <i class="material-icons">store</i></h5>
+                                {{persons.paginator.count}} nuevas
+                            </div>
+                            <table class="table table-stripped bg-secondary ">
+                                <tbody class="">
+                                    {% for entity in persons %}
+                                    <tr><td> {{entity}}</td> <td><a href="{% url 'profile_detail' entity.pk %}" class="text-light "><i class="material-icons pt-1">keyboard_arrow_right</i></a> </td></tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            </div>
+                        <div class="card-actions">
+                            <a class="btn btn-outline-light" href="{% url 'reports:offers' %}">Ver informe</a>
+                            <a class="btn btn-outline-primary" href="{% url 'entity_list' %}">Ir a consumidoras</a>
+                          </div>
                     </div>
                 </div>
             </div>
