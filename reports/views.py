@@ -1,4 +1,5 @@
 # coding=utf-8
+import datetime
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -59,16 +60,23 @@ def offers(request):
     last = request.GET.get('last', 'month')
     query = days_query[last]
 
+    today = datetime.date.today()
+    since = today - datetime.timedelta(days=query)
+
     published = Offer.objects.published_last_days(query)
     active = Offer.objects.active_last_days(query)
     entities = Entity.objects.filter(pk__in=published.values_list('entity').distinct() )
 
-    daily = published.annotate(day=TruncDay('published_date')).values('day').annotate(total=Count('id')).order_by('day')
+    daily = active.annotate(day=TruncDay('published_date')).values('day').annotate(total=Count('id')).order_by('day')
 
     params = {
         'ajax_url': reverse('news_list'),
         'published': published,
         'active':active,
+        'date_ranges':{
+            'start':since,
+            'end':today
+        },
         'entities':entities,
         'daily': daily,
         'last': last
