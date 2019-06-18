@@ -13,10 +13,10 @@ class OffersAdmin(admin.ModelAdmin):
         return obj.published_date.strftime("%d/%M/%Y")
 
     def begin_date_format(self, obj):
-        return obj.begin_date.strftime("%d/%M/%Y")
+        return obj.begin_date.strftime("%d/%M/%Y") if obj.begin_date else ''
 
     def end_date_format(self, obj):
-        return obj.end_date.strftime("%d/%M/%Y")
+        return obj.end_date.strftime("%d/%M/%Y") if obj.end_date else ''
 
     list_display = ('entity', 'title', 'active', 'pub_date', 'begin_date_format', 'end_date_format')
     ordering = '-published_date',
