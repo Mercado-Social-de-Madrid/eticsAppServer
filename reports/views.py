@@ -34,8 +34,14 @@ def user_entity(request):
 def index(request):
     last = request.GET.get('last', 'month')
     query = days_query[last]
+    today = datetime.date.today()
+    since = today - datetime.timedelta(days=query)
 
-    return render(request, 'reports/index.html', { 'last': last})
+    total_entities = Entity.objects.count()
+    new_entities = Entity.objects.filter(registered__gte=since).order_by('-registered')
+    new_entities = helpers.paginate(new_entities, 0, elems_perpage=6)
+
+    return render(request, 'reports/index.html', { 'last': last, 'total_entities':total_entities, 'entities':new_entities })
 
 
 def entity_detail(request, pk):

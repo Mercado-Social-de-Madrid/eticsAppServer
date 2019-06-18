@@ -10,13 +10,41 @@
             {% include "reports/ranges_filter.html"  %}
         </div>
 
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col">
+                    <div class="card bg-primary text-light">
+                        <div class="card-body">
+                            <div class="display-2 float-left"> {{total_entities}} </div>
+                            <div class="float-left pl-3">
+                                 <h4 class="lead text-primary text-light mb-0"> entidades <i class="material-icons">store</i></h4>
+                                {{entities.paginator.count}} nuevas
+                            </div>
+                            <table class="table table-stripped bg-primary ">
+                                <tbody class="text-light">
+                                    {% for entity in entities %}
+                                    <tr><td> {{entity}}</td> <td><a href="{% url 'entity_detail' entity.pk %}" class="text-light "><i class="material-icons pt-1">keyboard_arrow_right</i></a> </td></tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            </div>
+                        <div class="card-actions">
+                            <a class="btn btn-outline-light" href="{% url 'reports:offers' %}">Ver informe</a>
+                            <a class="btn btn-outline-secondary" href="{% url 'entity_list' %}">Ir a entidades</a>
+                          </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="col-md-5">
             <div class="ajax-load" data-initial="{% url 'reports:offers' %}?last={{last}}" data-keepurl="false">
-                <div class="results">
-
-                </div>
-                <div class="loading-spinner"><div class="mes-loader"></div></div>
-                <span class="sr-only">Loading...</span>
+                <div class="results"></div>
             </div>
 
         </div>
