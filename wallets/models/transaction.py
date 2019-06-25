@@ -3,10 +3,18 @@ from __future__ import unicode_literals
 
 import uuid
 
+import datetime
 from django.db import models
 
 from wallets.models import Wallet
 
+
+class TransactionManager(models.Manager):
+
+    def published_last_days(query, days=30):
+        today = datetime.date.today()
+        since = today - datetime.timedelta(days=days)
+        return query.filter(timestamp__gte=since)
 
 
 class Transaction(models.Model):
@@ -24,6 +32,8 @@ class Transaction(models.Model):
 
     rel_transaction = models.ForeignKey('self', null=True, blank=True)
     comments = models.TextField(null=True, blank=True, verbose_name='Comentarios adicionales')
+
+    objects = TransactionManager()
 
     class Meta:
         verbose_name = 'Transacción'

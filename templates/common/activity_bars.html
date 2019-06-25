@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load staticfiles %}
+{% load display_functions %}
 {% load l10n %}
 
 {% block extra_scripts %}
@@ -15,15 +16,33 @@
 			var data = new google.visualization.DataTable();
 			data.addColumn('date', "Fecha");
 			data.addColumn('number', "Total");
+			{% if graph_data.additional_rows %}
+					{% for add_row in graph_data.additional_rows %}
+						data.addColumn('number', "{{add_row.label}}");
+					{% endfor %}
+				{% endif %}
+
 			data.addRows( {{ graph_data|length }} );
+
 			{% for row in graph_data %}
-				data.setValue({{ forloop.counter0 }},0,new Date({{ row.day| date:'Y' }},{{ row.day|date:'n' }}-1,{{row.day|date:'j'}}));
-				data.setValue({{ forloop.counter0 }},1,{%if floatvalues %} {{ row.total|unlocalize }} {%else%} {{ row.total }} {%endif%});
+				{% with forloop.counter0 as row_idx %}
+				data.setValue({{ row_idx }},0,new Date({{ row.day| date:'Y' }},{{ row.day|date:'n' }}-1,{{row.day|date:'j'}}));
+				data.setValue({{ row_idx }},1,{%if floatvalues %} {{ row.total|unlocalize }} {%else%} {{ row.total }} {%endif%});
+				{% if graph_data.additional_rows %}
+					{% for add_row in graph_data.additional_rows %}
+						data.setValue({{ row_idx }},{{forloop.counter0|add:2}},{%if floatvalues %} {{ row|lookup:add_row.id|default:0|unlocalize }} {%else%} {{ row|lookup:add_row.id|default:0 }} {%endif%});
+					{% endfor %}
+				{% endif %}
+				{% endwith %}
 			{% endfor %}
-	        var chart = new google.visualization.ColumnChart(document.getElementById('activity_graph_div'));
+	        var chart = new google.visualization.ColumnChart(document.getElementById('{{ chart_id|default:"activity_graph_div" }}'));
 	        chart.draw(data, {
 	            width: "100%",
                 height: {{chart_height|default:'250'}},
+
+			{% if chart_stacked %}
+				isStacked: true,
+			{% endif %}
 
                 hAxis: {gridlines: {color: 'transparent'}
                 {% if date_ranges %}
@@ -36,7 +55,7 @@
                 {% endif %}
 
                 },
-                colors: ['#9c27b0'],
+                colors: ['#9c27b0', '#A7CE05'],
                 bar: {groupWidth: "35%"},
                 pointSize: 0,
                 chartArea: {left:0,top:10,width:"100%",height:"100%"},
@@ -47,6 +66,7 @@
 	</script>
 	{% endblock extra_scripts %}
 
-<div id="activity_graph_div" class="graph">
+
+<div id="{{ chart_id|default:"activity_graph_div" }}" class="graph">
 	<div class="mes-loader my-2"></div>
 	</div>

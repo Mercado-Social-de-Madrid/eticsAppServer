@@ -11,7 +11,7 @@
         </div>
 
         <div class="col-md-7">
-            <div class="row">
+            <div class="row mb-4">
                 <div class="col">
                     <div class="card bg-primary text-light">
                         <div class="card-body">
@@ -60,13 +60,16 @@
                     </div>
                 </div>
             </div>
+
+            <div class="ajax-load" data-initial="{% url 'reports:wallets' %}?last={{last}}" data-keepurl="false">
+                <div class="results"></div>
+            </div>
         </div>
 
         <div class="col-md-5">
             <div class="ajax-load" data-initial="{% url 'reports:offers' %}?last={{last}}" data-keepurl="false">
                 <div class="results"></div>
             </div>
-
         </div>
     </div>
 </div>

@@ -71,35 +71,39 @@ function getCookie(name) {
 
 
     $.fn.ajaxLoader = function( url_or_action ) {
-        var self = this;
-        var initialUrl = self.attr('data-initial');
-        var keepUrl = (self.attr('data-keepurl') != null) && (self.attr('data-keepurl')!='');
+        this.each(function(){
+            console.log("AAA");
+            var self = $(this);
+            var initialUrl = self.attr('data-initial');
+            var keepUrl = (self.attr('data-keepurl') != null) && (self.attr('data-keepurl')!='');
 
-        if ( url_or_action != null) {
+            if ( url_or_action != null) {
 
-            if (url_or_action === 'reload'){
-                var current = self.find('.pagination .page-item.active > a').attr('href');
-                loadResults(self, current, keepUrl);
+                if (url_or_action === 'reload'){
+                    var current = self.find('.pagination .page-item.active > a').attr('href');
+                    loadResults(self, current, keepUrl);
+                    return self;
+                }
+
+                loadResults(self, url);
                 return self;
             }
 
-            loadResults(self, url);
-            return self;
-        }
-
-        if ((initialUrl != null) && (initialUrl!='')){
-            loadResults(self, initialUrl, keepUrl);
-        }
-
-        self.on('click', '.pagination a', function(e){
-            e.preventDefault();
-            if ($(this).parent().hasClass('active'))
-                return;
-            var url = $(this).attr('href');
-            if ((url.startsWith('?')) && (initialUrl != null)){
-                url = initialUrl + url;
+            if ((initialUrl != null) && (initialUrl!='')){
+                loadResults(self, initialUrl, keepUrl);
             }
-            loadResults(self, url, keepUrl);
+
+            self.on('click', '.pagination a', function(e){
+                e.preventDefault();
+                if ($(this).parent().hasClass('active'))
+                    return;
+                var url = $(this).attr('href');
+                if ((url.startsWith('?')) && (initialUrl != null)){
+                    url = initialUrl + url;
+                }
+                loadResults(self, url, keepUrl);
+            });
+
         });
 
     };
@@ -224,8 +228,6 @@ $(function(){
 
     $('[data-toggle="tooltip"]').tooltip();
     $('.modal.show-on-load').modal();
-    $('.ajax-load').ajaxLoader();
-
 
     $(".link-row").click(function() {
         window.location = $(this).data("href");

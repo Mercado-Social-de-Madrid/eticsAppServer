@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import uuid
 
+import datetime
 from django.contrib.auth import hashers
 from django.contrib.auth.models import User
 from django.db import models, transaction
@@ -22,13 +23,28 @@ PAYMENT_STATUS = (
 )
 
 
-class PaymentManager(models.Manager):
-
-    def pending(query, user=None):
-        q = query.filter(status=STATUS_PENDING)
+class PaymentQuerySet(models.QuerySet):
+    def pending(self, user=None):
+        q = self.filter(status=STATUS_PENDING)
         if user is not None:
             q = q.filter(receiver=user)
         return q
+
+    def published_last_days(self, days=30):
+        today = datetime.date.today()
+        since = today - datetime.timedelta(days=days)
+        return self.filter(timestamp__gte=since)
+
+class PaymentManager(models.Manager):
+
+    def get_queryset(self):
+        return PaymentQuerySet(self.model, using=self._db)  # Important!
+
+    def pending(self, user=None):
+        return self.get_queryset().pending(user=user)
+
+    def published_last_days(self, days=30):
+        return self.get_queryset().published_last_days(days=days)
 
     def new_payment(self, sender, receiver_uuid, total_amount=0, currency_amount=0, concept=None, pin_code=None):
 

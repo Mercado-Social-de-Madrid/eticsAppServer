@@ -12,7 +12,7 @@ from django.dispatch import receiver
 
 from currency.models import Entity, Person
 from currency.models.extend_user import get_related_entity
-from helpers import notify_user
+from helpers import notify_user, datetime
 from wallets.exceptions import NotEnoughBalance, WrongPinCode
 from wallets.models import WalletType
 
@@ -26,6 +26,7 @@ class Wallet(models.Model):
     balance = models.FloatField(default=0, verbose_name='Saldo actual')
     last_transaction = models.DateTimeField(blank=True, null=True, verbose_name='Última transacción')
     pin_code = models.CharField(null=True, blank=True, max_length=100, verbose_name='Código PIN (hasheado)')
+
 
     NotEnoughBalance = NotEnoughBalance
     WrongPinCode = WrongPinCode

@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
-from django.db.models import Count
+from django.db.models import Count, Case, When, Sum
 from django.db.models.functions import TruncDay
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -19,6 +19,7 @@ from currency.models import Entity, Gallery, Category, Person
 from news.forms.NewsForm import NewsForm
 from news.models import News
 from offers.models import Offer
+from wallets.models import Payment, Transaction
 
 
 @login_required
@@ -84,7 +85,7 @@ def offers(request):
     active = Offer.objects.active_last_days(query)
     entities = Entity.objects.filter(pk__in=published.values_list('entity').distinct() )
 
-    daily = active.annotate(day=TruncDay('published_date')).values('day').annotate(total=Count('id')).order_by('day')
+    daily = published.annotate(day=TruncDay('published_date')).values('day').annotate(total=Count('id')).order_by('day')
 
     params = {
         'ajax_url': reverse('news_list'),
@@ -106,6 +107,45 @@ def offers(request):
         return response
     else:
         return render(request, 'reports/offers.html', params)
+
+
+
+@superuser_required
+def wallets(request):
+
+    last = request.GET.get('last', 'month')
+    query = days_query[last]
+
+    today = datetime.date.today()
+    since = today - datetime.timedelta(days=query)
+
+    payments = Payment.objects.published_last_days(query)
+    transactions = Transaction.objects.published_last_days(query)
+
+    daily = transactions.annotate(day=TruncDay('timestamp')).values('day').annotate(
+        total=Sum('amount'),
+        bonus=Sum(Case(When(is_bonification=True, then='amount')))).order_by('day')
+    daily.additional_rows = [{'label':'Bonificación', 'id':'bonus'}]
+    print daily
+    params = {
+        'payments': payments,
+        'pending': payments.pending(),
+        'transactions':transactions,
+        'daily':daily,
+        'date_ranges':{
+            'start':since,
+            'end':today
+        },
+        'last': last
+    }
+
+    if request.is_ajax():
+        response = render(request, 'reports/wallets_card.html', params)
+        response['Cache-Control'] = 'no-cache'
+        response['Vary'] = 'Accept'
+        return response
+    else:
+        return render(request, 'reports/wallets.html', params)
 
 
 @login_required
