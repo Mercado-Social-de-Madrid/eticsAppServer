@@ -1,7 +1,8 @@
 {% extends 'common/list/base.html' %}
 
  {% block table_head %}
-    <th scope="col">Nombre</th>
+    <th scope="col">Entidad</th>
+    <th scope="col">Título</th>
     <th scope="col">Estado</th>
     <th scope="col">Publicada</th>
     <th scope="col">Fecha inicio</th>
@@ -12,7 +13,7 @@
 {% block item_row %}
 
         {% include 'entity/row_display.html' with item=item.entity hide_address=True %}
-
+        <td>{{item.title}}</td>
         <td>
           {% if item.status == 'current' %} <i class="material-icons md-36 text-success" data-toggle="tooltip" data-placement="bottom" title="En curso">play_circle_outline</i> {% endif %}
           {% if item.status == 'future' %} <i class="material-icons md-36 text-warning" data-toggle="tooltip" data-placement="bottom" title="Pendiente">update</i> {% endif %}

@@ -72,7 +72,6 @@ function getCookie(name) {
 
     $.fn.ajaxLoader = function( url_or_action ) {
         this.each(function(){
-            console.log("AAA");
             var self = $(this);
             var initialUrl = self.attr('data-initial');
             var keepUrl = (self.attr('data-keepurl') != null) && (self.attr('data-keepurl')!='');
@@ -218,6 +217,19 @@ function initElems(container){
         });
 
         $(this).find('.select2').addClass('form-control input-group').css('width','100%').css('height','auto');
+   });
+
+   container.find('.row.equal-first-height').each(function(i, elem){
+        var row = $(this);
+        var elem = row.attr('data-target');
+        var height = row.find(elem).first().height();
+        console.log(row.find(elem).first().height());
+        row.find(elem).slice(1).each(function(){
+            var target = $(this);
+            if (target.height()>=height){
+                target.css('overflow-y','scroll');
+            }
+        }).css('height', height);
    });
 
 }

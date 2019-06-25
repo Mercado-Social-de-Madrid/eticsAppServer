@@ -120,16 +120,20 @@ def wallets(request):
     since = today - datetime.timedelta(days=query)
 
     payments = Payment.objects.published_last_days(query)
-    transactions = Transaction.objects.published_last_days(query)
+    transactions = Transaction.objects.published_last_days(query).order_by('-timestamp')
+
+    entities = Entity.objects.filter(user__in=payments.values_list('receiver').distinct())
 
     daily = transactions.annotate(day=TruncDay('timestamp')).values('day').annotate(
-        total=Sum('amount'),
+        total=Sum(Case(When(is_bonification=False, then='amount'))),
         bonus=Sum(Case(When(is_bonification=True, then='amount')))).order_by('day')
+
     daily.additional_rows = [{'label':'Bonificación', 'id':'bonus'}]
     params = {
         'payments': payments,
         'pending': payments.pending(),
         'transactions':transactions,
+        'entities':entities,
         'daily':daily,
         'date_ranges':{
             'start':since,
@@ -144,6 +148,7 @@ def wallets(request):
         response['Vary'] = 'Accept'
         return response
     else:
+
         return render(request, 'reports/wallets.html', params)
 
 

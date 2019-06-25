@@ -3,35 +3,46 @@
 <table class="table table-hover" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
   <thead>
     <tr>
-        <th scope="col">Fecha</th>
-      <th scope="col">Emisor</th>
-      <th scope="col">Receptor</th>
-      <th scope="col">Cantidad</th>
+        <th scope="col" {% if narrow %} class="px-2" {% endif %}>Fecha</th>
+        {% if narrow %}
+        <th scope="col">Movimiento</th>
+        {% else %}
+            <th scope="col" >Emisor</th>
+            <th scope="col">Receptor</th>
+         {% endif %}
+
+      <th scope="col" {% if narrow %} class="px-2" {% endif %}>Cantidad</th>
         <th scope="col" colspan="2">Concepto</th>
     </tr>
   </thead>
   <tbody>
     {% for tr in transactions %}
     <tr>
-      <th scope="row">{{tr.timestamp|date:'d/m/Y H:i'}}</th>
+      <th scope="row" {% if narrow %} class="px-2" {% endif %}>{{tr.timestamp|date:'d/m/Y H:i'}}</th>
 
-      <td>
+
+      <td {% if narrow %} class="px-2 text-center" {% endif %}>
         {% if tr.wallet_from.user %}
                 {{tr.wallet_from.user.get_related_entity.1 }}
             {% else %}
                 <span class="text-muted">MES <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Cuenta débito">local_atm</i> </span>
             {% endif %}
 
+          {% if narrow %}
+          <br><i class="material-icons">swap_vert</i><br>
+          {% else %}
       </td>
-        <td>{% if tr.wallet_to.user %}
+        <td >
+          {% endif %}
+            {% if tr.wallet_to.user %}
                 {{tr.wallet_to.user.get_related_entity.1 }}
             {% else %}
                 <span class="text-muted">MES <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Cuenta débito">local_atm</i> </span>
             {% endif %}
         </td>
 
-        <td><div class="amount">{{tr.amount}}<i class="currency-icon"></i></div> </td>
-      <td>{{tr.concept}}</td>
+        <td {% if narrow %} class="px-2" {% endif %}><div class="amount">{{tr.amount}}<i class="currency-icon"></i></div> </td>
+      <td {% if narrow %} class="px-2" {% endif %}>{{tr.concept}}</td>
        <td>
            {% if tr.made_byadmin %}
            <span class="text-info"><i class="material-icons md-36" data-toggle="tooltip" data-placement="bottom" title="Realizada por Administrador">play_circle_outline</i> </span>
@@ -45,7 +56,7 @@
     {% endfor %}
   </tbody>
 </table>
-    </div>
+</div>
 {% else %}
     <div class="text-grey px-3 py-3">No hay ninguna transacción que cumpla los criterios de búsqueda.</div>
 {% endif %}

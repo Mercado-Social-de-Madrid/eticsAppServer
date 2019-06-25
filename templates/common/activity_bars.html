@@ -9,18 +9,16 @@
 		// Load the Visualization API and the piechart package.
 		google.load('visualization', '1.0', {'packages':['corechart'], 'callback':drawChart} );
 
-		console.log("Loading google...");
 		// Set a callback to run when the Google Visualization API is loaded.
 		function drawChart() {
-			console.log("draw chart!");
 			var data = new google.visualization.DataTable();
 			data.addColumn('date', "Fecha");
 			data.addColumn('number', "Total");
 			{% if graph_data.additional_rows %}
-					{% for add_row in graph_data.additional_rows %}
-						data.addColumn('number', "{{add_row.label}}");
-					{% endfor %}
-				{% endif %}
+				{% for add_row in graph_data.additional_rows %}
+					data.addColumn('number', "{{add_row.label}}");
+				{% endfor %}
+			{% endif %}
 
 			data.addRows( {{ graph_data|length }} );
 
@@ -67,6 +65,6 @@
 	{% endblock extra_scripts %}
 
 
-<div id="{{ chart_id|default:"activity_graph_div" }}" class="graph">
+<div id="{{ chart_id|default:'activity_graph_div' }}" class="graph" style="height:{{chart_height|default:'250'}}px;">
 	<div class="mes-loader my-2"></div>
 	</div>
