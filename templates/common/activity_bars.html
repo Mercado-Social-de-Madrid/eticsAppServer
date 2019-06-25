@@ -23,15 +23,18 @@
 			data.addRows( {{ graph_data|length }} );
 
 			{% for row in graph_data %}
+				{% if row.day %}
 				{% with forloop.counter0 as row_idx %}
-				data.setValue({{ row_idx }},0,new Date({{ row.day| date:'Y' }},{{ row.day|date:'n' }}-1,{{row.day|date:'j'}}));
-				data.setValue({{ row_idx }},1,{%if floatvalues %} {{ row.total|unlocalize }} {%else%} {{ row.total }} {%endif%});
-				{% if graph_data.additional_rows %}
-					{% for add_row in graph_data.additional_rows %}
-						data.setValue({{ row_idx }},{{forloop.counter0|add:2}},{%if floatvalues %} {{ row|lookup:add_row.id|default:0|unlocalize }} {%else%} {{ row|lookup:add_row.id|default:0 }} {%endif%});
-					{% endfor %}
-				{% endif %}
+
+					data.setValue({{ row_idx }},0,new Date({{ row.day| date:'Y' }},{{ row.day|date:'n' }}-1,{{row.day|date:'j'}}));
+					data.setValue({{ row_idx }},1,{%if floatvalues %} {{ row.total|default:0|unlocalize }} {%else%} {{ row.total|default:0 }} {%endif%});
+					{% if graph_data.additional_rows %}
+						{% for add_row in graph_data.additional_rows %}
+							data.setValue({{ row_idx }},{{forloop.counter0|add:2}},{%if floatvalues %} {{ row|lookup:add_row.id|default:0|unlocalize }} {%else%} {{ row|lookup:add_row.id|default:0 }} {%endif%});
+						{% endfor %}
+					{% endif %}
 				{% endwith %}
+				{% endif %}
 			{% endfor %}
 	        var chart = new google.visualization.ColumnChart(document.getElementById('{{ chart_id|default:"activity_graph_div" }}'));
 	        chart.draw(data, {

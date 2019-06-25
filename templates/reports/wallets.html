@@ -37,7 +37,7 @@
 
                     {% for entity in entities %}
 
-                    <tr class="link-row" data-href="{% url 'entity_offers' entity.pk %}">
+                    <tr class="link-row" data-href="{% url 'wallet_detail' entity.user.wallet.pk %}">
                         {% include 'entity/row_display.html' with  item=entity %}</tr>
                     {% endfor %}
                         </table>
