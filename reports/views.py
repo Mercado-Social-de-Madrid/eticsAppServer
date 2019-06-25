@@ -126,7 +126,6 @@ def wallets(request):
         total=Sum('amount'),
         bonus=Sum(Case(When(is_bonification=True, then='amount')))).order_by('day')
     daily.additional_rows = [{'label':'Bonificación', 'id':'bonus'}]
-    print daily
     params = {
         'payments': payments,
         'pending': payments.pending(),
