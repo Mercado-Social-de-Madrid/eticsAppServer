@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}Entidades{% endblock%}
+
+{% block bodyattrs %}class="entity"{% endblock%}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-7 col-md-8"><h3 class="primary-title mb-3"><i class="material-icons mr-2">timeline</i>Entidades</h3></div>
+
+
+
+        <div class="col-sm-12 mb-4">
+            {% include "reports/ranges_filter.html"  %}
+        </div>
+    </div>
+
+    <div class="row equal-first-height mb-4" data-target=".equal" data-source="">
+        <div class="col-md-5">
+            <div class="equal">
+                <div class="card bg-primary text-light mb-3">
+                    <div class="card-body">
+                        <div class="display-2 float-left"> {{total_entities}} </div>
+                        <div class="float-left pl-3">
+                             <h5 class="lead text-primary text-light mb-0"> entidades <i class="material-icons">store</i></h5>
+                            {{new_entities| length}} nuevas
+                        </div>
+                        </div>
+                </div>
+
+                <div class="card mb-4 bg-secondary">
+                    <div class="card-body">
+                        <h5 class="lead text-primary  mb-0"> <i class="material-icons mr-2">store</i> Bonificaciones (media)</h5>
+                        <div class="row">
+                            <div class="col feature"><span class="primary-title"><strong></strong></span> <div class="display-4"> {{bonus_general|floatformat:2}}%</div><span>General</span></div>
+                            <div class="col feature"><span class="primary-title"><strong></strong></span> <div class="display-4"> {{bonus_entity|floatformat:2}}%</div><span>A entidades</span></div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+             <div class="card">
+                <div class="card-body equal">
+                    <div class="mx-2 mb-4">
+                        <div class="display-2 float-left">{{new_entities.count}} </div>
+                            <div class="float-left pl-3">
+                                 <h5 class="lead text-primary mb-0"> entidades nuevas</h5>
+                                registradas
+                            </div>
+                    <table class="table">
+
+                    {% for entity in new_entities %}
+
+                    <tr class="link-row" data-href="{% url 'entity_detail' entity.pk %}">
+                        {% include 'entity/row_display.html' with  item=entity %}</tr>
+
+                        {% empty %}
+                        <tr><td class="text-muted">No hay entidades nuevsa para este rango de fechas...</td></tr>
+                    {% endfor %}
+                        </table>
+                </div>
+                    </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 mb-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="mb-2 ml-4">Distribución del máximo pago aceptado en etics</h5>
+                    <div id="payments-chart"></div>
+                </div>
+            </div>
+
+        </div>
+
+         <div class="col-sm-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="mb-4 text-primary">Distribución por categorías</h5>
+                    <div id="categories-chart"></div>
+                </div>
+            </div>
+
+
+         </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+{% endblock%}
+
+{% block scripts %}
+<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+<script type="text/javascript">
+    $(function(){
+
+    google.load('visualization', '1.0', {'packages':['corechart'], 'callback':drawCategoriesChart} );
+		// Set a callback to run when the Google Visualization API is loaded.
+		function drawCategoriesChart() {
+
+		    var data = google.visualization.arrayToDataTable([
+                [
+                  {label: 'Categoría', id: 'cat', type: 'string'},
+                  {label: 'Entidades', id: 'ent', type: 'number'},
+                  {role: 'style', type: 'string'}
+                ],
+		        {% for cat in categories %}
+		            ['{{cat}} ', {{cat.num_entities}}, '{{cat.color}}'] {% if not forloop.last %}, {% endif %}
+		        {% endfor %}
+              ]);
+	        var chart = new google.visualization.BarChart(document.getElementById('categories-chart'));
+	        chart.draw(data, {
+	            width: "100%",
+	            height: {{categories|length}} * 50,
+	            legend: { position: 'none'},
+                backgroundColor: 'transparent',
+                axisTitlesPosition: 'none',
+                chartArea:{top:0,height:'90%'}
+            });
+
+
+            var data2 = google.visualization.arrayToDataTable([
+                [
+                  {label: 'Categoría', id: 'cat', type: 'string'},
+                  {label: 'Entidades', id: 'ent', type: 'number'},
+                  {type: 'string', role: 'tooltip'}
+                ],
+		        {% for pay in payment_stats %}
+		            ['{{pay.max_percent_payment|default:0|unlocalize}}%', {{pay.count|default:0|unlocalize}}, '{{pay.max_percent_payment}}%: {{pay.count}}'] {% if not forloop.last %}, {% endif %}
+		        {% endfor %}
+              ]);
+              var chart = new google.visualization.AreaChart(document.getElementById('payments-chart'));
+                chart.draw(data2, {
+                    chartArea: {left:"5%",width:"90%"},
+                    legend: { position: 'none'},
+                    curveType: 'function',
+                    backgroundColor: 'transparent',
+                });
+	      }
+	 });
+</script>
+
+
+{% endblock scripts %}

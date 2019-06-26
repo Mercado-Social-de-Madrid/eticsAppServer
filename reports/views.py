@@ -1,11 +1,13 @@
 # coding=utf-8
 import datetime
+
+import array
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
-from django.db.models import Count, Case, When, Sum
+from django.db.models import Count, Case, When, Sum, Avg
 from django.db.models.functions import TruncDay
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -136,7 +138,7 @@ def wallets(request):
         'entities':entities,
         'daily':daily,
         'date_ranges':{
-            'start':since,
+            'start':since - datetime.timedelta(days=1),
             'end':today
         },
         'last': last
@@ -150,6 +152,58 @@ def wallets(request):
     else:
 
         return render(request, 'reports/wallets.html', params)
+
+
+@superuser_required
+def entities(request):
+
+    last = request.GET.get('last', 'month')
+    query = days_query[last]
+
+    today = datetime.date.today()
+    since = today - datetime.timedelta(days=query)
+
+    total_entities = Entity.objects.count()
+    new_entities = Entity.objects.filter(registered__gte=since).order_by('-registered')
+    categories = Category.objects.annotate(num_entities=Count('entity'))
+    payment = Entity.objects.values('max_percent_payment').order_by('max_percent_payment').annotate(count=Count('max_percent_payment'))
+    bonus_general = Entity.objects.all().aggregate(avg=Avg('bonus_percent_general'))['avg']
+    bonus_entity = Entity.objects.all().aggregate(avg=Avg('bonus_percent_entity'))['avg']
+
+    payment_stats = [{'max_percent_payment':i*10, 'count':0} for i in range(0,11)]
+    social_networks = {
+        'facebook_link':0,
+        'webpage_link' :0,
+        'twitter_link':0,
+        'telegram_link':0,
+        'instagram_link':0,
+    }
+
+    for entity in Entity.objects.all():
+        payment_stats[int(entity.max_percent_payment/10)]['count'] += 1
+        social_networks['facebook_link'] += 1 if entity.facebook_link else 0
+        social_networks['webpage_link'] += 1 if entity.webpage_link else 0
+        social_networks['twitter_link'] += 1 if entity.twitter_link else 0
+        social_networks['telegram_link'] += 1 if entity.telegram_link else 0
+        social_networks['instagram_link'] += 1 if entity.instagram_link else 0
+
+    params = {
+        'total_entities': total_entities,
+        'social_networks':social_networks,
+        'new_entities': new_entities,
+        'categories':categories,
+        'bonus_general':bonus_general,
+        'bonus_entity':bonus_entity,
+        'payment_stats':payment_stats,
+        'payment':payment,
+        'date_ranges':{
+            'start':since - datetime.timedelta(days=1),
+            'end':today
+        },
+        'last': last
+    }
+
+    return render(request, 'reports/entities.html', params)
 
 
 @login_required
