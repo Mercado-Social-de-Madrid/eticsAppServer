@@ -10,6 +10,7 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from django_filters.views import FilterMixin, FilterView
 
 import helpers
+from currency.custom_filters import PreregisterFilter
 from currency.forms.EntityForm import EntityForm
 from currency.forms.galleryform import PhotoGalleryForm
 from currency.models import Entity, Gallery, Category, PreRegisteredUser
@@ -95,13 +96,14 @@ def entity_list(request):
 
 
 class EntityFilterForm(BootstrapForm):
-    field_order = ['o', 'search', 'status', ]
+    field_order = ['o', 'search', 'status', 'preregister']
 
 
 class EntityFilter(django_filters.FilterSet):
 
     search = SearchFilter(names=['address', 'name', 'email'], lookup_expr='in', label='Buscar...')
     o = LabeledOrderingFilter(fields=['name', 'max_percent_payment', 'registered'], field_labels={'name':'Nombre', 'max_percent_payment':'Max. pago aceptado','registered':'Fecha de registro'})
+    preregister = PreregisterFilter(label='Prerregistro')
 
     class Meta:
         model = Entity

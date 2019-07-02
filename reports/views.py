@@ -164,6 +164,8 @@ def entities(request):
     since = today - datetime.timedelta(days=query)
 
     total_entities = Entity.objects.count()
+    active = Entity.objects.active().count()
+    preregister = total_entities - active
     new_entities = Entity.objects.filter(registered__gte=since).order_by('-registered')
     categories = Category.objects.annotate(num_entities=Count('entity'))
     payment = Entity.objects.values('max_percent_payment').order_by('max_percent_payment').annotate(count=Count('max_percent_payment'))
@@ -191,6 +193,8 @@ def entities(request):
         'total_entities': total_entities,
         'social_networks':social_networks,
         'new_entities': new_entities,
+        'active': active,
+        'preregister': preregister,
         'categories':categories,
         'bonus_general':bonus_general,
         'bonus_entity':bonus_entity,

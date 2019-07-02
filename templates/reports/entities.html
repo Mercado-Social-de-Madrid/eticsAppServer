@@ -13,8 +13,6 @@
     <div class="row">
         <div class="col-sm-7 col-md-8"><h3 class="primary-title mb-3"><i class="material-icons mr-2">timeline</i>Entidades</h3></div>
 
-
-
         <div class="col-sm-12 mb-4">
             {% include "reports/ranges_filter.html"  %}
         </div>
@@ -25,17 +23,23 @@
             <div class="equal">
                 <div class="card bg-primary text-light mb-3">
                     <div class="card-body">
+                        <div class="clearfix">
                         <div class="display-2 float-left"> {{total_entities}} </div>
                         <div class="float-left pl-3">
                              <h5 class="lead text-primary text-light mb-0"> entidades <i class="material-icons">store</i></h5>
                             {{new_entities| length}} nuevas
                         </div>
                         </div>
+                        <div class="row mt-3 clearfix">
+                            <a class="col-sm-6 feature text-white" href="{% url 'entity_list' %}?preregister=3"> <div class="display-4"> {{active}}</div><span>Activas</span></a>
+                            <a class="col-sm-6 feature text-white" href="{% url 'entity_list' %}?preregister=2"><div class="display-4"> {{preregister}}</div><span>Prerregistro</span></a>
+                            </div>
+                        </div>
                 </div>
 
                 <div class="card mb-4 bg-secondary">
                     <div class="card-body">
-                        <h5 class="lead text-primary  mb-0"> <i class="material-icons mr-2">store</i> Bonificaciones (media)</h5>
+                        <h5 class="lead text-primary  mb-0"> <i class="material-icons mr-2">redeem</i> Bonificaciones (media)</h5>
                         <div class="row">
                             <div class="col feature"><span class="primary-title"><strong></strong></span> <div class="display-4"> {{bonus_general|floatformat:2}}%</div><span>General</span></div>
                             <div class="col feature"><span class="primary-title"><strong></strong></span> <div class="display-4"> {{bonus_entity|floatformat:2}}%</div><span>A entidades</span></div>
