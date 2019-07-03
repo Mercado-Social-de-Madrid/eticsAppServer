@@ -61,6 +61,10 @@ class Person(models.Model):
 @receiver(post_save, sender=Person)
 def add_user_to_group(sender, instance, created, **kwargs):
 
+    if instance.user:
+        instance.user.email = instance.email
+        instance.user.save()
+
     if created:
         print 'Adding user to persons group'
         group = Group.objects.get(name='persons')

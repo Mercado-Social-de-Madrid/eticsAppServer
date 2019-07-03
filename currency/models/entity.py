@@ -116,6 +116,10 @@ class Entity(models.Model):
 @receiver(post_save, sender=Entity)
 def add_user_to_group(sender, instance, created, **kwargs):
 
+    if instance.user:
+        instance.user.email = instance.email
+        instance.user.save()
+
     if created:
         print 'Adding user to entities group'
         group = Group.objects.get(name='entities')
