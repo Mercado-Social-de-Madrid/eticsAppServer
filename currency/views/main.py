@@ -3,12 +3,14 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.views import PasswordResetView
 from django.core.paginator import EmptyPage, Paginator, PageNotAnInteger, InvalidPage
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 import helpers
 from currency.forms.password import PasswordForm
+from currency.forms.password_reset import CustomPasswordResetForm
 from currency.forms.preregister import UserForm
 from currency.forms.profile import ProfileForm
 from currency.models import PreRegisteredUser
@@ -151,3 +153,8 @@ def profile_password(request):
             'password_form':password_form,
             'password_tab':True
             })
+
+
+class CustomPasswordResetView(PasswordResetView):
+    form_class = CustomPasswordResetForm
+    #from_email = None
