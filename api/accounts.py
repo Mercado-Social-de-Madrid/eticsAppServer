@@ -176,6 +176,12 @@ def gen_userwallet_data(user, include_type=True, include_apikey=True):
         del data['entity']['user']
         del data['entity']['gallery']
 
+        if instance.categories.count() > 0:
+            print 'has categories!'
+            data['entity']['categories'] = []
+            for cat in instance.categories.all():
+                data['entity']['categories'].append(cat.pk)
+
     if (data['person'] is not None) and 'user' in data['person']:
         data['person']['id'] = instance.pk
         del data['person']['user']
