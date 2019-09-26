@@ -287,3 +287,4 @@ class UserResource(ModelResource):
         bundle.data = gen_userwallet_data(user, include_apikey=False)
 
         return bundle
+

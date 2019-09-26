@@ -7,6 +7,7 @@ from api.wallet import PaymentsResource, WalletResource, TransactionLogResource,
 from api.resources import OffersResource, NewsResource
 from api.accounts import RegisterResource, UserResource, PreRegisterResource
 from api.profile import EntityResource, PersonResource, DeviceResource
+from api.fetch import FetchResource
 
 
 def get_api(version_name):
@@ -29,5 +30,6 @@ def get_api(version_name):
     api.register(NewsResource())
     api.register(SentPaymentsResource())
     api.register(PreRegisterResource())
+    api.register(FetchResource())
 
     return api
