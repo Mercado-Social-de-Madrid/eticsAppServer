@@ -53,7 +53,7 @@ function getCookie(name) {
         resultsContainer.addClass('loading-container');
         $.get(url, {}, function(data){
             resultsContainer.find('.results').html(data);
-            resultsContainer.find('[data-toggle="tooltip"]').tooltip();
+            initElems(resultsContainer);
 
             resultsContainer.removeClass('loading-container');
             if (!keepUrl){
@@ -112,17 +112,28 @@ function getCookie(name) {
         var resultsTarget = self.attr('data-results') || '#results';
         var resultsContainer = $(resultsTarget);
         var initialUrl = resultsContainer.attr('data-initial');
-        var filterUrl = ((initialUrl != null) && (initialUrl!=''))? initialUrl : '' + '?';
+        var filterUrl = ((initialUrl != null) && (initialUrl!=''))? initialUrl : '';
+        var parentAjax = false;
+        if (filterUrl == ''){
+            ajaxContainer = self.parents('.ajax-load');
+            if (ajaxContainer.length > 0){
+                parentAjax = true;
+                filterUrl = ajaxContainer.eq(0).attr('data-initial');
+                if (filterUrl.includes('?'))
+                   filterUrl = filterUrl.split('?')[0];
+            }
+        }
+        filterUrl += '?';
 
         self.on('submit', function(e){
             e.preventDefault();
             var query = filterUrl + self.serialize();
-            loadResults(resultsContainer, query)
+            loadResults(resultsContainer, query, parentAjax)
         });
 
         self.on('change', 'select', function(e){
             var query = filterUrl + self.serialize();
-            loadResults(resultsContainer, query);
+            loadResults(resultsContainer, query, parentAjax);
         });
 
         self.on('click', '.pagination a', function(e){
@@ -130,7 +141,7 @@ function getCookie(name) {
             if ($(this).parent().hasClass('active'))
                 return;
             var url = $(this).attr('href')
-            loadResults(self, url);
+            loadResults(self, url, parentAjax);
         });
 
     };
@@ -159,16 +170,19 @@ function initElems(container){
     container.find('.datepicker').pickdate();
     container.find('.ajax-load').ajaxLoader();
     container.find('.ajax-filter').ajaxFilter();
-
     container.find('[data-toggle="tooltip"]').tooltip();
 
-    container.find(".link-row").click(function(e) {
-        var target = $(e.target);
-        if (!target.is('button') && !target.parents('button').length && !target.is('a') && !target.parents('a').length){
-            window.location = $(this).data("href");
-        }
+    if (container.closest('[data-prevent-link="true"]').length == 0){
+        console.log('no parent!');
+        container.find(".link-row").click(function(e) {
+            var target = $(e.target);
+            if (!target.is('button') && !target.parents('button').length && !target.is('a') && !target.parents('a').length){
+                window.location = $(this).data("href");
+            }
 
-    });
+        });
+    }
+
 
     container.find('.special-select').select2({ 'theme': 'default custom-select' });
 
