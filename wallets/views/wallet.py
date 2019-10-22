@@ -33,11 +33,13 @@ def wallet_types_list(request):
 
 
 class WalletFilterForm(BootstrapForm):
-    field_order = ['o', 'type', ]
+    field_order = ['o', 'search', 'type', ]
 
 
 class WalletFilter(django_filters.FilterSet):
 
+    search = SearchFilter(names=[ 'user__username', 'user__entity__name', 'user__person__name', 'user__person__surname', 'user__email'], lookup_expr='in',
+                          label='Buscar...')
     o = LabeledOrderingFilter(fields=['last_transaction', 'balance'], field_labels={'last_transaction':'Última transacción','balance':'Saldo'})
     class Meta:
         model = Wallet
@@ -55,6 +57,13 @@ class WalletListView(FilterView, ListItemUrlMixin, AjaxTemplateResponseMixin):
     ajax_template_name = 'wallets/query.html'
     filterset_class = WalletFilter
     paginate_by = 10
+
+    def get_template_names(self):
+        template_names = super(WalletListView, self).get_template_names()
+        if self.request.is_ajax() and self.request.GET.get('filter', None) is not None:
+            template_names = ['wallets/search.html'] + template_names
+
+        return template_names
 
 
 @superuser_required

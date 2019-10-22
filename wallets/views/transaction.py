@@ -51,7 +51,7 @@ def transaction_list(request):
 def new_transaction(request):
 
     params = {
-        'ajax_url': reverse('admin_wallet'),
+        'ajax_url': reverse('admin_wallet') + '?filter=true',
     }
 
     if request.method == "POST":
@@ -60,7 +60,6 @@ def new_transaction(request):
         if form.is_valid():
             transaction = form.save(commit=False)
             wallet_from = transaction.wallet_from
-
 
             success = True
             try:
