@@ -81,7 +81,8 @@ class ProfileListView(ExportAsCSVMixin, FilterView, ListItemUrlMixin, AjaxTempla
     paginate_by = 7
 
     csv_filename = 'consumidoras'
-    available_fields = ['nif',]
+    available_fields = ['nif', 'name', 'surname', 'email', 'display_name']
+    field_labels = {'display_name': 'Nombre completo'}
 
 @login_required
 def profile_detail(request, pk):

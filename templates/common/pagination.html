@@ -42,6 +42,8 @@
 {% endif %}
                 </div>
     <div class="col-md-3">
-
+    {% if export_csv_fields %}
+            {% if page.paginator.count %} {% include 'common/list/export_csv.html' %} {% endif %}
+        {% endif %}
     </div>
 </div>
