@@ -37,7 +37,7 @@
 
 
                              {% else %}
-
+                                {% if user_type == 'person' %}
                               <div class="col-sm-7">
 
                                  {% include 'profile/row_display.html' with item=instance show_inline=True %}
@@ -49,8 +49,8 @@
                                      <button type="button" class="btn btn-lg disabled">Ver pagos pendientes</button>
                                      </div>
                               </div>
-
-                                     {% endif %}
+                                {% endif %}
+                             {% endif %}
                          </div>
 
                      </div>
