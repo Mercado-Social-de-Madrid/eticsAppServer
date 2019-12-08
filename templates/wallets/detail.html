@@ -15,6 +15,8 @@
                  <div class="card mb-4">
                      <div class="card-body py-4">
                          <div class="row">
+                             {% if user_type == 'entity' %}
+
                              <div class="col-sm-5" style="border-right:1px solid #ccc;">
                                  {% include 'wallets/wallet_balance.html' with wallet=wallet %}<br>
                                  <strong class="ml-4 text-primary">Tipo:</strong> {{wallet.type}}<br>
@@ -22,7 +24,6 @@
 
                              </div>
 
-                             {% if user_type == 'entity' %}
                              <div class="col-sm-7">
 
                                  {% include 'entity/row_display.html' with item=instance show_inline=True %}
@@ -38,6 +39,14 @@
 
                              {% else %}
                                 {% if user_type == 'person' %}
+
+                                <div class="col-sm-5" style="border-right:1px solid #ccc;">
+                                     {% include 'wallets/wallet_balance.html' with wallet=wallet %}<br>
+                                     <strong class="ml-4 text-primary">Tipo:</strong> {{wallet.type}}<br>
+                                     <strong class="ml-4 text-primary">Límite de crédito:</strong>{% if wallet.type.unlimited %} Ilimitado {% else %} {{wallet.type.credit_limit}} {% endif %}
+
+                                 </div>
+
                               <div class="col-sm-7">
 
                                  {% include 'profile/row_display.html' with item=instance show_inline=True %}
@@ -49,6 +58,22 @@
                                      <button type="button" class="btn btn-lg disabled">Ver pagos pendientes</button>
                                      </div>
                               </div>
+
+                             {% else %}
+
+                                <div class="col-sm-6" style="border-right:1px solid #ccc;">
+                                 {% include 'wallets/wallet_balance.html' with wallet=wallet %}<br>
+                                </div>
+                             <div class="col-sm-6">
+                                 {% if wallet.type.id == "debit" %}
+                                 <h3 class="mb-0">Cuenta de débito</h3>
+                                 {{wallet.user}}<br><br>
+                                 {% endif %}
+                                 <strong class="text-primary">Tipo:</strong> {{wallet.type}}<br>
+                                 <strong class="text-primary">Límite de crédito:</strong>{% if wallet.type.unlimited %} Ilimitado {% else %} {{wallet.type.credit_limit}} {% endif %}
+
+                             </div>
+
                                 {% endif %}
                              {% endif %}
                          </div>
