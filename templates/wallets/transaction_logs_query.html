@@ -4,11 +4,12 @@
     <tr>
         <th scope="col">Fecha</th>
         <th scope="col">Hora</th>
-        <!--TODO:añadir referencia de alguna forma-->
+        <th scope="col">Concepto</th>
       <th scope="col">Cuenta</th>
       <th scope="col" class="text-right pr-5">Cantidad</th>
-      <th scope="col" class="text-center">Bonificación</th>
+
         <th scope="col" class="text-right pr-5">Saldo</th>
+      <th scope="col" class="text-center"></th>
     </tr>
   </thead>
   <tbody>
@@ -23,9 +24,21 @@
         <span class="text-muted">MES <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Cuenta débito">local_atm</i> </span>
           {% endif %}
       </td>
+      <td>{{tr.concept}}</td>
+
       <td>{% include 'wallets/currency_amount.html' with amount=tr.amount %}</td>
-      <td class="text-center">{%if tr.is_bonification %} <i class="material-icons">done</i> {% endif %}</td>
       <td>{% include 'wallets/currency_amount.html' with amount=tr.current_balance %} </td>
+
+      <td>
+           {% if tr.made_byadmin %}
+           <span class="text-info"><i class="material-icons md-36" data-toggle="tooltip" data-placement="bottom" title="Realizada por Administrador">play_circle_outline</i> </span>
+           {% endif %}
+
+           {% if tr.is_bonification %}
+           <span class="text-success"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Bonificación">redeem</i> </span>
+           {% endif %}
+       </td>
+
     </tr>
     {% endfor %}
   </tbody>

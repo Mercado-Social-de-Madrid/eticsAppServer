@@ -11,9 +11,9 @@
         </div>
 
         <div class="col-md-7">
-            <div class="row mb-4">
+            <div class="row">
                 <div class="col">
-                    <div class="card bg-primary text-light">
+                    <div class="card bg-primary text-light mb-4">
                         <div class="card-body">
                             <div class="display-2 float-left"> {{total_entities}} </div>
                             <div class="float-left pl-3">
@@ -38,7 +38,7 @@
 
                 </div>
                 <div class="col">
-                    <div class="card bg-secondary">
+                    <div class="card bg-secondary mb-4">
                         <div class="card-body">
                             <div class="display-2 float-left"> {{total_persons}} </div>
                             <div class="float-left pl-3">
@@ -52,7 +52,7 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
-                            </div>
+                        </div>
                         <div class="card-actions">
                             <a class="btn btn-outline-light" href="{% url 'profile_list' %}">Ir a consumidoras</a>
                           </div>
@@ -66,6 +66,19 @@
         </div>
 
         <div class="col-md-5">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 class="primary-title ml-3 mb-3"><i class="material-icons mr-2">timeline</i>Saldo débito</h3>
+                    <span class="display-4 ml-3"> {{debit_wallet.balance|floatformat:2}}<i class="currency-icon"></i><br></span>
+
+
+                </div>
+                <div class="card-actions">
+                    <a class="btn btn-outline-primary" href="{% url 'wallet_detail' debit_wallet.pk %}">Ver movimientos</a>
+                </div>
+
+            </div>
+
             <div class="ajax-load" data-initial="{% url 'reports:offers' %}?last={{last}}" data-keepurl="false">
                 <div class="results"></div>
             </div>

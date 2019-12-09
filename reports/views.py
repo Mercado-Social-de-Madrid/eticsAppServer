@@ -21,7 +21,7 @@ from currency.models import Entity, Gallery, Category, Person
 from news.forms.NewsForm import NewsForm
 from news.models import News
 from offers.models import Offer
-from wallets.models import Payment, Transaction
+from wallets.models import Payment, Transaction, Wallet
 
 
 @login_required
@@ -48,7 +48,16 @@ def index(request):
     new_persons = Person.objects.filter(registered__gte=since).order_by('-registered')
     new_persons = helpers.paginate(new_persons, 1, elems_perpage=6)
 
-    return render(request, 'reports/index.html', { 'last': last, 'total_entities':total_entities, 'total_persons':total_persons, 'persons':new_persons, 'entities':new_entities })
+    debit_wallet = Wallet.objects.filter(type__id="debit").first()
+    print(debit_wallet)
+
+    return render(request, 'reports/index.html', {
+        'last': last,
+        'total_entities': total_entities,
+        'total_persons': total_persons,
+        'persons': new_persons,
+        'debit_wallet': debit_wallet,
+        'entities': new_entities })
 
 
 def entity_detail(request, pk):
