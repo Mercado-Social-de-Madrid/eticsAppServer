@@ -2,7 +2,7 @@
 
 <{% if show_inline %}div{% else %}td{% endif%} class="entity-td">
       <div class="profile-circle small">
-          <img src="{% if item.logo %}{{item.logo_thumbnail.url}}{% else %}{% static 'imgs/entity.png' %}{% endif %}">
+          <img src="{% if item.logo %}{% else %}{% static 'imgs/entity.png' %}{% endif %}">
       </div>
     {% if request.user.is_superuser %}
       <span class="entity-status">

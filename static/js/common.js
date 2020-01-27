@@ -57,9 +57,6 @@ function getCookie(name) {
 
             resultsContainer.removeClass('loading-container');
             if (!keepUrl){
-                resultsContainer.find(".link-row").click(function() {
-                    window.location = $(this).data("href");
-                });
 
                 var preserveHistory = resultsContainer.attr('data-preservehistory');
                 if (!preserveHistory || preserveHistory != 'true')
@@ -173,7 +170,6 @@ function initElems(container){
     container.find('[data-toggle="tooltip"]').tooltip();
 
     if (container.closest('[data-prevent-link="true"]').length == 0){
-        console.log('no parent!');
         container.find(".link-row").click(function(e) {
             var target = $(e.target);
             if (!target.is('button') && !target.parents('button').length && !target.is('a') && !target.parents('a').length){
@@ -254,10 +250,6 @@ $(function(){
 
     $('[data-toggle="tooltip"]').tooltip();
     $('.modal.show-on-load').modal();
-
-    $(".link-row").click(function() {
-        window.location = $(this).data("href");
-    });
 
     $('.tag-select').each(function(){
         var select = $(this).find('select').addClass('form-control');

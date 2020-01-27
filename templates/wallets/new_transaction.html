@@ -80,7 +80,7 @@
 
       </div>
       <div class="modal-body large-padding px-5">
-                <div class="ajax-load" data-initial="{{ ajax_url }}" data-keepurl="true">
+                <div class="ajax-load" data-initial="{{ ajax_url }}" data-keepurl="true" data-prevent-link="true">
                     <div class="results">
 
                     </div>
@@ -127,10 +127,15 @@
 
     walletModal.on('click', 'tr.link-row', function(e){
         e.preventDefault();
+        e.stopImmediatePropagation();
         $(this).off('click');
         e.stopPropagation();
 
         var walletName = $(this).find('h5').text();
+        if (walletName == ''){
+            walletName = $(this).find('td').first().text();
+            console.log("AAAA");
+        }
         var walletId = $(this).attr('data-pk');
         if (current == 'to'){
             walletTo.val(walletName);
