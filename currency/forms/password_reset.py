@@ -32,6 +32,11 @@ class CustomPasswordResetForm(PasswordResetForm):
     def clean(self):
         cleaned_data = super(PasswordResetForm, self).clean()
         email_or_username = cleaned_data.get('email')
-        users = self.get_users(email_or_username)
-        if len(list(users)) == 0:
+        users = list(self.get_users(email_or_username))
+        print users
+        if len(users) == 0:
             self.add_error('email', "No existe un usuario asociado al email introducido.")
+        else:
+            user = users[0]
+            cleaned_data['email'] = user.email
+            return cleaned_data
