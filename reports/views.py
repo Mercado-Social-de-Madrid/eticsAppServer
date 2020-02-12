@@ -132,6 +132,18 @@ def wallets(request):
 
     payments = Payment.objects.published_last_days(query)
     transactions = Transaction.objects.published_last_days(query).order_by('-timestamp')
+    bonifications = transactions.filter(is_bonification=True).count()
+    euro_purchase = transactions.filter(is_euro_purchase=True).count()
+    general = transactions.count() - bonifications - euro_purchase
+
+    payments_entity = 0
+    payments_consumer = 0
+    for payment in payments:
+        receiver_type, entity = payment.sender.get_related_entity()
+        if receiver_type is 'entity':
+            payments_entity += 1
+        elif receiver_type is 'person':
+            payments_consumer += 1
 
     entities = Entity.objects.filter(user__in=payments.values_list('receiver').distinct())
 
@@ -145,6 +157,11 @@ def wallets(request):
         'pending': payments.pending(),
         'transactions':transactions,
         'entities':entities,
+        'bonifications': bonifications,
+        'euro_purchase': euro_purchase,
+        'payments_entity':payments_entity,
+        'payments_consumer':payments_consumer,
+        'general':general,
         'daily':daily,
         'date_ranges':{
             'start':since - datetime.timedelta(days=1),
