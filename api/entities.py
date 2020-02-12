@@ -122,7 +122,7 @@ class EntitiesDetailResource(ModelResource):
                     applicable_filters['city__exact'] = related.city.id
             else:
                 # default to Madrid
-                applicable_filters['city__exact'] = 'ara'
+                applicable_filters['city__exact'] = 'mad'
 
         base_object_list = super(EntitiesDetailResource, self).apply_filters(request, applicable_filters)
         query = request.GET.get('q', None)

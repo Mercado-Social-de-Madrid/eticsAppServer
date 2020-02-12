@@ -26,7 +26,7 @@ from currency.models import Category, Gallery, City
 class EntityManager(models.Manager):
 
     def active(query):
-        return query.filter(user__preregister__isnull=True)
+        return query.filter(user__preregister__isnull=True, inactive=False, hidden=False)
 
 
 class Entity(models.Model):
@@ -70,6 +70,9 @@ class Entity(models.Model):
     twitter_link = models.CharField(null=True, blank=True, verbose_name='Perfil de Twitter', max_length=250)
     telegram_link = models.CharField(null=True, blank=True, verbose_name='Canal de Telegram', max_length=250)
     instagram_link = models.CharField(null=True, blank=True, verbose_name='Perfil de Instagram', max_length=250)
+
+    inactive = models.BooleanField(default=False, verbose_name='Inactiva')
+    hidden = models.BooleanField(default=False, verbose_name='Oculta')
 
     gallery = models.OneToOneField(Gallery, blank=True, null=True, on_delete=models.SET_NULL)
 
