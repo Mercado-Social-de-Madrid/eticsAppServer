@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% load l10n %}
 {% load settings_value %}
+{% load display_functions %}
 <html lang="es">
   <head>
     <!-- Required meta tags -->
@@ -125,7 +126,7 @@ function fitBoundsToMarkers(map, only_visible){
       var entity{{forloop.counter}} = new google.maps.LatLng({{ entity.latitude|unlocalize }}, {{ entity.longitude|unlocalize }});
       createMarker(map, entity{{forloop.counter}}, {
             title:'{{ entity.name }}',
-            address:'{{ entity.address }}',
+            address:'{{ entity.address|remove_newlines }}',
             img:'{% if entity.logo %}{{ entity.logo.url}}{% else %}{% static "imgs/etics-icon.png" %}{% endif %}'
         }, true, true);
 
