@@ -156,7 +156,7 @@ def profile_password(request):
 
 
 class CustomPasswordResetView(PasswordResetView):
-    html_email_template_name = 'registration/password_reset_email.html'
-    email_template_name = 'registration/password_reset_email.txt'
+    email_template_name = 'registration/txt_password_reset_email.txt'
+    html_email_template_name = 'registration/html_password_reset_email.html'
     form_class = CustomPasswordResetForm
     #from_email = None
