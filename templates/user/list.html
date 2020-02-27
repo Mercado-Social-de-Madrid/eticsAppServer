@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}Consumidoras{% endblock%}
+
+{% block bodyattrs %}class="offers"{% endblock%}
+
+{% block content %}
+
+<div class="container">
+<h3 class="primary-title mb-3"><i class="material-icons mr-2">directions_walk</i>Usuarios</h3>
+
+    {% include 'common/list/filter_form.html' %}
+    {% include 'common/list/ajax_wrapper.html' with query_template='user/query.html' %}
+
+
+</div>
+
+{% endblock%}

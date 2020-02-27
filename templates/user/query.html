@@ -1,0 +1,22 @@
+{% extends 'common/list/base.html' %}
+
+ {% block table_head %}
+
+    <th scope="col">Usuario</th>
+      <th scope="col">Email</th>
+      <th scope="col">Perfil</th>
+      <th scope="col">Registro</th>
+<th scope="col">Último login</th>
+{% endblock %}
+
+
+{% block item_row %}
+<td>{{ item.username }}</td>
+<td>{{ item.email }}</td>
+{% with entity=item.get_related_entity.1  %}
+<td>{{entity.display_name}}</td>
+<td>{{item.date_joined|date:'d/m/Y'}}</td>
+<td>{{item.last_login|date:'d/m/Y'|default:'Nunca'}}</td>
+{% endwith %}
+
+{% endblock %}

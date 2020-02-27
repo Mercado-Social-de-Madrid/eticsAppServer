@@ -14,6 +14,7 @@ from helpers.forms.BootstrapForm import BootstrapForm
 from helpers.mixins.AjaxTemplateResponseMixin import AjaxTemplateResponseMixin
 from helpers.mixins.ExportAsCSVMixin import ExportAsCSVMixin
 from helpers.mixins.ListItemUrlMixin import ListItemUrlMixin
+from helpers.mixins.SuperUserCheck import SuperUserCheck
 
 
 @login_required
@@ -70,7 +71,7 @@ class ProfileFilter(django_filters.FilterSet):
         fields = [ ]
 
 
-class ProfileListView(ExportAsCSVMixin, FilterView, ListItemUrlMixin, AjaxTemplateResponseMixin):
+class ProfileListView(SuperUserCheck, ExportAsCSVMixin, FilterView, ListItemUrlMixin, AjaxTemplateResponseMixin):
 
     model = Person
     queryset = Person.objects.all()
