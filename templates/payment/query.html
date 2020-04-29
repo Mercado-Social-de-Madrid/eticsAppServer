@@ -7,10 +7,10 @@
       <th scope="col">Pagador</th>
         {% if showing_all %}
         <th scope="col">Destinatario</th>
-        <th>Estado</th>
         {% endif %}
-      <th scope="col">Cantidad total</th>
-      <th scope="col">En etics</th>
+        <th>Estado</th>
+      <th scope="col" class="text-right">Cantidad total</th>
+      <th scope="col" class="text-right">En etics</th>
     </tr>
   </thead>
   <tbody>
@@ -21,7 +21,6 @@
       <td>{{payment.sender}}</td>
         {% if showing_all %}
         <td>{{payment.receiver}}</td>
-
         {% endif %}
         <td class="table-actions">
             {% if payment.status == 'accepted' %}<span class="text-success"><i class="material-icons md-36" >play_circle_outline</i> Aceptado</span> {% endif %}

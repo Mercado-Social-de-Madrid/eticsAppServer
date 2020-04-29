@@ -41,6 +41,7 @@ def profile(request):
             params['entity'] = instance
             params['num_offers'] = Offer.objects.current(entity=instance).count()
             params['pending_payments'] = Payment.objects.pending(user=request.user)
+            params['sent_pending'] = Payment.objects.sent_pending(user=request.user)
         elif type == 'person':
             params['type'] = type
             params['person'] = instance
