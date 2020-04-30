@@ -79,6 +79,16 @@
                         {{payments}} pagos pendientes de revisión
                         {% endblocktrans %}
                      {% endif %}
+
+                     {% if sent_pending %}
+                     <a class="list-group-item list-group-item-action bg-warning" href="{% url 'pending_payments' %}">
+                         <i class="material-icons">schedule</i>
+                         {% blocktrans count payments=sent_pending|length %}
+                        Tienen que revisarte {{payments}} pago
+                        {% plural %}
+                        Tienen que revisarte {{payments}} pagos
+                        {% endblocktrans %}
+                     {% endif %}
                     <a class="list-group-item list-group-item-action" href="{% url 'user_wallet' %}"><i class="material-icons">chevron_right</i> Consultar movimientos</a>
                     <a class="list-group-item list-group-item-action" href="{% url 'new_payment' %}"><i class="material-icons">chevron_right</i> Enviar pago</a>
                      <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Obtener etics</a>

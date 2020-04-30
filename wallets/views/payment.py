@@ -21,11 +21,14 @@ from wallets.models import Payment, Wallet
 @login_required
 def pending_payments(request):
     pending_payments = Payment.objects.pending(user=request.user)
+    sent_pending = Payment.objects.sent_pending(user=request.user)
 
     page = request.GET.get('page')
     pending_payments = helpers.paginate(pending_payments, page, elems_perpage=10)
+
     params = {
-        'payments': pending_payments
+        'payments': pending_payments,
+        'sent_pending': sent_pending
     }
 
     if request.is_ajax():

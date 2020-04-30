@@ -30,6 +30,10 @@ class PaymentQuerySet(models.QuerySet):
             q = q.filter(receiver=user)
         return q
 
+    def sent_pending(self, user):
+        return self.filter(status=STATUS_PENDING, sender=user)
+
+
     def published_last_days(self, days=30):
         today = datetime.date.today()
         since = today - datetime.timedelta(days=days)
@@ -42,6 +46,9 @@ class PaymentManager(models.Manager):
 
     def pending(self, user=None):
         return self.get_queryset().pending(user=user)
+
+    def sent_pending(self, user=None):
+        return self.get_queryset().sent_pending(user=user)
 
     def published_last_days(self, days=30):
         return self.get_queryset().published_last_days(days=days)
