@@ -1,0 +1,31 @@
+{% if payments %}
+<div class="table-responsive card">
+<table class="table table-hover" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
+  <thead>
+    <tr>
+        <th scope="col">Fecha</th>
+        <th scope="col">Destinatario</th>
+        <th scope="col">Concepto</th>
+      <th scope="col" class="text-right">Cantidad total</th>
+      <th scope="col" class="text-right">En etics</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    {% for payment in payments %}
+    <tr data-href="{%url 'payment_detail' payment.pk%}">
+      <th scope="row">{{payment.timestamp|date:'d/m/Y H:i'}}</th>
+        <td>{{payment.receiver}}</td>
+        <td>{{payment.concept|default:'-'}}</td>
+        <td><div class="amount">{{payment.total_amount}}€</div></td>
+        <td><div class="amount">{{payment.currency_amount}}<i class="currency-icon"></i></div></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+    </div>
+{% else %}
+    <div class="text-grey px-3">No tienes ningún pago pendiente de confirmación actualmente.</div>
+{% endif %}
+
+{% include 'common/pagination.html' with page=payments %}
