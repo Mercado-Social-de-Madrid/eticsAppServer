@@ -34,8 +34,8 @@ class UserFilterForm(BootstrapForm):
 
 class UserFilter(django_filters.FilterSet):
 
-    search = SearchFilter(names=['address', 'name', 'email'], lookup_expr='in', label='Buscar...')
-    o = LabeledOrderingFilter(fields=['name',  'date_joined', 'last_login'], field_labels={'name':'Nombre', 'last_login':'Ultimo login','date_joined':'Fecha de registro'})
+    search = SearchFilter(names=['username', 'entity__name', 'person__name', 'person__surname', 'email'], lookup_expr='in', label='Buscar...')
+    o = LabeledOrderingFilter(fields=['username',  'date_joined', 'last_login'], field_labels={'username':'Nombre', 'last_login':'Ultimo login','date_joined':'Fecha de registro'})
 
     class Meta:
         model = Entity
