@@ -25,7 +25,7 @@ class PhotoGalleryResource(ModelResource):
         list_allowed_methods = ['get']
         resource_name = 'photo'
         collection_name = 'photos'
-        excludes = ['title', 'id', 'uploaded']
+        excludes = ['title', 'id', 'uploaded', 'order']
 
         authentication = Authentication()
         authorization = Authorization()
@@ -83,7 +83,7 @@ class EntitiesDetailResource(ModelResource):
         list_allowed_methods = ['get', 'post']
         resource_name = 'entities'
         collection_name = 'entities'
-        excludes = ['user']
+        excludes = ['user', 'registered', 'num_workers', 'legal_form']
 
         filtering = {
             'categories': ALL,
