@@ -25,7 +25,7 @@ class PhotoGalleryResource(ModelResource):
         list_allowed_methods = ['get']
         resource_name = 'photo'
         collection_name = 'photos'
-        excludes = ['title', 'id', 'uploaded', 'order']
+        excludes = ['title', 'id', 'uploaded']
 
         authentication = Authentication()
         authorization = Authorization()
