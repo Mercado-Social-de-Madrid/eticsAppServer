@@ -6,13 +6,21 @@ import datetime
 
 from django.db.models import Sum
 from django.db.models.functions import TruncDay
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView, TemplateView, FormView
+from django_filters.views import FilterView
+from filters.views import FilterMixin
 
 import helpers
 from helpers import superuser_required
-from wallets.forms.TransactionForm import TransactionForm
+from helpers.mixins.AjaxTemplateResponseMixin import AjaxTemplateResponseMixin
+from helpers.mixins.ExportAsCSVMixin import ExportAsCSVMixin
+from helpers.mixins.ListItemUrlMixin import ListItemUrlMixin
+from wallets.forms.TransactionForm import TransactionForm, BulkTransactionForm
 from wallets.models import Transaction, Wallet
 
 
@@ -46,6 +54,34 @@ def transaction_list(request):
         return render(request, 'wallets/transactions_list.html', params)
 
 
+class TransactionsListView(FilterMixin, FilterView, ExportAsCSVMixin, ListItemUrlMixin, AjaxTemplateResponseMixin):
+
+    model = Transaction
+    objects_url_name = 'entity_detail'
+    template_name = 'transaction/list.html'
+    ajax_template_name = 'transaction/query.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Transaction.objects.all().order_by('-timestamp')
+
+    def get_context_data(self, **kwargs):
+        context = super(TransactionsListView, self).get_context_data(**kwargs)
+        start_date = timezone.now() - datetime.timedelta(days=71)
+        end_date = timezone.now()
+        transactions_bydate = Transaction.objects.filter(timestamp__gte=start_date,
+                                                         timestamp__lte=end_date) \
+            .annotate(day=TruncDay('timestamp')) \
+            .values('day') \
+            .annotate(total=Sum('amount')).order_by('day')
+        context['transactions_bydate'] = transactions_bydate
+        return context
+
+
+    csv_filename = 'movimientos'
+    available_fields = ['timestamp', 'amount', 'concept', 'is_bonification', 'is_euro_purchase',  'id', 'made_byadmin',
+                        'wallet_from', 'wallet_to', 'wallet_from__related_type']
+    field_labels = {'wallet_from__related_type':'Tipo'}
 
 @superuser_required
 def new_transaction(request):

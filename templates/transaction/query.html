@@ -1,0 +1,54 @@
+{% extends 'common/list/base.html' %}
+
+{% block table_head %}
+    <th scope="col" {% if narrow %} class="px-2" {% endif %}>Fecha</th>
+        {% if narrow %}
+        <th scope="col">Movimiento</th>
+        {% else %}
+        <th scope="col" >Emisor</th>
+        <th scope="col">Receptor</th>
+        {% endif %}
+    <th scope="col" {% if narrow %} class="px-2" {% endif %}>Cantidad</th>
+    <th scope="col" colspan="2">Concepto</th>
+{% endblock %}
+
+
+{% block item_row %}
+<th scope="row" {% if narrow %} class="px-2" {% endif %}>{{item.timestamp|date:'d/m/Y H:i'}}</th>
+
+  <td {% if narrow %} class="px-2 text-center" {% endif %}>
+    {% if item.wallet_from.user %}
+        {% with from=item.wallet_from.user.get_related_entity.1 %}
+            {% if from %}
+                {{item.wallet_from.user.get_related_entity.1 }}
+            {% else %}
+                <span class="text-muted">MES <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Cuenta débito">local_atm</i> </span>
+            {% endif %}
+        {% endwith %}
+    {% endif %}
+      {% if narrow %}
+      <br><i class="material-icons">swap_vert</i><br>
+      {% else %}
+  </td>
+    <td >
+      {% endif %}
+        {% if item.wallet_to.user %}
+            {{item.wallet_to.user.get_related_entity.1 }}
+        {% else %}
+            <span class="text-muted">MES <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Cuenta débito">local_atm</i> </span>
+        {% endif %}
+    </td>
+
+    <td {% if narrow %} class="px-2" {% endif %}><div class="amount">{{item.amount}}<i class="currency-icon"></i></div> </td>
+  <td {% if narrow %} class="px-2" {% endif %}>{{item.concept}}</td>
+   <td>
+       {% if item.made_byadmin %}
+       <span class="text-info"><i class="material-icons md-36" data-toggle="tooltip" data-placement="bottom" title="Realizada por Administrador">play_circle_outline</i> </span>
+       {% endif %}
+
+       {% if item.is_bonification %}
+       <span class="text-success"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Bonificación">redeem</i> </span>
+       {% endif %}
+   </td>
+{% endblock %}
+

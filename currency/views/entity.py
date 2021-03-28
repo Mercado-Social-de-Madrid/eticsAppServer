@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.clickjacking import xframe_options_exempt
-from django_filters.views import FilterMixin, FilterView
+from django_filters.views import FilterView
 
 import helpers
 from currency.custom_filters import PreregisterFilter
@@ -22,6 +22,7 @@ from helpers.mixins.AjaxTemplateResponseMixin import AjaxTemplateResponseMixin
 from helpers.mixins.ExportAsCSVMixin import ExportAsCSVMixin
 from helpers.mixins.ListItemUrlMixin import ListItemUrlMixin
 from offers.models import Offer
+from filters.views import FilterMixin
 
 
 @login_required
@@ -111,7 +112,7 @@ class EntityFilter(django_filters.FilterSet):
         fields = [ 'categories' ]
 
 
-class EntityListView(ExportAsCSVMixin, FilterView, ListItemUrlMixin, AjaxTemplateResponseMixin):
+class EntityListView(FilterMixin, FilterView, ExportAsCSVMixin, ListItemUrlMixin, AjaxTemplateResponseMixin):
 
     model = Entity
     queryset = Entity.objects.all()

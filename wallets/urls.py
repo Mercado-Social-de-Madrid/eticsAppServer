@@ -14,7 +14,8 @@ urlpatterns = [
     url(r'^wallet/admin/$', views.WalletListView.as_view(), name='admin_wallet'),
     url(r'^wallet/(?P<pk>[0-9a-f-]+)/$', views.wallet_detail, name='wallet_detail'),
     url(r'^wallet/types/$', views.wallet_types_list, name='wallet_types_list'),
-    url(r'^transactions/$', views.transaction_list, name='transaction_list'),
+    url(r'^transactions/$', views.TransactionsListView.as_view(), name='transaction_list'),
+    url(r'^transactions/bulk/$', views.BulkTransaction.as_view(), name='bulk_transaction'),
     url(r'^transactions/new/$', views.new_transaction, name='new_transaction'),
 
 ]

@@ -22,17 +22,9 @@
         </div>
         <div class="col-md-12 px-4 pb-4">
 
-            <div class="ajax-load">
-                    <div class="results">
-                        {% include 'wallets/transactions_query.html' with transactions=transactions %}
-                    </div>
-                    <div class="loading-spinner"><div class="mes-loader"></div></div>
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div>
+            {% include 'common/list/ajax_wrapper.html' with query_template='transaction/query.html' %}
 
             <hr class="mt-3">
-
         </div>
     </div>
 </div>
