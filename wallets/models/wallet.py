@@ -37,6 +37,8 @@ class Wallet(models.Model):
         ordering = ['user']
 
     def __unicode__(self):
+        return self.related_type
+
         if self.user:
             return self.user.username + ': ' + str(self.balance)
         elif self.type:
@@ -65,6 +67,11 @@ class Wallet(models.Model):
         balance = self.balance + credit_limit - pending_amount
 
         return balance
+
+    @property
+    def related_type(self):
+        type, related = self.user.get_related_entity()
+        return type
 
     def has_enough_balance(self, amount_to_pay, payment=None):
         from wallets.models.payment import STATUS_PENDING

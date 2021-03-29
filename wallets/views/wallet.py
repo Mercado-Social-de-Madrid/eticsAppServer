@@ -13,6 +13,7 @@ from django.db.models.functions import TruncDay
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django_filters.views import FilterView
+from filters.views import FilterMixin
 
 import helpers
 from helpers import superuser_required
@@ -20,6 +21,7 @@ from helpers.filters.LabeledOrderingFilter import LabeledOrderingFilter
 from helpers.filters.SearchFilter import SearchFilter
 from helpers.forms.BootstrapForm import BootstrapForm
 from helpers.mixins.AjaxTemplateResponseMixin import AjaxTemplateResponseMixin
+from helpers.mixins.ExportAsCSVMixin import ExportAsCSVMixin
 from helpers.mixins.ListItemUrlMixin import ListItemUrlMixin
 from wallets.models import Payment, Wallet, TransactionLog, Transaction, WalletType
 from django.utils import timezone
@@ -48,7 +50,7 @@ class WalletFilter(django_filters.FilterSet):
 
 
 @method_decorator(superuser_required, name='dispatch')
-class WalletListView(FilterView, ListItemUrlMixin, AjaxTemplateResponseMixin):
+class WalletListView(FilterMixin, FilterView, ExportAsCSVMixin, ListItemUrlMixin, AjaxTemplateResponseMixin):
 
     model = Wallet
     queryset = Wallet.objects.filter(user__isnull=False).order_by('-last_transaction')
@@ -57,6 +59,8 @@ class WalletListView(FilterView, ListItemUrlMixin, AjaxTemplateResponseMixin):
     ajax_template_name = 'wallets/query.html'
     filterset_class = WalletFilter
     paginate_by = 10
+    csv_filename = 'monederos'
+    available_fields = ['user', 'user__email', 'balance', 'last_transaction', 'type']
 
     def get_template_names(self):
         template_names = super(WalletListView, self).get_template_names()
