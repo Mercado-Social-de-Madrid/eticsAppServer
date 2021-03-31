@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}Transferencias{% endblock%}
+
+{% block bodyattrs %}class="entity"{% endblock%}
+
+{% block content %}
+<form method="post" class="post-form gallery-form" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.media}}
+    {{form.bulk_wallets}}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12"><h3 class="primary-title mb-3">Transferencia en masa</h3></div>
+        {% if notenoughbalance %}
+        <div class="col-sm-12">
+
+        <div class="alert alert-danger text-center"> El monedero seleccionado no tiene saldo suficiente para realizar la transferencia </div>
+    </div>
+        {% endif %}
+            <div class="col-md-6 mb-3">
+                <div class="input-group">
+                  <input type="text" name="user_placeholder" id="wallet_from" disabled class="form-control" maxlength="250" value="{% if wallet_from_display %}{{wallet_from_display }}{%endif%}" placeholder="Monedero origen">
+                    <div class="input-group-append">
+                    <button class="btn btn-outline-primary" type="button" id="fromBtn" style="min-width:0;"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Buscar">search</i></button>
+                  </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-6 mb-2">
+                <div class="form-group">
+                    <label>Concepto</label>
+                    {{form.concept}}
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="badge badge-primary">Cantidad</label>
+                    <div class="input-group">
+                      {{form.amount}}  <div class="input-group-append">
+                        <i class="currency-icon"></i>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <label class="badge badge-primary mb-2">Total</label>
+                <div class="lead">
+                <span id="bulk_total">0</span><i class="currency-icon"></i></div>
+            </div>
+
+            <div class="col-md-2 mt-4">
+                    <div class="custom-control custom-checkbox">
+                      {{form.is_bonification}}
+                      <label class="custom-control-label" for="{{form.is_bonification.auto_id}}">{{form.is_bonification.label}}</label>
+                    </div>
+            </div>
+
+            <div class="col-md-3 mt-3">
+                <button type="submit" class="right-margin left-margin btn btn-primary btn-lg"> Crear transacciones </button>
+            </div>
+    </div>
+
+    <div  id="member-selector">
+    <div class="row custom-selector mt-4" data-action-class="card-actions pt-2 px-0 text-right">
+    <div class="col-md-4 mb-3">
+        <div class="current-members" data-selector="current">
+                <h5 class="text-primary">Seleccionados <span class="badge badge-success" id="bulk_count">0</span> </h5>
+                <div class="custom-selector-panel">
+                {% include 'wallets/simple_query.html' with simple_list=True %}
+                    </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-8 mb-3">
+        <div class="future-members" data-selector="future">
+                <h5 class="text-primary">Monederos <button data-toggle="collapse" href="#search-box" class="btn btn-sm mb-0 pb-0 btn-outline-primary" type="button" style="min-width:0;"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Buscar">search</i></button></h5>
+                 <div class="custom-selector-panel">
+                     <div id="search-box" class="collapse" style="position:absolute;">
+                         <div class="card bg-white p-2 mb-2">
+                             <input type="text" id="search_box" placeholder="Buscar..." class="form-control">
+                         </div>
+                     </div>
+                {% include 'wallets/simple_query.html' with object_list=all_wallets simple_list=True %}
+                 </div>
+            </div>
+    </div>
+
+    <div class="action-buttons" style="display:none;">
+        <button data-action="remove" class="btn btn-outline-primary btn-sm"><i class="material-icons">delete</i></button>
+        <button data-action="add" class="btn btn-outline-primary btn-sm"><i class="material-icons">add</i></button>
+    </div>
+</div>
+</div>
+
+
+    <div class="description text-center">
+            <br>
+        <button type="submit" class="right-margin left-margin btn btn-primary btn-lg"> Añadir </button>
+    </div>
+
+</div>
+    </form>
+
+    <div class="modal fade" id="wallets-modal" tabindex="-1" role="dialog" aria-labelledby="new-user-label">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h3 class="modal-title" id="new-user-label">Selecciona monedero</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+      </div>
+      <div class="modal-body large-padding px-5">
+                <div class="ajax-load" data-initial="{{ ajax_url }}" data-keepurl="true" data-prevent-link="true">
+                    <div class="results">
+
+                    </div>
+                    <div class="loading-spinner"><div class="mes-loader"></div></div>
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+{% endblock%}
+
+{% block scripts %}
+<script type="text/javascript">
+    var walletFrom = $('#wallet_from');
+    var fromValue = $('#{{form.wallet_from.auto_id}}');
+    var walletFromBtn = $('#fromBtn');
+
+    var current = '';
+    var walletModal = $('#wallets-modal');
+
+    walletFromBtn.on('click', function(){
+        walletModal.modal('show');
+    });
+    walletFrom.parent().on('click', function(){
+        walletModal.modal('show');
+    });
+
+    walletModal.on('click', 'tr.link-row', function(e){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $(this).off('click');
+        e.stopPropagation();
+
+        var walletName = $(this).find('h5').text();
+        if (walletName == ''){
+            walletName = $(this).find('td').first().text();
+        }
+        var walletId = $(this).attr('data-pk');
+        walletFrom.val(walletName);
+        fromValue.val(walletId);
+
+        walletModal.modal('hide');
+        return false;
+    });
+
+    var membersSelector = $('#member-selector');
+    var selector = membersSelector.find('.custom-selector');
+    var actionsClass = selector.data('action-class');
+    var actionsCell = $('<td></td>').addClass(actionsClass);
+    var actionsFilter = '.' + actionsClass.split(' ').join('.');
+
+    var total = $('#bulk_total');
+    var count = $('#bulk_count');
+    var amount = $('#{{form.amount.auto_id}}');
+    amount.on('change paste keyup', recalculateTotal);
+
+    var future = selector.find('[data-selector="future"]');
+    var current = selector.find('[data-selector="current"]');
+    current.find('.selected-hide').hide();
+
+    var addBtn = selector.find('.action-buttons [data-action="add"]');
+    var removeBtn = selector.find('.action-buttons [data-action="remove"]');
+
+    future.find('tbody tr').each(function(i, elem){
+        actionsCell.clone().append(addBtn.clone()).appendTo($(elem));
+    });
+
+    future.on('click', 'button', function(){ addToSelected($(this).parents('tr')); });
+    current.on('click', 'button', function(){ removeSelected($(this).parents('tr')); });
+
+    $('#search_box').on('change paste keyup', function(){
+        var search = $(this).val().toUpperCase();
+        console.log(search);
+        future.find('tr').each(function(){
+            var elem = $(this);
+            if (search == ''){
+                elem.show();
+            }
+            else if (elem.text().toUpperCase().indexOf(search) === -1) {
+                elem.hide();
+            }
+            else{
+                elem.show();
+            }
+        });
+
+        if (search == ''){
+
+        }
+    });
+
+    function addToSelected(member){
+        current.find('table').append(member);
+        member.find(actionsFilter).remove();
+        member.find('.selected-hide').hide();
+        actionsCell.clone().append(removeBtn.clone()).appendTo(member);
+        recalculateTotal();
+    }
+
+    function removeSelected(member){
+        future.find('table').append(member);
+        member.find(actionsFilter).remove();
+        member.find('.selected-hide').show();
+        actionsCell.clone().append(addBtn.clone()).appendTo(member);
+        recalculateTotal();
+    }
+
+    function recalculateTotal(){
+        var numWallets = current.find('tbody tr').length;
+        var sum = amount.val() * numWallets;
+        count.text(numWallets);
+        total.text(sum.toFixed(2));
+    }
+
+</script>
+{% endblock scripts %}

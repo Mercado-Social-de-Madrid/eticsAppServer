@@ -1,0 +1,16 @@
+{% extends 'common/list/base.html' %}
+
+ {% block table_head %}
+      <th scope="col">Titular</th>
+      <th scope="col" class="selected-hide">Tipo</th>
+      <th class="text-right selected-hide" scope="col">Balance</th>
+{% endblock %}
+
+
+{% block item_row %}
+{% with item.user.get_related_entity as instance %}
+<td> {{instance.1|default:'-'}}</td>
+{% endwith %}
+<td class="selected-hide" data-type="{{item.type}}">{{item.type}}</td>
+<td class="selected-hide"> {% include 'wallets/currency_amount.html' with amount=item.balance %}</td>
+{% endblock %}

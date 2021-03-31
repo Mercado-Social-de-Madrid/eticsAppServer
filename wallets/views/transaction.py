@@ -124,3 +124,22 @@ def new_transaction(request):
 
     params['form'] = form
     return render(request, 'wallets/new_transaction.html', params)
+
+
+@method_decorator(superuser_required, name='dispatch')
+class BulkTransaction(TemplateView, FormView):
+
+    form_class = BulkTransactionForm
+    template_name = 'transaction/bulk.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(BulkTransaction, self).get_context_data(**kwargs)
+        context['ajax_url'] = reverse('admin_wallet') + '?filter=true'
+        context['all_wallets'] = Wallet.objects.filter(user__isnull=False, user__is_registered=True).order_by('user')
+        print(context)
+        return context
+
+    def form_valid(self, form):
+        bulk_wallets = form.cleaned_data.get('bulk_wallets')
+        print(bulk_wallets)
+        return super(BulkTransaction, self).form_valid(form)
