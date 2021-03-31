@@ -30,7 +30,7 @@
 .btn-flat-secondary, .btn-flat-secondary:active, .btn-flat-secondary:focus, .btn-flat-secondary:hover, .btn-outline-secondary, .btn-outline-secondary:active, .btn-outline-secondary:focus, .btn-outline-secondary:hover {
     color: #99bb14;
 }
-.bg-secondary {
+.bg-secondary, .btn-secondary {
     background-color: #99bb14!important;
 }
 
