@@ -27,11 +27,13 @@ class TransactionForm(forms.ModelForm, BootstrapForm):
 
 class BulkTransactionForm(forms.ModelForm, BootstrapForm):
 
+    origin_wallet = forms.CharField(widget=forms.HiddenInput(), required=True)
     bulk_wallets = forms.CharField(widget=forms.HiddenInput(), required=True)
+    model = Transaction
 
     class Meta:
         model = Transaction
-        exclude = ['user', 'wallet_to']
+        exclude = ['user', 'wallet_from', 'wallet_to']
         widgets = {
             'wallet_from': forms.HiddenInput(),
             'amount': forms.NumberInput(attrs={'class': 'form-control'}),

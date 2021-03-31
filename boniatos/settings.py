@@ -148,6 +148,8 @@ CKEDITOR_CONFIGS = {
     },
 }
 
+INLINE_INPUT_SEPARATOR = '&&&'
+
 
 # Import secret settings (see settings_secret.py.template for reference)
 from settings_secret import *

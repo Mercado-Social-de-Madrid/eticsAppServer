@@ -12,6 +12,7 @@
     {% csrf_token %}
     {{form.media}}
     {{form.bulk_wallets}}
+    {{form.origin_wallet }}
 
 <div class="container">
     <div class="row">
@@ -23,6 +24,7 @@
     </div>
         {% endif %}
             <div class="col-md-6 mb-3">
+                <label>Monedero origen</label>
                 <div class="input-group">
                   <input type="text" name="user_placeholder" id="wallet_from" disabled class="form-control" maxlength="250" value="{% if wallet_from_display %}{{wallet_from_display }}{%endif%}" placeholder="Monedero origen">
                     <div class="input-group-append">
@@ -63,7 +65,7 @@
                     </div>
             </div>
 
-            <div class="col-md-3 mt-3">
+            <div class="col-md-4 mt-3">
                 <button type="submit" class="right-margin left-margin btn btn-primary btn-lg"> Crear transacciones </button>
             </div>
     </div>
@@ -101,12 +103,6 @@
 </div>
 </div>
 
-
-    <div class="description text-center">
-            <br>
-        <button type="submit" class="right-margin left-margin btn btn-primary btn-lg"> Añadir </button>
-    </div>
-
 </div>
     </form>
 
@@ -137,10 +133,8 @@
 {% block scripts %}
 <script type="text/javascript">
     var walletFrom = $('#wallet_from');
-    var fromValue = $('#{{form.wallet_from.auto_id}}');
+    var fromValue = $('#{{form.origin_wallet.auto_id}}');
     var walletFromBtn = $('#fromBtn');
-
-    var current = '';
     var walletModal = $('#wallets-modal');
 
     walletFromBtn.on('click', function(){
@@ -195,24 +189,25 @@
 
     $('#search_box').on('change paste keyup', function(){
         var search = $(this).val().toUpperCase();
-        console.log(search);
         future.find('tr').each(function(){
             var elem = $(this);
-            if (search == ''){
+            if ( (search == '') || elem.text().toUpperCase().indexOf(search) !== -1) {
                 elem.show();
-            }
-            else if (elem.text().toUpperCase().indexOf(search) === -1) {
-                elem.hide();
             }
             else{
-                elem.show();
+                elem.hide();
             }
         });
 
-        if (search == ''){
-
-        }
     });
+
+    $('form').on('submit', function(e){
+            var wallets = [];
+            current.find('tbody tr').each(function(){
+                wallets.push($(this).attr('data-pk'));
+            });
+            $('#{{form.bulk_wallets.auto_id}}').val(wallets.join('&&&'));
+        });
 
     function addToSelected(member){
         current.find('table').append(member);

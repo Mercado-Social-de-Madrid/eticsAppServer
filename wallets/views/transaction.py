@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 import datetime
 
+from django.conf import settings
 from django.db.models import Sum
 from django.db.models.functions import TruncDay
 from django.http import HttpResponse
@@ -134,12 +135,38 @@ class BulkTransaction(TemplateView, FormView):
 
     def get_context_data(self, **kwargs):
         context = super(BulkTransaction, self).get_context_data(**kwargs)
-        context['ajax_url'] = reverse('admin_wallet') + '?filter=true'
-        context['all_wallets'] = Wallet.objects.filter(user__isnull=False, user__is_registered=True).order_by('user')
-        print(context)
+        context['ajax_url'] = reverse('admin_wallet') + '?filter=true&type=debit'
+        context['all_wallets'] = Wallet.objects.filter(user__isnull=False).order_by('-user')
         return context
 
+    def form_invalid(self, form):
+        return super(BulkTransaction, self).form_invalid(form)
+
+    def get_success_url(self):
+        return reverse('transaction_list')
+
     def form_valid(self, form):
-        bulk_wallets = form.cleaned_data.get('bulk_wallets')
-        print(bulk_wallets)
+        bulk = form.cleaned_data.get('bulk_wallets')
+
+        bulk_wallets = bulk.split(settings.INLINE_INPUT_SEPARATOR)
+        transaction = form.save(commit=False)
+        wallet_from = form.cleaned_data.get('origin_wallet')
+        wallet_from = Wallet.objects.filter(pk=wallet_from).first()
+
+        amount = transaction.amount
+        total = amount * len(bulk_wallets)
+
+        wallets = Wallet.objects.filter(pk__in=bulk_wallets)
+        for wallet in wallets:
+            try:
+                t = wallet_from.new_transaction(
+                    transaction.amount,
+                    wallet=wallet,
+                    concept=transaction.concept,
+                    bonus=transaction.is_bonification,
+                    made_byadmin=True
+                )
+            except Wallet.NotEnoughBalance:
+                print("Not balance!!")
+
         return super(BulkTransaction, self).form_valid(form)

@@ -39,7 +39,7 @@
         {% endif %}
     </td>
 
-    <td {% if narrow %} class="px-2" {% endif %}><div class="amount">{{item.amount}}<i class="currency-icon"></i></div> </td>
+    <td {% if narrow %} class="px-2" {% endif %}><div class="amount">{{item.amount|floatformat:2}}<i class="currency-icon"></i></div> </td>
   <td {% if narrow %} class="px-2" {% endif %}>{{item.concept}}</td>
    <td>
        {% if item.made_byadmin %}

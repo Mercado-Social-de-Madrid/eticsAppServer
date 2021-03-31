@@ -3,7 +3,7 @@ from django.conf import settings
 
 register = template.Library()
 
-ALLOWABLE_VALUES = ("GMAPS_APIKEY", "MAIN_PAGE_TITLE", "INITIAL_LATITUDE", "INITIAL_LONGITUDE", "BASESITE_URL")
+ALLOWABLE_VALUES = ("GMAPS_APIKEY", "MAIN_PAGE_TITLE", "INLINE_INPUT_SEPARATOR", "INITIAL_LATITUDE", "INITIAL_LONGITUDE", "BASESITE_URL")
 
 # settings value (based on https://stackoverflow.com/a/21593607)
 @register.simple_tag
