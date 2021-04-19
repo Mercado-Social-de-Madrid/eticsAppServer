@@ -34,7 +34,7 @@
         {% endif %}
 
         {% if type == 'entity' %}
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card mb-4">
                 {% if entity.first_photo_url %}
                 <div class="card-top-img" style="background-image:url('{{entity.first_photo_url}}')"></div>
@@ -59,6 +59,7 @@
         </div>
         {% endif %}
 
+        <!--
         <div class="{% if type == 'entity' %}col-md-4{% else %}col-md-6{% endif %}">
             <div class="card mb-4">
                 <div class="card-body">
@@ -94,10 +95,10 @@
                      <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Obtener etics</a>
                   </div>
             </div>
-        </div>
+        </div> -->
 
         {% if type == 'entity' %}
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="card-title primary-title"><h3><i class="ic ic-news"></i> Ofertas</h3></div>
