@@ -12,12 +12,12 @@
     <th scope="col" colspan="2">Concepto</th>
 {% endblock %}
 
-
 {% block item_row %}
 <th scope="row" {% if narrow %} class="px-2" {% endif %}>{{item.timestamp|date:'d/m/Y H:i'}}</th>
 
   <td {% if narrow %} class="px-2 text-center" {% endif %}>
     {% if item.wallet_from.user %}
+        <a href="{% url 'wallet_detail' item.wallet_from.pk %} ">
         {% with from=item.wallet_from.user.get_related_entity.1 %}
             {% if from %}
                 {{item.wallet_from.user.get_related_entity.1 }}
@@ -25,6 +25,7 @@
                 <span class="text-muted">MES <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Cuenta débito">local_atm</i> </span>
             {% endif %}
         {% endwith %}
+        </a>
     {% endif %}
       {% if narrow %}
       <br><i class="material-icons">swap_vert</i><br>
@@ -33,7 +34,9 @@
     <td >
       {% endif %}
         {% if item.wallet_to.user %}
+        <a href="{% url 'wallet_detail' item.wallet_to.pk %} ">
             {{item.wallet_to.user.get_related_entity.1 }}
+        </a>
         {% else %}
             <span class="text-muted">MES <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Cuenta débito">local_atm</i> </span>
         {% endif %}

@@ -58,7 +58,6 @@ def transaction_list(request):
 class TransactionsListView(FilterMixin, FilterView, ExportAsCSVMixin, ListItemUrlMixin, AjaxTemplateResponseMixin):
 
     model = Transaction
-    objects_url_name = 'entity_detail'
     template_name = 'transaction/list.html'
     ajax_template_name = 'transaction/query.html'
     paginate_by = 10
