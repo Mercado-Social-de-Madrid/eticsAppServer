@@ -14,7 +14,7 @@
         <div class="col-sm-7 col-md-8"><h3 class="primary-title mb-3"><i class="material-icons mr-2">timeline</i>Movimientos</h3></div>
 
         <div class="col-sm-12 mb-4">
-            {% include "reports/ranges_filter.html"  %}
+            {% include "reports/ranges_filter.html"  with include_year=True %}
 
         </div>
     </div>
@@ -26,21 +26,35 @@
         <div class="col-md-4 equal">
             <div class="card">
                 <div class="card-body">
-                    <div class="mx-2 mb-4">
-                        <div class="display-2 float-left">{{entities.count}} </div>
-                            <div class="float-left pl-3">
-                                 <h5 class="lead text-primary mb-0"> entidades distintas</h5>
-                                recibieron pagos
-                            </div>
-                    </div>
-                    <table class="table">
+                    {% if last == 'year' %}
+                    <h4 class="lead text-primary my-1"><i class="currency-icon"></i> Operaciones con etics</h4>
+                    <p class="lead font-weight-light">
+                        <strong>Total</strong>: {{total_sum|floatformat:2}} <br>
+                        <strong>Pagos</strong>: {{payment_sum|floatformat:2}}<br>
+                        <strong>Bonificaciones</strong>: {{bonifications_sum|floatformat:2}}<br>
+                        <strong>Compra de etics</strong>: {{euro_purchase_sum|floatformat:2}}<br>
+                        <strong>Desde el MES</strong>: {{by_admin_sum|floatformat:2}}
 
-                    {% for entity in entities %}
-
-                    <tr class="link-row" data-href="{% url 'wallet_detail' entity.user.wallet.pk %}">
-                        {% include 'entity/row_display.html' with  item=entity %}</tr>
-                    {% endfor %}
+                        <div id="etics_sum" class="graph" style="height:170px;">
+                            <div class="mes-loader my-2"></div>
+                        </div>
+                    </p>
+                    {% else %}
+                        <div class="mx-2 mb-4">
+                            <div class="display-2 float-left">{{entities.count}} </div>
+                                <div class="float-left pl-3">
+                                     <h5 class="lead text-primary mb-0"> entidades distintas</h5>
+                                    recibieron pagos
+                                </div>
+                        </div>
+                        <table class="table">
+                        {% for entity in entities %}
+                            <tr class="link-row" data-href="{% url 'wallet_detail' entity.user.wallet.pk %}">
+                            {% include 'entity/row_display.html' with  item=entity %}
+                            </tr>
+                        {% endfor %}
                         </table>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -58,7 +72,9 @@
                     </div>
                 </div>
              </div>
+            {% if last != 'year' %}
             {% include 'wallets/transactions_query.html' with transactions=transactions narrow=True %}
+            {% endif %}
         </div>
 
         <div class="col-md-6">
@@ -67,12 +83,14 @@
                     <h4 class="mb-3"><i class="material-icons mr-2">receipt</i> Pagos</h4>
                     <div class="row">
                         <div class="col-sm-4 feature"><span class="primary-title"><strong>Total</strong></span> <div class="display-4"> {{payments.count}}</div><span></span></div>
-                        <div class="col-sm-4 feature"><span class="primary-title"><strong>Entidad</strong></span> <div class="display-4"> {{payments_entity}}</div><span></span></div>
-                        <div class="col-sm-4 feature"><span class="primary-title"><strong>Consumidora</strong></span> <div class="display-4"> {{payments_consumer}}</div><span></span></div>
+                        <div class="col-sm-4 feature"><span class="primary-title"><strong>De Entidades</strong></span> <div class="display-4"> {{payments_entity}}</div><span></span></div>
+                        <div class="col-sm-4 feature"><span class="primary-title"><strong>De Consumidoras</strong></span> <div class="display-4"> {{payments_consumer}}</div><span></span></div>
                     </div>
                 </div>
              </div>
+                {% if last != 'year' %}
                 {% include 'payment/query.html' with payments=payments narrow=True %}
+                {% endif %}
         </div>
 
     </div>
@@ -83,8 +101,30 @@
 <script type="text/javascript">
     $('.table-action').on('click', function(e){
         e.preventDefault();
-
         return false;
     });
+
+
+		// Load the Visualization API and the piechart package.
+		google.load('visualization', '1.0', {'packages':['corechart'], 'callback':drawPieChart} );
+
+		// Set a callback to run when the Google Visualization API is loaded.
+		function drawPieChart() {
+			var data = google.visualization.arrayToDataTable([
+              ['Tipo', 'etics'],
+              ['Bonificaciones', {{bonifications_sum|unlocalize}}],
+              ['Compra de etics', {{euro_purchase_sum|unlocalize}}],
+              ['Desde el MES', {{by_admin_sum|unlocalize}}],
+              ['Pagos', {{payment_sum|unlocalize}}]
+            ]);
+
+	        var chart = new google.visualization.PieChart(document.getElementById('etics_sum'));
+	        chart.draw(data, {
+	            width: "100%",
+	            legend: { position:'right', alignment: 'center'},
+	            chartArea:{left:0,top:0,width:'100%',height:'100%'}
+                });
+	      }
+
 </script>
 {% endblock scripts %}

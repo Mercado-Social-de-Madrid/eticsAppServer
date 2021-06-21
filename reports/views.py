@@ -77,6 +77,7 @@ def entity_detail(request, pk):
 
 
 days_query = {
+    'year': 365,
     '3month':90,
     'month': 30,
     'week': 7,
@@ -155,20 +156,27 @@ def wallets(request):
     params = {
         'payments': payments,
         'pending': payments.pending(),
-        'transactions':transactions,
-        'entities':entities,
+        'transactions': transactions,
         'bonifications': bonifications,
         'euro_purchase': euro_purchase,
-        'payments_entity':payments_entity,
-        'payments_consumer':payments_consumer,
-        'general':general,
-        'daily':daily,
+        'payments_entity': payments_entity,
+        'payments_consumer': payments_consumer,
+        'entities': entities,
+        'general': general,
+        'daily': daily,
         'date_ranges':{
-            'start':since - datetime.timedelta(days=1),
-            'end':today
+            'start': since - datetime.timedelta(days=1),
+            'end': today
         },
         'last': last
     }
+
+    if last == 'year':
+        params['total_sum'] = transactions.aggregate(sum=Sum('amount'))['sum']
+        params['bonifications_sum'] = transactions.filter(is_bonification=True).aggregate(sum=Sum('amount'))['sum']
+        params['euro_purchase_sum'] = transactions.filter(is_euro_purchase=True).aggregate(sum=Sum('amount'))['sum']
+        params['by_admin_sum'] = transactions.filter(made_byadmin=True).aggregate(sum=Sum('amount'))['sum']
+        params['payment_sum'] =  transactions.filter(is_euro_purchase=False, is_bonification=False, made_byadmin=False).aggregate(sum=Sum('amount'))['sum']
 
     if request.is_ajax():
         response = render(request, 'reports/wallets_card.html', params)
