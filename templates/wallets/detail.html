@@ -32,7 +32,7 @@
                                         <a href="{% url 'entity_detail' instance.pk %}" class="btn btn-lg mb-3 btn-primary">Ver detalle entidad</a><br>
 
 
-                                     <button type="button" class="btn btn-lg disabled">Ver pagos pendientes</button>
+                                     <button type="button" class="btn btn-lg disabled">Pagos pendientes: {{ pending_payments|length }}</button>
                                      </div>
                               </div>
 
@@ -55,7 +55,7 @@
                                        <a href="{% url 'profile_detail' instance.pk %}" class="btn btn-lg mb-3 btn-primary">Ver perfil</a><br>
 
 
-                                     <button type="button" class="btn btn-lg disabled">Ver pagos pendientes</button>
+                                     <button type="button" class="btn btn-lg disabled">Pagos pendientes: {{ pending_payments|length }}</button>
                                      </div>
                               </div>
 
