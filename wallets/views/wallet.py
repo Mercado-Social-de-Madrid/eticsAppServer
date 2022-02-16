@@ -78,6 +78,7 @@ def wallet_detail(request, pk):
     transactions = TransactionLog.objects.filter(wallet=wallet)
     page = request.GET.get('page')
     transactions = helpers.paginate(transactions, page, elems_perpage=10)
+    sent_pending_payments = Payment.objects.sent_pending(user=wallet.user)
     pending_payments = Payment.objects.pending(user=wallet.user)
 
     if request.is_ajax():
@@ -100,7 +101,7 @@ def wallet_detail(request, pk):
         return render(request, 'wallets/detail.html', {
             'showing_all': False, 'instance':instance, 'user_type':user_type,
             'wallet': wallet, 'transactions': transactions,'transactions_bydate':transactions_bydate,
-            'pending_payments': pending_payments
+            'pending_payments': pending_payments, 'sent_pending_payments': sent_pending_payments
         })
 
 
