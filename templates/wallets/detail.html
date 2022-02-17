@@ -33,15 +33,15 @@
 
 
                                      <!-- <button type="button" class="btn btn-lg disabled">Ver pagos pendientes</button> -->
-                                     <h3>Pagos pendientes</h3><br>
-                                        <h4>Enviados: </h4>
+                                     <h4>Pagos pendientes</h4><br>
+                                        <h5>Enviados: </h5>
                                             {% for payment in sent_pending_payments %}
-                                                <a href="{%url 'payment_detail' payment.pk%}">{{payment.timestamp|date:'d/m/Y H:i'}} {{payment.total_amount}}€ -> {{payment.receiver}}</a><br>
+                                                <a href="{%url 'payment_detail' payment.pk%}">{{payment.timestamp|date:'d/m/Y H:i'}} - {{payment.total_amount}}€ -> {{payment.receiver}}</a><br>
                                             {% endfor %}
 
-                                        <h4>Recibidos: </h4>
+                                        <h5>Recibidos: </h5>
                                             {% for payment in pending_payments %}
-                                                <a href="{%url 'payment_detail' payment.pk%}">{{payment.timestamp|date:'d/m/Y H:i'}} {{payment.total_amount}}€ <- {{payment.sender}}</a><br>
+                                                <a href="{%url 'payment_detail' payment.pk%}">{{payment.timestamp|date:'d/m/Y H:i'}} - {{payment.total_amount}}€ <- {{payment.sender}}</a><br>
                                             {% endfor %}
 
                                      </div>
@@ -67,10 +67,10 @@
 
 
                                      <!-- <button type="button" class="btn btn-lg disabled">Ver pagos pendientes</button> -->
-                                     Pagos pendientes <br>
-                                        <h4>Enviados: </h4>
+                                     <h4>Pagos pendientes</h4> <br>
+                                        <h5>Enviados: </h5>
                                             {% for payment in sent_pending_payments %}
-                                                <a href="{%url 'payment_detail' payment.pk%}">{{payment.timestamp|date:'d/m/Y H:i'}} {{payment.total_amount}}€ -> {{payment.receiver}}</a><br>
+                                                <a href="{%url 'payment_detail' payment.pk%}">{{payment.timestamp|date:'d/m/Y H:i'}} - {{payment.total_amount}}€ -> {{payment.receiver}}</a><br>
                                             {% endfor %}
                                      </div>
                               </div>
