@@ -154,6 +154,14 @@ def new_payment(request, pk):
 def admin_payments(request):
     payments = Payment.objects.all().order_by('-timestamp')
 
+    status = request.GET.get('status')
+    if status:
+        payments = payments.filter(status=status)
+
+    email = request.GET.get('email')
+    if email:
+        payments = payments.filter(sender__email=email) | payments.filter(receiver__email=email)
+
     page = request.GET.get('page')
     payments = helpers.paginate(payments, page, elems_perpage=10)
     params = {
