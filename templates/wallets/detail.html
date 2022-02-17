@@ -33,9 +33,17 @@
 
 
                                      <!-- <button type="button" class="btn btn-lg disabled">Ver pagos pendientes</button> -->
-                                     Pagos pendientes<br>
-                                     Enviados: {{ sent_pending_payments|length }} <br>
-                                     Recibidos: {{ pending_payments|length }}
+                                     <h3>Pagos pendientes</h3><br>
+                                        <h4>Enviados: </h4>
+                                            {% for payment in sent_pending_payments %}
+                                                <a href="{%url 'payment_detail' payment.pk%}">{{payment.timestamp|date:'d/m/Y H:i'}} {{payment.total_amount}}€ -> {{payment.receiver}}</a><br>
+                                            {% endfor %}
+
+                                        <h4>Recibidos: </h4>
+                                            {% for payment in pending_payments %}
+                                                <a href="{%url 'payment_detail' payment.pk%}">{{payment.timestamp|date:'d/m/Y H:i'}} {{payment.total_amount}}€ <- {{payment.sender}}</a><br>
+                                            {% endfor %}
+
                                      </div>
                               </div>
 
@@ -60,7 +68,10 @@
 
                                      <!-- <button type="button" class="btn btn-lg disabled">Ver pagos pendientes</button> -->
                                      Pagos pendientes <br>
-                                     Enviados: {{ sent_pending_payments|length }}
+                                        <h4>Enviados: </h4>
+                                            {% for payment in sent_pending_payments %}
+                                                <a href="{%url 'payment_detail' payment.pk%}">{{payment.timestamp|date:'d/m/Y H:i'}} {{payment.total_amount}}€ -> {{payment.receiver}}</a><br>
+                                            {% endfor %}
                                      </div>
                               </div>
 
