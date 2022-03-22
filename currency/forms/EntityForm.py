@@ -43,7 +43,7 @@ class EntityForm(forms.ModelForm):
             'cif': forms.HiddenInput(attrs={'readonly': True}),
             'profile_image': forms.FileInput(attrs={}),
             'logo': forms.FileInput(attrs={}),
-            'inactive': forms.CheckboxInput(attrs={}),
+            'inactive': forms.CheckboxInput(attrs={'class': 'custom-control-input'}),
             'city': forms.HiddenInput(),
         }
 

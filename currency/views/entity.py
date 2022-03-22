@@ -214,6 +214,12 @@ def entity_edit(request, pk):
                 gallery = Gallery.objects.create()
             entity.gallery = gallery
             entity.save()
+
+            if entity.inactive and entity.user:
+                user = entity.user
+                user.username = "---" + user.username
+                user.save()
+
             form.save_m2m()
 
             PhotoGalleryForm.save_galleryphoto(entity.gallery, gallery_formset)
