@@ -23,7 +23,7 @@ class EntityForm(forms.ModelForm):
 
     class Meta:
         model = Entity
-        exclude = ['owner','user']
+        exclude = ['owner', 'user']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
@@ -43,6 +43,7 @@ class EntityForm(forms.ModelForm):
             'cif': forms.HiddenInput(attrs={'readonly': True}),
             'profile_image': forms.FileInput(attrs={}),
             'logo': forms.FileInput(attrs={}),
+            'inactive': forms.CheckboxInput(attrs={}),
             'city': forms.HiddenInput(),
         }
 
