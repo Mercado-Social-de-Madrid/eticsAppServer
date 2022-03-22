@@ -215,9 +215,14 @@ def entity_edit(request, pk):
             entity.gallery = gallery
             entity.save()
 
-            if entity.inactive and entity.user:
+            if entity.user:
                 user = entity.user
-                user.username = "---" + user.username
+
+                if entity.inactive:
+                    user.username = "---" + user.username
+                else:
+                    user.username = user.username.replace("---", "")
+
                 user.save()
 
             form.save_m2m()

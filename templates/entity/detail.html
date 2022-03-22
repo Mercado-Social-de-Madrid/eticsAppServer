@@ -11,7 +11,7 @@
 <div class="jumbo-header jumbo-entity minimal" >
     <div class="jumbotron" {% if entity.first_photo_url %}style="background-image:url('{{entity.first_photo_url}}');"{%endif%}>
         <div class="container">
-            <h3>{{entity.name}}</h3>
+            <h3>{{entity.name}} {% if entity.inactive %} (INACTIVA) {% endif %}</h3>
             {{ entity.address }}
         </div>
         {% if can_edit_entity %}
