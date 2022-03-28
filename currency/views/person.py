@@ -93,7 +93,7 @@ def profile_detail(request, pk):
     data = {
         'person': person,
         'form': form,
-        'can_edit': can_edit
+        'can_edit': can_edit,
     }
     if request.user.is_superuser:
         preuser = PreRegisteredUser.objects.filter(user=person.user).first()
@@ -107,6 +107,7 @@ def profile_detail(request, pk):
 def profile_edit(request, pk):
     person = get_object_or_404(Person, pk=pk)
     can_edit = request.user.is_superuser or request.user == person.user
+    can_deactivate = request.user.is_superuser
 
     if not can_edit:
         messages.add_message(request, messages.ERROR, 'No tienes permisos para editar esta consumidora')
@@ -117,6 +118,17 @@ def profile_edit(request, pk):
         if form.is_valid():
             person = form.save(commit=False)
             person.save()
+
+            if person.user:
+                user = person.user
+
+                if person.inactive:
+                    user.username = "---" + user.username
+                else:
+                    user.username = user.username.replace("---", "")
+
+                user.save()
+
             form.save_m2m()
 
             return redirect('profile_detail', pk=person.pk)
@@ -128,5 +140,6 @@ def profile_edit(request, pk):
     return render(request, 'profile/edit.html', {
         'form': form,
         'person': person,
-        'can_edit':can_edit
+        'can_edit':can_edit,
+        'can_deactivate': can_deactivate,
     })

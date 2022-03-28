@@ -41,6 +41,8 @@ class Person(models.Model):
     is_guest_account = models.BooleanField(default=False, verbose_name='Es usuario invitado')
     expiration_date = models.DateField(null=True, blank=True, verbose_name='Fecha de expiración')
 
+    inactive = models.BooleanField(default=False, verbose_name='Inactiva')
+
     class Meta:
         verbose_name = 'Persona'
         verbose_name_plural = 'Personas'

@@ -195,6 +195,7 @@ def entity_edit(request, pk):
     entity = get_object_or_404(Entity, pk=pk)
     gallery = entity.gallery
     can_edit = request.user.is_superuser or request.user == entity.user
+    can_deactivate = request.user.is_superuser
 
     if not can_edit:
         messages.add_message(request, messages.ERROR, 'No tienes permisos para editar la entidad')
@@ -244,7 +245,8 @@ def entity_edit(request, pk):
         'gallery_formset':gallery_formset,
         'categories': categories,
         'entity': entity,
-        'can_edit_entity':can_edit
+        'can_edit_entity':can_edit,
+        'can_deactivate': can_deactivate,
     })
 
 

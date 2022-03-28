@@ -25,5 +25,7 @@ class PersonForm(forms.ModelForm):
             'registered': forms.TextInput(attrs={'class': 'form-control', 'readonly':True}),
             'profile_image': forms.FileInput(attrs={}),
             'city': forms.HiddenInput(),
+            'inactive': forms.CheckboxInput(attrs={'class': 'custom-control-input'}),
+
         }
 
