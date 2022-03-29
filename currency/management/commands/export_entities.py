@@ -26,7 +26,7 @@ class Command(BaseCommand):
 
             data.append({
                 'name': entity.name,
-                'email': entity.contact_email,
+                'email': entity.email,
                 'description': entity.description,
                 'short_description': entity.short_description,
                 'address': entity.address,
