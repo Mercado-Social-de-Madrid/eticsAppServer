@@ -26,10 +26,10 @@ class Command(BaseCommand):
 
             for item in list:
 
-                entity = Entity.objects.get(email=item['email'])
-
-                if not entity:
-                    raise Exception('entity not found: ' + item['name'])
+                try:
+                    entity = Entity.objects.get(email=item['email'])
+                except:
+                    continue
 
                 if 'name' in item and item['name']:
                     entity.name = item['name']
@@ -87,6 +87,7 @@ class Command(BaseCommand):
 
                 entities.append(entity)
 
+            print 'Saving entities lenght: ' + str(len(entities))
             for entity in entities:
 
                 print 'saving {}'.format(entity.name)
