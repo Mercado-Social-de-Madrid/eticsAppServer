@@ -74,8 +74,13 @@ class Command(BaseCommand):
                     entity.webpage_link = item['webpage_link']
 
                 entity.categories.clear()
-                categories = Category.objects.filter(name__in=item['categories'])
-                entity.categories.add(*categories)
+                print entity.name
+                for categ_name in item['categories']:
+                    print categ_name
+                    category = Category.objects.get(name=categ_name)
+                    if not category:
+                        raise Exception('category not found: ' + categ_name + ", Entity: " + entity.name)
+                    entity.categories.add(category)
 
                 entities.append(entity)
 
