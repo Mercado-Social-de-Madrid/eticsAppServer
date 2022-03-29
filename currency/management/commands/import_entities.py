@@ -79,7 +79,6 @@ class Command(BaseCommand):
                 entity.categories.clear()
                 print entity.name
                 for categ_name in item['categories']:
-                    print categ_name
                     category = Category.objects.get(name=categ_name)
                     if not category:
                         raise Exception('category not found: ' + categ_name + ", Entity: " + entity.name)
@@ -90,6 +89,7 @@ class Command(BaseCommand):
             print 'Saving entities lenght: ' + str(len(entities))
             for entity in entities:
 
+                print 'saving: ' + entity.name
                 try:
                     entity.save()
                 except IntegrityError as e:
