@@ -80,7 +80,7 @@ class Command(BaseCommand):
                     category = Category.objects.get(name=categ_name)
                     if not category:
                         raise Exception('category not found: ' + categ_name + ", Entity: " + entity.name)
-                    entity.categories.add(category)
+                    entity.categories.add(category.pk)
 
                 entities.append(entity)
 
