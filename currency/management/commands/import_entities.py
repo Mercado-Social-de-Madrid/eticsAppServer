@@ -26,7 +26,10 @@ class Command(BaseCommand):
 
             for item in list:
 
-                entity = Entity()
+                entity = Entity.objects.get(email=item['email'])
+
+                if not entity:
+                    raise Exception('entity not found: ' + item['name'])
 
                 if 'name' in item and item['name']:
                     entity.name = item['name']
@@ -80,7 +83,7 @@ class Command(BaseCommand):
                     category = Category.objects.get(name=categ_name)
                     if not category:
                         raise Exception('category not found: ' + categ_name + ", Entity: " + entity.name)
-                    entity.categories.add(category.pk)
+                    entity.categories.add(category)
 
                 entities.append(entity)
 
