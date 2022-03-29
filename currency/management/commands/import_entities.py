@@ -90,7 +90,6 @@ class Command(BaseCommand):
             print 'Saving entities lenght: ' + str(len(entities))
             for entity in entities:
 
-                print 'saving {}'.format(entity.name)
                 try:
                     entity.save()
                 except IntegrityError as e:
