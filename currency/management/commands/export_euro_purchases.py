@@ -27,9 +27,9 @@ class Command(BaseCommand):
             date = item.timestamp.strftime("%d/%m/%Y")
             time = item.timestamp.strftime("%H/%M")
             user = item.wallet_to.user
-            full_name = user.first_name + " " + user.last_name
-            username = user.username
-            email = user.email
+            full_name = user.first_name.encode('utf-8') + " " + user.last_name.encode('utf-8')
+            username = user.username.encode('utf-8')
+            email = user.email.encode('utf-8')
             amount = item.amount
 
             data.append([date, time, full_name, username, email, amount])
