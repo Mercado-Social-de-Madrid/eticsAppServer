@@ -39,7 +39,4 @@ class Command(BaseCommand):
             write.writerow(headers)
             write.writerows(data)
 
-            import os
-            absolute_path = os.path.abspath(f)
-            print "Guardado en: " + absolute_path
 
