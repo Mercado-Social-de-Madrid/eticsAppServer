@@ -173,7 +173,7 @@ class Wallet(models.Model):
         if amount == 0:
             return
 
-        concept = concept if concept != None else 'Compra de etics'
+        concept = concept if concept is not None else 'Compra de etics'
         rel_type, related = wallet.user.get_related_entity()
         debit_wallet = related.city.wallet
 

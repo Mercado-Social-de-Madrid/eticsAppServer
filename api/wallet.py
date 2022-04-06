@@ -14,6 +14,10 @@ from tastypie.utils import trailing_slash
 from currency.models import Entity, Person
 from wallets.models import Payment, Wallet, TransactionLog
 
+from datetime import datetime
+from django.conf import settings
+from django.core.mail import send_mail
+
 
 class PaymentsResource(ModelResource):
 
@@ -148,6 +152,19 @@ class TransactionLogResource(ModelResource):
         return object_list.filter(wallet__user=bundle.request.user)
 
 
+def save_log(log, success=False):
+    log_file_path = settings.ROOT_DIR + "/log/currency_purchased.txt"
+    with open(log_file_path, 'w') as f:
+        f.write(log)
+        f.close()
+
+    send_mail(
+        'Nuevo log compra etcs. ' + 'CORRECTO' if success else 'FALLIDO',
+        log,
+        'Mercado Social <noreply@mercadosocial.net>',
+        ['jberzal86@gmai.com'],
+    )
+
 
 class WalletResource(ModelResource):
     transaction_logs = fields.ToManyField(TransactionLogResource,
@@ -201,11 +218,20 @@ class WalletResource(ModelResource):
 
     def currency_purchased(self, request, **kwargs):
 
+        log = '\n\n' + datetime.now() + '\n'
+
         self.method_check(request, allowed=['post'])
+        log += 'method_check' + '\n'
         self.is_authenticated(request)
+        log += 'is_authenticated' + '\n'
         self.throttle_check(request)
+        log += 'throttle_check' + '\n'
+
+        log += 'user: ' + request.user + '\n'
 
         if not request.user.is_superuser:
+            log += 'Not superuser'
+            save_log(log)
             return HttpForbidden()
 
         data = self.deserialize(request, request.body,
@@ -216,7 +242,11 @@ class WalletResource(ModelResource):
         concept = data.get('concept', None)
         euro_purchase = data.get('euro_purchase', False)
 
+        log += 'data:\n' + data + '\n'
+
         if not amount or not account:
+            log += 'not amount or account\n'
+            save_log(log)
             return HttpGone()
 
         try:
@@ -227,11 +257,18 @@ class WalletResource(ModelResource):
             except Person.DoesNotExist:
                 instance = None
 
+        log += 'instance: ' + instance + '\n'
+
         if not instance:
+            log += 'not instance'
+            save_log(log)
             raise ObjectDoesNotExist('Sorry, no results on that page.')
 
         wallet = instance.user.wallet
         t = Wallet.debit_transaction(wallet=wallet, amount=amount, concept=concept)
+
+        log += 'transaction: ' + t + '\n'
+        save_log(log, success=True)
 
         return self.create_response(request, {'success': True, 'id':t.id})
 
