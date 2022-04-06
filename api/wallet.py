@@ -155,7 +155,7 @@ class TransactionLogResource(ModelResource):
 def save_log(log, success=False):
     log_file_path = settings.ROOT_DIR + "/log/currency_purchased.txt"
     with open(log_file_path, 'w') as f:
-        f.write(log)
+        f.write(log + '\n\n\n')
         f.close()
 
     send_mail(

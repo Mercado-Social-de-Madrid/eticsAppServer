@@ -11,14 +11,14 @@ from django.core.mail import send_mail
 def save_log(log, success=False):
     log_file_path = settings.ROOT_DIR + "/log/currency_purchased.txt"
     with open(log_file_path, 'w') as f:
-        f.write(log)
+        f.write(log + '\n\n\n')
         f.close()
 
     send_mail(
         'Nuevo log compra etcs. ' + 'CORRECTO' if success else 'FALLIDO',
         log,
         'Mercado Social <noreply@mercadosocial.net>',
-        ['jberzal86@gmai.com'],
+        ['jberzal86@gmail.com'],
     )
 
 
