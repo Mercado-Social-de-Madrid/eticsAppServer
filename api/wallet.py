@@ -237,7 +237,7 @@ class WalletResource(ModelResource):
         concept = data.get('concept', None)
         euro_purchase = data.get('euro_purchase', False)
 
-        log += 'data:\n' + data + '\n'
+        log += 'data:\n' + str(data) + '\n'
 
         if not amount or not account:
             log += 'not amount or account\n'
@@ -252,8 +252,6 @@ class WalletResource(ModelResource):
             except Person.DoesNotExist:
                 instance = None
 
-        log += 'instance: ' + instance + '\n'
-
         if not instance:
             log += 'not instance'
             save_log(log)
@@ -262,7 +260,6 @@ class WalletResource(ModelResource):
         wallet = instance.user.wallet
         t = Wallet.debit_transaction(wallet=wallet, amount=amount, concept=concept)
 
-        log += 'transaction: ' + t + '\n'
         save_log(log, success=True)
 
         return self.create_response(request, {'success': True, 'id':t.id})
