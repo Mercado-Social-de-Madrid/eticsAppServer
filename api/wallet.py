@@ -154,7 +154,7 @@ class TransactionLogResource(ModelResource):
 
 def save_log(log, success=False):
     log_file_path = settings.ROOT_DIR + "/log/currency_purchased.txt"
-    with open(log_file_path, 'w') as f:
+    with open(log_file_path, 'a') as f:
         f.write(log + '\n\n\n')
         f.close()
 
@@ -162,7 +162,7 @@ def save_log(log, success=False):
         'Nuevo log compra etcs. ' + 'CORRECTO' if success else 'FALLIDO',
         log,
         'Mercado Social <noreply@mercadosocial.net>',
-        ['jberzal86@gmai.com'],
+        ['jberzal86@gmail.com'],
     )
 
 
