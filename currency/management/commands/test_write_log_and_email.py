@@ -10,7 +10,7 @@ from django.core.mail import send_mail
 
 def save_log(log, success=False):
     log_file_path = settings.ROOT_DIR + "/log/currency_purchased.txt"
-    with open(log_file_path, 'w') as f:
+    with open(log_file_path, 'a') as f:
         f.write(log + '\n\n\n')
         f.close()
 
