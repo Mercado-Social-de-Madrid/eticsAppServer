@@ -218,16 +218,11 @@ class WalletResource(ModelResource):
 
     def currency_purchased(self, request, **kwargs):
 
-        log = '\n\n' + datetime.now() + '\n'
+        log = datetime.strftime(datetime.now(), '%d/%M/%Y %H:%m') + '\n'
 
         self.method_check(request, allowed=['post'])
-        log += 'method_check' + '\n'
         self.is_authenticated(request)
-        log += 'is_authenticated' + '\n'
         self.throttle_check(request)
-        log += 'throttle_check' + '\n'
-
-        log += 'user: ' + request.user + '\n'
 
         if not request.user.is_superuser:
             log += 'Not superuser'
