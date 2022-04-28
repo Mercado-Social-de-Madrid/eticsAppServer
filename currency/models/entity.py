@@ -26,7 +26,7 @@ from currency.models import Category, Gallery, City
 class EntityManager(models.Manager):
 
     def active(query):
-        return query.filter(user__preregister__isnull=True, inactive=False, hidden=False)
+        return query.filter(inactive=False, hidden=False)
 
 
 class Entity(models.Model):
