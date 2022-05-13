@@ -75,17 +75,15 @@ class Wallet(models.Model):
 
     @property
     def user_full_name(self):
+
         if self.related_type == 'person':
-            return self.user.person.name + " " + self.user.person.surname
+            name = "{} {}".format(self.user.person.name, self.user.person.surname)
         elif self.related_type == 'entity':
-            return self.user.entity.name
+            name = str(self.user.entity.name)
         else:
-            name = ''
-            if self.user.first_name:
-                name += self.user.first_name
-            if self.user.last_name:
-                name += " " + self.user.last_name
-            return name
+            name = "{} {}".format(self.user.first_name, self.user.last_name)
+
+        return name.replace("None", "").strip()
 
     @property
     def is_registered(self):
