@@ -75,16 +75,12 @@ class Wallet(models.Model):
 
     @property
     def user_full_name(self):
-        try:
-            if self.user.person.exists():
-                return self.user.person.name + " " + self.user.person.surname
-
-            if self.user.entity.exists():
-                return self.user.entity.name
-        except:
-            pass
-
-        return self.user.first_name + " " + self.user.last_name
+        if self.related_type == 'person':
+            return self.user.person.name + " " + self.user.person.surname
+        elif self.related_type == 'entity':
+            return self.user.entity.name
+        else:
+            return self.user.first_name + " " + self.user.last_name
 
     @property
     def is_registered(self):
