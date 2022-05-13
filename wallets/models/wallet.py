@@ -75,12 +75,13 @@ class Wallet(models.Model):
 
     @property
     def user_full_name(self):
-        if self.type.id == 'default':
+        if self.user.person:
             return self.user.person.name + " " + self.user.person.surname
-        elif self.type.id == 'entity':
+
+        if self.user.entity:
             return self.user.entity.name
-        else:
-            return ''
+
+        return self.user.first_name + " " + self.user.last_surname
 
     @property
     def is_registered(self):
