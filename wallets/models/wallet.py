@@ -75,9 +75,9 @@ class Wallet(models.Model):
 
     @property
     def user_full_name(self):
-        if self.type == 'default':
+        if self.type.id == 'default':
             return self.user.person.name + " " + self.user.person.surname
-        elif self.type == 'entity':
+        elif self.type.id == 'entity':
             return self.user.entity.name
         else:
             return ''
