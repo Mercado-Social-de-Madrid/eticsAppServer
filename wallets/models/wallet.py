@@ -84,7 +84,7 @@ class Wallet(models.Model):
         except:
             pass
 
-        return self.user.first_name + " " + self.user.last_surname
+        return self.user.first_name + " " + self.user.last_name
 
     @property
     def is_registered(self):
