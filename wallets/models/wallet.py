@@ -80,7 +80,12 @@ class Wallet(models.Model):
         elif self.related_type == 'entity':
             return self.user.entity.name
         else:
-            return self.user.first_name + " " + self.user.last_name
+            name = ''
+            if self.user.first_name:
+                name += self.user.first_name
+            if self.user.last_name:
+                name += " " + self.user.last_name
+            return name
 
     @property
     def is_registered(self):
