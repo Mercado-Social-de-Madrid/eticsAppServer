@@ -77,6 +77,10 @@ class Wallet(models.Model):
     def user_full_name(self):
         return self.user.first_name + " " + self.user.last_name
 
+    @property
+    def is_registered(self):
+        return 'NO' if self.user.preregister.exists() else 'SI'
+
 
     def has_enough_balance(self, amount_to_pay, payment=None):
         from wallets.models.payment import STATUS_PENDING
