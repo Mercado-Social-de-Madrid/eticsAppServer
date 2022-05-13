@@ -75,11 +75,14 @@ class Wallet(models.Model):
 
     @property
     def user_full_name(self):
-        if self.user.person.exists():
-            return self.user.person.name + " " + self.user.person.surname
+        try:
+            if self.user.person.exists():
+                return self.user.person.name + " " + self.user.person.surname
 
-        if self.user.entity.exists():
-            return self.user.entity.name
+            if self.user.entity.exists():
+                return self.user.entity.name
+        except:
+            pass
 
         return self.user.first_name + " " + self.user.last_surname
 
