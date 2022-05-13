@@ -73,6 +73,11 @@ class Wallet(models.Model):
         type, related = self.user.get_related_entity()
         return type
 
+    @property
+    def user_full_name(self):
+        return self.user.first_name + " " + self.user.last_name
+
+
     def has_enough_balance(self, amount_to_pay, payment=None):
         from wallets.models.payment import STATUS_PENDING
         if self.type and self.type.unlimited:
