@@ -60,12 +60,13 @@ class WalletListView(FilterMixin, FilterView, ExportAsCSVMixin, ListItemUrlMixin
     filterset_class = WalletFilter
     paginate_by = 10
     csv_filename = 'monederos'
-    available_fields = ['user', 'user_full_name', 'is_registered', 'balance', 'last_transaction', 'type']
+    available_fields = ['user', 'user_full_name', 'is_registered', 'is_active', 'balance', 'last_transaction', 'type']
     field_labels = {
         'user': 'Nombre de usuario',
         'user_full_name': 'Nombre y apellidos',
         'type': 'Tipo monedero',
         'is_registered': 'Registrada',
+        'is_active': 'Activa'
     }
 
     def get_template_names(self):

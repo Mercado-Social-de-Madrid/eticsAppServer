@@ -87,6 +87,15 @@ class Wallet(models.Model):
     def is_registered(self):
         return 'NO' if self.user.preregister.exists() else 'SI'
 
+    @property
+    def is_active(self):
+        if self.related_type == 'person':
+            return 'NO' if self.user.person.inactive else 'SI'
+        elif self.related_type == 'entity':
+            return 'NO' if self.user.entity.inactive else 'SI'
+        else:
+            return '¿?'
+
 
     def has_enough_balance(self, amount_to_pay, payment=None):
         from wallets.models.payment import STATUS_PENDING
