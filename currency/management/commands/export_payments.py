@@ -22,8 +22,8 @@ class Command(BaseCommand):
         for item in items:
             date = item.timestamp.strftime("%d/%m/%Y")
             time = item.timestamp.strftime("%H/%M")
-            sender = item.sender.user.username.encode('utf-8')
-            receiver = item.receiver.user.username.encode('utf-8')
+            sender = item.sender.username.encode('utf-8')
+            receiver = item.receiver.username.encode('utf-8')
 
             # full_name = user.first_name.encode('utf-8') + " " + user.last_name.encode('utf-8')
             # username = user.username.encode('utf-8')
