@@ -1,11 +1,7 @@
-import codecs
-
-import requests
-import sys
-from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 
-from currency.models import City, Person, Entity
+from currency.models.person import Person
+from currency.models.entity import Entity
 
 
 class Command(BaseCommand):
