@@ -13,6 +13,7 @@ class Command(BaseCommand):
         for entity in Entity.objects.all():
 
             if entity.facebook_link and not entity.facebook_link.startswith('http'):
+                print("Fixing: " + entity.facebook_link)
                 if not entity.facebook_link.startswith("https://facebook.com/"):
                     entity.facebook_link = "https://www.facebook.com/" + entity.facebook_link.replace("@", "").strip()
                 else:
@@ -20,11 +21,12 @@ class Command(BaseCommand):
                 count += 1
 
             if entity.webpage_link and not entity.webpage_link.startswith('http'):
+                print("Fixing: " + entity.webpage_link)
                 entity.webpage_link = "http://" + entity.webpage_link.strip()
-                print(entity.webpage_link)
                 count += 1
 
             if entity.twitter_link and not entity.twitter_link.startswith('http'):
+                print("Fixing: " + entity.twitter_link)
                 if not entity.twitter_link.startswith("https://twitter.com/"):
                     entity.twitter_link = "https://twitter.com/" + entity.twitter_link.replace("@", "").strip()
                 else:
@@ -32,6 +34,7 @@ class Command(BaseCommand):
                 count += 1
 
             if entity.telegram_link and not entity.telegram_link.startswith('http'):
+                print("Fixing: " + entity.telegram_link)
                 if not entity.telegram_link.startswith("https://telegram.me/"):
                     entity.telegram_link = "https://telegram.me/" + entity.telegram_link.replace("@", "").strip()
                 else:
@@ -39,6 +42,7 @@ class Command(BaseCommand):
                 count += 1
 
             if entity.instagram_link and not entity.instagram_link.startswith('http'):
+                print("Fixing: " + entity.instagram_link)
                 if not entity.instagram_link.startswith("https://instagram.com/"):
                     entity.instagram_link = "https://instagram.com/" + entity.instagram_link.replace("@", "").strip()
                 else:
