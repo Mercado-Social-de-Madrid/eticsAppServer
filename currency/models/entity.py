@@ -10,7 +10,7 @@ from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.urls import reverse
 
@@ -140,3 +140,34 @@ def add_user_to_group(sender, instance, created, **kwargs):
             { 'entity': instance }
         )
     """
+
+
+@receiver(pre_save, sender=Entity)
+def check_links(sender, instance, **kwargs):
+
+    if instance.facebook_link and not instance.facebook_link.startswith('http'):
+        if not instance.facebook_link.startswith("https://facebook.com/"):
+            instance.facebook_link = "https://www.facebook.com/" + instance.facebook_link.replace("@", "").strip()
+        else:
+            instance.facebook_link = "https://" + instance.facebook_link
+
+    if instance.webpage_link and not instance.webpage_link.startswith('http'):
+        instance.webpage_link = "http://" + instance.webpage_link.strip()
+
+    if instance.twitter_link and not instance.twitter_link.startswith('http'):
+        if not instance.twitter_link.startswith("https://twitter.com/"):
+            instance.twitter_link = "https://twitter.com/" + instance.twitter_link.replace("@", "").strip()
+        else:
+            instance.twitter_link = "https://" + instance.twitter_link
+
+    if instance.telegram_link and not instance.telegram_link.startswith('http'):
+        if not instance.telegram_link.startswith("https://telegram.me/"):
+            instance.telegram_link = "https://telegram.me/" + instance.telegram_link.replace("@", "").strip()
+        else:
+            instance.telegram_link = "https://" + instance.telegram_link
+
+    if instance.instagram_link and not instance.instagram_link.startswith('http'):
+        if not instance.instagram_link.startswith("https://instagram.com/"):
+            instance.instagram_link = "https://instagram.com/" + instance.instagram_link.replace("@", "").strip()
+        else:
+            instance.instagram_link = "https://" + instance.instagram_link
