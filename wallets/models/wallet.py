@@ -13,7 +13,7 @@ from django.dispatch import receiver
 from currency.models import Entity, Person
 from currency.models.extend_user import get_related_entity
 from helpers import notify_user, datetime
-from wallets.exceptions import NotEnoughBalance, WrongPinCode
+from wallets.exceptions import NotEnoughBalance, WrongPinCode, ReceiverNotRegistered
 from wallets.models import WalletType
 
 
@@ -30,6 +30,7 @@ class Wallet(models.Model):
 
     NotEnoughBalance = NotEnoughBalance
     WrongPinCode = WrongPinCode
+    ReceiverNotRegistered = ReceiverNotRegistered
 
     class Meta:
         verbose_name = 'Monedero'

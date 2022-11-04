@@ -29,4 +29,15 @@ class NotEnoughBalance(Exception):
         self.response = HttpForbidden(content=json.dumps(response), content_type='application/json')
 
 
+class ReceiverNotRegistered(Exception):
+    """ Exception when a receiver of a payment is not registered in app """
+    def __init__(self, wallet=None):
+
+        response = {
+            'error': 'receiver_not_registered',
+            'message': 'La entidad destinataria del pago no está registrada en la app. No es posible hacer el pago'
+        }
+
+        self.response = HttpForbidden(content=json.dumps(response), content_type='application/json')
+
 

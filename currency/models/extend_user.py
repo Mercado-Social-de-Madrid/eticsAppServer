@@ -19,8 +19,10 @@ def get_related_entity(self):
             person = None
         return ('person', person) if person else ('none', None)
 
+
 def is_registered(self):
     return not PreRegisteredUser.objects.filter(user=self).exists()
+
 
 def get_user_by_related(uuid):
     instance = None

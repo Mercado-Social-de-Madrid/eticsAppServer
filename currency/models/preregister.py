@@ -9,7 +9,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from currency.models import Entity, Person
+from currency.models.entity import Entity
+from currency.models.person import Person
 from helpers import send_template_email
 
 

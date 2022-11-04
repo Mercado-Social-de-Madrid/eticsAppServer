@@ -70,6 +70,9 @@ class PaymentManager(models.Manager):
                 # Check that the currency amount is not bigger than the max amount percent
                 currency_amount = min(currency_amount, entity.max_accepted_currency(total_amount))
 
+                if not entity.user.is_registered():
+                    raise Wallet.ReceiverNotRegistered
+
             sender_wallet = Wallet.objects.filter(user=sender).first()
 
             if sender_wallet.pin_code:
