@@ -50,6 +50,14 @@
                         {% endif %}
                             </div>
 
+                        {% if receivernotregistered %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                            <strong>La entidad destinataria del pago no está registrada en la app. No es posible hacer el pago</strong>
+                        </div>
+                        {% endif %}
 
                             <div class="col-sm-4 feature"><span class="primary-title"><strong>Bonificación:</strong></span>  <div class="display-4 mb-2" data-calculate="percent" data-target="#total_amount" data-oper="{% if is_sender_entity %} {{ receiver.bonus_percent_entity|unlocalize }} {% else %}{{ receiver.bonus_percent_general|unlocalize }} {% endif %}">0</div><span>Etics</span></div>
                         </div>

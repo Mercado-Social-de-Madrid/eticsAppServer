@@ -141,6 +141,8 @@ def new_payment(request, pk):
                 data['wrongpingcode'] = True
             except Wallet.NotEnoughBalance:
                 data['notenoughbalance'] = True
+            except Wallet.ReceiverNotRegistered:
+                data['receivernotregistered'] = True
         else:
             print form.errors.as_data()
     else:
