@@ -60,7 +60,7 @@ class Entity(models.Model):
     # Currency fields
     bonus_percent_entity = models.FloatField(default=0, verbose_name='Porcentaje de bonificación a entidades', validators = [MinValueValidator(0), MaxValueValidator(100)])
     bonus_percent_general = models.FloatField(default=0, verbose_name='Porcentaje de bonificación general', validators = [MinValueValidator(0), MaxValueValidator(100)])
-    max_percent_payment = models.FloatField(default=0, verbose_name='Máximo porcentaje de pago aceptado', validators = [MinValueValidator(0), MaxValueValidator(10)])
+    max_percent_payment = models.FloatField(default=0, verbose_name='Máximo porcentaje de pago aceptado', validators = [MinValueValidator(0), MaxValueValidator(100)])
     num_workers = models.IntegerField(default=0, verbose_name='Número de trabajadores', validators = [MinValueValidator(0)])
     legal_form = models.TextField(null=True, blank=True, verbose_name='Formulario legal')
 
