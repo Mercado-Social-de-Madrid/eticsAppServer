@@ -17,14 +17,14 @@ class Command(BaseCommand):
 
         for entity in Entity.objects.all():
             if entity.cif in cifs:
-                print 'Duplicated entity cif: {}'.format(entity.cif)
+                print 'Duplicated entity cif: {}. Email: {}'.format(entity.cif, entity.email)
             else:
                 cifs.append(entity.cif)
 
 
         for person in Person.objects.all():
             if person.nif in nifs:
-                print 'Duplicated person nif: {}'.format(person.nif)
+                print 'Duplicated person nif: {}. Email: {}'.format(person.nif, person.email)
             else:
                 nifs.append(person.nif)
 
