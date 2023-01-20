@@ -63,6 +63,10 @@ class PaymentManager(models.Manager):
         if entity.city != sender_entity.city:
             raise Exception('Different cities!')
 
+        if sender_type == 'person' and sender_entity.is_guest_account:
+            if sender_entity.expiration_date < datetime.date.today():
+                raise Wallet.GuestExpired
+
         if receiver is not None:
             status = STATUS_PENDING if receiver_type == 'entity' else STATUS_ACCEPTED
 
@@ -97,7 +101,7 @@ class PaymentManager(models.Manager):
 
         else:
             print 'The user doesnt exist!'
-            #TODO: Raise exception
+            raise Exception('The user doesnt exist')
 
 
 

@@ -41,3 +41,16 @@ class ReceiverNotRegistered(Exception):
         self.response = HttpForbidden(content=json.dumps(response), content_type='application/json')
 
 
+class GuestExpired(Exception):
+    """ Exception when a payment sender is guest and its period is expired """
+    def __init__(self, wallet=None):
+
+        response = {
+            'error': 'guest_expired',
+            'message': 'Tu periodo de prueba como usuario invitado ha terminado.\n'
+                       'Para hacer el pago en Etics es necesario darse de alta como socia'
+        }
+
+        self.response = HttpForbidden(content=json.dumps(response), content_type='application/json')
+
+
