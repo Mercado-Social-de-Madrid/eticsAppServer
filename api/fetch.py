@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.core.exceptions import MultipleObjectsReturned
 from django.forms import model_to_dict
 from tastypie import fields
 from tastypie.authentication import Authentication, ApiKeyAuthentication
@@ -66,6 +67,11 @@ class FetchResource(ModelResource):
                     instance = person.user
                 except Person.DoesNotExist:
                     instance = None
+                except MultipleObjectsReturned:
+                    raise Exception(f"Duplicated person. Nif: {data['cif']}. Email: {data['email']}")
+
+            except MultipleObjectsReturned:
+                raise Exception(f"Duplicated entity. Cif: {data['cif']}. Email: {data['email']}")
 
         if instance is None and 'email' in data:
             instance = User.objects.filter(email=data['email']).first()
