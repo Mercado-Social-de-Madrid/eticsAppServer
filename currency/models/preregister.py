@@ -21,6 +21,7 @@ class PreRegisteredUser(models.Model):
     entity = models.ForeignKey(Entity, verbose_name='Entidad', null=True)
     person = models.ForeignKey(Person, verbose_name='Consumidora', null=True)
     email = models.EmailField(blank=True)
+    email_sent = models.BooleanField(default=False, verbose_name='Email preregistro enviado')
 
     class Meta:
         verbose_name = 'Prerregistro'
@@ -32,23 +33,32 @@ class PreRegisteredUser(models.Model):
 
 
 # Method to add every user with a related entity to the entities group
-# @receiver(post_save, sender=PreRegisteredUser)
-# def send_welcome_email(sender, instance, created, **kwargs):
-#
-#     if created:
-#         user = instance.user
-#         kind, entity = user.get_related_entity()
-#
-#         template = 'preregister_entity'
-#         template = 'preregister_entity' if kind == 'entity' else 'preregister_person'
-#         if kind == 'person' and entity.is_guest_account and settings.SPECIAL_WELCOME:
-#             template = 'preregister_special'
-#
-#         title = 'Todo listo para que tu entidad aparezca en la aplicación móvil del Mercado Social' if kind == 'entity' else 'Todo listo para empezar a usar la aplicación móvil del Mercado Social'
-#
-#         send_template_email(
-#             title=title,
-#             destination=instance.email,
-#             template_name=template,
-#             template_params={'token': instance.id, 'entity': entity.display_name}
-#         )
+@receiver(post_save, sender=PreRegisteredUser)
+def send_welcome_email(sender, instance, created, **kwargs):
+
+    print("post save preregister. created {}".format(created))
+
+    if created:
+        user = instance.user
+        kind, entity = user.get_related_entity()
+
+        template = 'preregister_entity'
+        template = 'preregister_entity' if kind == 'entity' else 'preregister_person'
+        if kind == 'person' and entity.is_guest_account and settings.SPECIAL_WELCOME:
+            template = 'preregister_special'
+
+        title = 'Todo listo para que tu entidad aparezca en la aplicación móvil del Mercado Social' if kind == 'entity' else 'Todo listo para empezar a usar la aplicación móvil del Mercado Social'
+
+        try:
+            send_template_email(
+                title=title,
+                destination=instance.email,
+                template_name=template,
+                template_params={'token': instance.id, 'entity': entity.display_name}
+            )
+
+            instance.email_sent = True
+            instance.save()
+        except Exception:
+            print("send email error")
+
