@@ -68,10 +68,10 @@ class FetchResource(ModelResource):
                 except Person.DoesNotExist:
                     instance = None
                 except MultipleObjectsReturned:
-                    raise Exception(f"Duplicated person. Nif: {data['cif']}. Email: {data['email']}")
+                    raise Exception("Duplicated person. Nif: {}. Email: {}".format(data['cif'], data['email']))
 
             except MultipleObjectsReturned:
-                raise Exception(f"Duplicated entity. Cif: {data['cif']}. Email: {data['email']}")
+                raise Exception("Duplicated entity. Cif: {}. Email: {}".format(data['cif'], data['email']))
 
         if instance is None and 'email' in data:
             instance = User.objects.filter(email=data['email']).first()
