@@ -59,11 +59,11 @@ class FetchResource(ModelResource):
 
         if instance is None and 'cif' in data and data['cif'] is not None:
             try:
-                entity = Entity.objects.get(cif=data['cif'])
+                entity = Entity.objects.get(cif=data['cif'], inactive=False)
                 instance = entity.user
             except Entity.DoesNotExist:
                 try:
-                    person = Person.objects.get(nif=data['cif'])
+                    person = Person.objects.get(nif=data['cif'], inactive=False)
                     instance = person.user
                 except Person.DoesNotExist:
                     instance = None
