@@ -25,6 +25,9 @@ class WalletType(models.Model):
         verbose_name_plural = 'Tipos de cuenta'
         ordering = ['id']
 
+    def __str__(self):
+        return self.name
+
     def __unicode__(self):
         return self.name
 
