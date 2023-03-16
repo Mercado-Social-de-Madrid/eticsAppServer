@@ -128,4 +128,3 @@ def user_wallet(request):
             'showing_all': False,
             'wallet': wallet, 'transactions': transactions
         })
-

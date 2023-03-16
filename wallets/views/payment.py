@@ -82,9 +82,9 @@ def payment_detail(request, pk):
             else:
                 messages.add_message(request, messages.SUCCESS, 'Pago rechazado con éxito')
                 if request.user.is_superuser:
-                    return redirect('admin_payments')
+                    return redirect('wallets:admin_payments')
                 else:
-                    return redirect('pending_payments')
+                    return redirect('wallets:pending_payments')
 
     sender_type, sender = payment.sender.get_related_entity()
     receiver_type, entity = payment.receiver.get_related_entity()
@@ -135,7 +135,7 @@ def new_payment(request, pk):
                 payment = form.save()
                 messages.add_message(request, messages.SUCCESS,
                                      'Pago enviado con éxito')
-                return redirect('payment_detail', pk=payment.pk)
+                return redirect('wallets:payment_detail', pk=payment.pk)
             except Wallet.WrongPinCode:
                 print('Wrong pincode!')
                 data['wrongpingcode'] = True

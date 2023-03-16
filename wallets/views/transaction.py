@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
@@ -7,12 +6,11 @@ import datetime
 from django.conf import settings
 from django.db.models import Sum
 from django.db.models.functions import TruncDay
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, TemplateView, FormView
+from django.views.generic import TemplateView, FormView
 from django_filters.views import FilterView
 
 import helpers
@@ -115,7 +113,7 @@ def new_transaction(request):
                 success = False
 
             if success:
-                return redirect('transaction_list')
+                return redirect('wallets:transaction_list')
 
     else:
         form = TransactionForm()

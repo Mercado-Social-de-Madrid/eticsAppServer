@@ -44,7 +44,7 @@ class EntityForm(forms.ModelForm):
             'profile_image': forms.FileInput(attrs={}),
             'logo': forms.FileInput(attrs={}),
             'inactive': forms.CheckboxInput(attrs={'class': 'custom-control-input'}),
-            'city': forms.HiddenInput(),
+            'city': forms.HiddenInput(attrs={'value':'mad'}),
         }
 
     def clean_new_user_username(self):
