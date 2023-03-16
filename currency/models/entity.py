@@ -34,7 +34,7 @@ class Entity(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, null=True, blank=False, on_delete=models.SET_NULL)
     city = models.ForeignKey(City, null=False, blank=False, on_delete=models.CASCADE)
-
+    member_id = models.CharField(null=True, blank=True, max_length=20, verbose_name='Número de socia')
     cif = models.CharField(null=True, blank=True, verbose_name='NIF/CIF', max_length=50)
     email = models.CharField(null=False, blank=False, verbose_name='Email', max_length=250)
     name = models.CharField(null=True, blank=True, verbose_name='Nombre', max_length=250)

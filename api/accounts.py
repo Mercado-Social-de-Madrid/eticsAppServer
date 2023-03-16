@@ -104,7 +104,7 @@ class PreRegisterResource(ModelResource):
 
     def generate_random_username(self, length=16, chars=ascii_lowercase):
 
-        username = ''.join([choice(chars) for i in xrange(length)])
+        username = ''.join([choice(chars) for i in range(length)])
         try:
             User.objects.get(username=username)
             return self.generate_random_username(length=length, chars=chars)
@@ -137,7 +137,7 @@ class PreRegisterResource(ModelResource):
             if 'name' in bundle.data['person']:
                 bundle.data['first_name'] = bundle.data['person']['name']
             if 'surname' in bundle.data['person']:
-                bundle.data['lastt_name'] = bundle.data['person']['surname']
+                bundle.data['last_name'] = bundle.data['person']['surname']
             bundle.data['person']['city'] = City.objects.get(id=city_id)
         elif 'entity' in bundle.data:
             bundle.data['entity']['city'] = City.objects.get(id=city_id)
