@@ -15,6 +15,11 @@ from helpers import RandomFileName
 from currency.models import Entity, City
 
 
+class PersonManager(models.Manager):
+
+    def active(query):
+        return query.filter(inactive=False)
+
 class Person(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -42,6 +47,8 @@ class Person(models.Model):
     expiration_date = models.DateField(null=True, blank=True, verbose_name='Fecha de expiración')
 
     inactive = models.BooleanField(default=False, verbose_name='Inactiva')
+
+    objects = PersonManager()
 
     class Meta:
         verbose_name = 'Persona'
