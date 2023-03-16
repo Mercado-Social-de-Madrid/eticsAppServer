@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 <nav class="navbar navbar-expand navbar-light navbar-drawer" id="top-bar">
      <div class="container">
     <button class="navbar-toggler always-show" type="button" data-toggle="navdrawer" data-target="#doc-navdrawer" aria-controls="doc-navdrawer" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,21 +64,21 @@
         <ul class="navdrawer-nav">
 
           <li class="nav-item">
-            <a class="nav-link{% if request.resolver_match.url_name == 'transaction_list' %} active {% endif %}" href="{% url 'transaction_list' %}">
+            <a class="nav-link{% if request.resolver_match.url_name == 'wallets:transaction_list' %} active {% endif %}" href="{% url 'wallets:transaction_list' %}">
               <i class="material-icons mr-3">swap_horiz</i>
               Movimientos
             </a>
           </li>
 
             <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'admin_payments' %} active {% endif %}" href="{% url 'admin_payments' %}">
+                <a class="nav-link {% if request.resolver_match.url_name == 'wallets:admin_payments' %} active {% endif %}" href="{% url 'wallets:admin_payments' %}">
                   <i class="material-icons mr-3">receipt</i>
                   Pagos
                 </a>
               </li>
 
           <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'admin_wallet' %} active {% endif %}" href="{% url 'admin_wallet' %}">
+                <a class="nav-link {% if request.resolver_match.url_name == 'wallets:admin_wallet' %} active {% endif %}" href="{% url 'wallets:admin_wallet' %}">
                  <i class="material-icons mr-3 fa fa-shopping-bag" aria-hidden="true"></i>
                   Monederos
                 </a>

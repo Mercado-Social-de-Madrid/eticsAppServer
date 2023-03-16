@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+{% load static %}
 {% load settings_value %}
 {% load l10n %}
 
@@ -13,8 +13,8 @@
     <div class="row">
         <div class="col-sm-7 col-md-5"><h3 class="primary-title mb-3"><i class="material-icons mr-2">swap_horiz</i>Movimientos</h3></div>
         <div class="col-sm-5 col-md-7 text-right mb-2">
-            <a href="{% url 'bulk_transaction' %}" class="btn btn-secondary btn-lg"><i class="material-icons mr-2">clear_all</i>Mov. masivo</a>
-            <a href="{% url 'new_transaction' %}" class="btn btn-primary btn-lg"><i class="material-icons mr-2">add</i>Nuevo movimiento</a>
+            <a href="{% url 'wallets:bulk_transaction' %}" class="btn btn-secondary btn-lg"><i class="material-icons mr-2">clear_all</i>Mov. masivo</a>
+            <a href="{% url 'wallets:new_transaction' %}" class="btn btn-primary btn-lg"><i class="material-icons mr-2">add</i>Nuevo movimiento</a>
         </div>
 
         <div class="col-sm-12">

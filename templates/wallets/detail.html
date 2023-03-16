@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+{% load static %}
 {% load settings_value %}
 {% load l10n %}
 {% load i18n %}
@@ -36,12 +36,12 @@
                                      <h4>Pagos pendientes</h4><br>
                                         <h5>Enviados: </h5>
                                             {% for payment in sent_pending_payments %}
-                                                <a href="{%url 'payment_detail' payment.pk%}">{{payment.timestamp|date:'d/m/Y H:i'}} - {{payment.total_amount}}€ -> {{payment.receiver}}</a><br>
+                                                <a href="{%url 'wallets:payment_detail' payment.pk%}">{{payment.timestamp|date:'d/m/Y H:i'}} - {{payment.total_amount}}€ -> {{payment.receiver}}</a><br>
                                             {% endfor %}
 
                                         <h5>Recibidos: </h5>
                                             {% for payment in pending_payments %}
-                                                <a href="{%url 'payment_detail' payment.pk%}">{{payment.timestamp|date:'d/m/Y H:i'}} - {{payment.total_amount}}€ <- {{payment.sender}}</a><br>
+                                                <a href="{%url 'wallets:payment_detail' payment.pk%}">{{payment.timestamp|date:'d/m/Y H:i'}} - {{payment.total_amount}}€ <- {{payment.sender}}</a><br>
                                             {% endfor %}
 
                                      </div>
@@ -70,7 +70,7 @@
                                      <h4>Pagos pendientes</h4> <br>
                                         <h5>Enviados: </h5>
                                             {% for payment in sent_pending_payments %}
-                                                <a href="{%url 'payment_detail' payment.pk%}">{{payment.timestamp|date:'d/m/Y H:i'}} - {{payment.total_amount}}€ -> {{payment.receiver}}</a><br>
+                                                <a href="{%url 'wallets:payment_detail' payment.pk%}">{{payment.timestamp|date:'d/m/Y H:i'}} - {{payment.total_amount}}€ -> {{payment.receiver}}</a><br>
                                             {% endfor %}
                                      </div>
                               </div>

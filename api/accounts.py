@@ -177,7 +177,6 @@ def gen_userwallet_data(user, include_type=True, include_apikey=True):
         del data['entity']['gallery']
 
         if instance.categories.count() > 0:
-            print 'has categories!'
             data['entity']['categories'] = []
             for cat in instance.categories.all():
                 data['entity']['categories'].append(cat.pk)
@@ -255,7 +254,7 @@ class UserResource(ModelResource):
 
     def logout(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
-        if request.user and request.user.is_authenticated():
+        if request.user and request.user.is_authenticated:
             logout(request)
             return self.create_response(request, {'success': True})
         else:

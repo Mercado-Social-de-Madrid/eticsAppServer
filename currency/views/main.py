@@ -19,7 +19,7 @@ from wallets.models import Wallet, Payment
 
 
 def index(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return redirect('dashboard')
     else:
         return redirect('login')
@@ -93,7 +93,6 @@ def preregister(request, pk):
             user.save()
 
             pin_code = form.cleaned_data.get('pincode', '')
-            print pin_code
             Wallet.update_user_pin_code(user=user, pin_code=pin_code)
 
             preuser.delete()
@@ -121,8 +120,7 @@ def edit_profile(request):
         profile_form = ProfileForm(request.POST, instance=request.user)
         if profile_form.is_valid():
             profile_form.save()
-        else:
-            print profile_form.errors
+
     else:
         profile_form = ProfileForm(instance=request.user)
     password_form = PasswordForm(user=request.user)
@@ -143,8 +141,7 @@ def profile_password(request):
             update_session_auth_hash(request, user)  # Important!
             messages.success(request, 'Contraseña actualizada correctamente')
             return redirect('edit_user_profile')
-        else:
-            print password_form.errors
+
     else:
         password_form = PasswordForm(user=request.user)
 

@@ -14,7 +14,7 @@ from currency.custom_filters import PreregisterFilter
 from currency.forms.EntityForm import EntityForm
 from currency.forms.galleryform import PhotoGalleryForm
 from currency.models import Entity, Gallery, Category, PreRegisteredUser
-from helpers import superuser_required
+from helpers import superuser_required, FilterMixin
 from helpers.filters.LabeledOrderingFilter import LabeledOrderingFilter
 from helpers.filters.SearchFilter import SearchFilter
 from helpers.forms.BootstrapForm import BootstrapForm
@@ -22,7 +22,7 @@ from helpers.mixins.AjaxTemplateResponseMixin import AjaxTemplateResponseMixin
 from helpers.mixins.ExportAsCSVMixin import ExportAsCSVMixin
 from helpers.mixins.ListItemUrlMixin import ListItemUrlMixin
 from offers.models import Offer
-from filters.views import FilterMixin
+
 
 
 @login_required
@@ -172,9 +172,7 @@ def add_entity(request):
             PhotoGalleryForm.save_galleryphoto(entity.gallery, gallery_formset)
 
             return redirect('entity_detail', pk=entity.pk)
-        else:
-            print form.errors.as_data()
-            print gallery_formset.errors
+
     else:
         form = EntityForm(initial={'is_new_entity':True})
         gallery_formset = gallery_factory(initial=initial_photos)
@@ -231,9 +229,7 @@ def entity_edit(request, pk):
             PhotoGalleryForm.save_galleryphoto(entity.gallery, gallery_formset)
 
             return redirect('entity_detail', pk=entity.pk)
-        else:
-            print form.errors.as_data()
-            print gallery_formset.errors
+
     else:
         form = EntityForm(instance=entity)
         gallery_formset = gallery_factory(initial=initial_photos)

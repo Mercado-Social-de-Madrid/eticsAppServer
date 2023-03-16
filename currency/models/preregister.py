@@ -17,9 +17,9 @@ from helpers import send_template_email
 class PreRegisteredUser(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, null=True, blank=True, related_name='preregister')
-    entity = models.ForeignKey(Entity, verbose_name='Entidad', null=True)
-    person = models.ForeignKey(Person, verbose_name='Consumidora', null=True)
+    user = models.ForeignKey(User, null=True, blank=True, related_name='preregister', on_delete=models.CASCADE)
+    entity = models.ForeignKey(Entity, verbose_name='Entidad', null=True, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, verbose_name='Consumidora', null=True, on_delete=models.CASCADE)
     email = models.EmailField(blank=True)
     email_sent = models.BooleanField(default=False, verbose_name='Email preregistro enviado')
 

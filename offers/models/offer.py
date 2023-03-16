@@ -51,7 +51,7 @@ class OffersManager(models.Manager):
 class Offer(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    entity = models.ForeignKey(Entity, null=False, blank=False, related_name='offers')
+    entity = models.ForeignKey(Entity, null=False, blank=False, related_name='offers', on_delete=models.CASCADE)
 
     title = models.CharField(null=True, blank=True, verbose_name='Nombre', max_length=250)
     description = models.TextField(null=True, blank=True, verbose_name='Descripción')
@@ -87,6 +87,9 @@ class Offer(models.Model):
         verbose_name = 'Oferta'
         verbose_name_plural = 'Ofertas'
         ordering = ['-published_date']
+
+    def __str__(self):
+        return self.title if self.title else self.pk
 
     def __unicode__(self):
         return self.title if self.title else self.pk

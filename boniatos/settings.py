@@ -82,7 +82,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'boniatos.wsgi.application'
-
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -152,7 +152,7 @@ INLINE_INPUT_SEPARATOR = '&&&'
 
 
 # Import secret settings (see settings_secret.py.template for reference)
-from settings_secret import *
+from boniatos.settings_secret import *
 
 if FCM_SERVER_KEY:
     FCM_DJANGO_SETTINGS['FCM_SERVER_KEY'] = FCM_SERVER_KEY

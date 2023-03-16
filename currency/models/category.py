@@ -18,5 +18,8 @@ class Category(models.Model):
         verbose_name_plural = 'Categorías'
         ordering = ['name']
 
+    def __str__(self):
+        return self.name if self.name else ''
+
     def __unicode__(self):
         return self.name if self.name else ''

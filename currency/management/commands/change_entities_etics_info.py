@@ -17,7 +17,7 @@ class Command(BaseCommand):
         for entity in entities:
 
             actual += 1
-            print 'Entity {} of {}'.format(actual, total)
+            print('Entity {} of {}'.format(actual, total))
 
             entity.bonus_percent_entity = 0
             entity.bonus_percent_general = 0

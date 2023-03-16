@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+{% load static %}
 {% load settings_value %}
 {% load l10n %}
 
@@ -84,7 +84,7 @@
 
             {% endif %}
                 <h4 class="mt-3">Saldo</h4>
-                <span class="display-4"> {{person.user.wallet.balance|floatformat:2}}<i class="currency-icon"></i><a href="{% url 'wallet_detail' person.user.wallet.pk %}" class="btn ml-2">Ver movimientos</a></span>
+                <span class="display-4"> {{person.user.wallet.balance|floatformat:2}}<i class="currency-icon"></i><a href="{% url 'wallets:wallet_detail' person.user.wallet.pk %}" class="btn ml-2">Ver movimientos</a></span>
 
             {% endif %}
 

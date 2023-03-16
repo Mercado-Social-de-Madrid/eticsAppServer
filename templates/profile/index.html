@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+{% load static %}
 {% load qr_tags %}
 {% load i18n %}
 {% block title %}Perfil{% endblock%}
@@ -89,8 +89,8 @@
                         Tienen que revisarte {{payments}} pagos
                         {% endblocktrans %}
                      {% endif %}
-                    <a class="list-group-item list-group-item-action" href="{% url 'user_wallet' %}"><i class="material-icons">chevron_right</i> Consultar movimientos</a>
-                    <a class="list-group-item list-group-item-action" href="{% url 'new_payment' %}"><i class="material-icons">chevron_right</i> Enviar pago</a>
+                    <a class="list-group-item list-group-item-action" href="{% url 'wallets:user_wallet' %}"><i class="material-icons">chevron_right</i> Consultar movimientos</a>
+                    <a class="list-group-item list-group-item-action" href="{% url 'wallets:new_payment' %}"><i class="material-icons">chevron_right</i> Enviar pago</a>
                      <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Obtener etics</a>
                   </div>
             </div>

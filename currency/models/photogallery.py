@@ -21,7 +21,7 @@ class Gallery(models.Model):
 
 class GalleryPhoto(models.Model):
 
-    gallery = models.ForeignKey(Gallery, null=True, related_name='photos')
+    gallery = models.ForeignKey(Gallery, null=True, related_name='photos', on_delete=models.CASCADE)
     order = models.IntegerField(verbose_name='Orden', default=0)
     title = models.CharField(null=True, blank=True, verbose_name='Título', max_length=250)
     image = ProcessedImageField(null=True, blank=True, upload_to=RandomFileName('photos/'),

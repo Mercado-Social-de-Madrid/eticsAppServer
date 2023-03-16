@@ -24,7 +24,7 @@
     {% if request.is_ajax %}
     <div class="card-actions">
         <a class="btn btn-outline-primary" href="{% url 'reports:wallets' %}">Ver detalles</a>
-        <a class="btn btn-outline-secondary" href="{% url 'admin_wallet' %}">Ver monederos</a>
+        <a class="btn btn-outline-secondary" href="{% url 'wallets:admin_wallet' %}">Ver monederos</a>
       </div>
     {% endif %}
 </div>

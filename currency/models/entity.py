@@ -32,8 +32,8 @@ class EntityManager(models.Manager):
 class Entity(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(User, null=False, blank=False)
-    city = models.ForeignKey(City, null=False, blank=False)
+    user = models.OneToOneField(User, null=True, blank=False, on_delete=models.SET_NULL)
+    city = models.ForeignKey(City, null=False, blank=False, on_delete=models.CASCADE)
 
     cif = models.CharField(null=True, blank=True, verbose_name='NIF/CIF', max_length=50)
     email = models.CharField(null=False, blank=False, verbose_name='Email', max_length=250)
@@ -109,6 +109,9 @@ class Entity(models.Model):
         verbose_name_plural = 'Entidades'
         ordering = ['name']
 
+    def __str__(self):
+        return self.name if self.name else 'Entidad'
+
     def __unicode__(self):
         return self.name if self.name else 'Entidad'
 
@@ -124,7 +127,7 @@ def add_user_to_group(sender, instance, created, **kwargs):
         instance.user.save()
 
     if created:
-        print 'Adding user to entities group'
+        print('Adding user to entities group')
         group = Group.objects.get(name='entities')
         instance.user.groups.add(group)
 

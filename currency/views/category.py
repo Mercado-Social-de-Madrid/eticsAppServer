@@ -28,8 +28,6 @@ def add_category(request):
             category = form.save()
             messages.add_message( request, messages.SUCCESS, 'Categoría "{}" añadida con éxito'.format(category.name.encode('utf-8')))
             return redirect('category_list')
-        else:
-            print form.errors.as_data()
     else:
         form = CategoryForm()
 
@@ -55,8 +53,6 @@ def category_edit(request, pk):
             category = form.save()
             messages.add_message(request, messages.SUCCESS, 'Categoría "{}" actualizada con éxito'.format(category.name.encode('utf-8')))
             return redirect('category_list')
-        else:
-            print form.errors.as_data()
 
     else:
         form = CategoryForm(instance=category)

@@ -137,14 +137,13 @@ def new_payment(request, pk):
                                      'Pago enviado con éxito')
                 return redirect('payment_detail', pk=payment.pk)
             except Wallet.WrongPinCode:
-                print 'Wrong pincode!'
+                print('Wrong pincode!')
                 data['wrongpingcode'] = True
             except Wallet.NotEnoughBalance:
                 data['notenoughbalance'] = True
             except Wallet.ReceiverNotRegistered:
                 data['receivernotregistered'] = True
-        else:
-            print form.errors.as_data()
+
     else:
         form = PaymentForm(initial={'sender':request.user, 'receiver':entity.user})
 

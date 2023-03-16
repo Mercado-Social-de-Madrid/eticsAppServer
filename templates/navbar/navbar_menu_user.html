@@ -1,4 +1,4 @@
- {% load staticfiles %}
+ {% load static %}
    <nav class="navbar navbar-expand navbar-light" id="top-bar">
      <div class="container">
 
@@ -39,7 +39,7 @@
             {% endif %}
 
               <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'user_wallet' %}active{% endif %}" href="{% url 'user_wallet' %}"><i class="ic ic-wallet"></i> Monedero</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'user_wallet' %}active{% endif %}" href="{% url 'wallets:user_wallet' %}"><i class="ic ic-wallet"></i> Monedero</a>
               </li>
             </ul>
 

@@ -38,6 +38,7 @@ def get_user_by_related(uuid):
     else:
         return instance.user
 
+
 UserModel = get_user_model()
 UserModel.add_to_class("get_related_entity", get_related_entity)
 UserModel.add_to_class("is_registered", is_registered)

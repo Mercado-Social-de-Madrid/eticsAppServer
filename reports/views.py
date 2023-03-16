@@ -261,8 +261,7 @@ def news_edit(request, pk):
 
             entry = form.save()
             return redirect('news_list')
-        else:
-            print form.errors.as_data()
+
     else:
         form = NewsForm(instance=entry)
 
@@ -290,8 +289,7 @@ def add_news(request):
             entry.save()
             messages.add_message(request, messages.SUCCESS, 'Noticia añadida con éxito')
             return redirect('news_list')
-        else:
-            print form.errors.as_data()
+
     else:
         form = NewsForm()
 

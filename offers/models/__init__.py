@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from offer import Offer
+from offers.models.offer import Offer

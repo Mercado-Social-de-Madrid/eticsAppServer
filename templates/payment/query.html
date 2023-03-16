@@ -15,7 +15,7 @@
   </thead>
   <tbody>
     {% for payment in payments %}
-    <tr data-href="{%url 'payment_detail' payment.pk%}">
+    <tr data-href="{%url 'wallets:payment_detail' payment.pk%}">
       <th scope="row">{{payment.timestamp|date:'d/m/Y H:i'}}</th>
 
       <td>{{payment.sender}}</td>
@@ -30,7 +30,7 @@
         <td><div class="amount">{{payment.total_amount}}€</div></td>
         <td><div class="amount">{{payment.currency_amount}}<i class="currency-icon"></i></div></td>
         <td class="table-actions">
-            <a href="{%url 'payment_detail' payment.pk%}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Ver detalles de pago"><i class="material-icons">visibility</i></a>
+            <a href="{%url 'wallets:payment_detail' payment.pk%}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Ver detalles de pago"><i class="material-icons">visibility</i></a>
             {% if payment.status == 'pending' %}
             <a href="#" class="btn btn-outline-primary" data-action="accept" data-toggle="tooltip" data-placement="bottom" title="Aceptar pago"><i class="material-icons">done</i></a>
             <a href="#" class="btn btn-outline-primary" data-action="cancel" data-toggle="tooltip" data-placement="bottom" title="Cancelar pago"><i class="material-icons">clear</i></a>

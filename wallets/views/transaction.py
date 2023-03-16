@@ -14,10 +14,9 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView, FormView
 from django_filters.views import FilterView
-from filters.views import FilterMixin
 
 import helpers
-from helpers import superuser_required
+from helpers import superuser_required, FilterMixin
 from helpers.mixins.AjaxTemplateResponseMixin import AjaxTemplateResponseMixin
 from helpers.mixins.ExportAsCSVMixin import ExportAsCSVMixin
 from helpers.mixins.ListItemUrlMixin import ListItemUrlMixin
@@ -87,7 +86,7 @@ class TransactionsListView(FilterMixin, FilterView, ExportAsCSVMixin, ListItemUr
 def new_transaction(request):
 
     params = {
-        'ajax_url': reverse('admin_wallet') + '?filter=true',
+        'ajax_url': reverse('wallets:admin_wallet') + '?filter=true',
     }
 
     if request.method == "POST":
@@ -117,8 +116,7 @@ def new_transaction(request):
 
             if success:
                 return redirect('transaction_list')
-        else:
-            print form.errors.as_data()
+
     else:
         form = TransactionForm()
 
@@ -134,7 +132,7 @@ class BulkTransaction(TemplateView, FormView):
 
     def get_context_data(self, **kwargs):
         context = super(BulkTransaction, self).get_context_data(**kwargs)
-        context['ajax_url'] = reverse('admin_wallet') + '?filter=true&type=debit'
+        context['ajax_url'] = reverse('wallets:admin_wallet') + '?filter=true&type=debit'
         context['all_wallets'] = Wallet.objects.filter(user__isnull=False).order_by('-user')
         return context
 
@@ -142,7 +140,7 @@ class BulkTransaction(TemplateView, FormView):
         return super(BulkTransaction, self).form_invalid(form)
 
     def get_success_url(self):
-        return reverse('transaction_list')
+        return reverse('wallets:transaction_list')
 
     def form_valid(self, form):
         bulk = form.cleaned_data.get('bulk_wallets')

@@ -17,7 +17,7 @@
 
   <td {% if narrow %} class="px-2 text-center" {% endif %}>
     {% if item.wallet_from.user %}
-        <a href="{% url 'wallet_detail' item.wallet_from.pk %} ">
+        <a href="{% url 'wallets:wallet_detail' item.wallet_from.pk %} ">
         {% with from=item.wallet_from.user.get_related_entity.1 %}
             {% if from %}
                 {{item.wallet_from.user.get_related_entity.1 }}
@@ -34,7 +34,7 @@
     <td >
       {% endif %}
         {% if item.wallet_to.user %}
-        <a href="{% url 'wallet_detail' item.wallet_to.pk %} ">
+        <a href="{% url 'wallets:wallet_detail' item.wallet_to.pk %} ">
             {{item.wallet_to.user.get_related_entity.1 }}
         </a>
         {% else %}

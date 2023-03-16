@@ -18,7 +18,7 @@ NEWS_NOTIFICATION_TOPIC = 'news'
 class News(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    published_by = models.ForeignKey(User, null=True)
+    published_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     title = models.CharField(null=True, blank=True, verbose_name='Título', max_length=250)
     short_description = models.TextField(null=True, blank=True, verbose_name='Descripción')
     description = models.TextField(null=True, blank=True, verbose_name='Descripción')
@@ -50,7 +50,7 @@ class News(models.Model):
 def notify_news(sender, instance, created, **kwargs):
 
     if created:
-        print 'Notifying news to all users'
+        print('Notifying news to all users')
         data = {
             'type': 'news',
             'id':str(instance.pk),

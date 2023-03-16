@@ -21,8 +21,8 @@ from wallets.models import WalletType
 class Wallet(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(User, null=True)
-    type = models.ForeignKey(WalletType, null=True, related_name='wallets')
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    type = models.ForeignKey(WalletType, null=True, related_name='wallets', on_delete=models.SET_NULL)
     balance = models.FloatField(default=0, verbose_name='Saldo actual')
     last_transaction = models.DateTimeField(blank=True, null=True, verbose_name='Última transacción')
     pin_code = models.CharField(null=True, blank=True, max_length=100, verbose_name='Código PIN (hasheado)')
@@ -37,6 +37,9 @@ class Wallet(models.Model):
         verbose_name = 'Monedero'
         verbose_name_plural = 'Monederos'
         ordering = ['user']
+
+    def __str__(self):
+        return self.related_type
 
     def __unicode__(self):
         return self.related_type
@@ -219,7 +222,7 @@ class Wallet(models.Model):
 @receiver(post_save, sender=User)
 def create_user_wallet(sender, instance, created, **kwargs):
     if created:
-        print 'Creating user wallet!'
+        print('Creating user wallet!')
         wallet, new = Wallet.objects.get_or_create(user=instance)
 
         type, related = instance.get_related_entity()
@@ -227,7 +230,7 @@ def create_user_wallet(sender, instance, created, **kwargs):
         wallet.set_type(wallet_type)
 
         if not new:
-            print 'Wallet for user already existed'
+            print('Wallet for user already existed')
 
 
 # Method to generate the entity wallet type

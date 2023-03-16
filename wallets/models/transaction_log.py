@@ -36,7 +36,7 @@ class TransactionLogManager(models.Manager):
 
 
 class TransactionLog(models.Model):
-    wallet = models.ForeignKey(Wallet, blank=True, null=True, related_name='transactions_logs')
+    wallet = models.ForeignKey(Wallet, blank=True, null=True, related_name='transactions_logs', on_delete=models.CASCADE)
     timestamp = models.DateTimeField(verbose_name='Timestamp')
     amount = models.FloatField(default=0, verbose_name='Cantidad')
     concept = models.TextField(blank=True, null=True, verbose_name='Concepto')
@@ -44,7 +44,7 @@ class TransactionLog(models.Model):
     is_bonification = models.BooleanField(default=False, verbose_name='Bonificación')
     is_euro_purchase = models.BooleanField(default=False, verbose_name='Compra de euros')
     current_balance = models.FloatField(default=0, verbose_name='Saldo')
-    transaction = models.ForeignKey(Transaction, blank=True, null=True)
+    transaction = models.ForeignKey(Transaction, blank=True, null=True, on_delete=models.CASCADE)
     related = models.TextField(blank=True, null=True, verbose_name='Concepto')
 
     objects = TransactionLogManager()

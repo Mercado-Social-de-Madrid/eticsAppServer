@@ -70,7 +70,6 @@ class PasswordUpdateView(SuperUserCheck, UpdateView):
         if form_class is None:
             form_class = self.get_form_class()
         kwargs = self.get_form_kwargs()
-        print(kwargs)
         del kwargs['instance']
         kwargs['user'] = self.object
         return form_class(**kwargs)

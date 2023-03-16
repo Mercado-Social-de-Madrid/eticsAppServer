@@ -18,8 +18,8 @@ from currency.models import Entity, City
 class Person(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(User, null=False, blank=False)
-    city = models.ForeignKey(City, null=False, blank=False)
+    user = models.OneToOneField(User, null=True, blank=False, on_delete=models.SET_NULL)
+    city = models.ForeignKey(City, null=False, blank=False, on_delete=models.CASCADE)
 
     nif = models.CharField(null=True, blank=True, verbose_name='NIF/CIF', max_length=50)
     email = models.CharField(null=False, blank=False, verbose_name='Email', max_length=250)
@@ -56,6 +56,9 @@ class Person(models.Model):
     def full_name(self):
         return '{} {}'.format(self.name if self.name else '', self.surname if self.surname else '')
 
+    def __str__(self):
+        return self.full_name
+
     def __unicode__(self):
         return '{} {}'.format(self.name if self.name else '', self.surname if self.surname else '')
 
@@ -68,6 +71,6 @@ def add_user_to_group(sender, instance, created, **kwargs):
         instance.user.save()
 
     if created:
-        print 'Adding user to persons group'
+        print('Adding user to persons group')
         group = Group.objects.get(name='persons')
         instance.user.groups.add(group)

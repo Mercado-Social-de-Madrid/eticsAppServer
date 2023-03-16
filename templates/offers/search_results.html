@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 
 <div class="table-responsive card mb-4">
 <table class="table table-hover" {% if ajax_url %} data-ajax-url="{{ajax_url}}" {% endif %}>
@@ -17,7 +17,7 @@
     <tr>
       <td class="entity-td">
           <div class="profile-circle small">
-              <img src="{% if offer.banner_image %}{{offer.banner_thumbnail.url}}{% else %}{% static 'imgs/default-offer.png' %}{%endif%}">
+              <img src="{% if offer.banner_image %}{{offer.banner_image.url}}{% else %}{% static 'imgs/default-offer.png' %}{%endif%}">
           </div>
 
           <h5 class="mb-0">{{offer.title}}</h5>

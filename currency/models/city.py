@@ -16,7 +16,7 @@ class City(models.Model):
     server_base_url = models.CharField(null=False, max_length=250, verbose_name='URL Servidor Gestión', default=0)
 
     # Debit wallet
-    wallet = models.ForeignKey('wallets.wallet', null=True, verbose_name='Monedero de débito', related_name='city_debit')
+    wallet = models.ForeignKey('wallets.wallet', null=True, verbose_name='Monedero de débito', related_name='city_debit', on_delete=models.CASCADE)
 
     # Social links
     facebook_link = models.CharField(null=True, blank=True, verbose_name='Página de Facebook', max_length=250)

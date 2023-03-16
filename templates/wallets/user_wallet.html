@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+{% load static %}
 {% load settings_value %}
 {% load l10n %}
 {% load i18n %}
@@ -19,7 +19,7 @@
                                  {% include 'wallets/wallet_balance.html' with wallet=wallet %}
                              </div>
                              <div class="col-sm-7 pl-4">
-                                 <a href="{% url 'new_payment' %}" class="btn btn-lg mb-3 btn-primary">Enviar pago</a><br>
+                                 <a href="{% url 'wallets:new_payment' %}" class="btn btn-lg mb-3 btn-primary">Enviar pago</a><br>
                     <button type="button" class="btn btn-lg disabled">Obtener etics</button>
                              </div>
                          </div>

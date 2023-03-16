@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+{% load static %}
 {% block title %}Informes{% endblock%}
 
 {% block content %}
@@ -74,7 +74,7 @@
 
                 </div>
                 <div class="card-actions">
-                    <a class="btn btn-outline-primary" href="{% url 'wallet_detail' debit_wallet.pk %}">Ver movimientos</a>
+                    <a class="btn btn-outline-primary" href="{% url 'wallets:wallet_detail' debit_wallet.pk %}">Ver movimientos</a>
                 </div>
 
             </div>

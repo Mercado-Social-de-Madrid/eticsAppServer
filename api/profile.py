@@ -25,14 +25,12 @@ class InviteResource(ModelResource):
     def invite(self,  request, **kwargs):
         self.method_check(request, allowed=['post'])
         self.is_authenticated(request)
-        print request.user
 
         data = self.deserialize(request, request.body,
                                 format=request.META.get('CONTENT_TYPE', 'application/json'))
         bundle = self.build_bundle(data=data, request=request)
-        print bundle.request.user
 
-        if request.user and request.user.is_authenticated():
+        if request.user and request.user.is_authenticated:
             data = self.deserialize(request, request.body,
                                     format=request.META.get('CONTENT_TYPE', 'application/json'))
             email = data.get('email', '')

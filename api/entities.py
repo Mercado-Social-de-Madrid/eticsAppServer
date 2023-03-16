@@ -112,10 +112,8 @@ class EntitiesDetailResource(ModelResource):
 
     def apply_filters(self, request, applicable_filters):
 
-        print applicable_filters
         if not 'city__exact' in applicable_filters:
-
-            if request.user and request.user.is_authenticated():
+            if request.user and request.user.is_authenticated:
                 # if no city filter was applied, we get the user city
                 rel_type, related = request.user.get_related_entity()
                 if related:

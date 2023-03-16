@@ -1,32 +1,28 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import json
+import datetime
 
 import django_filters
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Sum
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Sum
 from django.db.models.functions import TruncDay
-from django.urls import reverse
+from django.shortcuts import render, get_object_or_404
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django_filters.views import FilterView
-from filters.views import FilterMixin
 
 import helpers
-from helpers import superuser_required
+from helpers import superuser_required, FilterMixin
 from helpers.filters.LabeledOrderingFilter import LabeledOrderingFilter
 from helpers.filters.SearchFilter import SearchFilter
 from helpers.forms.BootstrapForm import BootstrapForm
 from helpers.mixins.AjaxTemplateResponseMixin import AjaxTemplateResponseMixin
 from helpers.mixins.ExportAsCSVMixin import ExportAsCSVMixin
 from helpers.mixins.ListItemUrlMixin import ListItemUrlMixin
-from wallets.models import Payment, Wallet, TransactionLog, Transaction, WalletType
-from django.utils import timezone
+from wallets.models import Payment, Wallet, TransactionLog, WalletType
 
-import datetime
+
 @superuser_required
 def wallet_types_list(request):
 

@@ -13,7 +13,7 @@
   </thead>
   <tbody>
     {% for payment in payments %}
-    <tr data-href="{%url 'payment_detail' payment.pk%}">
+    <tr data-href="{%url 'wallets:payment_detail' payment.pk%}">
       <th scope="row">{{payment.timestamp|date:'d/m/Y H:i'}}</th>
         <td>{{payment.receiver}}</td>
         <td>{{payment.concept|default:'-'}}</td>

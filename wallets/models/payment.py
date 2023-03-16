@@ -85,7 +85,6 @@ class PaymentManager(models.Manager):
                     raise Wallet.WrongPinCode
 
             if not sender_wallet.has_enough_balance(currency_amount):
-                print 'User does not have enough cash!'
                 raise Wallet.NotEnoughBalance(sender_wallet)
 
             new_payment = self.create(
@@ -100,7 +99,6 @@ class PaymentManager(models.Manager):
             return new_payment
 
         else:
-            print 'The user doesnt exist!'
             raise Exception('The user doesnt exist')
 
 
@@ -110,8 +108,8 @@ class Payment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     timestamp = models.DateTimeField(auto_now_add=True, verbose_name='Timestamp')
     processed = models.DateTimeField(auto_now_add=False, null=True, verbose_name='Timestamp procesado')
-    sender = models.ForeignKey(User, null=True, related_name='payments_sent')
-    receiver = models.ForeignKey(User, null=True, related_name='payments_received')
+    sender = models.ForeignKey(User, null=True, related_name='payments_sent', on_delete=models.SET_NULL)
+    receiver = models.ForeignKey(User, null=True, related_name='payments_received', on_delete=models.SET_NULL)
     concept = models.TextField(null=True, blank=True, verbose_name='Concepto (opcional)')
 
     status = models.CharField(max_length=10, choices=PAYMENT_STATUS)
@@ -129,7 +127,6 @@ class Payment(models.Model):
     def accept_payment(self):
 
         if self.status != STATUS_PENDING:
-            print 'Not pending!'
             return
             #TODO: create exception
 
@@ -137,7 +134,6 @@ class Payment(models.Model):
         wallet_receiver = Wallet.objects.filter(user=self.receiver).first()
 
         if not wallet_sender or not wallet_receiver:
-            print 'Wallet doesnt exist!'
             return
             # TODO: create exception
 
@@ -156,7 +152,6 @@ class Payment(models.Model):
                 t = wallet_receiver.new_transaction(bonus, wallet=wallet_sender, bonus=True, concept=self.concept)
                 wallet_sender.notify_transaction(t)
 
-        print "Payment accepted"
         self.status = STATUS_ACCEPTED
         self.processed = timezone.now()
         self.save()
@@ -165,13 +160,11 @@ class Payment(models.Model):
     def cancel_payment(self):
 
         if self.status != STATUS_PENDING:
-            print 'Not pending!'
             return
             # TODO: create exception
 
         notify_user(user=self.sender, data={}, title="Pago cancelado", message="La entidad ha cancelado el pago")
 
-        print "Payment cancelled"
         self.status = STATUS_CANCELLED
         self.processed = timezone.now()
         self.save()
@@ -189,6 +182,5 @@ class Payment(models.Model):
             'sender': str(sender_instance)
         }
 
-        print 'Notifying payment receiver'
         title = 'Nuevo pago pendiente de confirmar'
         notify_user(self.receiver, title=title, data=data, silent=silent)

@@ -132,8 +132,7 @@ def profile_edit(request, pk):
             form.save_m2m()
 
             return redirect('profile_detail', pk=person.pk)
-        else:
-            print form.errors.as_data()
+
     else:
         form = PersonForm(instance=person)
 

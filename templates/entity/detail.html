@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+{% load static %}
 {% load settings_value %}
 {% load l10n %}
 
@@ -58,7 +58,7 @@
                     {% if entity.user.last_login %} Hace {{entity.user.last_login|timesince}}{% else %} Nunca {% endif %}
 
                     <h4 class="mt-3">Saldo</h4>
-                    <span class="display-4"> {{entity.user.wallet.balance|floatformat:2}}<i class="currency-icon"></i><a href="{% url 'wallet_detail' entity.user.wallet.pk %}" class="btn ml-2">Ver movimientos</a></span>
+                    <span class="display-4"> {{entity.user.wallet.balance|floatformat:2}}<i class="currency-icon"></i><a href="{% url 'wallets:wallet_detail' entity.user.wallet.pk %}" class="btn ml-2">Ver movimientos</a></span>
 
             {% endif %}
 
