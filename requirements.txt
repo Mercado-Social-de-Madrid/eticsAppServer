@@ -5,11 +5,11 @@ django-filter==22.1
 django-imagekit==4.1.0
 django-qrcode==0.3
 django-tastypie==0.14.5
-fcm-django==1.0.12
+fcm-django==0.3.7
 mysqlclient
 olefile==0.45.1
 pilkit==2.0
 Pillow==9.4.0
-pyfcm==1.4.3
+pyfcm==1.4.9
 pytz==2018.3
 six==1.11.0
