@@ -35,6 +35,7 @@ urlpatterns = [
 
     url(r'^profile/$', views.user_profile, name='user_profile'),
     url(r'^member/card/$', views.member_card, name='member_card'),
+    url(r'^member/card_pdf/$', views.member_card_pdf, name='member_card_pdf'),
     url(r'^profile/admin/$', views.ProfileListView.as_view(), name='profile_list'),
 
     url(r'^profile/(?P<pk>[0-9a-f-]+)/$', views.profile_detail, name='profile_detail'),

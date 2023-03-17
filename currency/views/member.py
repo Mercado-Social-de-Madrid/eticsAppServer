@@ -17,11 +17,10 @@ from helpers.mixins.AjaxTemplateResponseMixin import AjaxTemplateResponseMixin
 from helpers.mixins.ExportAsCSVMixin import ExportAsCSVMixin
 from helpers.mixins.ListItemUrlMixin import ListItemUrlMixin
 from helpers.mixins.SuperUserCheck import SuperUserCheck
+from helpers.pdf import render_pdf_response
 
-@login_required
-def member_card(request):
-    user_type, member = request.user.get_related_entity()
 
+def get_card_data(user_type, member):
     member_data = {
         "city": member.city.id,
         "member_id": member.member_id
@@ -39,4 +38,19 @@ def member_card(request):
     else:
         card_data['profile_image'] = member.logo
 
+    return card_data
+
+@login_required
+def member_card(request):
+    user_type, member = request.user.get_related_entity()
+    card_data = get_card_data(user_type, member)
     return render(request, 'member/card.html', card_data)
+
+@login_required
+def member_card_pdf(request):
+    user_type, member = request.user.get_related_entity()
+    card_data = get_card_data(user_type, member)
+
+    filename = 'carnet_mesm'
+    return render_pdf_response(request, 'member/card_pdf.html',
+               card_data, filename=filename)

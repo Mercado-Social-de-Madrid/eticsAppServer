@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+  <head>
+      {% load static %}
+    <meta charset="utf-8">
+    <title>Carnet de socia MESM</title>
+    <meta name="description" content="Carnet de socia MESM" />
+    <meta name="author" content="MES" />
+      <style media="print">
+
+@charset "UTF-8";
+@page {
+  margin: 1.2cm 1.5cm ;
+ }
+body {
+  word-spacing: 0.1em;
+  font-family: Roboto,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;
+}
+html {
+  font-family: Arial;
+  font-size: 10.5pt;
+  line-height: 1.6; }
+  html body { margin: 0; }
+.container{
+    display:inline-block;
+    border: 0.2mm solid #ccc;
+    padding:3mm;
+}
+.member_card{
+    font-size:7pt;
+    width:55mm;
+    height:85mm;
+    border:0.5mm solid #b0b907;
+    position:relative;
+    margin:auto;
+    background:#fff;
+}
+
+.member_info{
+    position:absolute;
+    left:35%;
+    top:5mm;
+    width:60%;
+    z-index:5;
+}
+.member_profile{
+    position:absolute;
+    left:5%;
+    width:14mm;
+    height:14mm;
+    top:5mm;
+    background:#adadad;
+    border-radius:100%;
+    overflow:hidden;
+}
+.member_profile img{
+    width:100%;
+
+}
+.member_type{
+    padding:0.2em 0.5em;
+    margin:0.2em 0;
+    background-color:#f78154;
+    color:#fff;
+    font-weight:bold;
+    display:inline-block;
+}
+
+.member_name{
+    font-weight:bold;
+    font-size:1.3em;
+    line-height:0.65em;
+}
+.member_id{
+    font-size:0.9em;
+    font-weight:bold;
+    color:#6d6d6d;
+    line-height:0.65em;
+}
+
+.member_qr{
+    position:absolute;
+    bottom:22mm;
+    width:100%;
+    z-index:1;
+}
+.member_qr img{
+    width:78%;
+    display:block;
+    margin:auto;
+}
+
+.mesm_footer{
+    position:absolute;
+    bottom:5mm;
+    width:100%;
+    z-index:5;
+}
+
+.mesm_footer img{
+    max-width:75%;
+    margin:auto;
+    display:block;
+}
+
+</style>
+  </head>
+
+ <body>
+ <div class="container">
+{% include 'member/card_base.html' %}
+     </div>
+</body>
+</html>

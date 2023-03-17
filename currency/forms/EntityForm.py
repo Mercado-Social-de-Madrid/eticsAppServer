@@ -23,7 +23,7 @@ class EntityForm(forms.ModelForm):
 
     class Meta:
         model = Entity
-        exclude = ['owner', 'user']
+        exclude = ['owner', 'user', 'member_id']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),

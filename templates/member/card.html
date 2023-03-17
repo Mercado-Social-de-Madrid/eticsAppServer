@@ -6,7 +6,9 @@
 {% block title %}Mi carnet de socia{% endblock%}
 
 {% block bodyattrs %}class="entity"{% endblock%}
-
+{% block extra_styles %}
+<link href="{% static "css/member-card.css" %}?v=12" rel="stylesheet" >
+{% endblock extra_styles %}
 {% block content %}
 <div class="jumbo-header jumbo-entity form" >
     <div class="jumbotron" style="background-image:url('{% static 'css/mes.jpg' %}');">
@@ -28,7 +30,7 @@
                         <br> <br>
                  </div>
                   <div class="col-lg-4 text-center">
-                      <a href="{% url 'wallets:new_payment' %}" class="btn p-3 mt-2 btn-lg btn-primary">Descargar como PDF</a>
+                      <a href="{% url 'member_card_pdf' %}" class="btn p-3 mt-2 btn-lg btn-primary">Descargar como PDF</a>
                   </div>
               </div>
               {% include 'member/card_base.html' %}
