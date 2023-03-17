@@ -1,0 +1,27 @@
+{% extends 'common/list/base.html' %}
+
+ {% block table_head %}
+    <th scope="col">Entidad</th>
+    <th scope="col">Ventaja para entidades</th>
+    <th scope="col">Ventaja para socias</th>
+    <th scope="col">Activa</th>
+    <th scope="col">Acciones</th>
+{% endblock %}
+
+
+{% block item_row %}
+
+    {% include 'entity/row_display.html' with item=item.entity hide_address=True %}
+    <td>{{item.benefit_for_entities|striptags|truncatechars_html:40}}</td>
+    <td>{{item.benefit_for_members|striptags|truncatechars_html:40}}</td>
+    <td>
+        {% if item.active %} <i class="material-icons md-36 text-success" data-toggle="tooltip" data-placement="bottom" title="Activa">check_circle</i>
+        {% else %} <i class="material-icons md-36 text-danger" data-toggle="tooltip" data-placement="bottom" title="Inactiva">cancel</i>
+        {% endif %}
+    </td>
+    <td  class="table-actions">
+        <a class="btn btn-outline-primary" href="{% url 'benefit_edit' item.pk %}" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="material-icons">mode_edit</i></a>
+        <a class="btn btn-outline-primary action-delete" href="{% url 'benefit_delete' item.pk %}" data-action="{% url 'benefit_delete' item.pk %}"  data-toggle="tooltip" data-placement="bottom" title="Eliminar ventaja"><i class="material-icons">delete</i></a>
+    </td>
+
+{% endblock %}

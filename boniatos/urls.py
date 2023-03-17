@@ -22,6 +22,7 @@ import currency.urls as currency_urls
 import offers.urls as offers_urls
 import wallets.urls as wallets_urls
 import news.urls as news_urls
+import benefits.urls as benefits_urls
 from api.urls import get_api
 
 urlpatterns = [
@@ -29,6 +30,7 @@ urlpatterns = [
     url(r'^', include(offers_urls)),
     url(r'^', include(wallets_urls)),
     url(r'^', include(news_urls)),
+    url(r'^', include(benefits_urls)),
     url(r'^reports/', include('reports.urls', namespace='reports')),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(get_api('v1').urls)),

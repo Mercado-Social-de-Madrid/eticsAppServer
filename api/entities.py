@@ -12,7 +12,7 @@ from tastypie.utils import trailing_slash
 
 from api.categories import CategoriesResource
 from api.cities import CitiesResource
-from api.resources import OffersResource
+from api.resources import OffersResource, BenefitResource
 from currency.models import Entity, Gallery, GalleryPhoto
 from offers.models import Offer
 from django.conf import settings
@@ -76,6 +76,7 @@ class EntitiesDetailResource(ModelResource):
     categories = fields.ToManyField(CategoriesResource, 'categories', full=False, null=True)
     city = fields.ForeignKey(CitiesResource, 'city', full=False, null=True)
     gallery = fields.ToOneField(GalleryResource, 'gallery', full=True, null=True)
+    benefit = fields.ToOneField(BenefitResource, 'benefit', full=True, null=True)
 
     class Meta:
         queryset = Entity.objects.active()
@@ -141,6 +142,8 @@ class EntitiesDetailResource(ModelResource):
         return [
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/offers%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_offers'), name="api_get_entity_offers"),
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/benefit%s$" % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_benefit'), name="api_get_entity_benefit"),
         ]
 
     def get_offers(self, request, **kwargs):
@@ -159,3 +162,21 @@ class EntitiesDetailResource(ModelResource):
 
         offers = OffersResource()
         return offers.get_list(request, entity=obj.pk)
+
+    def get_benefit(self, request, **kwargs):
+
+        self.method_check(request, allowed=['get'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
+        try:
+            bundle = self.build_bundle(data={'pk': kwargs['pk']}, request=request)
+            obj = self.cached_obj_get(bundle=bundle, **self.remove_api_resource_names(kwargs))
+        except ObjectDoesNotExist:
+            return HttpGone()
+        except MultipleObjectsReturned:
+            return HttpMultipleChoices("More than one resource is found at this URI.")
+
+        benefit = BenefitResource()
+        return benefit.get_list(request, entity=obj.pk)
+

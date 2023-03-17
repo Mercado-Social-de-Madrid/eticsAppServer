@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% load static %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}{% if is_new %}Nueva ventaja{% else %}Editar ventaja{% endif %}{% endblock%}
+
+{% block bodyattrs %}class="entity"{% endblock%}
+
+{% block content %}
+<div class="jumbo-header jumbo-entity form" >
+    <div class="jumbotron">
+        <div class="container">
+            <h3>{{entity.name}}</h3>
+            {{ entity.address }}
+        </div>
+    </div>
+</div>
+
+<div class="container px-md-5">
+    <div class="card mx-lg-5 mb-4 p-3">
+        <div class="card-body">
+            <form method="POST" class="post-form gallery-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card-title primary-title">
+                <h3><i class="ic ic-news"></i> {%if is_new %}Nueva ventaja{%else%}Editar ventaja{%endif%}</h3></div>
+
+            {{form.media}}
+
+            {%if is_new %}
+                <div class="col-md-7 my-4">
+                    <div class="input-group">
+                        <span class="text-danger mr-2">*</span>
+
+                        <input type="text" name="user_placeholder" id="entity_input" disabled class="form-control" maxlength="250" value="{% if entity %}{{ entity }}{% endif %}" placeholder="Selecciona entidad">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary" type="button" id="fromBtn" style="min-width:0;">
+                                <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Buscar">search</i>
+                            </button>
+                        </div>
+                        {%if form.entity.errors %}
+                            <div class="d-block invalid-feedback">
+                                {%for error in form.entity.errors %} {{error}} {%endfor%}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {%endif%}
+
+            <div class="col-md-1 text-center">
+                <input type="hidden" name="entity" class="form-control" placeholder="Entidad" id="id_entity" value="{{entity.pk}}">
+            </div>
+
+            <div class="form-group col-lg-12 my-4" data-links="#benefit-for-entities">
+                <h4>Ventaja para entidades:</h4>
+                {{ form.benefit_for_entities }}
+            </div>
+
+             <div class="form-group col-lg-12 my-4" data-links="#benefit-for-members">
+                <h4>Ventaja para socias:</h4>
+                {{ form.benefit_for_members }}
+            </div>
+
+            <div class="col-lg-5">
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                        {{form.includes_intercoop_members}}
+                        <span class="custom-control-label">Incluye socias Intercoop</span>
+                    </label>
+                </div>
+            </div>
+            <br>
+
+            <div class="col-lg-5">
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                        {{form.in_person}}
+                        <span class="custom-control-label">Solicitud física</span>
+                    </label>
+                    <small style="color: grey"></small>
+                </div>
+            </div>
+            <br>
+
+            <div class="col-lg-5">
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                        {{form.online}}
+                        <span class="custom-control-label">Solicitud online</span>
+                    </label>
+                    <small style="color: grey"></small>
+                </div>
+            </div>
+
+            <div class="col-lg-12 custom-control" style="{% if not form.online.value %}display: none{% endif %}">
+                {{form.discount_code}}
+            </div>
+
+            <div class="col-lg-12 custom-control" style="{% if not form.online.value %}display: none{% endif %}">
+                {{form.discount_link}}
+            </div>
+
+            <div class="col-lg-12 custom-control" style="{% if not form.online.value %}display: none{% endif %}">
+                {{form.discount_link_text}}
+            </div>
+            <br>
+
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                        {{form.active}}
+                        <span class="custom-control-label">Activa</span>
+                    </label>
+                    <small style="color: grey">Las ventajas no activas no se mostrarán a los usuarios. Puedes crear una ventaja desactivada y publicarla finalmente cuando creas oportuno.</small>
+                </div>
+
+            </div>
+
+
+            <div class="description text-center mt-5">
+                <button type="submit" class="right-margin left-margin btn btn-primary btn-lg">{% if is_new %} Crear ventaja {% else %} Guardar {% endif %}</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="entities-modal" tabindex="-1" role="dialog" aria-labelledby="new-user-label">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="new-user-label">Selecciona entidad</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-body large-padding px-5">
+            <div class="ajax-load" data-initial="{{ ajax_url }}" data-keepurl="true" data-prevent-link="true">
+                <div class="results">
+                </div>
+            <div class="loading-spinner"><div class="mes-loader"></div></div>
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+{% endblock%}
+
+{% block scripts %}
+<script type="text/javascript">
+    $(function(){
+      $('#id_online').click(function(){
+         if($('#id_online').is(':checked')){$('#id_discount_code').parent().show();}else{$('#id_discount_code').parent().hide();}
+         if($('#id_online').is(':checked')){$('#id_discount_link').parent().show();}else{$('#id_discount_link').parent().hide();}
+         if($('#id_online').is(':checked')){$('#id_discount_link_text').parent().show();}else{$('#id_discount_link_text').parent().hide();}
+      });
+    });
+
+    var benefitTo = $('#entity_input');
+    var fromValue = $('#{{form.entity.auto_id}}');
+
+    var benefitToBtn = $('#fromBtn');
+
+    var entitiesModal = $('#entities-modal');
+
+    benefitToBtn.on('click', function(){
+        entitiesModal.modal('show');
+    });
+    benefitTo.parent().on('click', function(){
+        entitiesModal.modal('show');
+    });
+
+    entitiesModal.on('click', 'tr.link-row', function(e){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $(this).off('click');
+        e.stopPropagation();
+
+        var entityName = $(this).find('h5').text();
+        if (entityName == ''){
+            entityName = $(this).find('td').first().text();
+        }
+        var entityId = $(this).attr('data-pk');
+
+        benefitTo.val(entityName);
+        fromValue.val(entityId);
+
+        entitiesModal.modal('hide');
+        return false;
+    });
+
+</script>
+{% endblock scripts %}
+

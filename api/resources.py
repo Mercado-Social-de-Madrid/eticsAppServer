@@ -3,6 +3,7 @@ from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
 
+from benefits.models import Benefit
 from news.models import News
 from offers.models import Offer
 
@@ -63,3 +64,21 @@ class NewsResource(ModelResource):
             bundle.data['banner_thumbnail'] = bundle.obj.banner_thumbnail.url
 
         return bundle
+
+
+class BenefitResource(ModelResource):
+
+    entity = fields.ForeignKey('api.entities.EntitySimpleResource', 'entity', full=True, null=True)
+
+    class Meta:
+        queryset = Benefit.objects.filter(active=True)
+        include_resource_uri = False
+        list_allowed_methods = ['get']
+        resource_name = 'benefits'
+        collection_name = 'benefits'
+        excludes = []
+        filtering = {
+            'entity': ('exact',),
+        }
+        authentication = Authentication()
+        authorization = Authorization()

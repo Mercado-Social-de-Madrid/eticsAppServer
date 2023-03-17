@@ -56,6 +56,13 @@
             </a>
           </li>
 
+            <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'list_benefits' %} active {% endif %}" href="{% url 'list_benefits' %}">
+              <i class="material-icons mr-3">local_activity</i>
+              Ventajas
+            </a>
+          </li>
+
 
         </ul>
 

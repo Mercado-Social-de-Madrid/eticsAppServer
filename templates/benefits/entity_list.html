@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}{% if is_new %}Nueva entidad{% else %}{{entity.name}}{% endif %}{% endblock%}
+
+{% block bodyattrs %}class="entity"{% endblock%}
+
+{% block content %}
+<div class="jumbo-header jumbo-entity form" >
+    <div class="jumbotron" {% if entity.first_photo_url %}style="background-image:url('{{entity.first_photo_url}}');"{%endif%}>
+        <div class="container">
+            <h3>{{entity.name}}</h3>
+            {{ entity.address }}
+        </div>
+        {%if request.user.is_superuser or is_benefits_owner %}
+        <div class="container action-btns">
+            <a class="btn btn-primary btn-float btn-lg" href="{% url 'add_entity_benefit' entity.pk %}" data-toggle="tooltip" data-placement="bottom" title="Añadir ventaja"><i class="material-icons">add</i></a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12 p-4">
+            <h2 class="primary-title">Ventajas</h2>
+
+            <hr class="mt-3">
+            <h3><i class="ic ic-news"></i> Ventajas para entidades</h3>
+                {% if benefit.benefits_for_entities %}
+                    {{ benefit.benefits_for_entities }}
+                {% elif %}
+                    <div class="text-grey px-3">No hay ventajas para entidades.</div>
+                {% endif %}
+
+            <hr class="mt-3">
+            <h3><i class="ic ic-news"></i> Ofertas pendientes</h3>
+
+            {% if not future_offers %}
+                <div class="text-grey px-3">No hay ofertas pendientes (futuras o no activas).</div>
+            {% endif %}
+            {% include 'offers/resume_list.html' with offer_list=future_offers %}
+
+            <hr class="mt-3">
+            <h3><i class="ic ic-news"></i> Ofertas pasadas</h3>
+            {% if not past_offers %}
+                <div class="text-grey px-3">No hay ofertas anteriores a las actuales.</div>
+            {% endif %}
+            {% include 'offers/resume_list.html' with offer_list=past_offers %}
+
+        </div>
+    </div>
+</div>
+{% endblock%}
+
+{% block scripts %}
+
+{% endblock scripts %}

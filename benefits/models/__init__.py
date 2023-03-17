@@ -1,0 +1,1 @@
+from benefits.models.benefit import Benefit

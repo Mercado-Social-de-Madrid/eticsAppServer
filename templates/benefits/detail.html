@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}{% if is_new %}Nueva ventaja{% else %}Ventajas de {{benefit.entity.name}}{% endif %}{% endblock%}
+
+{% block bodyattrs %}class="entity"{% endblock%}
+
+{% block content %}
+<div class="jumbo-header jumbo-entity form" >
+    <div class="jumbotron" {% if entity.first_photo_url %}style="background-image:url('{{entity.first_photo_url}}');"{%endif%}>
+        <div class="container">
+            <h3>{{entity.name}}</h3>
+            {{ entity.address }}
+
+            {% if can_edit %}
+                <div class="container action-btns mb-4">
+                    {% if benefit.active %}
+                        <i class="material-icons mr-3 text-success" data-toggle="tooltip" data-placement="bottom" title="Activa">circle</i>
+                    {% else %}
+                        <i class="material-icons mr-3 text-danger" data-toggle="tooltip" data-placement="bottom" title="Inactiva">circle</i>
+                    {% endif %}
+                    <a class="btn btn-primary mr-4" href="{% url 'benefit_edit' benefit.pk %}" data-toggle="tooltip" title="Editar ventaja"><i class="material-icons mr-2">edit</i>Editar ventaja</a>
+                </div>
+            {% endif %}
+        </div>
+
+
+    </div>
+</div>
+
+<div class="container px-md-5">
+        <div class="card pb-4" >
+            <div class="mx-4 mt-4">
+                <h3 class="primary-title"><i class="ic ic-news"></i> Ventajas para entidades</h3>
+                {% if benefit.benefit_for_entities %}
+                    {% autoescape off %}
+                        <div class="px-3">{{ benefit.benefit_for_entities }}</div>
+                    {% endautoescape %}
+                {% else %}
+                    <div class="text-grey px-3">No hay ventajas para entidades.</div>
+                {% endif %}
+            </div>
+
+            <div class=" mx-4 mt-4">
+                <h3 class="primary-title"><i class="ic ic-news"></i> Ventajas para socias</h3>
+                {% if benefit.benefit_for_members %}
+                    {% autoescape off %}
+                        <div class="px-3">{{ benefit.benefit_for_members }}</div>
+
+                    {% endautoescape %}
+                {% else %}
+                    <div class="text-grey px-3">No hay ventajas para socias.</div>
+                {% endif %}
+            </div>
+
+            <div class="primary-title d-flex align-items-center mx-4 mt-4">
+                <h3>¿Incluye socias Intercoop?: </h3>
+
+                {% if benefit.includes_intercoop_members %}
+                    <i class="material-icons md-36 ml-2 pb-2 text-success" data-toggle="tooltip" data-placement="bottom" title="Sí incluye socias Intercoop">check_circle</i>
+                {% else %}
+                    <i class="material-icons md-36 ml-2 pb-2 text-danger" data-toggle="tooltip" data-placement="bottom" title="No incluye socias Intercoop">cancel</i>
+                {% endif %}
+            </div>
+
+            <div class="primary-title d-flex align-items-center mx-4 mt-4">
+                <h3>¿Solicitud física?: </h3>
+
+                {% if benefit.in_person %}
+                    <i class="material-icons md-36 ml-2 pb-2 text-success" data-toggle="tooltip" data-placement="bottom" title="Sí acepta solicitud física">check_circle</i>
+                {% else %}
+                    <i class="material-icons md-36 ml-2 pb-2 text-danger" data-toggle="tooltip" data-placement="bottom" title="No acepta solicitud física">cancel</i>
+                {% endif %}
+            </div>
+
+            <div class="primary-title d-flex align-items-center mx-4 mt-4 ">
+                <h3>¿Solicitud online?: </h3>
+
+                {% if benefit.online %}
+                    <i class="material-icons md-36 ml-2 pb-2 text-success" data-toggle="tooltip" data-placement="bottom" title="Sí acepta solicitud online">check_circle</i>
+                {% else %}
+                    <i class="material-icons md-36 ml-2 pb-2 text-danger" data-toggle="tooltip" data-placement="bottom" title="No acepta solicitud online">cancel</i>
+                {% endif %}
+            </div>
+
+            {% if benefit.online %}
+                {% if benefit.discount_code %}
+                    <div class="d-flex align-items-baseline ml-4 pl-4 my-2">
+                        <h4 class="primary-title mr-2">- Código de descuento: </h4>
+                        {{benefit.discount_code}}
+                    </div>
+                {% endif %}
+
+                {% if benefit.discount_link %}
+                    <div class="d-flex align-items-baseline ml-4 pl-4 my-2">
+                        <a class="btn btn-primary mr-4" href="{{benefit.discount_link}}" target="_blank"><i class="material-icons mr-2">open_in_new</i>
+                            {{benefit.discount_link_text}}
+                        </a>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+        </div>
+</div>
+{% endblock%}
