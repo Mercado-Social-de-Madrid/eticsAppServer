@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}Mi carnet de socia{% endblock%}
+
+{% block bodyattrs %}class="entity"{% endblock%}
+
+{% block content %}
+<div class="jumbo-header jumbo-entity form" >
+    <div class="jumbotron" style="background-image:url('{% static 'css/mes.jpg' %}');">
+        <div class="container">
+            <h3>{{person.full_name}} {% if person.inactive %} (INACTIVA) {% endif %}</h3>
+            {{ person.email }}
+        </div>
+
+    </div>
+</div>
+
+<div class="container px-md-5 mt-4">
+        <div class="card mx-md-5">
+          <div class="card-body px-5 pb-5">
+              <h3 class="card-title mb-4">Mi carnet de socia</h3>
+              <div class="row mb-4">
+                 <div class="col-lg-8">
+                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel elit at velit facilisis maximus. Sed ultricies nisi in lacus tincidunt, ut ornare diam varius. Suspendisse quis lacus tempus, aliquet ipsum at, dictum turpis. Suspendisse luctus arcu eleifend leo condimentum maximus. Donec quis ultricies dolor, id tempor nulla.
+                        <br> <br>
+                 </div>
+                  <div class="col-lg-4 text-center">
+                      <a href="{% url 'wallets:new_payment' %}" class="btn p-3 mt-2 btn-lg btn-primary">Descargar como PDF</a>
+                  </div>
+              </div>
+              {% include 'member/card_base.html' %}
+              <br>
+          </div>
+        </div>
+
+</div>
+{% endblock%}
+
+{% block scripts %}
+
+{% endblock scripts %}

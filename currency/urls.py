@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^entities/$', views.EntityListView.as_view(), name='entity_list'),
 
     url(r'^profile/$', views.user_profile, name='user_profile'),
+    url(r'^member/card/$', views.member_card, name='member_card'),
     url(r'^profile/admin/$', views.ProfileListView.as_view(), name='profile_list'),
 
     url(r'^profile/(?P<pk>[0-9a-f-]+)/$', views.profile_detail, name='profile_detail'),

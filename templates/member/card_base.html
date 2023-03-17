@@ -1,0 +1,25 @@
+{% load static %}
+{% load qr_tags %}
+
+<link href="{% static "css/member-card.css" %}?v=12" rel="stylesheet" >
+<div class="member_card">
+
+  <div class="member_qr">
+    {% qr_from_text member_qr "l" %}
+  </div>
+
+  <div class="member_profile">
+
+  </div>
+
+  <div class="member_info">
+    <span class="member_name">{{display_name}}</span><br>
+    <span class="member_type">{% if user_type == "entity" %} socia proveedora {% else %} socia consumidora {% endif %}</span><br>
+    <span class="member_id">Nº socia: {{member_id|default_if_none:'-'}}</span>
+  </div>
+
+  <div class="mesm_footer">
+    <img src="{% static 'imgs/logo_mesm.png' %}" alt="Logo MESM">
+  </div>
+
+</div>
