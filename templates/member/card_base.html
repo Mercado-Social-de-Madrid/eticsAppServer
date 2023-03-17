@@ -9,12 +9,19 @@
   </div>
 
   <div class="member_profile">
-
+    {% if profile_image %}
+      <img src="{{profile_image.url}}">
+    {% endif %}
   </div>
 
   <div class="member_info">
     <span class="member_name">{{display_name}}</span><br>
-    <span class="member_type">{% if user_type == "entity" %} socia proveedora {% else %} socia consumidora {% endif %}</span><br>
+    <span class="member_type">
+      {% if user_type == "entity" %}socia proveedora
+      {% else %}
+        {% if is_intercoop %} socia intercooperación {% else %} socia consumidora {% endif %}
+      {% endif %}
+    </span><br>
     <span class="member_id">Nº socia: {{member_id|default_if_none:'-'}}</span>
   </div>
 

@@ -26,10 +26,17 @@ def member_card(request):
         "city": member.city.id,
         "member_id": member.member_id
     }
-
-    return render(request, 'member/card.html', {
+    card_data = {
         'user_type': user_type,
         'member_id': member.member_id,
         'display_name': member.display_name,
         'member_qr': json.dumps(member_data),
-    })
+    }
+
+    if user_type is 'person':
+        card_data['is_intercoop'] = member.is_intercoop
+        card_data['profile_image'] = member.profile_image
+    else:
+        card_data['profile_image'] = member.logo
+
+    return render(request, 'member/card.html', card_data)

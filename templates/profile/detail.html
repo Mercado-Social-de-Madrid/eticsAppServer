@@ -29,6 +29,9 @@
             <h4 class="card-title mb-0">{{person.full_name}}</h4>
               <h5 class="text-primary">Cuenta invitada</h5>
               {% else %}
+              {% if person.is_intercoop %}
+              <h5 class="text-primary">Intercooperación</h5>
+              {% endif %}
               <h4 class="card-title">{{person.full_name}}</h4>
               {% endif %}
               <div class="card-text">
@@ -69,6 +72,11 @@
               </div>
 
                   {% if request.user.is_superuser %}
+                  <div class=" my-2">
+                      <label>Número de socia</label><br>
+                      {{person.member_id}}
+                  </div>
+
             <hr class="mt-4">
             <h4 class="mb-3">Usuario</h4>
                 {% if preregister_user %}

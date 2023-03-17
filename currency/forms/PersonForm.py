@@ -14,7 +14,7 @@ class PersonForm(forms.ModelForm):
 
     class Meta:
         model = Person
-        exclude = ['fav_entities', 'user']
+        exclude = ['fav_entities', 'user', 'member_id']
         widgets = {
             'nif': forms.TextInput(attrs={'class': 'form-control', 'readonly':True }),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
@@ -26,6 +26,6 @@ class PersonForm(forms.ModelForm):
             'profile_image': forms.FileInput(attrs={}),
             'city': forms.HiddenInput(),
             'inactive': forms.CheckboxInput(attrs={'class': 'custom-control-input'}),
-
+            'is_intercoop': forms.CheckboxInput(attrs={'class': 'custom-control-input'}),
         }
 

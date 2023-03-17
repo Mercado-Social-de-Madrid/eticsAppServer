@@ -43,7 +43,6 @@
 
             <h4 class="card-title">{{person.full_name}}</h4>
             <div class="card-text">
-
                 {% if person.is_guest_account %}
                 <div {% if not request.user.is_superuser %}style="display:nne;"{%endif%}>
                     <label>ID invitada</label>
@@ -76,15 +75,26 @@
             </div>
 
             {% if can_deactivate %}
-                <div class="col-lg-5">
+
                     <div class="form-group">
                         <label class="custom-control custom-checkbox">
                             {{form.inactive}}
                             <span class="custom-control-label">Inactiva</span>
                         </label>
                     </div>
-                </div>
+
             {% endif %}
+
+              {% if request.user.is_superuser %}
+                <div class="form-group">
+                        <label class="custom-control custom-checkbox">
+                            {{form.is_intercoop}}
+                            <span class="custom-control-label">Es socia de intercooperación</span>
+                        </label>
+                    </div>
+              {% else %}
+              <div style="display:none;">{{form.is_intercoop}}</div>
+              {% endif %}
 
               <div class="description text-center">
                 <button type="submit" class="right-margin left-margin btn btn-primary btn-lg">{% if is_new %} Crear consumidora {% else %} Guardar {% endif %}</button>

@@ -43,6 +43,7 @@ class Person(models.Model):
     registered = models.DateTimeField(auto_now_add=True)
     fav_entities = models.ManyToManyField(Entity, blank=True, verbose_name="Favoritos")
 
+    is_intercoop = models.BooleanField(default=False, verbose_name='Es socia de intercooperación')
     is_guest_account = models.BooleanField(default=False, verbose_name='Es usuario invitado')
     expiration_date = models.DateField(null=True, blank=True, verbose_name='Fecha de expiración')
 
