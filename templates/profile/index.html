@@ -73,7 +73,7 @@
 
                  <div class="list-group list-group-flush">
                      {% if pending_payments %}
-                     <a class="list-group-item list-group-item-action bg-primary text-light" href="{% url 'pending_payments' %}">
+                     <a class="list-group-item list-group-item-action bg-primary text-light" href="{% url 'wallets:pending_payments' %}">
                          <i class="material-icons">error_outline</i>
                          {% blocktrans count payments=pending_payments|length %}
                         {{payments}} pago pendiente de revisión
@@ -83,7 +83,7 @@
                      {% endif %}
 
                      {% if sent_pending %}
-                     <a class="list-group-item list-group-item-action bg-warning" href="{% url 'pending_payments' %}">
+                     <a class="list-group-item list-group-item-action bg-warning" href="{% url 'wallets:pending_payments' %}">
                          <i class="material-icons">schedule</i>
                          {% blocktrans count payments=sent_pending|length %}
                         Tienen que revisarte {{payments}} pago

@@ -50,7 +50,7 @@ def payment_detail(request, pk):
 
     if not can_edit and not can_view:
         messages.add_message(request, messages.ERROR, 'No tienes permisos para ver este pago')
-        return redirect('pending_payments')
+        return redirect('wallets:pending_payments')
 
 
     params = { 'payment': payment, 'can_edit':can_edit }
@@ -65,9 +65,9 @@ def payment_detail(request, pk):
                 else:
                     messages.add_message(request, messages.SUCCESS, 'Pago aceptado con éxito')
                     if request.user.is_superuser:
-                        return redirect('admin_payments')
+                        return redirect('wallets:admin_payments')
                     else:
-                        return redirect('pending_payments')
+                        return redirect('wallets:pending_payments')
             except Wallet.NotEnoughBalance:
                 params['notenoughbalance'] = True
                 if request.is_ajax():
