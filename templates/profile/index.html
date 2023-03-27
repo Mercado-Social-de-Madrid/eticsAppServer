@@ -99,24 +99,40 @@
         </div>
 
         {% if type == 'entity' %}
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="card-title primary-title"><h3><i class="ic ic-news"></i> Ofertas</h3></div>
-                    <div class="figure">
-                        <span class="number">{{num_offers}}</span>
-                        <span class="label">ofertas <br/>activas</span>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="card-title primary-title"><h3><i class="ic ic-news"></i> Ofertas</h3></div>
+                        <div class="figure">
+                            <span class="number">{{num_offers}}</span>
+                            <span class="label">ofertas <br/>activas</span>
+                        </div>
+                    </div>
+
+                     <div class="list-group list-group-flush">
+                         <a class="list-group-item list-group-item-action" href="{% url 'user_offers' %}"><i class="material-icons">chevron_right</i> Ver ofertas publicadas</a>
+                        <a class="list-group-item list-group-item-action" href="{% url 'add_entity_offer' entity.pk %}"><i class="material-icons">chevron_right</i> Publicar nueva oferta</a>
+
+                      </div>
+
+                </div>
+            </div>
+
+            {% if entity.benefit %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="card-title primary-title"><h3><i class="material-icons mr-3">local_activity</i> Ventajas</h3></div>
+                        </div>
+
+                         <div class="list-group list-group-flush">
+                             <a class="list-group-item list-group-item-action" href="{% url 'user_benefit' %}"><i class="material-icons">chevron_right</i> Ver ventajas publicadas</a>
+
+                          </div>
+
                     </div>
                 </div>
-
-                 <div class="list-group list-group-flush">
-                     <a class="list-group-item list-group-item-action" href="{% url 'user_offers' %}"><i class="material-icons">chevron_right</i> Ver ofertas publicadas</a>
-                    <a class="list-group-item list-group-item-action" href="{% url 'add_entity_offer' entity.pk %}"><i class="material-icons">chevron_right</i> Publicar nueva oferta</a>
-
-                  </div>
-
-            </div>
-        </div>
+            {% endif %}
         {% endif %}
 
     </div>

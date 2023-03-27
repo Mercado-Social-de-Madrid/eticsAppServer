@@ -32,6 +32,17 @@
 
 <div class="container px-md-5">
         <div class="card pb-4" >
+            <div class="primary-title d-flex align-items-center mx-4 mt-4">
+                <h3>Activa: </h3>
+
+                {% if benefit.active %}
+                    <i class="material-icons md-36 ml-2 pb-2 text-success" data-toggle="tooltip" data-placement="bottom" title="Activa">check_circle</i>
+                {% else %}
+                    <i class="material-icons md-36 ml-2 pb-2 text-danger" data-toggle="tooltip" data-placement="bottom" title="Inactiva">check_circle</i>
+                {% endif %}
+
+            </div>
+
             <div class="mx-4 mt-4">
                 <h3 class="primary-title"><i class="ic ic-news"></i> Ventajas para entidades</h3>
                 {% if benefit.benefit_for_entities %}

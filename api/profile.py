@@ -1,6 +1,9 @@
+import base64
+
 import requests
 from django.conf import settings
 from django.conf.urls import url
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from fcm_django.models import FCMDevice
 from tastypie import fields
@@ -12,8 +15,7 @@ from tastypie.resources import ModelResource
 
 from api.categories import CategoriesResource
 from api.cities import CitiesResource
-from currency.models import Entity, Person
-from wallets.models import Wallet
+from currency.models import Entity, Person, City
 
 
 class InviteResource(ModelResource):
@@ -107,6 +109,16 @@ class EntityResource(InviteResource):
     def hydrate(self, bundle):
         if bundle.request.user:
             bundle.obj.user = bundle.request.user
+
+        bundle.data['city'] = City.objects.get(pk=bundle.data['city'])
+
+        if bundle.data['logo']:
+            content_type = bundle.data.get('logo', '').split(';')[0].split(':')[-1]
+            if content_type in ['image/jpeg', 'image/png']:
+                file_data = bundle.data.get('logo').split(';base64,')[-1]
+                image = SimpleUploadedFile('image.jpg', base64.b64decode(file_data), content_type=content_type)
+                bundle.data['logo'] = image
+
         return bundle
 
 
@@ -157,6 +169,13 @@ class PersonResource(InviteResource):
         if bundle.data['fav_entities']:
             for i, fav in enumerate(bundle.data['fav_entities']):
                 bundle.data['fav_entities'][i] = Entity.objects.get(pk=bundle.data['fav_entities'][i])
+
+        if bundle.data['profile_image']:
+            content_type = bundle.data.get('profile_image', '').split(';')[0].split(':')[-1]
+            if content_type in ['image/jpeg', 'image/png']:
+                file_data = bundle.data.get('profile_image').split(';base64,')[-1]
+                image = SimpleUploadedFile('image.jpg', base64.b64decode(file_data), content_type=content_type)
+                bundle.data['profile_image'] = image
 
         return bundle
 

@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^benefit/(?P<pk>[0-9a-f-]+)/$', views.BenefitDetailView.as_view(), name='benefit_detail'),
     url(r'^benefit/(?P<pk>[0-9a-f-]+)/edit$', views.BenefitUpdateView.as_view(), name='benefit_edit'),
     url(r'^benefit/(?P<pk>[0-9a-f-]+)/delete', views.BenefitDeleteView.as_view(), name='benefit_delete'),
+    url(r'^benefit', views.BenefitDetailView.as_view(), name='user_benefit'),
 ]

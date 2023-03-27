@@ -1,4 +1,5 @@
 import django_filters
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -56,12 +57,18 @@ class BenefitDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(BenefitDetailView, self).get_context_data(**kwargs)
-        can_edit = self.request.user.is_superuser or self.request.user == self.object.entity.user
+        can_edit = self.request.user.is_superuser or self.request.user.is_staff
         context['entity'] = self.object.entity
         context['benefit'] = self.object
         context['can_edit'] = can_edit
         return context
 
+    def get_object(self, queryset=None):
+        if self.kwargs.get('pk'):
+            return super(BenefitDetailView, self).get_object(queryset)
+        else:
+            type, entity = get_user_model().get_related_entity(self.request.user)
+            return entity.benefit
 
 class BenefitCreateView(LoginRequiredMixin, CreateView):
     model = Benefit
