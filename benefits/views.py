@@ -48,7 +48,8 @@ class BenefitListView(LoginRequiredMixin, FilterMixin, FilterView, ExportAsCSVMi
         return queryset
 
     csv_filename = 'ventajas'
-    available_fields = []
+    available_fields = ['entity', 'active', 'published_date', 'benefit_for_entities', 'benefit_for_members',
+                        'includes_intercoop_members', 'in_person', 'online', 'discount_code', 'discount_link',]
 
 
 class BenefitDetailView(LoginRequiredMixin, DetailView):
@@ -69,6 +70,7 @@ class BenefitDetailView(LoginRequiredMixin, DetailView):
         else:
             type, entity = get_user_model().get_related_entity(self.request.user)
             return entity.benefit
+
 
 class BenefitCreateView(LoginRequiredMixin, CreateView):
     model = Benefit

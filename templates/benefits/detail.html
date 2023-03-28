@@ -16,11 +16,6 @@
 
             {% if can_edit %}
                 <div class="container action-btns mb-4">
-                    {% if benefit.active %}
-                        <i class="material-icons mr-3 text-success" data-toggle="tooltip" data-placement="bottom" title="Activa">circle</i>
-                    {% else %}
-                        <i class="material-icons mr-3 text-danger" data-toggle="tooltip" data-placement="bottom" title="Inactiva">circle</i>
-                    {% endif %}
                     <a class="btn btn-primary mr-4" href="{% url 'benefit_edit' benefit.pk %}" data-toggle="tooltip" title="Editar ventaja"><i class="material-icons mr-2">edit</i>Editar ventaja</a>
                 </div>
             {% endif %}
