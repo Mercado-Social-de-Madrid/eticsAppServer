@@ -3,9 +3,6 @@ import datetime
 
 from django.core.exceptions import FieldDoesNotExist
 from django.http import HttpResponse
-from django.utils.decorators import classonlymethod
-from django.views import View
-from django_filters.views import BaseFilterView, FilterView
 
 
 class ExportAsCSVMixin(object):
@@ -32,7 +29,7 @@ class ExportAsCSVMixin(object):
     def get_field_label(self, field_name):
         if hasattr(self.model, field_name):
             try:
-                label = self.model._meta.get_field(field_name).verbose_name.encode('utf-8').strip()
+                label = self.model._meta.get_field(field_name).verbose_name.strip()
                 if field_name in self.field_labels:
                     return self.field_labels[field_name]
                 else:
@@ -44,14 +41,13 @@ class ExportAsCSVMixin(object):
                         return self.field_labels[field_name]
         return None
 
-
     def export_csv(self, request, filter_list=None, *args, **kwargs):
 
         now = datetime.datetime.now()
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="{}_{}.csv'.format(self.csv_filename, now.strftime('%Y%m%d'))
 
-        response.write(u'\ufeff'.encode('utf-8'))
+        response.write(u'\ufeff')
         writer = csv.writer(response, dialect='excel', delimiter=str(';'), quotechar=str('"'))
 
         # If no field was selected, we export all of them
@@ -72,8 +68,8 @@ class ExportAsCSVMixin(object):
             results = []
             for field in final_fields:
                 value = getattr(elem, field)
-                value = unicode(value).encode('utf-8', errors='ignore').strip() if value else ''
-                results.append( value )
+                value = str(value).strip() if value else ''
+                results.append(value)
             writer.writerow(results)
 
         return response
