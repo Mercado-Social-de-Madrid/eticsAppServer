@@ -124,6 +124,7 @@ class EntityResource(InviteResource):
 
 class PersonResource(InviteResource):
     fav_entities = fields.ManyToManyField(EntityResource, 'fav_entities', full=False)
+    city = fields.ForeignKey(CitiesResource, 'city', full=False, null=True)
 
     class Meta:
         queryset = Person.objects.all()
@@ -160,6 +161,9 @@ class PersonResource(InviteResource):
             for i, fav in enumerate(bundle.data['fav_entities']):
                 bundle.data['fav_entities'][i] = fav.split('/')[-2:][0]
 
+        if bundle.obj.city:
+            bundle.data['city'] = bundle.obj.city.id
+
         return bundle
 
     def hydrate(self, bundle):
@@ -176,6 +180,8 @@ class PersonResource(InviteResource):
                 file_data = bundle.data.get('profile_image').split(';base64,')[-1]
                 image = SimpleUploadedFile('image.jpg', base64.b64decode(file_data), content_type=content_type)
                 bundle.data['profile_image'] = image
+
+        bundle.data['city'] = City.objects.get(pk=bundle.data['city'])
 
         return bundle
 
