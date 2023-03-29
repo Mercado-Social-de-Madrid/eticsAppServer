@@ -1,22 +1,8 @@
 import json
 
-import django_filters
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse
-from django_filters.views import FilterView
+from django.shortcuts import render
 
-import helpers
-from currency.forms.PersonForm import PersonForm
-from currency.models import Person, PreRegisteredUser
-from helpers.filters.LabeledOrderingFilter import LabeledOrderingFilter
-from helpers.filters.SearchFilter import SearchFilter
-from helpers.forms.BootstrapForm import BootstrapForm
-from helpers.mixins.AjaxTemplateResponseMixin import AjaxTemplateResponseMixin
-from helpers.mixins.ExportAsCSVMixin import ExportAsCSVMixin
-from helpers.mixins.ListItemUrlMixin import ListItemUrlMixin
-from helpers.mixins.SuperUserCheck import SuperUserCheck
 from helpers.pdf import render_pdf_response
 
 
@@ -32,7 +18,7 @@ def get_card_data(user_type, member):
         'member_qr': json.dumps(member_data),
     }
 
-    if user_type is 'person':
+    if user_type == 'person':
         card_data['is_intercoop'] = member.is_intercoop
         card_data['profile_image'] = member.profile_image
     else:

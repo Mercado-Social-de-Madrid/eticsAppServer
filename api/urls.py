@@ -8,7 +8,7 @@ from api.resources import OffersResource, NewsResource, BenefitResource
 from api.accounts import RegisterResource, UserResource, PreRegisterResource
 from api.profile import EntityResource, PersonResource, DeviceResource
 from api.fetch import FetchResource
-
+from api.members import MemberStatusResource
 
 def get_api(version_name):
 
@@ -32,5 +32,6 @@ def get_api(version_name):
     api.register(PreRegisterResource())
     api.register(FetchResource())
     api.register(BenefitResource())
+    api.register(MemberStatusResource())
 
     return api
