@@ -113,9 +113,10 @@ class EntityResource(InviteResource):
         bundle.data['city'] = City.objects.get(pk=bundle.data['city'])
 
         if bundle.data['logo']:
-            content_type = bundle.data.get('logo', '').split(';')[0].split(':')[-1]
+            data_parts = bundle.data.get('logo', '').split(';')
+            content_type = data_parts[0]
             if content_type in ['image/jpeg', 'image/png']:
-                file_data = bundle.data.get('logo').split(';base64,')[-1]
+                file_data = data_parts[1]
                 image = SimpleUploadedFile('image.jpg', base64.b64decode(file_data), content_type=content_type)
                 bundle.data['logo'] = image
 
@@ -175,9 +176,10 @@ class PersonResource(InviteResource):
                 bundle.data['fav_entities'][i] = Entity.objects.get(pk=bundle.data['fav_entities'][i])
 
         if bundle.data['profile_image']:
-            content_type = bundle.data.get('profile_image', '').split(';')[0].split(':')[-1]
+            data_parts = bundle.data.get('profile_image', '').split(';')
+            content_type = data_parts[0]
             if content_type in ['image/jpeg', 'image/png']:
-                file_data = bundle.data.get('profile_image').split(';base64,')[-1]
+                file_data = data_parts[1]
                 image = SimpleUploadedFile('image.jpg', base64.b64decode(file_data), content_type=content_type)
                 bundle.data['profile_image'] = image
 
