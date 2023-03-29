@@ -15,9 +15,10 @@ class Benefit(models.Model):
     includes_intercoop_members = models.BooleanField(default=False, null=False, verbose_name='Incluye socias Intercoop')
     in_person = models.BooleanField(default=True, null=False, verbose_name='Solicitud física')
     online = models.BooleanField(default=True, null=False, verbose_name='Solicitud online')
-    discount_code = models.CharField(max_length=20, null=True, blank=True, verbose_name='Código de descuento')
-    discount_link = models.URLField(max_length=100, null=True, blank=True, verbose_name='Link de descuento')
-    discount_link_text = models.CharField(max_length=50, null=True, blank=True, verbose_name='Texto del botón del link de descuento', default="Ir al descuento")
+    discount_code = models.CharField(max_length=500, null=True, blank=True, verbose_name='Código de descuento')
+    discount_link_entities = models.CharField(max_length=200, null=True, blank=True, verbose_name='Link de descuento para entidades')
+    discount_link_members = models.CharField(max_length=200, null=True, blank=True, verbose_name='Link de descuento para socias')
+    discount_link_text = models.CharField(max_length=100, null=True, blank=True, verbose_name='Texto del botón del link de descuento', default="Solicitar descuento")
     active = models.BooleanField(default=True, null=False, verbose_name='Activa')
 
     class Meta:

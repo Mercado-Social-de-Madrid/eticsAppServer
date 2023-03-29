@@ -99,12 +99,26 @@
                     </div>
                 {% endif %}
 
-                {% if benefit.discount_link %}
-                    <div class="d-flex align-items-baseline ml-4 pl-4 my-2">
-                        <a class="btn btn-primary mr-4" href="{{benefit.discount_link}}" target="_blank"><i class="material-icons mr-2">open_in_new</i>
-                            {{benefit.discount_link_text}}
-                        </a>
-                    </div>
+                {% if request.user.get_related_entity.0 == 'entity' or request.user.is_staff or request.user.is_superuser%}
+                    {% if benefit.discount_link_entities %}
+                        <div class="d-flex align-items-baseline ml-4 pl-4 my-2">
+                            Link de descuento para entidades:
+                            <a class="btn btn-primary ml-4" href="{{benefit.discount_link_entities}}" target="_blank"><i class="material-icons mr-2">open_in_new</i>
+                                {{benefit.discount_link_text}}
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if request.user.get_related_entity.0 == 'person' or request.user.get_related_entity.1 == benefit.entity or request.user.is_staff or request.user.is_superuser%}
+                    {% if benefit.discount_link_members %}
+                        <div class="d-flex align-items-baseline ml-4 pl-4 my-2">
+                            Link de descuento para socias:
+                            <a class="btn btn-primary ml-4" href="{{benefit.discount_link_members}}" target="_blank"><i class="material-icons mr-2">open_in_new</i>
+                                {{benefit.discount_link_text}}
+                            </a>
+                        </div>
+                    {% endif %}
                 {% endif %}
             {% endif %}
 

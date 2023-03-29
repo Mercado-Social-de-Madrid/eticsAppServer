@@ -49,7 +49,8 @@ class BenefitListView(LoginRequiredMixin, FilterMixin, FilterView, ExportAsCSVMi
 
     csv_filename = 'ventajas'
     available_fields = ['entity', 'active', 'published_date', 'benefit_for_entities', 'benefit_for_members',
-                        'includes_intercoop_members', 'in_person', 'online', 'discount_code', 'discount_link',]
+                        'includes_intercoop_members', 'in_person', 'online', 'discount_code', 'discount_link_entities',
+                        'discount_link_members']
 
 
 class BenefitDetailView(LoginRequiredMixin, DetailView):

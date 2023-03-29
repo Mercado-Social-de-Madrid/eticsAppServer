@@ -99,7 +99,11 @@
                     </div>
 
                     <div class="col-lg-12 custom-control" style="{% if not form.online.value %}display: none{% endif %}">
-                        {{form.discount_link}}
+                        {{form.discount_link_entities}}
+                    </div>
+
+                    <div class="col-lg-12 custom-control" style="{% if not form.online.value %}display: none{% endif %}">
+                        {{form.discount_link_members}}
                     </div>
 
                     <div class="col-lg-12 custom-control" style="{% if not form.online.value %}display: none{% endif %}">

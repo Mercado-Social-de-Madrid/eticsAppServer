@@ -23,7 +23,8 @@ class BenefitForm(forms.ModelForm):
             'in_person': forms.CheckboxInput(attrs={'class': 'custom-control-input'}),
             'online': forms.CheckboxInput(attrs={'class': 'custom-control-input'}),
             'discount_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Código de descuento'}),
-            'discount_link': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'Link del descuento'}),
+            'discount_link_entities': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Link del descuento para entidades'}),
+            'discount_link_members': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Link del descuento para socias'}),
             'discount_link_text': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Texto del botón del link de descuento'}),
             'active': forms.CheckboxInput(attrs={'class': 'custom-control-input'}),
         }
