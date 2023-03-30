@@ -122,9 +122,9 @@ def profile_edit(request, pk):
             if person.user:
                 user = person.user
 
-                if person.inactive:
-                    user.username = "---" + user.username
-                else:
+                # a workaround was made here to disable users interaction with api (see history)
+                # these two lines remain to revert this username prefix (---)
+                if not person.inactive:
                     user.username = user.username.replace("---", "")
 
                 user.save()

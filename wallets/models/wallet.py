@@ -32,6 +32,7 @@ class Wallet(models.Model):
     WrongPinCode = WrongPinCode
     ReceiverNotRegistered = ReceiverNotRegistered
     GuestExpired = GuestExpired
+    AccountIctive = AccountIctive
 
     class Meta:
         verbose_name = 'Monedero'

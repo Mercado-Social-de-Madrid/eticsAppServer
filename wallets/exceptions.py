@@ -54,3 +54,14 @@ class GuestExpired(Exception):
         self.response = HttpForbidden(content=json.dumps(response), content_type='application/json')
 
 
+class AccountIctive(Exception):
+    def __init__(self, wallet=None):
+
+        response = {
+            'error': 'account_inactive',
+            'message': 'Operación no disponible para cuentas inactivas'
+        }
+
+        self.response = HttpForbidden(content=json.dumps(response), content_type='application/json')
+
+

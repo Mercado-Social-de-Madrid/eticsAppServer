@@ -218,9 +218,9 @@ def entity_edit(request, pk):
             if entity.user:
                 user = entity.user
 
-                if entity.inactive:
-                    user.username = "---" + user.username
-                else:
+                # a workaround was made here to disable users interaction with api (see history)
+                # these two lines remain to revert this username prefix (---)
+                if not entity.inactive:
                     user.username = user.username.replace("---", "")
 
                 user.save()

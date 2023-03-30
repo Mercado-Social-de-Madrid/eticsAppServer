@@ -60,6 +60,9 @@ class PaymentManager(models.Manager):
         receiver_type, entity = receiver.get_related_entity()
         sender_type, sender_entity = sender.get_related_entity()
 
+        if entity.inactive or sender_entity.inactive:
+            raise Wallet.AccountIctive
+
         if entity.city != sender_entity.city:
             raise Exception('Different cities!')
 
