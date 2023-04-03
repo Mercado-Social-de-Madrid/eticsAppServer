@@ -9,6 +9,10 @@ def notify_user(user, data, title=None, message=None, silent=True):
         If the message is silent, title and message are included in the data dictionary
     '''
 
+    if True:
+        return
+
+
     if not user:
         return
 
