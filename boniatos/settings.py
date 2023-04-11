@@ -125,6 +125,47 @@ STATIC_URL = '/static/'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
 
+# Logging configuration
+LOGGING_DIR = os.path.join(BASE_DIR, 'logs')
+os.makedirs(LOGGING_DIR, exist_ok=True)
+LOGGING_LEVEL = "INFO"
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'default': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+        },
+        'null': {
+            'class': 'logging.NullHandler',
+        },
+        'file': {
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'mes.log'),
+            'when': 'midnight',
+            'backupCount': 30,
+            'formatter': 'default',
+        }
+    },
+    'loggers': {
+        'django.security.DisallowedHost': {
+            'handlers': ['null'],
+            'propagate': False,
+        },
+        '': {
+            'handlers': ['console', 'file'],
+            'level': LOGGING_LEVEL,
+            'propagate': False,
+        },
+    },
+}
+
 TASTYPIE_DEFAULT_FORMATS = ['json']
 
 
