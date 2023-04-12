@@ -1,50 +1,48 @@
-from django.conf.urls import url
 from django.contrib.auth import views as auth_views
+from django.urls import path
 
 from currency.views import CustomPasswordResetView
 from . import views
 
-
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
+    path('', views.index, name='index'),
 
-    url(r'^login/$', auth_views.LoginView.as_view(), {'redirect_authenticated_user': True }, name='login'),
-    url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
-    url(r'^password_reset/$', CustomPasswordResetView.as_view(), name='password_reset'),
-    url(r'^password_reset/done/$', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-        auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    url(r'^reset/done/$', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('login/', auth_views.LoginView.as_view(), {'redirect_authenticated_user': True }, name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('password_reset/', CustomPasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
-    url(r'^user/$', views.UserListView.as_view(), name='users_list'),
-    url(r'^user/(?P<pk>[0-9]+)/edit/$', views.PasswordUpdateView.as_view(), name='edit_user'),
-    url(r'^user/edit/$', views.edit_profile, name='edit_user_profile'),
-    url(r'^user/edit/password/$', views.profile_password, name='profile_password'),
+    path('user/', views.UserListView.as_view(), name='users_list'),
+    path('user/<pk>/edit/', views.PasswordUpdateView.as_view(), name='edit_user'),
+    path('user/edit/', views.edit_profile, name='edit_user_profile'),
+    path('user/edit/password/', views.profile_password, name='profile_password'),
 
-    url(r'^register/(?P<pk>[0-9a-f-]+)/$', views.preregister, name='preregister'),
-    url(r'^register/success/$', views.preregister_success, name='preregister_success'),
+    path('register/<pk>/', views.preregister, name='preregister'),
+    path('register/success/', views.preregister_success, name='preregister_success'),
 
-    url(r'^map/$', views.entity_map, name='map'),
-    url(r'^entity/$', views.user_entity, name='user_entity'),
-    url(r'^entity/add$', views.add_entity, name='add_entity'),
-    url(r'^qr/(?P<pk>[0-9a-f-]+)/$', views.entity_detail, name='entity_qr_detail'),
-    url(r'^entity/(?P<pk>[0-9a-f-]+)/$', views.entity_detail, name='entity_detail'),
-    url(r'^entity/(?P<pk>[0-9a-f-]+)/edit/$', views.entity_edit, name='entity_edit'),
-    #url(r'^entities/$', views.entity_list, name='entity_list'),
-    url(r'^entities/$', views.EntityListView.as_view(), name='entity_list'),
+    path('map/', views.entity_map, name='map'),
+    path('entity/', views.user_entity, name='user_entity'),
+    path('entity/add', views.add_entity, name='add_entity'),
+    path('qr/<pk>/', views.entity_detail, name='entity_qr_detail'),
+    path('entity/<pk>/', views.entity_detail, name='entity_detail'),
+    path('entity/<pk>/edit/', views.entity_edit, name='entity_edit'),
+    #path('entities/', views.entity_list, name='entity_list'),
+    path('entities/', views.EntityListView.as_view(), name='entity_list'),
 
-    url(r'^profile/$', views.user_profile, name='user_profile'),
-    url(r'^member/card/$', views.member_card, name='member_card'),
-    url(r'^member/card_pdf/$', views.member_card_pdf, name='member_card_pdf'),
-    url(r'^profile/admin/$', views.ProfileListView.as_view(), name='profile_list'),
+    path('profile/', views.user_profile, name='user_profile'),
+    path('member/card/', views.member_card, name='member_card'),
+    path('member/card_pdf/', views.member_card_pdf, name='member_card_pdf'),
+    path('profile/admin/', views.ProfileListView.as_view(), name='profile_list'),
 
-    url(r'^profile/(?P<pk>[0-9a-f-]+)/$', views.profile_detail, name='profile_detail'),
-    url(r'^profile/(?P<pk>[0-9a-f-]+)/edit/$', views.profile_edit, name='profile_edit'),
-    url(r'^users/search/$', views.search_users, name='search_users'),
+    path('profile/<pk>/', views.profile_detail, name='profile_detail'),
+    path('profile/<pk>/edit/', views.profile_edit, name='profile_edit'),
+    path('users/search/', views.search_users, name='search_users'),
 
-    url(r'^categories/$', views.category_list, name='category_list'),
-    url(r'^categories/add$', views.add_category, name='add_category'),
-    url(r'^categories/(?P<pk>[0-9a-f-]+)/edit/$', views.category_edit, name='category_edit'),
+    path('categories/', views.category_list, name='category_list'),
+    path('categories/add', views.add_category, name='add_category'),
+    path('categories/<pk>/edit/', views.category_edit, name='category_edit'),
 
-    url(r'^dashboard/$', views.profile, name='dashboard'),
+    path('dashboard/', views.profile, name='dashboard'),
 ]
