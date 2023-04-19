@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="container my-2">
+        <h3 class="card-title mb-3">Vaya, parece que no has escaneado el código QR desde el lector interno de la app.</h3>
+
+        <h5>Para hacerlo, dirígete a la pantalla de 'Carnet de soci@' en la app y haz click en el icono indicado en la siguiente captura:</h5>
+        <div class="d-flex justify-content-center my-3">
+            <img width="250px" src="{% static '/imgs/scan_qr_page.png' %}" class="d-inline-block align-top" alt="Ubicación escaner de códigos QR en la APP.">
+        </div>
+
+        <h5>Y si todavía no tienes descargada la app, puedes hacerlo desde aquí:</h5>
+        <div class="d-flex align-items-center flex-column">
+            <a href='https://play.google.com/store/apps/details?id=net.mercadosocial.moneda&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+                <img width="250px" alt='Disponible en Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/es_badge_web_generic.png'/>
+            </a>
+
+            <a href="https://apps.apple.com/es/app/mercado-social/id1458549528?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 250px; height: 83px;">
+                <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/es-es?size=250x83&amp;releaseDate=1555977600" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 83px;">
+            </a>
+
+        </div>
+    </div>
+
+
+{% endblock content %}

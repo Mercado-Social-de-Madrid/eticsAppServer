@@ -28,7 +28,7 @@
 
                 <div class="list-group list-group-flush">
                     <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Ver entidades favoritas</a>
-<!--                    <a class="list-group-item list-group-item-action" href="{% url 'member_card' %}"><i class="material-icons">chevron_right</i> Mi carnet de socia</a>-->
+                    <a class="list-group-item list-group-item-action" href="{% url 'member_card' %}"><i class="material-icons">chevron_right</i> Mi carnet de socia</a>
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
                 <div class="list-group list-group-flush">
                     <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Ver balance social</a>
                     <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Ver estadísticas de favoritos</a>
-<!--                    <a class="list-group-item list-group-item-action" href="{% url 'member_card' %}"><i class="material-icons">chevron_right</i> Mi carnet de socia</a>-->
+                    <a class="list-group-item list-group-item-action" href="{% url 'member_card' %}"><i class="material-icons">chevron_right</i> Mi carnet de socia</a>
                 </div>
             </div>
         </div>
@@ -118,21 +118,21 @@
                 </div>
             </div>
 
-<!--            {% if entity.benefit %}-->
-<!--                <div class="col-md-4">-->
-<!--                    <div class="card mb-4">-->
-<!--                        <div class="card-body">-->
-<!--                            <div class="card-title primary-title"><h3><i class="material-icons mr-3">local_activity</i> Ventajas</h3></div>-->
-<!--                        </div>-->
+            {% if entity.benefit %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="card-title primary-title"><h3><i class="material-icons mr-3">local_activity</i> Ventajas</h3></div>
+                        </div>
 
-<!--                         <div class="list-group list-group-flush">-->
-<!--                             <a class="list-group-item list-group-item-action" href="{% url 'user_benefit' %}"><i class="material-icons">chevron_right</i> Ver ventajas publicadas</a>-->
+                         <div class="list-group list-group-flush">
+                             <a class="list-group-item list-group-item-action" href="{% url 'user_benefit' %}"><i class="material-icons">chevron_right</i> Ver ventajas publicadas</a>
 
-<!--                          </div>-->
+                          </div>
 
-<!--                    </div>-->
-<!--                </div>-->
-<!--            {% endif %}-->
+                    </div>
+                </div>
+            {% endif %}
         {% endif %}
 
     </div>

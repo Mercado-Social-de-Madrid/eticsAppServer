@@ -19,8 +19,8 @@ urlpatterns = [
     path('user/edit/', views.edit_profile, name='edit_user_profile'),
     path('user/edit/password/', views.profile_password, name='profile_password'),
 
-    path('register/<pk>/', views.preregister, name='preregister'),
     path('register/success/', views.preregister_success, name='preregister_success'),
+    path('register/<pk>/', views.preregister, name='preregister'),
 
     path('map/', views.entity_map, name='map'),
     path('entity/', views.user_entity, name='user_entity'),
@@ -34,6 +34,7 @@ urlpatterns = [
     path('profile/', views.user_profile, name='user_profile'),
     path('member/card/', views.member_card, name='member_card'),
     path('member/card_pdf/', views.member_card_pdf, name='member_card_pdf'),
+    path('socia/', views.member_check, name='memeber_check'),
     path('profile/admin/', views.ProfileListView.as_view(), name='profile_list'),
 
     path('profile/<pk>/', views.profile_detail, name='profile_detail'),

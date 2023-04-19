@@ -7,15 +7,13 @@ from helpers.pdf import render_pdf_response
 
 
 def get_card_data(user_type, member):
-    member_data = {
-        "city": member.city.id,
-        "member_id": member.member_id
-    }
+    member_data_url = f'app.mercadosocial.net/socia/?city={member.city.id}&member_id={member.member_id}'
+
     card_data = {
         'user_type': user_type,
         'member_id': member.member_id,
         'display_name': member.display_name,
-        'member_qr': json.dumps(member_data),
+        'member_qr': member_data_url,
     }
 
     if user_type == 'person':
@@ -40,3 +38,7 @@ def member_card_pdf(request):
     filename = 'carnet_mesm'
     return render_pdf_response(request, 'member/card_pdf.html',
                card_data, filename=filename)
+
+
+def member_check(request):
+    return render(request, 'member/check_outside_app.html')
