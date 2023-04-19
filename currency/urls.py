@@ -19,8 +19,8 @@ urlpatterns = [
     path('user/edit/', views.edit_profile, name='edit_user_profile'),
     path('user/edit/password/', views.profile_password, name='profile_password'),
 
-    path('register/<pk>/', views.preregister, name='preregister'),
     path('register/success/', views.preregister_success, name='preregister_success'),
+    path('register/<pk>/', views.preregister, name='preregister'),
 
     path('map/', views.entity_map, name='map'),
     path('entity/', views.user_entity, name='user_entity'),
