@@ -1,19 +1,22 @@
-import json
+import urllib.parse
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.urls import reverse
 
 from helpers.pdf import render_pdf_response
 
 
 def get_card_data(user_type, member):
-    member_data_url = f'app.mercadosocial.net/socia/?city={member.city.id}&member_id={member.member_id}'
+    params = f'?city={member.city.id}&member_id={member.member_id}'
+    member_data_url = settings.BASESITE_URL + reverse('memeber_check') + params
 
     card_data = {
         'user_type': user_type,
         'member_id': member.member_id,
         'display_name': member.display_name,
-        'member_qr': member_data_url,
+        'member_qr': urllib.parse.quote(member_data_url),
     }
 
     if user_type == 'person':
