@@ -34,7 +34,8 @@ urlpatterns = [
     path('profile/', views.user_profile, name='user_profile'),
     path('member/card/', views.member_card, name='member_card'),
     path('member/card_pdf/', views.member_card_pdf, name='member_card_pdf'),
-    path('socia/', views.member_check, name='memeber_check'),
+    path('member/check/', views.CheckMemberStatus.as_view(), name='member_check_form'),
+    path('socia/', views.MemberCheck.as_view(), name='member_check'),
     path('profile/admin/', views.ProfileListView.as_view(), name='profile_list'),
 
     path('profile/<pk>/', views.profile_detail, name='profile_detail'),

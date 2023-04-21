@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% load settings_value %}
+{% load l10n %}
+
+{% block title %}Mi carnet de socia{% endblock%}
+
+{% block bodyattrs %}class="entity"{% endblock%}
+{% block extra_styles %}
+<link href="{% static "css/member-card.css" %}?v=12" rel="stylesheet" >
+{% endblock extra_styles %}
+{% block content %}
+<div class="jumbo-header jumbo-entity form" >
+    <div class="jumbotron" style="background-image:url('{% static 'css/mes.jpg' %}');">
+        <div class="container">
+        </div>
+    </div>
+</div>
+
+<div class="container px-md-5 mt-4">
+        <div class="card mx-md-5">
+          <div class="card-body px-5 pb-5">
+              <h2 class="card-title mb-0 text-primary">Comprobar estado de socia</h2>
+              <div class="row mb-4">
+            <div class="col-lg-7">
+                <h3 class="card-title mb-4 mt-2">Hazlo de forma más fácil desde de la app del Mercado Social.</h3>
+                <h5>Desde la aplicación móvil, puedes acceder a la pantalla de 'Carnet de soci@' y directamente escanear el código QR de otra socia.</h5>
+
+                <div class="justify-content-center my-3 d-flex d-xs-flex d-sm-flex d-md-flex d-lg-none">
+                    <img width="250px" src="{% static '/imgs/scan_qr_page.png' %}" class="d-inline-block align-top" alt="Ubicación escaner de códigos QR en la APP.">
+                </div>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Número de socia</label>
+
+                        <div class="input-group">
+                             <input type="text" name="member_id" class="form-control" id="member_id">
+                          <span class="input-group-addon"> <button type="submit" class="btn btn-primary ml-2">Comprobar</button></span>
+                        </div>
+                        <small style="color: grey">Si es una socia de interccoperación tienes que introducir también el prefijo ICOOP como aparece en el carnet</small>
+                    </div>
+                </form>
+
+            </div>
+            <div class="col-lg-5 d-none d-lg-block">
+                <div class="d-flex justify-content-center my-3">
+                    <img width="250px" src="{% static '/imgs/scan_qr_page.png' %}" class="d-inline-block align-top" alt="Ubicación escaner de códigos QR en la APP.">
+                </div>
+            </div>
+        </div>
+
+                <div class="d-flex align-items-center flex-column">
+                    <h5>Y si todavía no tienes descargada la app, puedes hacerlo desde aquí:</h5>
+                    <a href='https://play.google.com/store/apps/details?id=net.mercadosocial.moneda&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+                        <img width="250px" alt='Disponible en Google Play' src={% static '/imgs/google-play.png' %}/>
+                    </a>
+
+                    <a href="https://apps.apple.com/es/app/mercado-social/id1458549528?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 250px; height: 83px;">
+                        <img src="{% static '/imgs/app-store.svg' %}" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 83px;">
+                    </a>
+
+                </div>
+              <br>
+          </div>
+        </div>
+
+</div>
+{% endblock%}
+
+{% block scripts %}
+
+{% endblock scripts %}

@@ -4,13 +4,14 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.generic import TemplateView
 
 from helpers.pdf import render_pdf_response
 
 
 def get_card_data(user_type, member):
     params = f'?city={member.city.id}&member_id={member.member_id}'
-    member_data_url = settings.BASESITE_URL + reverse('memeber_check') + params
+    member_data_url = settings.BASESITE_URL + reverse('member_check') + params
 
     card_data = {
         'user_type': user_type,
@@ -39,9 +40,21 @@ def member_card_pdf(request):
     card_data = get_card_data(user_type, member)
 
     filename = 'carnet_mesm'
-    return render_pdf_response(request, 'member/card_pdf.html',
-               card_data, filename=filename)
+    return render_pdf_response(request, 'member/card_pdf.html', card_data, filename=filename)
 
 
-def member_check(request):
-    return render(request, 'member/check_outside_app.html')
+class MemberCheck(TemplateView):
+    template_name = 'member/check_outside_app.html'
+
+
+class CheckMemberStatus(TemplateView):
+    template_name = 'member/check_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['valid'] = False
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
