@@ -65,12 +65,18 @@
             {% endif %}
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-12 mb-4">
             <h4 class="mb-3"><i class="ic ic-news"></i> Ofertas en curso</h4>
-            {% include 'offers/resume_list.html' with offer_list=offers  %}
+            {% if offers %}
+                {% include 'offers/resume_list.html' with offer_list=offers  %}
+            {% else %}
+                <div class="text-grey px-3">No hay ninguna oferta activa actualmente.</div>
+            {% endif %}
+
         </div>
 
         <div class="col-md-12">
+            <h4 class="mb-3"><i class="ic ic-news"></i> Ventajas</h4>
             {% if entity.benefit %}
                 <a class="btn btn-primary mr-4" href="{% url 'benefit_detail' entity.benefit.pk %}" data-toggle="tooltip" title="Ver ventajas"><i class="material-icons mr-2">local_activity</i>Ver ventajas</a>
             {% elif request.user.is_staff or request.user.is_superuser %}

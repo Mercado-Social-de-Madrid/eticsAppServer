@@ -42,7 +42,7 @@ class BenefitListView(LoginRequiredMixin, FilterMixin, FilterView, ExportAsCSVMi
     paginate_by = 7
 
     def get_queryset(self):
-        queryset = super(BenefitListView, self).get_queryset()
+        queryset = super().get_queryset()
         if not self.request.user.is_superuser:
             queryset = Benefit.objects.all()
         return queryset
@@ -58,7 +58,7 @@ class BenefitDetailView(LoginRequiredMixin, DetailView):
     template_name = 'benefits/detail.html'
 
     def get_context_data(self, **kwargs):
-        context = super(BenefitDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         can_edit = self.request.user.is_superuser or self.request.user.is_staff
         context['entity'] = self.object.entity
         context['benefit'] = self.object
@@ -67,7 +67,7 @@ class BenefitDetailView(LoginRequiredMixin, DetailView):
 
     def get_object(self, queryset=None):
         if self.kwargs.get('pk'):
-            return super(BenefitDetailView, self).get_object(queryset)
+            return super().get_object(queryset)
         else:
             type, entity = get_user_model().get_related_entity(self.request.user)
             return entity.benefit
@@ -79,7 +79,7 @@ class BenefitCreateView(LoginRequiredMixin, CreateView):
     template_name = 'benefits/edit.html'
 
     def get_context_data(self, **kwargs):
-        context = super(BenefitCreateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         entity_pk = self.kwargs.get('entity_pk')
         if entity_pk:
             context['entity'] = get_object_or_404(Entity, pk=entity_pk)
@@ -97,7 +97,7 @@ class BenefitUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'benefits/edit.html'
 
     def get_context_data(self, **kwargs):
-        context = super(BenefitUpdateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['entity'] = self.object.entity
         context['is_new'] = False
         context['ajax_url'] = reverse('entity_list') + '?filter=true'

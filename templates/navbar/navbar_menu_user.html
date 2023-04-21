@@ -18,6 +18,7 @@
       </button>
 
        <div class="collapse navbar-collapse" id="navbar-menu">
+           <div class="container">
            <ul class="nav nav-tabs nav-fill flex-column flex-md-row flex-lg-row">
               <li class="nav-item">
                 <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}"><i class="ic ic-home"></i> Inicio</a>
@@ -42,6 +43,6 @@
                 <a class="nav-link {% if request.resolver_match.url_name == 'user_wallet' %}active{% endif %}" href="{% url 'wallets:user_wallet' %}"><i class="ic ic-wallet"></i> Monedero</a>
               </li>
             </ul>
-
+            </div>
    </div>
 </div>
