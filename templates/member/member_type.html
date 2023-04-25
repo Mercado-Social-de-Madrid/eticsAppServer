@@ -1,0 +1,9 @@
+{% if member.member_type == "entity" %}
+  socia proveedora
+{% else %}
+  {% if member.is_intercoop %}
+    socia intercooperación
+  {% else %}
+    socia consumidora
+  {% endif %}
+{% endif %}

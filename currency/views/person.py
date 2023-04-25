@@ -14,7 +14,7 @@ from helpers.forms.BootstrapForm import BootstrapForm
 from helpers.mixins.AjaxTemplateResponseMixin import AjaxTemplateResponseMixin
 from helpers.mixins.ExportAsCSVMixin import ExportAsCSVMixin
 from helpers.mixins.ListItemUrlMixin import ListItemUrlMixin
-from helpers.mixins.SuperUserCheck import SuperUserCheck
+from helpers.mixins.permissions import SuperUserCheck
 
 
 @login_required

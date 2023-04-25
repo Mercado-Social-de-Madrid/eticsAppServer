@@ -24,7 +24,9 @@
               <div class="row mb-4">
             <div class="col-lg-7">
                 <h3 class="card-title mb-4 mt-2">Hazlo de forma más fácil desde de la app del Mercado Social.</h3>
-                <h5>Desde la aplicación móvil, puedes acceder a la pantalla de 'Carnet de soci@' y directamente escanear el código QR de otra socia.</h5>
+                <h5>Desde la aplicación móvil, puedes acceder a la pantalla de 'Carnet de soci@' y directamente escanear el código QR de otra socia.
+                <br><br>
+                También puedes hacerlo aquí, introduciendo manualmente el número de la socia según aparece en su carnet.</h5>
 
                 <div class="justify-content-center my-3 d-flex d-xs-flex d-sm-flex d-md-flex d-lg-none">
                     <img width="250px" src="{% static '/imgs/scan_qr_page.png' %}" class="d-inline-block align-top" alt="Ubicación escaner de códigos QR en la APP.">
@@ -36,11 +38,29 @@
                         <label>Número de socia</label>
 
                         <div class="input-group">
-                             <input type="text" name="member_id" class="form-control" id="member_id">
+                             <input type="text" name="member_id" value="{{member_id}}" class="form-control" id="member_id">
                           <span class="input-group-addon"> <button type="submit" class="btn btn-primary ml-2">Comprobar</button></span>
                         </div>
-                        <small style="color: grey">Si es una socia de interccoperación tienes que introducir también el prefijo ICOOP como aparece en el carnet</small>
+                        <small style="color: grey">Añade los ceros al inicio según aparecen en el carnet. Si es una socia de interccoperación tienes que introducir también el prefijo ICOOP como aparece en el carnet</small>
                     </div>
+
+                    {% if member_not_found %}
+                        <div class="alert alert-warning" role="alert">
+                          No se ha encontrado una socia con ese número.
+                        </div>
+                    {% else %}
+                        {% if status.is_active %}
+                        <div class="alert alert-success" role="alert">
+                            <i class="material-icons mr-2 text-success">check_circle</i> <strong>Activa:</strong>
+                            {% include 'member/member_type.html' with member=status %}
+                        </div>
+                        {% else %}
+                        <div class="alert alert-warning" role="alert">
+                            <i class="material-icons mr-2 text-warning">cancel</i> <strong>Socia inactiva</strong>
+                             o dada de baja
+                        </div>
+                        {% endif %}
+                    {% endif %}
                 </form>
 
             </div>

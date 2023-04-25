@@ -16,12 +16,9 @@
   <div class="member_info">
     <span class="member_name">{{display_name}}</span><br>
     <span class="member_type">
-      {% if user_type == "entity" %}socia proveedora
-      {% else %}
-        {% if is_intercoop %} socia intercooperación {% else %} socia consumidora {% endif %}
-      {% endif %}
+      {% include 'member/member_type.html' %}
     </span><br>
-    <span class="member_id">Nº socia: {{member_id|default_if_none:'-'}}</span>
+    <span class="member_id">Nº socia: {{member.member_id|default_if_none:'-'}}</span>
   </div>
 
   <div class="mesm_footer">
