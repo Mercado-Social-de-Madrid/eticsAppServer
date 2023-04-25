@@ -75,7 +75,7 @@
                 <a class="btn btn-primary mr-4" href="{% url 'benefit_detail' entity.benefit.pk %}" data-toggle="tooltip" title="Ver ventajas"><i class="material-icons mr-2">local_activity</i>Ver ventajas</a>
             {% elif request.user.is_staff or request.user.is_superuser %}
                 <a class="btn btn-primary mr-4" href="{% url 'add_entity_benefit' entity.pk %}" data-toggle="tooltip" title="Añadir ventaja"><i class="material-icons mr-2">local_activity</i>Añadir ventaja</a>
-            {% else %}
+            {% elif request.user.entity == entity %}
                 <h4 class="mb-3"><i class="material-icons mr-2">local_activity</i>Ventajas para socias. Ahora mismo no ofreces ventajas, para añadirla ponte en contacto con <a href="mailto:madrid@mercadosocial.net">madrid@mercadosocial.net</a> </h4>
             {% endif %}
         </div>
