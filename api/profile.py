@@ -62,6 +62,7 @@ class EntityResource(InviteResource):
 
     categories = fields.ToManyField(CategoriesResource, 'categories', full=False, null=True)
     city = fields.ForeignKey(CitiesResource, 'city', full=False, null=True)
+    logo = fields.FileField(null=True, blank=True)
 
     class Meta:
         queryset = Entity.objects.all()
@@ -90,6 +91,9 @@ class EntityResource(InviteResource):
 
 
     def dehydrate(self, bundle):
+        if bundle.obj.logo:
+            bundle.data['logo'] = bundle.obj.logo.url
+
         # Add thumbnail field
         if bundle.obj.logo_thumbnail:
             bundle.data['logo_thumbnail'] = bundle.obj.logo_thumbnail.url
@@ -99,9 +103,6 @@ class EntityResource(InviteResource):
         if bundle.obj.city:
             bundle.data['city'] = bundle.obj.city.id
 
-        if bundle.data['categories']:
-            for i, cat in enumerate(bundle.data['categories']):
-                bundle.data['categories'][i] = cat.split('/')[-2:][0]
 
         return bundle
 
@@ -110,15 +111,16 @@ class EntityResource(InviteResource):
         if bundle.request.user:
             bundle.obj.user = bundle.request.user
 
-        bundle.data['city'] = City.objects.get(pk=bundle.data['city'])
+            if bundle.data['city']:
+                bundle.data['city'] = City.objects.get(pk=bundle.data['city'])
 
-        if bundle.data['logo']:
-            data_parts = bundle.data.get('logo', '').split(';')
-            content_type = data_parts[0]
-            if content_type in ['image/jpeg', 'image/png']:
-                file_data = data_parts[1]
-                image = SimpleUploadedFile('image.jpg', base64.b64decode(file_data), content_type=content_type)
-                bundle.data['logo'] = image
+            if bundle.data['logo']:
+                data_parts = bundle.data.get('logo', '').split(';')
+                content_type = data_parts[0]
+                if content_type in ['image/jpeg', 'image/png']:
+                    file_data = data_parts[1]
+                    image = SimpleUploadedFile('image.jpg', base64.b64decode(file_data), content_type=content_type)
+                    bundle.obj.logo = image
 
         return bundle
 
@@ -126,6 +128,7 @@ class EntityResource(InviteResource):
 class PersonResource(InviteResource):
     fav_entities = fields.ManyToManyField(EntityResource, 'fav_entities', full=False)
     city = fields.ForeignKey(CitiesResource, 'city', full=False, null=True)
+    profile_image = fields.FileField(null=True, blank=True)
 
     class Meta:
         queryset = Person.objects.all()
@@ -152,8 +155,12 @@ class PersonResource(InviteResource):
 
         return person
 
-
     def dehydrate(self, bundle):
+        bundle.obj = bundle.request.user.person
+
+        if bundle.obj.profile_image:
+            bundle.data['profile_image'] = bundle.obj.profile_image.url
+
         # Add thumbnail field
         if bundle.obj.profile_thumbnail:
             bundle.data['profile_thumbnail'] = bundle.obj.profile_thumbnail.url
@@ -171,19 +178,20 @@ class PersonResource(InviteResource):
         if bundle.request.user:
             bundle.obj.user = bundle.request.user
 
-        if bundle.data['fav_entities']:
-            for i, fav in enumerate(bundle.data['fav_entities']):
-                bundle.data['fav_entities'][i] = Entity.objects.get(pk=bundle.data['fav_entities'][i])
+            if bundle.data['fav_entities']:
+                for i, fav in enumerate(bundle.data['fav_entities']):
+                    bundle.data['fav_entities'][i] = Entity.objects.get(pk=fav)
 
-        if bundle.data['profile_image']:
-            data_parts = bundle.data.get('profile_image', '').split(';')
-            content_type = data_parts[0]
-            if content_type in ['image/jpeg', 'image/png']:
-                file_data = data_parts[1]
-                image = SimpleUploadedFile('image.jpg', base64.b64decode(file_data), content_type=content_type)
-                bundle.data['profile_image'] = image
+            if bundle.data['profile_image']:
+                data_parts = bundle.data['profile_image'].split(';')
+                content_type = data_parts[0]
+                if content_type in ['image/jpeg', 'image/png']:
+                    file_data = data_parts[1]
+                    image = SimpleUploadedFile('image.jpg', base64.b64decode(file_data), content_type=content_type)
+                    bundle.obj.profile_image = image
 
-        bundle.data['city'] = City.objects.get(pk=bundle.data['city'])
+            if bundle.data['city']:
+                bundle.data['city'] = City.objects.get(pk=bundle.data['city'])
 
         return bundle
 
