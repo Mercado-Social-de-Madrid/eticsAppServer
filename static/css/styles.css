@@ -683,3 +683,9 @@ td.table-actions a.btn{
     height:50vh;
     overflow-y:scroll;
 }
+
+.material-icons-outlined {
+  font-size: 1.714286em;
+  line-height: .583333em;
+  vertical-align: -.302198em;
+}

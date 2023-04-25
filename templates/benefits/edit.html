@@ -10,7 +10,7 @@
 {% block content %}
 
     <div class="jumbo-header jumbo-entity form" >
-        <div class="jumbotron">
+        <div class="jumbotron" {% if entity.first_photo_url %}style="background-image:url('{{entity.first_photo_url}}');"{%endif%}>
             <div class="container">
                 <h3>{{entity.name}}</h3>
                 {{ entity.address }}
@@ -20,7 +20,7 @@
 
     {% if request.user.is_admin or request.user.is_superuser %}
         <div class="container px-md-5">
-            <div class="card mx-lg-5 mb-4 p-3">
+            <div class="card mb-4 p-3">
                 <div class="card-body">
                     <form method="POST" class="post-form gallery-form" enctype="multipart/form-data">
                     {% csrf_token %}

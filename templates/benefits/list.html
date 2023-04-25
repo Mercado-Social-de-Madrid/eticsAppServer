@@ -12,11 +12,6 @@
 <div class="container">
     <div class="d-flex justify-content-between mb-4">
         <h3 class="primary-title mb-3"><i class="material-icons mr-2">local_activity</i>Ventajas</h3>
-        {% if request.user.is_superuser %}
-            <div class="action-btns">
-                <a class="btn btn-primary" href="{% url 'add_benefit' %}" data-toggle="tooltip" title="Añadir ventaja"><i class="material-icons">edit</i>Añadir ventaja</a>
-            </div>
-        {% endif %}
     </div>
 
     {% include 'common/list/filter_form.html' %}
@@ -45,6 +40,10 @@
         </div>
     </form>
 </div>
+
+<a href="{% url 'add_benefit' %}" class="fab btn btn-primary btn-lg rounded-circle btn-float"  data-toggle="tooltip" data-placement="left" title="Añadir ventaja">
+ <i class="material-icons">add</i>
+</a>
 
 {% endblock%}
 

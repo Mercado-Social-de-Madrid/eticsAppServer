@@ -44,13 +44,14 @@
                         <small style="color: grey">Añade los ceros al inicio según aparecen en el carnet. Si es una socia de interccoperación tienes que introducir también el prefijo ICOOP como aparece en el carnet</small>
                     </div>
 
+                    {% if member_id %}
                     {% if member_not_found %}
                         <div class="alert alert-warning" role="alert">
-                          No se ha encontrado una socia con ese número.
+                          <i class="material-icons mr-2 text-warning">cancel</i> No se ha encontrado una socia con ese número.
                         </div>
                     {% else %}
                         {% if status.is_active %}
-                        <div class="alert alert-success" role="alert">
+                        <div class="alert alert-success" role <a href="mailto:madrid@mercadosocial.net">="alert">
                             <i class="material-icons mr-2 text-success">check_circle</i> <strong>Activa:</strong>
                             {% include 'member/member_type.html' with member=status %}
                         </div>
@@ -61,6 +62,7 @@
                         </div>
                         {% endif %}
                     {% endif %}
+                  {% endif %}
                 </form>
 
             </div>

@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action" href="{% url 'member_card' %}"><i class="material-icons">chevron_right</i> Mi carnet de socia</a>
+                    <a class="list-group-item list-group-item-action" href="{% url 'member_card' %}"><i class="material-icons-outlined">chevron_right</i> Mi carnet de socia</a>
                     <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons">chevron_right</i> Ver entidades favoritas</a>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action" href="{% url 'member_card' %}"><i class="material-icons mr-2">perm_contact_calendar</i> Mi carnet de socia</a>
+                    <a class="list-group-item list-group-item-action" href="{% url 'member_card' %}"><i class="material-icons-outlined mr-2">perm_contact_calendar</i> Mi carnet de socia</a>
                     <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons mr-2">favorite</i> Ver balance social</a>
                     <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons mr-2">bar_chart</i> Ver estadísticas de favoritos</a>
                 </div>
@@ -63,7 +63,7 @@
         <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-body">
-                    <div class="card-title primary-title"><h3><i class="ic ic-news"></i> Ofertas</h3></div>
+                    <div class="card-title primary-title"><h3><i class="ic ic-news mr-2"></i> Ofertas</h3></div>
                     <div class="figure">
                         <span class="number">{{num_offers}}</span>
                         <span class="label">ofertas <br/>activas</span>
@@ -77,18 +77,27 @@
                   </div>
             </div>
 
-            {% if entity.benefit %}
+
                 <div class="card mb-4">
                     <div class="card-body pb-0">
-                        <div class="card-title primary-title"><h3><i class="material-icons mr-3">local_activity</i> Ventajas</h3></div>
+                        <div class="card-title primary-title"><h3><i class="material-icons-outlined mr-1">eco</i> Ventajas</h3></div>
+                        {% if not entity.benefit %}
+                        <div class="card-text text-dark figure pt-2"><p class="label mb-0"> No ofreces ventajas</p></div>
+                        <div class="clearboth">Para añadirlas ponte en contacto con  <a href="mailto:madrid@mercadosocial.net">madrid@mercadosocial.net</a></div>
+                    {% endif %}
+
                     </div>
 
                      <div class="list-group list-group-flush">
+                     {% if entity.benefit %}
                          <a class="list-group-item list-group-item-action" href="{% url 'user_benefit' %}"><i class="material-icons mr-2">recommend</i> Ver ventajas publicadas</a>
+                     {% else %}
+                         <a class="list-group-item list-group-item-action disabled" href="#"><span class="material-icons-outlined mr-2">recommend</span> Ver ventajas publicadas</a>
+                     {% endif %}
                         <a class="list-group-item list-group-item-action" href="{% url 'member_check_form' %}"><i class="material-icons mr-2">qr_code_scanner</i> Comprobar estado de socia</a>
                       </div>
                 </div>
-        {% endif %}
+
 
         </div>
         {% endif %}
@@ -124,7 +133,7 @@
                         {% endblocktrans %}
                      {% endif %}
                     <a class="list-group-item list-group-item-action" href="{% url 'wallets:user_wallet' %}"><i class="material-icons mr-2">query_stats</i> Consultar movimientos</a>
-                    <a class="list-group-item list-group-item-action" href="{% url 'wallets:new_payment' %}"><i class="material-icons mr-2">send</i> Enviar pago</a>
+                    <a class="list-group-item list-group-item-action" href="{% url 'wallets:new_payment' %}"><i class="material-icons-outlined mr-2">send</i> Enviar pago</a>
                      <a class="list-group-item list-group-item-action disabled" href="#"><i class="material-icons mr-2">payments</i> Obtener etics</a>
                   </div>
             </div>
