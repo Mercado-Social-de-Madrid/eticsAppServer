@@ -6,19 +6,16 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta content="initial-scale=1, shrink-to-fit=no, width=device-width" name="viewport">
-    <title>{% block title %}Mercado Social{% endblock title%}</title>
+    <title>{% block title %}Balance social{% endblock title%}</title>
 
     <!-- CSS -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-    <!-- Add Material CSS, replace Bootstrap CSS -->
-    <link href="{% static "css/magnific-popup.css" %}" rel="stylesheet" >
+
     <link href="{% static "css/material.min.css" %}" rel="stylesheet">
     <link href="{% static "css/styles.css" %}?v=13" rel="stylesheet" >
-      
+
     <link rel="apple-touch-icon" sizes="144x144" href="{% static "icons/apple-touch-icon.png" %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static "icons/favicon-32x32.png" %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static "icons/favicon-16x16.png" %}">
@@ -37,10 +34,8 @@
     {% if request.user.is_superuser %}
         {% include 'navbar/navbar_menu_admin.html' %}
     {% else %}
-        {% include 'navbar/navbar_menu_user.html' %}
+        {% include 'navbar/navbar_menu_user.html' with hide_toolbar=True %}
     {% endif %}
-{% else %}
-    {% include 'navbar/navbar_menu_anon.html' %}
 {% endif %}
 
 <div id="main-content">
@@ -59,12 +54,9 @@
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <!-- Then Material JavaScript on top of Bootstrap JavaScript -->
     <script src="{% static "js/material.min.js" %}"></script>
-    <script src="{% static "js/jquery.magnific-popup.min.js" %}"></script>
     <script src="{% static "js/common.js" %}?v=9"></script>
 
     {% block scripts %}{% endblock scripts %}

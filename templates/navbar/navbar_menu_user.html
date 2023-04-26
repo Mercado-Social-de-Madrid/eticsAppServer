@@ -2,7 +2,7 @@
    <nav class="navbar navbar-expand navbar-light" id="top-bar">
      <div class="container">
 
-      <a class="navbar-brand" href="#"><img src="{% static '/imgs/brand.png' %}" height="30" class="d-inline-block align-top" alt=""></a>
+      <a class="navbar-brand" href="{% url 'dashboard' %}"><img src="{% static '/imgs/brand.png' %}" height="30" class="d-inline-block align-top" alt=""></a>
 
       <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="navbar-nav ml-auto mt-0">
@@ -12,6 +12,7 @@
      </div>
 </nav>
 
+ {% if not hide_toolbar %}
 <div class="nav navbar sticky-top navbar-expand-md " id="menu-nav">
          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -46,3 +47,4 @@
             </div>
    </div>
 </div>
+ {% endif %}

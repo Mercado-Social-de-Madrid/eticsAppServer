@@ -1,0 +1,33 @@
+{% extends "base_external.html" %}
+{% load static %}
+{% load settings_value %}
+
+{% block extra_styles %}
+<link href="{% static "css/balance.css" %}?v=1" rel="stylesheet">
+{% endblock extra_styles %}
+
+{% block content %}
+<div class="container">
+    <p class="lead">
+        Tener acceso a la <em>infografía</em> de una entidad que pertenece al <strong>Mercado Social de Madrid</strong> es tener <em>acceso al corazón</em>
+    de esa entidad.
+    </p>
+    <p>
+        Cada <em>año</em> las entidades de la Economía Solidaria realizan este <strong>ejercidio de transparencia</strong>. De <strong>forma activa</strong>,
+        podemos acceder directamente a las principales prácticas de la entidad en torno a los <em>6 principios de la
+        Economía Solidaria</em>
+    </p>
+
+    <ul class="principios">
+        <li class="pr1">Equidad</li>
+        <li class="pr2">Trabajo digno</li>
+        <li class="pr3">Cooperación</li>
+        <li class="pr4">Sostenibilidad ecológica</li>
+        <li class="pr5">Reparto justo de la riqueza</li>
+        <li class="pr6">Compromiso con el entorno</li>
+    </ul>
+
+    <img src="{% static '/imgs/balance-banner.png' %}" class="img-fluid" alt="Consume en la ESS y transforma el consumo en Madrid">
+
+</div>
+{% endblock %}

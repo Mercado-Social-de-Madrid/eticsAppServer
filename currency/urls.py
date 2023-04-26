@@ -14,6 +14,7 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
+    path('users/search/', views.search_users, name='search_users'),
     path('user/', views.UserListView.as_view(), name='users_list'),
     path('user/<pk>/edit/', views.PasswordUpdateView.as_view(), name='edit_user'),
     path('user/edit/', views.edit_profile, name='edit_user_profile'),
@@ -28,7 +29,6 @@ urlpatterns = [
     path('qr/<pk>/', views.entity_detail, name='entity_qr_detail'),
     path('entity/<pk>/', views.entity_detail, name='entity_detail'),
     path('entity/<pk>/edit/', views.entity_edit, name='entity_edit'),
-    #path('entities/', views.entity_list, name='entity_list'),
     path('entities/', views.EntityListView.as_view(), name='entity_list'),
 
     path('profile/', views.user_profile, name='user_profile'),
@@ -36,15 +36,16 @@ urlpatterns = [
     path('member/card_pdf/', views.member_card_pdf, name='member_card_pdf'),
     path('member/check/', views.CheckMemberStatus.as_view(), name='member_check_form'),
     path('socia/', views.MemberCheck.as_view(), name='member_check'),
-    path('profile/admin/', views.ProfileListView.as_view(), name='profile_list'),
 
+    path('profile/admin/', views.ProfileListView.as_view(), name='profile_list'),
     path('profile/<pk>/', views.profile_detail, name='profile_detail'),
     path('profile/<pk>/edit/', views.profile_edit, name='profile_edit'),
-    path('users/search/', views.search_users, name='search_users'),
 
     path('categories/', views.category_list, name='category_list'),
     path('categories/add', views.add_category, name='add_category'),
     path('categories/<pk>/edit/', views.category_edit, name='category_edit'),
+
+    path('balance/<member_id>/', views.BalanceDetail.as_view(), name='balance_detail'),
 
     path('dashboard/', views.profile, name='dashboard'),
 ]
