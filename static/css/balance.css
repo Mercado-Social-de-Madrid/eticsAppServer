@@ -1,8 +1,9 @@
 html{
-        font-size:12px;
+        font-size:2.45vw;
 }
 
 body{
+    background-color:#fff;
     background-image:url('bg-heart.png');
     background-repeat:no-repeat;
     background-size:contain;
@@ -12,20 +13,35 @@ body{
 }
 
 .container{
+    margin-top:1.1rem;
     font-size:1.7rem;
     max-width:35rem;
     font-weight:200;
     line-height:1.1;
 }
+
+@media (min-width: 550px){
+    html { font-size: 13px; }
+}
+@media (min-width: 768px){
+    .container{ max-width:750px; }
+}
+.btn-lg{
+    font-size: 1.4rem;
+    padding: 1.6rem 1.6rem;
+    font-weight:600;
+}
+
 .lead{
-    font-size:1.9rem;
+    font-size:1.87rem;
     font-weight:200;
     line-height:1.1;
 }
 ul.principios{
-    font-size:1.3rem;
+    font-size:1.2rem;
     font-weight:bold;
     list-style:none;
+    margin:1.6rem 0;
 }
 ul.principios li {
     margin-bottom:1.5rem;

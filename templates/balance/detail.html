@@ -8,15 +8,20 @@
 
 {% block content %}
 <div class="container">
-    <p class="lead">
-        Tener acceso a la <em>infografía</em> de una entidad que pertenece al <strong>Mercado Social de Madrid</strong> es tener <em>acceso al corazón</em>
-    de esa entidad.
-    </p>
-    <p>
-        Cada <em>año</em> las entidades de la Economía Solidaria realizan este <strong>ejercidio de transparencia</strong>. De <strong>forma activa</strong>,
-        podemos acceder directamente a las principales prácticas de la entidad en torno a los <em>6 principios de la
-        Economía Solidaria</em>
-    </p>
+    <div class="row">
+        <div class="col-md-6">
+            <p class="lead">
+                Tener acceso a la <em>infografía</em> de una entidad que pertenece al <strong>Mercado Social de Madrid</strong>
+                es tener <em>acceso al corazón</em>
+            de esa entidad.
+            </p>
+            <p class="mb-1">
+                Cada <em>año</em> las entidades de la Economía Solidaria realizan este <strong>ejercidio de transparencia</strong>. De <strong>forma activa</strong>,
+                podemos acceder directamente a las principales prácticas de la entidad en torno a los <em>6 principios de la
+                Economía Solidaria</em>
+            </p>
+        </div>
+        <div class="col-md-6">
 
     <ul class="principios">
         <li class="pr1">Equidad</li>
@@ -26,8 +31,24 @@
         <li class="pr5">Reparto justo de la riqueza</li>
         <li class="pr6">Compromiso con el entorno</li>
     </ul>
+        </div>
+    </div>
 
-    <img src="{% static '/imgs/balance-banner.png' %}" class="img-fluid" alt="Consume en la ESS y transforma el consumo en Madrid">
+    <div class="text-center">
+        <div class="profile-circle small d-inline-block">
+          <img src="{% if entity.logo %}{{entity.logo.url}}{% else %}{% static 'imgs/entity.png' %}{% endif %}">
+      </div>
+        <h3 class="primary-text text-black mb-2">  {{entity.display_name}} </h3>
+        {% if entity.balance_detail %}
+            <a href="#" class="btn btn-primary btn-lg">Ver la infografía</a>
+        {% else %}
+            <strong class="text-dark">No hay infografía para esta entidad :( </strong>
+        {% endif %}
+    </div>
+
+    <img src="{% static '/imgs/balance-banner.png' %}" class="img-fluid mt-3 mb-5" alt="Consume en la ESS y transforma el consumo en Madrid">
+
+
 
 </div>
 {% endblock %}
