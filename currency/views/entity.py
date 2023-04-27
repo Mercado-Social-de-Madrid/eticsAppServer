@@ -269,3 +269,13 @@ def entity_map(request):
     }
 
     return render(request, 'entity/map.html', params)
+
+
+def entity_balance(request, member_id):
+    entity = get_object_or_404(Entity, member_id=member_id)
+
+    data = {
+        'entity': entity,
+    }
+
+    return render(request, 'entity/balance.html', data)
