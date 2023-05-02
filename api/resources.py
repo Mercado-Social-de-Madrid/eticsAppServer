@@ -1,3 +1,6 @@
+import datetime
+from dateutil.relativedelta import relativedelta
+
 from tastypie import fields
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
@@ -48,7 +51,7 @@ class NewsResource(ModelResource):
 
 
     class Meta:
-        queryset = News.objects.all()
+        queryset = News.objects.filter(published_date__gte=datetime.datetime.now() - relativedelta(months=9))
         include_resource_uri = False
         list_allowed_methods = ['get']
         resource_name = 'news'
