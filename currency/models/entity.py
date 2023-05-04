@@ -76,6 +76,8 @@ class Entity(models.Model):
 
     gallery = models.OneToOneField(Gallery, blank=True, null=True, on_delete=models.SET_NULL)
 
+    balance_detail = models.CharField(null=True, blank=True, verbose_name='Informe balance', max_length=250)
+
     objects = EntityManager()
 
     @property

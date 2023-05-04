@@ -40,7 +40,7 @@
       </div>
         <h3 class="primary-text text-black mb-2">  {{entity.display_name}} </h3>
         {% if entity.balance_detail %}
-            <a href="#" class="btn btn-primary btn-lg">Ver la infografía</a>
+            <a href="{{entity.balance_detail}}" class="btn btn-primary btn-lg">Ver la infografía</a>
         {% else %}
             <strong class="text-dark">No hay infografía para esta entidad :( </strong>
         {% endif %}
