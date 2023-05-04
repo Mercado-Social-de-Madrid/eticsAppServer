@@ -30,14 +30,6 @@
   </head>
   <body {% block bodyattrs %}{% endblock%}>
 
-{%if user.is_authenticated %}
-    {% if request.user.is_superuser %}
-        {% include 'navbar/navbar_menu_admin.html' %}
-    {% else %}
-        {% include 'navbar/navbar_menu_user.html' with hide_toolbar=True %}
-    {% endif %}
-{% endif %}
-
 <div id="main-content">
 {% block content %}{% endblock content %}
 </div>

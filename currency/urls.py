@@ -45,6 +45,7 @@ urlpatterns = [
     path('categories/add', views.add_category, name='add_category'),
     path('categories/<pk>/edit/', views.category_edit, name='category_edit'),
 
+    path('entity/balance/<pk>/', views.EntityBalance.as_view(), name='entity_balance'),
     path('balance/<member_id>/', views.BalanceDetail.as_view(), name='balance_detail'),
 
     path('dashboard/', views.profile, name='dashboard'),
