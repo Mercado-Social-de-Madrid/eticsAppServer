@@ -25,13 +25,13 @@ class Command(BaseCommand):
             list = json.load(fp)
 
             for item in list['accounts']:
-                member = Person.objects.filter(nif=item['cif']).first()
+                member = Person.objects.active().filter(nif=item['cif']).first()
                 if member is not None:
                     member.member_id = item['member_id']
                     member.save()
                     print("{}: {}".format(item['member_id'], member.display_name))
                 else:
-                    member = Entity.objects.filter(cif=item['cif']).first()
+                    member = Entity.objects.active().filter(cif=item['cif']).first()
                     if member is not None:
                         member.member_id = item['member_id']
                         member.save()
