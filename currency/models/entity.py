@@ -82,7 +82,7 @@ class Entity(models.Model):
 
     @property
     def balance_url(self):
-        return settings.BASESITE_URL + "/balance/" + self.member_id
+        return settings.BASESITE_URL + "/balance/" + self.member_id if self.member_id else None
 
     @property
     def display_name(self):
