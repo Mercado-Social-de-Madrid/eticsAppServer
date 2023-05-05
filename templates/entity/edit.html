@@ -50,6 +50,16 @@
                             {{ form.name }}
                         </div>
 
+                        {% if request.user.is_superuser %}
+                        <div class="form-group" data-links="#entity-member_id">
+                            <label>Número de socia</label>
+                            {{ form.member_id }}
+                            <small>Este campo es <strong class="text-danger">editable para admin</strong>, pero el valor debería venir de la H.Gestora</small>
+                        </div>
+                        {% else %}
+                        <div style="display:none;">{{ form.member_id }}</div>
+                        {% endif %}
+
                         <div class="form-group" data-links="#entity-address">
                             <label>Email</label>
                             {{ form.email }}

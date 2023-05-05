@@ -21,7 +21,7 @@
         <div class="card pb-4 px-">
             {% if can_edit %}
             <div class="action-btns top">
-                <a class="btn btn-primary btn-float btn-lg" href="{% url 'benefit_edit' benefit.pk %}" data-toggle="tooltip" data-placement="bottom" title="Editar ventaja"><i class="material-icons">mode_edit</i></a>
+                <a class="btn btn-primary btn-float btn-lg" href="{% url 'benefit_edit' benefit.pk %}"  style="z-index:200;" data-toggle="tooltip" data-placement="bottom" title="Editar ventaja"><i class="material-icons">mode_edit</i></a>
             </div>
             {% endif %}
 

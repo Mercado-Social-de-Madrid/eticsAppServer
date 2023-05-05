@@ -23,8 +23,9 @@ class EntityForm(forms.ModelForm):
 
     class Meta:
         model = Entity
-        exclude = ['owner', 'user', 'member_id']
+        exclude = ['owner', 'user', 'balance_detail']
         widgets = {
+            'member_id': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'description': CKEditorWidget(attrs={'class': 'form-control'}),

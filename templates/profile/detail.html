@@ -74,7 +74,7 @@
                   {% if request.user.is_superuser %}
                   <div class=" my-2">
                       <label>Número de socia</label><br>
-                      {{person.member_id}}
+                      {{person.member_id|default_if_none:'-'}}
                   </div>
 
             <hr class="mt-4">

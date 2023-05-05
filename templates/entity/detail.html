@@ -46,6 +46,8 @@
             {% if request.user.is_superuser %}
             <hr class="mt-4">
             <h4 class="mb-3">Usuario</h4>
+                 <span class="primary-title"><strong>Número de socia:</strong></span>
+                {{entity.member_id|default_if_none:'-'}}<br>
                 {% if preregister_user %}
                     <span class="primary-title"><strong>Prerregistro: </strong></span> aún no se ha creado usuario<br>
                     <span class="primary-title"><strong>Enlace: </strong></span>
