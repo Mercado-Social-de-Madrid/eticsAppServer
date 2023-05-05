@@ -31,9 +31,14 @@ class Command(BaseCommand):
                 if not member:
                     member = Entity.objects.filter(member_id=item['member_id']).first()
                 if member is not None:
-                    balance_detail = media_path + item['balance_report'] if item['balance_report'] else None
-                    member.balance_detail = balance_detail
-                    member.save()
+                    balance_report = item['balance_report']
+                    if balance_report:
+                        if not balance_report.startswith('reports'):
+                            balance_report = "reports/" + balance_report
+
+                        balance_detail = media_path + balance_report
+                        member.balance_detail = balance_detail
+                        member.save()
                     print("{}: {}".format(item['member_id'], member.display_name))
                 else:
                     print("{} cif not found ({})".format(item['cif'], item['member_id']))
