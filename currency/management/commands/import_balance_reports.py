@@ -28,6 +28,8 @@ class Command(BaseCommand):
 
             for item in list:
                 member = Entity.objects.filter(cif=item['cif']).first()
+                if not member:
+                    member = Entity.objects.filter(member_id=item['member_id']).first()
                 if member is not None:
                     balance_detail = media_path + item['balance_report'] if item['balance_report'] else None
                     member.balance_detail = balance_detail
