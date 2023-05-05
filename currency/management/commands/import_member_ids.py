@@ -26,12 +26,16 @@ class Command(BaseCommand):
 
             for item in list['accounts']:
                 member = Person.objects.active().filter(nif=item['cif']).first()
+                if not member and item['app_uuid'] and item['app_uuid'] != "None":
+                    member = Person.objects.filter(id=item['app_uuid']).first()
                 if member is not None:
                     member.member_id = item['member_id']
                     member.save()
                     print("{}: {}".format(item['member_id'], member.display_name))
                 else:
                     member = Entity.objects.active().filter(cif=item['cif']).first()
+                    if not member and item['app_uuid'] and item['app_uuid'] != "None":
+                        member = Entity.objects.filter(id=item['app_uuid']).first()
                     if member is not None:
                         member.member_id = item['member_id']
                         member.save()
