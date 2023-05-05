@@ -81,6 +81,10 @@ class Entity(models.Model):
     objects = EntityManager()
 
     @property
+    def balance_url(self):
+        return settings.BASESITE_URL + "/balance/" + self.member_id
+
+    @property
     def display_name(self):
         return self.name
 

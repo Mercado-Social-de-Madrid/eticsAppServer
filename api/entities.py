@@ -84,7 +84,7 @@ class EntitiesDetailResource(ModelResource):
         list_allowed_methods = ['get', 'post']
         resource_name = 'entities'
         collection_name = 'entities'
-        excludes = ['user', 'registered', 'num_workers', 'legal_form']
+        excludes = ['user', 'registered', 'num_workers', 'legal_form', 'balance_detail']
 
         filtering = {
             'categories': ALL,
@@ -107,6 +107,8 @@ class EntitiesDetailResource(ModelResource):
         if bundle.data['categories']:
             for i, cat in enumerate(bundle.data['categories']):
                 bundle.data['categories'][i] = cat.split('/')[-2:][0]
+
+        bundle.data['balance_url'] = bundle.obj.balance_url
 
         return bundle
 
