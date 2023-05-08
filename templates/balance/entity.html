@@ -5,7 +5,11 @@
 
 {% block extra_styles %}
 <style>
-iframe{ border: 1px solid #ddd; outline:none; width: 100%; height:70vw; }
+iframe{ border: 1px solid #ddd; outline:none; max-width:480px; width: 100%; height:150vw; margin:auto;}
+@media (min-width: 728px){
+iframe {
+    height:800px;
+}}
 </style>
 {% endblock extra_styles %}
 
@@ -19,9 +23,12 @@ iframe{ border: 1px solid #ddd; outline:none; width: 100%; height:70vw; }
                 <div class="card-top-img" style="background-image:url('{{entity.first_photo_url}}')"></div>
                 {% endif %}
                 <div class="card-body" href="{% url 'entity_detail' entity.pk %}">
-                    <h3 class="text-primary font-weight-bold"><strong>Balance social</strong></h3>
+                    <h4 class="text-primary font-weight-bold"><strong>Distintivo de calidad del MESM</strong></h4>
                     <div class="d-fluid">
-                        {% qr_from_text entity.qr_code "l" %}
+                        Al realizar el Balance Social, además de obtener el sello, infografía e informe personalizado, las entidades que lo soliciten, tendrán este Distintivo de calidad, como herramienta diferenciadora que dará visibilidad y prestigio a vuestra entidad.
+                        <img src="{% static 'imgs/sello_mes.png' %}" alt="Sello MES" class="img-fluid p-md-3 pt-4">
+
+                        El distintivo contiene un QR que permite a las socias visitar un documento como el que se puede ver aquí.
                     </div>
             </div>
             </div>
