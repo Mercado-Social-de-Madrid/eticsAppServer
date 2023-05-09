@@ -45,15 +45,19 @@ class News(models.Model):
 
 
 # Method to notify when news are published
+def send_news_notification(news):
+    data = {
+        'type': 'news',
+        'id': str(news.pk),
+        'title': news.title,
+        'short_description': news.short_description
+    }
+    helpers.topic_message(settings.NEWS_NOTIFICATION_TOPIC,
+                          title='¡Nueva noticia!', data=data, body=news.title, silent=False)
+
+
 @receiver(post_save, sender=News)
 def notify_news(sender, instance, created, **kwargs):
 
     if created:
-        print('Notifying news to all users')
-        data = {
-            'type': 'news',
-            'id':str(instance.pk),
-            'title': instance.title,
-            'short_description': instance.short_description
-        }
-        helpers.topic_message(settings.NEWS_NOTIFICATION_TOPIC, title='Nueva noticia!', data=data, body=instance.title, silent=False)
+        send_news_notification(instance)
