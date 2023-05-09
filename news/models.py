@@ -9,11 +9,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, ResizeToFill
+from django.conf import settings
 
 import helpers
 from helpers import RandomFileName
 
-NEWS_NOTIFICATION_TOPIC = 'news'
 
 class News(models.Model):
 
@@ -44,7 +44,6 @@ class News(models.Model):
         return self.title
 
 
-
 # Method to notify when news are published
 @receiver(post_save, sender=News)
 def notify_news(sender, instance, created, **kwargs):
@@ -57,4 +56,4 @@ def notify_news(sender, instance, created, **kwargs):
             'title': instance.title,
             'short_description': instance.short_description
         }
-        helpers.topic_message(NEWS_NOTIFICATION_TOPIC, title='Nueva noticia!', data=data, body=instance.title, silent=False)
+        helpers.topic_message(settings.NEWS_NOTIFICATION_TOPIC, title='Nueva noticia!', data=data, body=instance.title, silent=False)

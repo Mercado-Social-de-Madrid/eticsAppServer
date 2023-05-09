@@ -2,12 +2,17 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from fcm_django.models import FCMDevice
 from pyfcm import FCMNotification
+from django.conf import settings
+
 
 def notify_user(user, data, title=None, message=None, silent=True):
     '''
         Sends an FCM notification to a user
         If the message is silent, title and message are included in the data dictionary
     '''
+
+    if not settings.ENABLE_NOTIFICATIONS:
+        return
 
     if not user:
         return
@@ -48,6 +53,9 @@ def broadcast_notification(users=None, data=None, title=None, body=None, silent=
         If the message is silent, title and message are included in the data dictionary
     '''
 
+    if not settings.ENABLE_NOTIFICATIONS:
+        return
+
     devices = FCMDevice.objects.all()
     if users is not None:
         devices.filter(user__in=users, active=True)
@@ -75,6 +83,10 @@ def broadcast_notification(users=None, data=None, title=None, body=None, silent=
 
 
 def topic_message(topic, data=None, title=None, body=None, silent=True):
+
+    if not settings.ENABLE_NOTIFICATIONS:
+        return
+
     push_service = FCMNotification(api_key=settings.FCM_SERVER_KEY)
 
     if not data:
