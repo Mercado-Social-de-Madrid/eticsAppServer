@@ -223,6 +223,7 @@ class Wallet(models.Model):
 @receiver(post_save, sender=User)
 def create_user_wallet(sender, instance, created, **kwargs):
     if created:
+
         print('Creating user wallet!')
         wallet, new = Wallet.objects.get_or_create(user=instance)
 

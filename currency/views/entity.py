@@ -172,8 +172,7 @@ def add_entity(request):
             PhotoGalleryForm.save_galleryphoto(entity.gallery, gallery_formset)
 
             return redirect('entity_detail', pk=entity.pk)
-        else:
-            print(form.errors)
+
     else:
         form = EntityForm(initial={'is_new_entity':True})
         gallery_formset = gallery_factory(initial=initial_photos)

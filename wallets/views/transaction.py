@@ -162,6 +162,6 @@ class BulkTransaction(TemplateView, FormView):
                     made_byadmin=True
                 )
             except Wallet.NotEnoughBalance:
-                print("Not balance!!")
+                pass
 
         return super(BulkTransaction, self).form_valid(form)

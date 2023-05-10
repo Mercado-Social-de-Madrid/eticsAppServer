@@ -137,7 +137,6 @@ def new_payment(request, pk):
                                      'Pago enviado con éxito')
                 return redirect('wallets:payment_detail', pk=payment.pk)
             except Wallet.WrongPinCode:
-                print('Wrong pincode!')
                 data['wrongpingcode'] = True
             except Wallet.NotEnoughBalance:
                 data['notenoughbalance'] = True

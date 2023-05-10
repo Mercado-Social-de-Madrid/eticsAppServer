@@ -78,7 +78,7 @@ class CheckMemberStatus(EntityPermissionMixin, TemplateView):
                 context['member_not_found'] = True
             else:
                 context['status'] = status
-        print(context)
+
         return context
 
     def post(self, request, *args, **kwargs):

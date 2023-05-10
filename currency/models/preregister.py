@@ -36,8 +36,6 @@ class PreRegisteredUser(models.Model):
 @receiver(post_save, sender=PreRegisteredUser)
 def send_welcome_email(sender, instance, created, **kwargs):
 
-    print("post save preregister. created {}".format(created))
-
     if created:
         user = instance.user
         kind, entity = user.get_related_entity()
@@ -60,5 +58,5 @@ def send_welcome_email(sender, instance, created, **kwargs):
             instance.email_sent = True
             instance.save()
         except Exception:
-            print("send email error")
+            pass
 

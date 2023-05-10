@@ -49,7 +49,6 @@ def index(request):
     new_persons = helpers.paginate(new_persons, 1, elems_perpage=6)
 
     debit_wallet = Wallet.objects.filter(type__id="debit", city_debit__id="mad").first()
-    print(debit_wallet)
 
     return render(request, 'reports/index.html', {
         'last': last,

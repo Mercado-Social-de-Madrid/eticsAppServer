@@ -79,6 +79,5 @@ def add_user_to_group(sender, instance, created, **kwargs):
         instance.user.save()
 
     if created:
-        print('Adding user to persons group')
         group = Group.objects.get(name='persons')
         instance.user.groups.add(group)
