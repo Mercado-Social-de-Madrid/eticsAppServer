@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import logging
 import uuid
 
 from django.contrib.auth import hashers
@@ -16,7 +17,7 @@ from helpers import notify_user, datetime
 from wallets.exceptions import *
 from wallets.models import WalletType
 
-
+logger = logging.getLogger(__name__)
 
 class Wallet(models.Model):
 
@@ -224,7 +225,7 @@ class Wallet(models.Model):
 def create_user_wallet(sender, instance, created, **kwargs):
     if created:
 
-        print('Creating user wallet!')
+        logger.info('Creating user wallet!')
         wallet, new = Wallet.objects.get_or_create(user=instance)
 
         type, related = instance.get_related_entity()
@@ -232,7 +233,7 @@ def create_user_wallet(sender, instance, created, **kwargs):
         wallet.set_type(wallet_type)
 
         if not new:
-            print('Wallet for user already existed')
+            logger.info('Wallet for user already existed')
 
 
 # Method to generate the entity wallet type
