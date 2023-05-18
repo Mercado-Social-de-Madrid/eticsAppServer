@@ -25,12 +25,26 @@ iframe {
                 <div class="card-body" href="{% url 'entity_detail' entity.pk %}">
                     <h4 class="text-primary font-weight-bold"><strong>Distintivo de calidad del MESM</strong></h4>
                     <div class="d-fluid">
-                        Al realizar el Balance Social, además de obtener el sello, infografía e informe personalizado, las entidades que lo soliciten, tendrán este Distintivo de calidad, como herramienta diferenciadora que dará visibilidad y prestigio a vuestra entidad.
+                        Al realizar el Balance Social, además de obtener el sello, infografía e informe personalizado,
+                        las entidades que lo soliciten, tendrán este Distintivo de calidad, como herramienta
+                        diferenciadora que dará visibilidad y prestigio a vuestra entidad.
+
+                        <p>
+                        {% if entity.balance_url %}
+                            <h4 class="text-primary font-weight-bold"><strong>Enlace a la página de tu balance:<br><a
+                                href="{{ entity.balance_url }}">{{ entity.balance_url }}</a></strong></h4>
+                        {% else %}
+                            <h6>Ahora mismo no tienes distintivo. Para obtenerlo, debes hacer tu balance social y solicitar el distintivo.<br>
+                                Si tienes dudas escribe a <a href="mailto:madrid@mercadosocial.net">madrid@mercadosocial.net</a></h6>
+
+                        {% endif %}
+                        </p>
                         <img src="{% static 'imgs/sello_mes.png' %}" alt="Sello MES" class="img-fluid p-md-3 pt-4">
 
-                        El distintivo contiene un QR que permite a las socias visitar un documento como el que se puede ver aquí.
+                        El distintivo contiene un QR que permite a las socias visitar un documento como el que se puede
+                        ver aquí.
                     </div>
-            </div>
+                </div>
             </div>
 
         </div>
@@ -38,8 +52,6 @@ iframe {
             <iframe src="{% url 'balance_detail' entity.member_id %}"></iframe>
         </div>
     </div>
-
-
 
 
 </div>
