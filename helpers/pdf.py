@@ -2,7 +2,7 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from weasyprint import HTML, CSS
-from weasyprint.fonts import FontConfiguration
+from weasyprint.text.fonts import FontConfiguration
 
 
 def render_pdf_response(request, pdf_template, context_params, filename='temp'):

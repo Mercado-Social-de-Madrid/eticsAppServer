@@ -13,4 +13,4 @@ Pillow==9.4.0
 pyfcm==1.4.9
 pytz==2018.3
 six==1.11.0
-WeasyPrint==52.4
+WeasyPrint==59.0
