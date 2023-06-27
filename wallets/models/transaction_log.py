@@ -45,7 +45,7 @@ class TransactionLog(models.Model):
     is_euro_purchase = models.BooleanField(default=False, verbose_name='Compra de euros')
     current_balance = models.FloatField(default=0, verbose_name='Saldo')
     transaction = models.ForeignKey(Transaction, blank=True, null=True, on_delete=models.CASCADE)
-    related = models.TextField(blank=True, null=True, verbose_name='Concepto')
+    related = models.TextField(blank=True, null=True, verbose_name='Concepto') # Actually this is "Cuenta" (from or to)
 
     objects = TransactionLogManager()
 
