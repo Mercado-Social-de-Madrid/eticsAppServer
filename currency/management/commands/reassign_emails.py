@@ -23,4 +23,4 @@ class Command(BaseCommand):
                 entity.user.email = entity.email
                 entity.user.save()
 
-        print 'All up-to-date.'
+        print('All up-to-date.')

@@ -18,16 +18,16 @@ class Command(BaseCommand):
         person_uuid = options['person_uuid']
         try:
             person = Person.objects.get(pk=person_uuid)
-            print 'Deleting person: {}'.format(person.name)
+            print('Deleting person: {}'.format(person.name))
             try:
                 PreRegisteredUser.objects.get(user=person.user).delete()
-                print 'Preregistered user deleted'
+                print('Preregistered user deleted')
             except ObjectDoesNotExist:
-                print 'Preregistered user does not exist'
+                print('Preregistered user does not exist')
 
             person.user.delete()
-            print 'User deleted'
+            print('User deleted')
             person.delete()
             print('Person deleted')
         except ObjectDoesNotExist:
-            print 'Person does not exist'
+            print('Person does not exist')

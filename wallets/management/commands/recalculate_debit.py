@@ -18,7 +18,7 @@ class Command(BaseCommand):
             for user in users:
                 balance += user.wallet.balance
 
-            print city.full_name
-            print balance
+            print(city.full_name)
+            print(balance)
             city.wallet.balance = -balance
             city.wallet.save()

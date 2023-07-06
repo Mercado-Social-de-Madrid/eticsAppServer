@@ -14,8 +14,8 @@ class Command(BaseCommand):
 
         items = Payment.objects.all()
 
-        print "pagos totales: " + str(len(items))
-        print "pagos con etics: " + str(len(Payment.objects.filter(currency_amount__gt=0)))
+        print("pagos totales: " + str(len(items)))
+        print("pagos con etics: " + str(len(Payment.objects.filter(currency_amount__gt=0))))
 
         headers = ['Fecha', 'Hora', 'Pagador', 'Destinatario', 'Estado', 'Cantidad total', 'En etics']
         data = []

@@ -51,9 +51,9 @@ class Command(BaseCommand):
                         if is_guest:
                             account.expiration_date = body['expiration_date']
                             account.save()
-                        print unicode('User {} updated!').format(account)
+                        print(unicode('User {} updated!').format(account))
                     else:
-                        print unicode('User {} not found!').format(account)
+                        print(unicode('User {} not found!').format(account))
 
                 except Exception as e:
                     pass

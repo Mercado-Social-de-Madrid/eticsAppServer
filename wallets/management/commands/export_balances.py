@@ -16,6 +16,6 @@ class Command(BaseCommand):
             type, instance = wallet.user.get_related_entity() if wallet.user else (None, None)
             if instance:
                 if type == 'person':
-                    print '{},{},{}'.format(str(instance), instance.nif if instance.nif else '_', wallet.balance)
+                    print('{},{},{}'.format(str(instance), instance.nif if instance.nif else '_', wallet.balance))
                 else:
-                    print '{},{},{}'.format(str(instance), instance.cif if instance.cif else '_', wallet.balance)
+                    print('{},{},{}'.format(str(instance), instance.cif if instance.cif else '_', wallet.balance))

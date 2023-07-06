@@ -51,4 +51,4 @@ class Command(BaseCommand):
 
             entity.save()
 
-        print 'Fixed links: ' + str(count)
+        print('Fixed links: ' + str(count))

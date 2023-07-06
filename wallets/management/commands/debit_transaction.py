@@ -26,7 +26,7 @@ class Command(BaseCommand):
         concept = options['concept']
 
         if not amount or not account:
-            print 'Wrong arguments'
+            print('Wrong arguments')
             return
 
         try:
@@ -38,7 +38,7 @@ class Command(BaseCommand):
                 instance = None
 
         if not instance:
-            print 'No user with that id'
+            print('No user with that id')
             return
 
         wallet = instance.user.wallet

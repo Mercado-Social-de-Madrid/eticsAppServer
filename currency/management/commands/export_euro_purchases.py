@@ -19,7 +19,7 @@ class Command(BaseCommand):
         end = datetime.datetime(year, 12, 31, 23, 59, 59)
         items = Transaction.objects.filter(is_euro_purchase=True, timestamp__range=(start, end))
 
-        print str(len(items)) + " transacciones"
+        print(str(len(items)) + " transacciones")
 
         headers = ['Fecha', 'Hora', 'Nombre y apellidos', 'Nombre usuaria', 'email', 'Cantidad']
         data = []

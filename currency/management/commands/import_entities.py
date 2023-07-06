@@ -86,13 +86,13 @@ class Command(BaseCommand):
 
                 entities.append(entity)
 
-            print 'Saving entities lenght: ' + str(len(entities))
-            for entity in entities:
+            print('Saving entities lenght: ' + str(len(entities)))
+            for entity in entities):
 
-                print 'saving: ' + entity.name
+                print('saving: ' + entity.name)
                 try:
                     entity.save()
                 except IntegrityError as e:
-                    print e
+                    print(e)
                 except Exception as e:
-                    print e
+                    print(e)

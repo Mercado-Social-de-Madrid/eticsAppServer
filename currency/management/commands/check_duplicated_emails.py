@@ -12,19 +12,18 @@ class Command(BaseCommand):
 
         count = 0
 
-        cifs = []
-        nifs = []
+        emails = []
 
         for entity in Entity.objects.active():
-            if entity.cif in cifs:
+            if entity.email in emails:
                 print('Duplicated entity cif: {}. Email: {}'.format(entity.cif, entity.email))
             else:
-                cifs.append(entity.cif)
+                emails.append(entity.cif)
 
         for person in Person.objects.active():
-            if person.nif in nifs:
+            if person.email in emails:
                 print('Duplicated person nif: {}. Email: {}'.format(person.nif, person.email))
             else:
-                nifs.append(person.nif)
+                emails.append(person.nif)
 
-        print('\nFinished. Checked {} cifs and {} nifs'.format(len(cifs), len(nifs)))
+        print('\nFinished. Checked {} emails'.format(len(emails)))
