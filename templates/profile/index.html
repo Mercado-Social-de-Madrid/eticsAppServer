@@ -35,7 +35,7 @@
         {% endif %}
 
         {% if type == 'entity' %}
-        <div class="col-md-5">
+        <div class="col-md-4">
             <div class="card mb-4">
                 {% if entity.first_photo_url %}
                 <div class="card-top-img" style="background-image:url('{{entity.first_photo_url}}')"></div>
@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-4">
 
             <div class="card mb-4">
                 <div class="card-body pb-0">
@@ -100,7 +100,19 @@
 
         </div>
         {% endif %}
+        <div class="{% if type == 'entity' %}col-md-4{% else %}col-md-6{% endif %}">
+            <div class="card mb-4">
+                <div class="card-body">
 
+                {% if type == 'person' %}
+                    Como se decidió en la asamblea de 2022, comenzamos una transición de los etics con el fin de su desaparición. Por este motivo, desde el 1 de noviembre de 2023 se ha deshabilitado el uso de esta moneda social. Sin embargo, puedes acceder a otras ventajas de consumo a través de nuestras apps para <a href="https://apps.apple.com/es/app/mercado-social/id1458549528">iOS</a> y <a href="https://play.google.com/store/apps/details?id=net.mercadosocial.moneda">Android</a>.
+                {% endif %}
+                {% if type == 'entity' %}
+                    Como se decidió en la asamblea de 2022, comenzamos una transición de los etics con el fin de su desaparición. Por este motivo, desde el 1 de noviembre se ha deshabilitado el uso de esta moneda social. Las entidades podréis solicitar la devolución de vuestro saldo de etics a través del pago de cuotas de los próximos años. Si tenéis dudas escribid a este correo para informaros sobre el procedimiento con más detalles: <a href="mailto:administracion.madrid@mercadosocial.net">administracion.madrid@mercadosocial.net</a>
+                {% endif %}
+                </div>
+            </div>
+        </div>
         <div class="{% if type == 'entity' %}col-md-4{% else %}col-md-6{% endif %}" hidden>
             <div class="card mb-4">
                 <div class="card-body">
