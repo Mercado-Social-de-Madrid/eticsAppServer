@@ -18,9 +18,9 @@
                              <div class="col-sm-5" style="border-right:1px solid #ccc;">
                                  {% include 'wallets/wallet_balance.html' with wallet=wallet %}
                              </div>
-                             <div class="col-sm-7 pl-4">
+                             <div class="col-sm-7 pl-4" hidden>
                                  <a href="{% url 'wallets:new_payment' %}" class="btn btn-lg mb-3 btn-primary">Enviar pago</a><br>
-                    <button type="button" class="btn btn-lg disabled">Obtener etics</button>
+                                 <button type="button" class="btn btn-lg disabled">Obtener etics</button>
                              </div>
                          </div>
 
@@ -28,7 +28,7 @@
                  </div>
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-5" hidden>
                 {% if pending_payments %}
                     <div class="card mb-4 bg-primary text-light">
                         <div class="card-body py-4 pb-3">

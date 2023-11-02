@@ -9,7 +9,7 @@
     <div class="row">
 
         {% if type == 'person' %}
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="card mb-4">
                 {% if person.profile_image %}
                 <div class="card-top-img" style="background-image:url('{{person.profile_image.url}}')"></div>
@@ -35,7 +35,7 @@
         {% endif %}
 
         {% if type == 'entity' %}
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="card mb-4">
                 {% if entity.first_photo_url %}
                 <div class="card-top-img" style="background-image:url('{{entity.first_photo_url}}')"></div>
@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-5">
 
             <div class="card mb-4">
                 <div class="card-body pb-0">
@@ -101,7 +101,7 @@
         </div>
         {% endif %}
 
-        <div class="{% if type == 'entity' %}col-md-4{% else %}col-md-6{% endif %}">
+        <div class="{% if type == 'entity' %}col-md-4{% else %}col-md-6{% endif %}" hidden>
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="card-title primary-title"><h3><i class="ic ic-wallet"></i> Saldo</h3></div>

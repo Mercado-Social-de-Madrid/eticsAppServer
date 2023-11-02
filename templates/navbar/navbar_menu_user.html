@@ -40,9 +40,11 @@
                 </li>
             {% endif %}
 
+            {% if perms.currency.can_manage_entity %}
               <li class="nav-item">
                 <a class="nav-link {% if request.resolver_match.url_name == 'user_wallet' %}active{% endif %}" href="{% url 'wallets:user_wallet' %}"><i class="ic ic-wallet"></i> Monedero</a>
               </li>
+            {% endif %}
             </ul>
             </div>
    </div>

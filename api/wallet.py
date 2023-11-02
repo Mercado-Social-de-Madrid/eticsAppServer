@@ -35,6 +35,8 @@ class PaymentsResource(ModelResource):
 
     def obj_create(self, bundle, request=None, **kwargs):
 
+        return HttpGone('Pagos en Etics desactivados. Por favor, actualiza tu app')
+
         sender = bundle.request.user
         receiver = bundle.data['receiver']
         total_amount = bundle.data['total_amount']
