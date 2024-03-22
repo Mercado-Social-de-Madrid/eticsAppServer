@@ -77,7 +77,7 @@ class Command(BaseCommand):
                     entity.webpage_link = item['webpage_link']
 
                 entity.categories.clear()
-                print entity.name
+                print(entity.name)
                 for categ_name in item['categories']:
                     category = Category.objects.get(name=categ_name)
                     if not category:
@@ -87,7 +87,7 @@ class Command(BaseCommand):
                 entities.append(entity)
 
             print('Saving entities lenght: ' + str(len(entities)))
-            for entity in entities):
+            for entity in entities:
 
                 print('saving: ' + entity.name)
                 try:
