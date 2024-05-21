@@ -39,6 +39,7 @@ def get_consumers():
             'registered': str(item.registered),
             'is_intercoop': item.is_intercoop,
             'inactive': item.inactive,
+            'is_guest_account': item.is_guest_account,
             'fav_entities': list(map(lambda entity: str(entity.id), item.fav_entities.all())),
         })
     return data
