@@ -108,8 +108,8 @@ def get_providers():
             'discount_percent': offer.discount_percent,
             'discounted_price': offer.discounted_price,
             'active': offer.active,
-            'begin_date': str(offer.begin_date),
-            'end_date': str(offer.end_date),
+            'begin_date': str(offer.begin_date) if offer.begin_date else None,
+            'end_date': str(offer.end_date) if offer.end_date else None,
 
         }, entity.offers.all()))
 
