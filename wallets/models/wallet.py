@@ -41,17 +41,10 @@ class Wallet(models.Model):
         ordering = ['user']
 
     def __str__(self):
-        return self.related_type
+        return self.user.username
 
     def __unicode__(self):
-        return self.related_type
-
-        if self.user:
-            return self.user.username + ': ' + str(self.balance)
-        elif self.type:
-            return self.type.id + ': ' + str(self.balance)
-        else:
-            return 'Unknown wallet'
+        return self.user.username
 
     def set_type(self, type='default'):
         if not type:
