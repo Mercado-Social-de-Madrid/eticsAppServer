@@ -41,10 +41,10 @@ class Wallet(models.Model):
         ordering = ['user']
 
     def __str__(self):
-        return self.user.username
+        return "{} - {}".format(self.user.username, self.user.email)
 
     def __unicode__(self):
-        return self.user.username
+        return "{} - {}".format(self.user.username, self.user.email)
 
     def set_type(self, type='default'):
         if not type:
